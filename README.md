@@ -1,9 +1,26 @@
-# ing-sw-2020-Djokovic-Arsi-Colomban
-Final project for the Software Engineering class at PoliMi.
+# Prova Finale Ingegneria del Software 2020
 
-Group Number: 04  
-Professor: Margara  
-Group members:
-* Arsi Pietro 887900 10570613 pietro.arsi@mail.polimi.it
-* Colomban Giorgio 890225 10555274 giorgio.colomban@mail.polimi.it
-* Djokovic Stefan 886860 10610473 stefan.djokovic@mail.polimi.it
+## Gruppo AM04
+
+
+- ###   10570613    Pietro Arsi ([@Pit2752](https://github.com/Pit2752))<br>pietro.arsi@mail.polimi.it
+- ###   10555274    Giorgio Colomban ([@Giocol](https://github.com/Giocol))<br>giorgio.colomban@mail.polimi.it
+- ###   10610473    Stefan Djokovic ([@StefanDjokovic](https://github.com/StefanDjokovic))<br>stefan.djokovic@mail.polimi.it
+
+| Functionality | State |
+|:-----------------------|:------------------------------------:|
+| Basic rules | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Complete rules | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Socket | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| GUI | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| CLI | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Multiple games | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Persistence | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Advanced Gods | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Undo | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+
+<!--
+[![RED](https://placehold.it/15/f03c15/f03c15)](#)
+[![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#)
+[![GREEN](https://placehold.it/15/44bb44/44bb44)](#)
+-->
