@@ -247,12 +247,27 @@ public class Tile {
     }
 
     // todo: Also to test and maybe improve
+
+    /**
+     *
+     * @param from
+     * @param dest
+     * @param moveUpMax
+     * @param moveDownMax
+     * @return
+     */
     public boolean isMovableTo(Tile from, Tile dest, int moveUpMax, int moveDownMax) {
         if (dest.hasDome() || dest.hasWorker())
             return false;
         return from.getBuildingLevel() + moveUpMax >= dest.getBuildingLevel() && from.getBuildingLevel() - moveDownMax <= dest.getBuildingLevel();
     }
 
+    /**
+     *
+     * @param moveUpMax
+     * @param moveDownMax
+     * @return
+     */
     // todo: TEST THIS, THERE IS PROBABLY A MISTAKE SOMEWHERE, GetMovableWorker does not work properly I think
     public List<Tile> getMovableToNeigh(int moveUpMax, int moveDownMax) {
         List<Tile> result = new ArrayList<>();
