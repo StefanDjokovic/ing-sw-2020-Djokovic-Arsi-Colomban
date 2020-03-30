@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.NonExistingTileException;
+import it.polimi.ingsw.model.board.Tile;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,5 +22,21 @@ public class BoardTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void getTileTest() {
+        Board board = new Board();
+        try {
+            Tile tile = board.getTile(0, 0);
+        } catch (NonExistingTileException e) {
+            fail();
+        }
+        try {
+            Tile tile = board.getTile(10, 10);
+        } catch (NonExistingTileException e) {
+            return;
+        }
+        fail();
     }
 }
