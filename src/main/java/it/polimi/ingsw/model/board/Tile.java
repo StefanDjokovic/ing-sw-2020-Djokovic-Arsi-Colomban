@@ -247,13 +247,12 @@ public class Tile {
     }
 
     // todo: Also to test and maybe improve
-
     /**
-     *
-     * @param from
-     * @param dest
-     * @param moveUpMax
-     * @param moveDownMax
+     * Return true if it is possible to move from the first tile to the secondo, given the limits of the movement.
+     * @param from Starting tile.
+     * @param dest Arrive tile.
+     * @param moveUpMax Limit of building level for "up" movement
+     * @param moveDownMax Limit of building level for "down" movement
      * @return
      */
     public boolean isMovableTo(Tile from, Tile dest, int moveUpMax, int moveDownMax) {
@@ -262,13 +261,13 @@ public class Tile {
         return from.getBuildingLevel() + moveUpMax >= dest.getBuildingLevel() && from.getBuildingLevel() - moveDownMax <= dest.getBuildingLevel();
     }
 
-    /**
-     *
-     * @param moveUpMax
-     * @param moveDownMax
-     * @return
-     */
     // todo: TEST THIS, THERE IS PROBABLY A MISTAKE SOMEWHERE, GetMovableWorker does not work properly I think
+    /**
+     * Returns a list of tiles where a worker can move to, starting from this tile.
+     * @param moveUpMax Limit of building level for "up" movement
+     * @param moveDownMax Limit of building level for "down" movement
+     * @return List of tiles where a worker can move to.
+     */
     public List<Tile> getMovableToNeigh(int moveUpMax, int moveDownMax) {
         List<Tile> result = new ArrayList<>();
         try {
