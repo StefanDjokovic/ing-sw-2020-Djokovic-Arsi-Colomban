@@ -251,9 +251,6 @@ public class Tile {
         if (dest.hasDome() || dest.hasWorker())
             return false;
         return from.getBuildingLevel() + moveUpMax >= dest.getBuildingLevel() && from.getBuildingLevel() - moveDownMax <= dest.getBuildingLevel();
-
-
-
     }
 
     // todo: TEST THIS, THERE IS PROBABLY A MISTAKE SOMEWHERE, GetMovableWorker does not work properly I think
