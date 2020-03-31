@@ -182,10 +182,11 @@ public class TileTest {
         }
 
         try {
-            assertEquals(0, board.getTile(0, 0).getWalkableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum));
+            List<Tile> l = board.getTile(0, 0).getWalkableNeighbors();
         } catch (NoWalkableTilesException | NonExistingTileException e) {
-            e.printStackTrace();
+            return;
         }
+        fail();
     }
 
     @Test
@@ -220,10 +221,11 @@ public class TileTest {
         }
 
         try {
-            assertEquals(0, board.getTile(0, 0).getBuildableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum));
+            List<Tile> l = board.getTile(0, 0).getBuildableNeighbors();
         } catch (NoBuildableTilesException | NonExistingTileException e) {
-            e.printStackTrace();
+            return;
         }
+        fail();
     }
 
     @Test
@@ -260,8 +262,8 @@ public class TileTest {
         for (int x = 0 ; x < 5 ; x++) {
             for (int y = 0 ; y < 5 ; y++) {
                 try {
-                    assertEquals(x, board.getTile(y, x).getX());
-                    assertEquals(y, board.getTile(y, x).getY());
+                    assertEquals(x, board.getTile(x, y).getX());
+                    assertEquals(y, board.getTile(x, y).getY());
                 } catch (NonExistingTileException e) {
                     fail();
                 }

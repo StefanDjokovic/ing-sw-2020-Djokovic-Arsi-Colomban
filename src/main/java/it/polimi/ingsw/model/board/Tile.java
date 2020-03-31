@@ -253,10 +253,10 @@ public class Tile {
      * @param dest Arrive tile.
      * @param moveUpMax Limit of building level for "up" movement
      * @param moveDownMax Limit of building level for "down" movement
-     * @return true if the worker can move, false otherwise
+     * @return
      */
     public boolean isMovableTo(Tile from, Tile dest, int moveUpMax, int moveDownMax) {
-        if (isWalkable())
+        if (dest.hasDome() || dest.hasWorker())
             return false;
         return from.getBuildingLevel() + moveUpMax >= dest.getBuildingLevel() && from.getBuildingLevel() - moveDownMax <= dest.getBuildingLevel();
     }
