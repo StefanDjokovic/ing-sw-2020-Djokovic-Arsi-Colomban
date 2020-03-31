@@ -42,10 +42,10 @@ public class Controller implements Observer {
                 if (!game.getBoard().getTile(posX, posY).hasWorker()) {
                     try {
                         if (game.getPlayers().get(0).getWorkersSize() < 2) {
-                            game.getPlayers().get(0).addWorker(posX, posY, game.getBoard().getTile(posX, posY));
+                            game.getPlayers().get(0).addWorker(game.getBoard().getTile(posX, posY));
                         }
                         else {
-                            game.getPlayers().get(1).addWorker(posX, posY, game.getBoard().getTile(posX, posY));
+                            game.getPlayers().get(1).addWorker(game.getBoard().getTile(posX, posY));
                         }
                     } catch (IllegalArgumentException | NonExistingTileException e) {
                         System.out.println("Impossible selection");

@@ -35,8 +35,8 @@ public class Tile {
         this.buildingLevel = 0;
         this.dome = false;
         this.worker = null;
-        y = a;
-        x = b;
+        x = a;
+        y = b;
         this.currentBoard = currentBoard;
     }
 

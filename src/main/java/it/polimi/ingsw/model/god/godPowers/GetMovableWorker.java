@@ -22,8 +22,8 @@ public class GetMovableWorker extends GodPower {
         for (Worker w : workers) {
             if (w.getPosTile().getMovableToNeigh(currMoveUpMax, currMoveDownMax) != null) {
                 System.out.println("TESTING: " + w.getPosX());
-                options.add(w.getPosX());
-                options.add(w.getPosY());
+                options.add(options.size(), w.getPosX());
+                options.add(options.size(), w.getPosY());
             }
         }
         System.out.println("JUST CHECKING HOW IT LOOKS" + options.toString());

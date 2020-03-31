@@ -22,13 +22,13 @@ public class Board {
      *
      */
     private void initTiles() {
-        for (int y = 0 ; y < 5 ; y++) {
-            for (int x = 0 ; x < 5 ; x++) {
-                board[y][x] = new Tile(y , x ,this);
+        for (int x = 0 ; x < 5 ; x++) {
+            for (int y = 0 ; y < 5 ; y++) {
+                board[x][y] = new Tile(x , y ,this);
             }
         }
-        for (int y = 0 ; y < 5 ; y++) {
-            for (int x = 0 ; x < 5 ; x++) {
+        for (int x = 0 ; x < 5 ; x++) {
+            for (int y = 0 ; y < 5 ; y++) {
                 board[x][y].initNeighbors();
             }
         }

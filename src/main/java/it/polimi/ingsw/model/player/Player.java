@@ -36,8 +36,8 @@ public class Player {
     public int getWorkersSize() {
         return workers.size();
     }
-    public void addWorker(int posX, int posY, Tile tile) {
-        workers.add(new Worker(this, posX, posY, tile));
+    public void addWorker(Tile tile) {
+        workers.add(new Worker(this, tile));
     }
 
     public void executeTurn() {
