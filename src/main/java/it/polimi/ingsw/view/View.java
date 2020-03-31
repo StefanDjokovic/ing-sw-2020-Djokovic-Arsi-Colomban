@@ -67,8 +67,11 @@ public class View extends Observable implements Observer {
         else if (string.split(" ")[1].equals("Pick")) {
             // todo: pick should contain also the possible destinations for each pick to reduce load on model
             String[] temp = string.split(" ");
-            if (temp.length > 5)
+            if (temp.length > 5) {
+                System.out.println(Integer.parseInt(temp[3]) + " " + Integer.parseInt(temp[4]) + " " + Integer.parseInt(temp[5]) + " " + Integer.parseInt(temp[6]));
                 getPlayerSelection(game.getBoard(), Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), Integer.parseInt(temp[5]), Integer.parseInt(temp[6]));
+                System.out.println(Integer.parseInt(temp[3]) + " " + Integer.parseInt(temp[4]) + " " + Integer.parseInt(temp[5]) + " " + Integer.parseInt(temp[6]));
+            }
             else
                 getPlayerSelection(game.getBoard(), Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), -1, -1);
         }
@@ -99,10 +102,9 @@ public class View extends Observable implements Observer {
 
         updateObservers("PlayersName " + player1Name + " " + player1Initial + " " + player2Name + " " + player2Initial);
 
-
     }
 
-    // todo: NOT FULLY IMPLEMENTED YET, now it picks "Basic", which has the basic God Logic
+    // todo: Missing all the other Gods, only basic is implemented
     public void getPlayersGod(String playerName) {
         System.out.println("Select " +  playerName + "'s God: ");
         String player1God = scanner.next();
@@ -136,7 +138,7 @@ public class View extends Observable implements Observer {
     }
 
     public void getPlayerSelection(Board board, int x1, int y1, int x2, int y2) {
-        System.out.println("Seems to be working, now I should select a Worker and destination");
+        System.out.println("Seems to be working, now you should select a Worker and destination");
         System.out.println("Options: " + x1 + " " + y1 + " or " + x2 + " " + y2);
         displayWithActiveWorkers(board, x1, y1, x2, y2);
         int posX = -1, posY = -1;
@@ -157,11 +159,7 @@ public class View extends Observable implements Observer {
                 unselected = false;
             }
         }
-
-
-
         updateObservers("WorkerSelection " + posX + " " + posY);
-
     }
 
 
@@ -175,7 +173,6 @@ public class View extends Observable implements Observer {
 
         selectable[X1][Y1] = true;
         selectable[X2][Y2] = true;
-
 
         String ANSI_WHITE = "\u001B[37m";
 
@@ -210,8 +207,10 @@ public class View extends Observable implements Observer {
                             System.out.print(currColor + "   " + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + " "
                                     + board.getTile(i, j).getWorker().getOwner().getInitial() + " " + currColor +
                                     "   " + ANSI_RESET);
-                        else
+                        else {
+
                             System.out.print(currColor + "    " + ANSI_BLACK + board.getTile(i, j).getWorker().getOwner().getInitial() + "    " + ANSI_RESET);
+                        }
                     } catch (NonExistingTileException e) {
                         System.out.println("What is going on?!?!");
                     }

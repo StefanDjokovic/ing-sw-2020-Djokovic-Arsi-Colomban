@@ -42,8 +42,8 @@ public class Game extends Observable {
         System.out.println("Time to place the Workers on the board!");
         updateObservers("Required Worker Position");
 
-        System.out.println("Player 1: " + players.get(0).toString() );
-        System.out.println("Player 2: " + players.get(1).toString() );
+        System.out.println("Player 1: " + players.get(0).toString());
+        System.out.println("Player 2: " + players.get(1).toString());
 
         System.out.println("Setup completed. Let's play!");
     }

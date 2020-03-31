@@ -42,8 +42,7 @@ public class Move extends GodPower {
         // IN GENERAL, the move can be completed only if the destination has no worker on it
         if (!destination.hasWorker()) {
             if(destination.getBuildingLevel() - start.getBuildingLevel()  <=  1 && !destination.hasDome()) {// The worker can move only if the destination tile is not more than one level up the and if it doesn't have a dome
-                worker.setPosX(x);    // We update the position of the "worker" object with the destination
-                worker.setPosY(y);
+                // todo: HO CANCELLATO QUESTE, OH NO
                 start.setWorker(null); // "Removes" the worker from the old tile
                 destination.setWorker(worker);// "Adds" the worker to the new tile, owned by "player"
             }
@@ -58,8 +57,7 @@ public class Move extends GodPower {
         // IN GENERAL, the move can be completed only if the destination has no worker on it
         if (!destination.hasWorker()) {
             if(destination.getBuildingLevel() - start.getBuildingLevel()  <=  1 && !destination.hasDome()) {// The worker can move only if the destination tile is not more than one level up the and if it doesn't have a dome
-                worker.setPosX(x);    // We update the position of the "worker" object with the destination
-                worker.setPosY(y);
+                // todo: HO CANCELLATO QUESTE, OH NO
                 start.setWorker(null); // "Removes" the worker from the old tile
                 destination.setWorker(worker);// "Adds" the worker to the new tile, owned by "player"
             }
