@@ -18,22 +18,7 @@ public class DoubleMove extends Move {
         super(godLogic);
     }
 
-    @Override
-    public void power(Worker worker, Board board) throws UnreachableTileException, OccupiedTileException, NonExistingTileException {
-        int x1;
-        int y1;
-        int x2;
-        int y2;
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter x1 coordinate: ");
-        x1 = scan.nextInt();
-        System.out.print("Enter y1 coordinate: ");
-        y1 = scan.nextInt();
-        System.out.print("Enter x2 coordinate: ");
-        x2 = scan.nextInt();
-        System.out.print("Enter y2 coordinate: ");
-        y2 = scan.nextInt();
-        scan.close();
+    public void power(int x1, int x2, int y1, int y2, Worker worker, Board board) throws UnreachableTileException, OccupiedTileException, NonExistingTileException { // Overload of Move's power method
         super.power(x1, y1, worker, board);
         if( !(x2 == x1 && y2 == y1) ) {    // The second movement has to be on a different tile than the first one
             super.power(x2, y2, worker, board);
