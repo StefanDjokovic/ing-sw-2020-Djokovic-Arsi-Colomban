@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Player {
 
     final String name;
-    final char inital;
+    char inital;
     GodLogic godLogic = null;
     ArrayList<Worker> workers = new ArrayList<>();
 
@@ -36,9 +36,18 @@ public class Player {
     public int getWorkersSize() {
         return workers.size();
     }
-    public void addWorker(Tile tile) {
-        workers.add(new Worker(this, tile));
+
+    public Worker addWorker(Tile tile) {
+        Worker newWorker = new Worker(this, tile);
+        workers.add(newWorker);
+        return newWorker;
     }
+
+    public ArrayList<Worker> getWorkers() {
+        return workers;
+    }
+
+    public void setInital(char inital) { this.inital = inital; }
 
     public void executeTurn() {
         godLogic.executeTurn(workers);
