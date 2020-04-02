@@ -14,7 +14,7 @@ public class GodLogic extends Observable {
     ArrayList<GodPower> turn = new ArrayList<>();
     int moveUpMax = 1;
     int moveDownMax = 99;
-    GodPower selectionStrategy;
+    GodPower selectionStrategy; // temporary, to place in turn
 
 
     public GodLogic(String godLogic) {
@@ -26,6 +26,7 @@ public class GodLogic extends Observable {
         }
     }
 
+    // it is not a complete function, will fix soon
     public void executeTurn(ArrayList<Worker> workers) {
         Worker selectedWorker = selectionStrategy.power(workers);
         for (GodPower power : turn) {

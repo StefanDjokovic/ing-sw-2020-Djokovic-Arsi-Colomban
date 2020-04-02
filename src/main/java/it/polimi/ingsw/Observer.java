@@ -1,6 +1,9 @@
 package it.polimi.ingsw;
 
 
+import it.polimi.ingsw.messages.Answer;
+import it.polimi.ingsw.messages.Request;
+
 /**
  * Own implementation of the Observer pattern
  * Observer interface
@@ -9,6 +12,7 @@ package it.polimi.ingsw;
 public interface Observer {
 
     // each Observer has to override it
-    void update(String string);
+    void update(Request request);
+    void update(Answer answer);
 
 }

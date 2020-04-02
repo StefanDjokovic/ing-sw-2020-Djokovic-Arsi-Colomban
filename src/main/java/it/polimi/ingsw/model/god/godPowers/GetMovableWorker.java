@@ -39,7 +39,7 @@ public class GetMovableWorker extends GodPower {
             toPass = toPass + " " + options.get(2) + " " + options.get(3);
 
         System.out.println(toPass);
-        getGodLogic().updateObservers(toPass);
+        //getGodLogic().updateObservers(toPass);
 
         return null;
     }

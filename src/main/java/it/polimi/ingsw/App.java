@@ -24,7 +24,7 @@ public class App {
         game.addObserver(view);
 
         // Simple printing board method, to delete (?)
-        view.funWithView(game.getBoard());
+        view.displayBoard(game.getBoard());
 
         // Initializing the game components and states
         game.init();

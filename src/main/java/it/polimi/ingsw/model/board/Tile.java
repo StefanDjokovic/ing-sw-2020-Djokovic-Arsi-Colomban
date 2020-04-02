@@ -248,15 +248,15 @@ public class Tile {
 
     // todo: Also to test and maybe improve
     /**
-     * Return true if it is possible to move from the first tile to the secondo, given the limits of the movement.
+     * Return true if it is possible to move from the first tile to the second, given the limits of the movement.
      * @param from Starting tile.
      * @param dest Arrive tile.
      * @param moveUpMax Limit of building level for "up" movement
      * @param moveDownMax Limit of building level for "down" movement
-     * @return
+     * @return true if the worker can move, false otherwise
      */
     public boolean isMovableTo(Tile from, Tile dest, int moveUpMax, int moveDownMax) {
-        if (dest.hasDome() || dest.hasWorker())
+        if (isWalkable())
             return false;
         return from.getBuildingLevel() + moveUpMax >= dest.getBuildingLevel() && from.getBuildingLevel() - moveDownMax <= dest.getBuildingLevel();
     }

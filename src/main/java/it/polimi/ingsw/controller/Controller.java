@@ -1,8 +1,9 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.messages.Answer;
+import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.view.View;
 
 public class Controller implements Observer {
@@ -15,13 +16,13 @@ public class Controller implements Observer {
         this.view = view;
     }
 
-
-
     @Override
-    public void update(String string) {
+    public void update(Answer answer) {
 
-        System.out.println("Controller Update received: " + string);
-
+        System.out.print("Controller Update received: ");
+        answer.printMessage();
+        answer.act(this);
+/*
         if (string.split(" ")[0].equals("PlayersName")) {
             game.initPlayers(string);
         }
@@ -65,6 +66,23 @@ public class Controller implements Observer {
             System.out.println("Ah, you selected a worker. Just a sec, will implement soon");
         }
         else
-            System.out.println("\n**********STRIKE STRIKE STRIKE YOU DID SOMETHING WRONG**************\nThe string was: " + string);
+            System.out.println("\n**********STRIKE STRIKE STRIKE YOU DID SOMETHING WRONG**************\nThe string was: " + string);*/
+    }
+
+    public void initPlayer(String name) {
+        game.initPlayer(name);
+    }
+
+    public void setPlayerGod(String godName, char initial) {
+        game.setPlayerGod(godName, initial, view);
+    }
+
+    public void setWorker(int x, int y, char initial) {
+        game.setWorker(x, y, initial);
+    }
+
+    @Override
+    public void update(Request request) {
+        System.out.println("Controller should not receive Requests");
     }
 }

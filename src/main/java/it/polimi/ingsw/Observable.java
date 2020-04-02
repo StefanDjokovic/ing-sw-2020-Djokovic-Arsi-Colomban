@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.messages.Answer;
+import it.polimi.ingsw.messages.Request;
+
 import java.util.ArrayList;
 
 
@@ -18,9 +21,14 @@ public class Observable {
             observers.add(o);
     }
 
-    public void updateObservers(String info) {
+    public void updateObservers(Request request) {
         for (Observer o : observers)
-            o.update(info);
+            o.update(request);
+    }
+
+    public void updateObservers(Answer answer) {
+        for (Observer o : observers)
+            o.update(answer);
     }
 
 }
