@@ -20,18 +20,7 @@ public class BuildDome extends Build{
         super(godLogic);
     }
 
-    public void power(Worker worker, boolean usePower, Board board) throws NonExistingTileException, OccupiedTileException, AlreadyHasDomeException, NotBuildableException, OutOfReachException {    // Overloaded method. If usePower = true, then the worker builds a dome instead of a normal level
-        int x;
-        int y;
-        /* This reads the input provided by user
-         * using keyboard
-         */
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter x coordinate: ");
-        x = scan.nextInt();
-        System.out.print("Enter y coordinate: ");
-        y = scan.nextInt();
-        scan.close();
+    public void power(int x, int y, Worker worker, boolean usePower, Board board) throws NonExistingTileException, OccupiedTileException, AlreadyHasDomeException, NotBuildableException, OutOfReachException {    // Overloaded method. If usePower = true, then the worker builds a dome instead of a normal level
         Tile destination = board.getTile(x, y); // Tile the player wants build on
         if (usePower){
             if ( !destination.hasWorker() ) {
