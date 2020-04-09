@@ -50,7 +50,7 @@ public class Player {
     public void setInital(char inital) { this.inital = inital; }
 
     public void executeTurn() {
-        godLogic.executeTurn(workers);
+       // godLogic.executeTurn(workers, game,this);   //TODO: fix
     }
 
     @Override

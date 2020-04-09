@@ -81,6 +81,9 @@ public class Controller implements Observer {
         game.setWorker(x, y, initial);
     }
 
+    public void move(int x, int y) {
+    }
+
     @Override
     public void update(Request request) {
         System.out.println("Controller should not receive Requests");

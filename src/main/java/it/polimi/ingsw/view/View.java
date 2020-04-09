@@ -166,6 +166,16 @@ public class View extends Observable implements Observer {
         //updateObservers("WorkerSelection " + posX + " " + posY);
     }
 
+    public void getPlayerMove() { // TODO: give the player to option to only select valid tiles
+        int x;
+        int y;
+        System.out.print("Enter x coordinate: ");
+        x = scanner.nextInt();
+        System.out.print("Enter y coordinate: ");
+        y = scanner.nextInt();
+        // controller.move(x,y);
+    }
+
 
     // todo: change X1,Y1 etc to a matrix, so that you can have multiple selections on one function
     public void displayWithActiveWorkers(Board board, int X1, int Y1, int X2, int Y2) {
