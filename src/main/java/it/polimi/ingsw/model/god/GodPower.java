@@ -22,6 +22,14 @@ public abstract class GodPower {
     public void power() { }
     public void power(Worker worker) {}
 
+    public int[][] generateOptions() {
+        int[][] options = new int[2][];
+
+
+
+        return options;
+    }
+
     public GodLogic getGodLogic() {
         return godLogic;
     }

@@ -47,6 +47,19 @@ public class Player {
         return workers;
     }
 
+    public ArrayList<ArrayList<Tile>> getOptionTiles() {
+        ArrayList<ArrayList<Tile>> optionTiles = new ArrayList<>();
+        for (Worker w: workers) {
+            ArrayList<Tile> optionWorker = new ArrayList<>();
+            optionWorker.add(w.getPosTile());
+            optionWorker.addAll(w.getPosTile().getNeighbors());
+            optionTiles.add(optionWorker);
+        }
+
+        return optionTiles;
+
+    }
+
     public void setInital(char inital) { this.inital = inital; }
 
     public void executeTurn() {

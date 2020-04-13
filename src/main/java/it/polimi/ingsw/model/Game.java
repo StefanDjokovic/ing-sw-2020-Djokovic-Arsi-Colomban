@@ -69,6 +69,8 @@ public class Game extends Observable {
 
         turnLogic();
 
+        printWorkerOptionPlayers();
+
         System.out.println("We have a winner! GG! Hope you enjoyed the game! :)");
     }
 
@@ -145,6 +147,19 @@ public class Game extends Observable {
 
         return returnMatrix;
 
+    }
+
+    public void printWorkerOptionPlayers() {
+        for (Player p: players) {
+            ArrayList<ArrayList<Tile>> result = p.getOptionTiles();
+            System.out.println("Options player " + p.getName());
+            for (ArrayList<Tile> a: result) {
+                System.out.println("Options worker: " + a.get(0).toString());
+                for (Tile t: a) {
+                    System.out.println(t.toString());
+                }
+            }
+        }
     }
 
     public void printPlayersDescription() {
