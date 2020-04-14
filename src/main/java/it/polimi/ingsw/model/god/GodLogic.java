@@ -31,9 +31,9 @@ public class GodLogic extends Observable {
     }
 
     // it is not a complete function, will fix soon
-    public void executeTurn(ArrayList<Worker> workers, Game game, Player player) {
+    public void executeTurn(ArrayList<Worker> workers, Game game) {
         Worker selectedWorker = selectionStrategy.power(workers);
-        Request request = new RequestMoveCoordinates(player);
+        Request request = new RequestMoveCoordinates(selectedWorker);
         game.updateObservers(request);
     }
 

@@ -4,6 +4,8 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Worker;
 import it.polimi.ingsw.view.View;
 
 public class Controller implements Observer {
@@ -81,7 +83,8 @@ public class Controller implements Observer {
         game.setWorker(x, y, initial);
     }
 
-    public void move(int x, int y) {
+    public void move(int x, int y, Worker worker) {
+        //worker.getOwner().getGodLogic().getPower(0);
     }
 
     @Override

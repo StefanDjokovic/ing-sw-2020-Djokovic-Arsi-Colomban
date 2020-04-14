@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.Tile;
 import it.polimi.ingsw.model.god.GodLogic;
 import it.polimi.ingsw.model.god.GodPower;
 import it.polimi.ingsw.model.god.godPowers.Move;
+import it.polimi.ingsw.model.Game;
 
 import java.util.ArrayList;
 
@@ -62,8 +63,8 @@ public class Player {
 
     public void setInital(char inital) { this.inital = inital; }
 
-    public void executeTurn() {
-       // godLogic.executeTurn(workers, game,this);   //TODO: fix
+    public void executeTurn(Game game) {
+       godLogic.executeTurn(workers, game);
     }
 
     @Override

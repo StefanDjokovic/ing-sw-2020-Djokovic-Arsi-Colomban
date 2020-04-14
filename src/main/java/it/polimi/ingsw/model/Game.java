@@ -77,7 +77,7 @@ public class Game extends Observable {
     public void turnLogic() {
         for (int i = 0; i < 2; i++) {   // TESTING PURPOSES: just 2 turns
             for (Player p : players)
-                p.executeTurn();
+                p.executeTurn(this);
         }
     }
 

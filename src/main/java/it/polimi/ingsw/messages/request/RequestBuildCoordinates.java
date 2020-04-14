@@ -5,17 +5,17 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Worker;
 import it.polimi.ingsw.view.View;
 
-public class RequestMoveCoordinates extends Request {
+public class RequestBuildCoordinates extends Request {
     protected String message;
     private Worker worker;
 
-    public RequestMoveCoordinates(Worker worker) {
-        this.worker = worker;;
+    public RequestBuildCoordinates(Worker worker) {
+        this.worker = worker;
         message = "Where do you want to go?";
     }
 
     @Override
     public void accept(View view) {
-        view.getPlayerMove(worker);
+        view.getPlayerBuild(worker);
     }
 }
