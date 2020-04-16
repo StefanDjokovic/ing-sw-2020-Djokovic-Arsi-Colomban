@@ -18,7 +18,7 @@ public class Move extends GodPower {
 
     public void power(int x, int y, Worker worker, Board board) throws NonExistingTileException, UnreachableTileException, OccupiedTileException {
         Tile destination = board.getTile(x, y); // We select the tile where the player wants to move to
-        Tile start = board.getTile(worker.getPosX(), worker.getPosY()); // Tile where the selected worker is standing before moving
+        Tile start = worker.getPosTile(); // Tile where the selected worker is standing before moving
         // IN GENERAL, the move can be completed only if the destination has no worker on it
         if (!destination.hasWorker()) {
             if(destination.getBuildingLevel() - start.getBuildingLevel() <=  1 && !destination.hasDome()) {// The worker can move only if the destination tile is not more than one level up the and if it doesn't have a dome

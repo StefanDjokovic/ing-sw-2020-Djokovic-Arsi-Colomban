@@ -11,7 +11,7 @@ import it.polimi.ingsw.model.board.Tile;
 
 import java.util.Scanner;
 
-/*public class DoubleMove extends Move {
+public class DoubleMove extends Move {
 
 
     public DoubleMove(GodLogic godLogic) {
@@ -26,4 +26,3 @@ import java.util.Scanner;
     }
 
 }
-*/

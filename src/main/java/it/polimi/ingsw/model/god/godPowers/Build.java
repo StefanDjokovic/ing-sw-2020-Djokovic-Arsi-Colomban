@@ -24,7 +24,7 @@ public class Build extends GodPower {
 
     public void power(int x, int y, Worker worker, Board board) throws NonExistingTileException, NotBuildableException, AlreadyHasDomeException, OccupiedTileException, OutOfReachException {  // Overloaded method, it takes the coordinates as arguments rather than from stdio
         Tile destination = board.getTile(x, y); // Tile the player wants build on
-        Tile start = board.getTile(worker.getPosX(), worker.getPosY()); // Tile where the selected worker is standing
+        Tile start = worker.getPosTile(); // Tile where the selected worker is standing
         if (abs(x - worker.getPosX()) <= 1 && abs(y - worker.getPosY()) <= 1) { // The worker can only build on adjacent tiles
             if (!destination.hasWorker()) {  // IN GENERAL, the build can only be completed if the destination has no worker on it
                 if (!destination.hasDome()) {    // The worker can only build on tiles that don't already have a dome on them
