@@ -5,12 +5,9 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.*;
-import it.polimi.ingsw.messages.request.RequestBuildCoordinates;
-import it.polimi.ingsw.messages.request.RequestMoveCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.NonExistingTileException;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Worker;
 
 
@@ -167,6 +164,7 @@ public class View extends Observable implements Observer {
         //updateObservers("WorkerSelection " + posX + " " + posY);
     }
 
+    /*
     public void getPlayerMove(Worker worker) { // TODO: give the player to option to only select valid tiles
         int x;
         int y;
@@ -186,6 +184,19 @@ public class View extends Observable implements Observer {
         System.out.print("Enter y coordinate: ");
         y = scanner.nextInt();
         Answer answer = new AnswerBuildCoordinates(x, y, worker);
+        updateObservers(answer);
+    }
+    */
+
+    // This (overloaded) method gets the player's input for the powerIndex-th move of the turn
+    public void getPlayerSelection(Worker worker, int powerIndex) { // TODO: give the player to option to only select valid tiles
+        int x;
+        int y;
+        System.out.print("Enter x coordinate: ");
+        x = scanner.nextInt();
+        System.out.print("Enter y coordinate: ");
+        y = scanner.nextInt();
+        Answer answer = new AnswerPowerCoordinates(x, y, worker, powerIndex);
         updateObservers(answer);
     }
 

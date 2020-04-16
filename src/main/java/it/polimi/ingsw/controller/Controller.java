@@ -83,8 +83,8 @@ public class Controller implements Observer {
         game.setWorker(x, y, initial);
     }
 
-    public void move(int x, int y, Worker worker) {
-        //worker.getOwner().getGodLogic().getPower(0);
+    public void executePower(int x, int y, Worker worker, int powerIndex) {
+        worker.getOwner().getGodLogic().getTurn().get(powerIndex);
     }
 
     @Override

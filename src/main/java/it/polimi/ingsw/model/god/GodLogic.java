@@ -2,12 +2,11 @@ package it.polimi.ingsw.model.god;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.messages.request.RequestMoveCoordinates;
+import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.god.godPowers.Build;
 import it.polimi.ingsw.model.god.godPowers.GetMovableWorker;
 import it.polimi.ingsw.model.god.godPowers.Move;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Worker;
 
 import java.util.ArrayList;
@@ -33,9 +32,11 @@ public class GodLogic extends Observable {
     // it is not a complete function, will fix soon
     public void executeTurn(ArrayList<Worker> workers, Game game) {
         Worker selectedWorker = selectionStrategy.power(workers);
-        Request request = new RequestMoveCoordinates(selectedWorker);
-        game.updateObservers(request);
-    }
+        for(int i = 0; i < turn.size(); i++ ){
+            Request request = new RequestPowerCoordinates(selectedWorker, i);
+            game.updateObservers(request);
+        }
+    }    
 
     public String getGodLogicName() {
         return godLogicName;
@@ -47,5 +48,9 @@ public class GodLogic extends Observable {
 
     public int getMoveDownMax() {
         return moveDownMax;
+    }
+
+    public ArrayList<GodPower> getTurn() {
+        return this.turn;
     }
 }
