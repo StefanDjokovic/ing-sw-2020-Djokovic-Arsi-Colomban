@@ -84,7 +84,7 @@ public class Controller implements Observer {
     }
 
     public void executePower(int x, int y, Worker worker, int powerIndex) {
-        worker.getOwner().getGodLogic().getTurn().get(powerIndex).power(x, y, worker, board);
+        //worker.getOwner().getGodLogic().getTurn().get(powerIndex).power(x, y, worker, board);
     }
 
     @Override
