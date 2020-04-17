@@ -18,19 +18,23 @@ public class Move extends GodPower {
     }
 
     @Override
-    public void power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
+    public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         try {
             Worker sourceWorker = board.getTile(posXFrom, posYFrom).getWorker();
             Tile destTile = board.getTile(posXTo, posYTo);
             sourceWorker.changePosition(destTile);
+            if (checkWinCondition(board.getTile(posXFrom, posYFrom), board.getTile(posXTo, posYTo)) == 2)
+                return 2;
             System.out.println("Should have moved... right?");
+            return 1;
         } catch (NonExistingTileException e) {
             System.out.println("You failed!");
         }
+        return 0;
     }
 
     @Override
     public OptionSelection getOptions(int lastWorkerUsed) {
-        return getGodLogic().getOptionsGodLogic(1, 99, false);
+        return getGodLogic().getOptionsGodLogic(1, 99, false, null);
     }
 }

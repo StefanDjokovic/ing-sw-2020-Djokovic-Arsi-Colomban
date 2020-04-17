@@ -87,10 +87,10 @@ public class Player {
         return null;
     }
 
-    public OptionSelection getOptionsPlayer(int upDiff, int downDiff, boolean canIntoOpp) {
+    public OptionSelection getOptionsPlayer(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
         OptionSelection opt = new OptionSelection();
         for (Worker w: workers) {
-            opt.fuseOptions(w.getOptionsWorker(upDiff, downDiff, canIntoOpp));
+            opt.fuseOptions(w.getOptionsWorker(upDiff, downDiff, canIntoOpp, limitations));
         }
         System.out.println("getOptionsPlayer:");
         System.out.println(opt);

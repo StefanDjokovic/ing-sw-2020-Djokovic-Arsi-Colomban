@@ -96,12 +96,25 @@ public class View extends Observable implements Observer {
     }
 
     // todo: Missing all the other Gods, only basic is implemented
-    public void getPlayerGod(char initial) {
+    public void getPlayerGod(char initial, ArrayList<String> options) {
         System.out.println("Select " + initial + "'s God: ");
-        String player1God = scanner.next();
+        for (String opt: options) {
+            System.out.print(opt + " ");
+        }
+        String godSelected = null;
+        while (godSelected == null) {
+            String playerGod = scanner.next();
+            for (String opt: options) {
+                if (opt.equals(playerGod)) {
+                    godSelected = playerGod;
+                    break;
+                }
+            }
+        }
 
         System.out.println("Currently only Basic is picked");
-        updateObservers(new AnswerPlayerGod("Basic", initial));
+        System.out.println("You picked " + godSelected);
+        updateObservers(new AnswerPlayerGod(godSelected, initial));
     }
 
     public void getWorkerPosition(int[][] workers, char initial) {

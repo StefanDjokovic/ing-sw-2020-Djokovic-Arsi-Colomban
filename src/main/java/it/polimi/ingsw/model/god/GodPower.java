@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.NotBuildableException;
+import it.polimi.ingsw.model.board.Tile;
 import it.polimi.ingsw.model.player.Worker;
 import it.polimi.ingsw.model.board.Board;
 
@@ -21,16 +22,21 @@ public abstract class GodPower {
 
         return null;
     }
-    public void power() { }
-    public void power(Worker worker) {}
-    public void power(Worker worker, int destX, int destY) { System.out.println("Will need to override it I guess");}
-    public void power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) { }
+
+    public abstract int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo);
 
     public OptionSelection getOptions(int lastWorkerUsed) {
-        return getGodLogic().getOptionsGodLogic(1, 99, false);
+        return getGodLogic().getOptionsGodLogic(1, 99, false, null);
     }
 
     public GodLogic getGodLogic() {
         return godLogic;
+    }
+
+    public int checkWinCondition(Tile from, Tile to) {
+        if (from.getBuildingLevel() == 2 && to.getBuildingLevel() == 3)
+            return 2;
+        else
+            return 0;
     }
 }

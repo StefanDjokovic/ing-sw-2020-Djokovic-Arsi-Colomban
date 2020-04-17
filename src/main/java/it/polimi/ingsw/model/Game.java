@@ -42,8 +42,13 @@ public class Game extends Observable {
         if (numberOfPlayers == 3)
             updateObservers(new RequestPlayerName("Third"));
 
+        ArrayList<String> opt = new ArrayList<>();
+        opt.add("Basic");
+        opt.add("Apollo");
+        opt.add("Artemis");
+
         for (Player player : players) {
-            updateObservers(new RequestPlayerGod(player.getInitial()));
+            updateObservers(new RequestPlayerGod(player.getInitial(), opt));
         }
 
         System.out.println("Time to place the Workers on the board!");
@@ -74,20 +79,21 @@ public class Game extends Observable {
     }
 
     public void gameReceiveOptions(int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        int answer = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);
-        if (answer == 1) {
+        int status = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);
+        if (status == 1) {
             currPlayer = (currPlayer + 1) % players.size();
             players.get(currPlayer).executeTurn(this);
         }
-        else if (answer == 0) {
+        else if (status == 0) {
             players.get(currPlayer).executeTurn(this);
         }
-        else if (answer == -1) {
+        else if (status == 2) {
             gameEnd();
         }
     }
 
     public void gameEnd() {
+        updateObservers(new RequestDisplayBoard(getBoard()));
         System.out.println("We have a winner! GG! Hope you enjoyed the game! :)");
     }
 
@@ -124,7 +130,7 @@ public class Game extends Observable {
     }
 
     public void setPlayerGod(String godName, char initial, View view) {
-        getPlayerFromInitial(initial).setGodLogic("Basic").addObserver(view);
+        getPlayerFromInitial(initial).setGodLogic(godName).addObserver(view);
     }
 
     public void setWorker(int x, int y, char initial) throws NonExistingTileException {

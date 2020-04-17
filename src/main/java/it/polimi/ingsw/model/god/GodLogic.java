@@ -6,8 +6,9 @@ import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.god.godPowers.Build;
-import it.polimi.ingsw.model.god.godPowers.GetMovableWorker;
+import it.polimi.ingsw.model.god.godPowers.DoubleMove;
 import it.polimi.ingsw.model.god.godPowers.Move;
+import it.polimi.ingsw.model.god.godPowers.Swap;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.board.Board;
 
@@ -32,6 +33,16 @@ public class GodLogic extends Observable {
             turn.add(new Move(this));
             turn.add(new Build(this));
         }
+        else if (godLogicName.equals("Apollo")) {
+            turn.add(new Swap(this));
+            turn.add(new Build(this));
+        }
+        else if (godLogicName.equals("Artemis")) {
+            GodPower db = new DoubleMove(this);
+            turn.add(db);
+            turn.add(db);
+            turn.add(new Build(this));
+        }
     }
 
     public void executeTurn(Game game) {
@@ -43,14 +54,20 @@ public class GodLogic extends Observable {
     }
 
     public int godLogicReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        lastWorkerUsed = getPlayer().getWorkerIndexFromCoordinates(posXFrom, posYFrom);
-        turn.get(currStep).power(board, posXFrom, posYFrom, posXTo, posYTo);
+        this.lastWorkerUsed = getPlayer().getWorkerIndexFromCoordinates(posXFrom, posYFrom);
+        int status = turn.get(currStep).power(board, posXFrom, posYFrom, posXTo, posYTo);
+        if (status == 2)
+            return 2;
         currStep++;
         if (currStep % turn.size() == 0) {
             currStep = 0;
             return 1;
         }
         return 0;
+    }
+
+    public void deleteLastWorkerUsed() {
+        lastWorkerUsed = -1;
     }
 
     public int lastWorkerUsedPosX(int lastWorkerUsed) {
@@ -60,8 +77,8 @@ public class GodLogic extends Observable {
         return getPlayer().getWorkers().get(lastWorkerUsed).getPosY();
     }
 
-    public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp) {
-        return getPlayer().getOptionsPlayer(upDiff, downDiff, canIntoOpp);
+    public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
+        return getPlayer().getOptionsPlayer(upDiff, downDiff, canIntoOpp, limitations);
     }
 
     public Player getPlayer() { return this.player; }

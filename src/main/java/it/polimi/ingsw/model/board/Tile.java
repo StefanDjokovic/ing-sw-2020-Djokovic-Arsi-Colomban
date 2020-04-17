@@ -284,7 +284,7 @@ public class Tile {
     upDiff is how many level of difference it can select upwards, downDiff is downwards, canIntoOpp if it's a special
     power for which it can select opponent cells
      */
-    public OptionSelection getOptions(int upDiff, int downDiff, boolean canIntoOpp) {
+    public OptionSelection getOptions(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
         OptionSelection opt = new OptionSelection();
 
         ArrayList<Tile> tiles = this.getNeighborsOptimized();
@@ -298,8 +298,24 @@ public class Tile {
         for (Tile t: tiles) {
             if (!t.hasWorker() || canIntoOpp) {     // if the tile does not have a worker or an opponent cell can be selected
                 if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
-                    cellOpt.add(t.getX());
-                    cellOpt.add(t.getY());
+                    if (limitations == null) {
+                        cellOpt.add(t.getX());
+                        cellOpt.add(t.getY());
+                    }
+                    else {
+                        boolean appeared = false;
+                        for (int i = 0; i < limitations.size(); i += 2) {
+                            if (limitations.get(i) == t.getX() && limitations.get(i + 1) == t.getY()) {
+                                appeared = true;
+                                break;
+                            }
+                        }
+                        if (!appeared) {
+                            cellOpt.add(t.getX());
+                            cellOpt.add(t.getY());
+                        }
+                    }
+
                 }
             }
         }
