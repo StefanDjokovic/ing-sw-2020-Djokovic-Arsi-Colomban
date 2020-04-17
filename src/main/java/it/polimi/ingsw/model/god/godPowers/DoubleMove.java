@@ -18,11 +18,11 @@ public class DoubleMove extends Move {
         super(godLogic);
     }
 
-    public void power(int x1, int x2, int y1, int y2, Worker worker, Board board) throws UnreachableTileException, OccupiedTileException, NonExistingTileException { // Overload of Move's power method
-        super.power(x1, y1, worker, board);
-        if( !(x2 == x1 && y2 == y1) ) {    // The second movement has to be on a different tile than the first one
-            super.power(x2, y2, worker, board);
-        }
-    }
+//    public void power(int x1, int x2, int y1, int y2, Worker worker, Board board) throws UnreachableTileException, OccupiedTileException, NonExistingTileException { // Overload of Move's power method
+//        super.power(x1, y1, worker, board);
+//        if( !(x2 == x1 && y2 == y1) ) {    // The second movement has to be on a different tile than the first one
+//            super.power(x2, y2, worker, board);
+//        }
+//    }
 
 }

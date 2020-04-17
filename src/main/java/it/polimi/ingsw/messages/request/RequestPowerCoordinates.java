@@ -1,21 +1,22 @@
 package it.polimi.ingsw.messages.request;
 
+import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.model.player.Worker;
 import it.polimi.ingsw.view.View;
 
 public class RequestPowerCoordinates extends Request {
-    private Worker worker;
-    private int powerIndex;
+    OptionSelection opt;
 
-    public RequestPowerCoordinates(Worker worker, int i) {
-        this.worker = worker;;
-        this.powerIndex = i;
+    public RequestPowerCoordinates(OptionSelection opt) {
+        this.opt = opt;
         message = "Where do you want to go?";
     }
 
     @Override
     public void accept(View view) {
-        view.getPlayerSelection(worker, powerIndex);
+        if (opt.getComb().size() == 2)
+            view.getWorkerSelection(opt);
+        else
+            view.getWorkerSelectionOneOption(opt);
     }
 }

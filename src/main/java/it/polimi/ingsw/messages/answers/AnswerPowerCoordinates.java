@@ -6,23 +6,23 @@ import it.polimi.ingsw.model.player.Worker;
 
 public class AnswerPowerCoordinates extends Answer {
 
-    private int powerIndex;
-    private Worker worker;
-    private int x;
-    private int y;
+    private int posXFrom;
+    private int posYFrom;
+    private int posXTo;
+    private int posYTo;
 
-    public AnswerPowerCoordinates(int x, int y, Worker worker, int powerIndex) {
+    public AnswerPowerCoordinates(int posXFrom, int posYFrom, int posXTo, int posYTo) {
         message = "Answer move coordinates";
-        this.worker = worker;
-        this.x = x;
-        this.y = y;
-        this.powerIndex = powerIndex;
+        this.posXFrom = posXFrom;
+        this.posYFrom = posYFrom;
+        this.posXTo = posXTo;
+        this.posYTo = posYTo;
     }
 
 
     @Override
     public void act(Controller controller) {
-        controller.executePower(x, y, worker, powerIndex);
+        controller.executePower(posXFrom, posYFrom, posXTo, posYTo);
     }
 
 }

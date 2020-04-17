@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 
+import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.model.board.Tile;
 
 
@@ -31,6 +32,16 @@ public class Worker {
 
     public int getPosX() { return posTile.getX(); }
     public int getPosY() { return posTile.getY(); }
+
+    public OptionSelection getOptionsWorker(int upDiff, int downDiff, boolean canIntoOpp) {
+        return posTile.getOptions(upDiff, downDiff, canIntoOpp);
+    }
+
+    public void changePosition(Tile dest) {
+        this.posTile.deleteWorkerAndOwner();
+        dest.setWorker(this);
+        this.posTile = dest;
+    }
 
 
     public Tile getPosTile() { return this.posTile; }

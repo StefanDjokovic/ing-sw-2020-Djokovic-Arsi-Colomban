@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.Tile;
 import it.polimi.ingsw.model.god.GodLogic;
 import it.polimi.ingsw.model.god.GodPower;
-import it.polimi.ingsw.model.god.godPowers.Move;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.Game;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Player {
     public char getInitial() { return inital; }
     public GodLogic setGodLogic(String godLogic) {
 
-        this.godLogic = new GodLogic(godLogic);
+        this.godLogic = new GodLogic(godLogic, this);
         return this.godLogic;
 
     }
@@ -61,11 +62,42 @@ public class Player {
 
     }
 
-    public void setInital(char inital) { this.inital = inital; }
+    public void setInitial(char initial) { this.inital = initial; }
 
     public void executeTurn(Game game) {
-       godLogic.executeTurn(workers, game);
+       godLogic.executeTurn(game);
     }
+
+    public int playerReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        return getGodLogic().godLogicReceiveOptions(board, posXFrom, posYFrom, posXTo, posYTo);
+    }
+
+    public int getWorkerIndexFromCoordinates(int posX, int posY) {
+        for (int i = 0; i < workers.size(); i++)
+            if (workers.get(i).getPosX() == posX && workers.get(i).getPosY() == posY)
+                return i;
+        return -1;
+    }
+
+    public Worker getWorkerFromCoordinates(int posX, int posY) {
+        for (Worker w: workers) {
+            if (w.getPosX() == posX && w.getPosY() == posY)
+                return w;
+        }
+        return null;
+    }
+
+    public OptionSelection getOptionsPlayer(int upDiff, int downDiff, boolean canIntoOpp) {
+        OptionSelection opt = new OptionSelection();
+        for (Worker w: workers) {
+            opt.fuseOptions(w.getOptionsWorker(upDiff, downDiff, canIntoOpp));
+        }
+        System.out.println("getOptionsPlayer:");
+        System.out.println(opt);
+
+        return opt;
+    }
+
 
     @Override
     public String toString() {

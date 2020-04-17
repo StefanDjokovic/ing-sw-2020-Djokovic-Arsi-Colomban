@@ -63,16 +63,34 @@ public class Game extends Observable {
         System.out.println("Setup completed. Let's play!");
     }
 
+    int currPlayer = 0;
     public void gameStart() {
 
         System.out.println("Note: only 4 turns are applied, this is still in testing");
 
-        turnLogic();
-
         printWorkerOptionPlayers();
 
+        players.get(currPlayer).executeTurn(this);
+    }
+
+    public void gameReceiveOptions(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        int answer = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);
+        if (answer == 1) {
+            currPlayer = (currPlayer + 1) % players.size();
+            players.get(currPlayer).executeTurn(this);
+        }
+        else if (answer == 0) {
+            players.get(currPlayer).executeTurn(this);
+        }
+        else if (answer == -1) {
+            gameEnd();
+        }
+    }
+
+    public void gameEnd() {
         System.out.println("We have a winner! GG! Hope you enjoyed the game! :)");
     }
+
 
     public void turnLogic() {
         for (int i = 0; i < 2; i++) {   // TESTING PURPOSES: just 2 turns
@@ -80,6 +98,7 @@ public class Game extends Observable {
                 p.executeTurn(this);
         }
     }
+
 
     public void initPlayer(String playerName) {
         Player newPlayer = new Player(playerName, '*');
@@ -90,14 +109,14 @@ public class Game extends Observable {
             for (Player player : players) {
                 if (player.getInitial() == playerName.charAt(0)) {
                     if (player.getInitial() == 'A')
-                        newPlayer.setInital('B');
+                        newPlayer.setInitial('B');
                     else
-                        newPlayer.setInital('A');
+                        newPlayer.setInitial('A');
                 }
             }
         }
         if (newPlayer.getInitial() == '*')
-            newPlayer.setInital(playerName.charAt(0));
+            newPlayer.setInitial(playerName.charAt(0));
         players.add(newPlayer);
 
         printPlayersDescription();
@@ -108,12 +127,8 @@ public class Game extends Observable {
         getPlayerFromInitial(initial).setGodLogic("Basic").addObserver(view);
     }
 
-    public void setWorker(int x, int y, char initial) {
-        try {
-            getPlayerFromInitial(initial).addWorker(getBoard().getTile(x, y));
-        } catch (NonExistingTileException e) {
-            System.out.println("Oof getTile got it wrong");
-        }
+    public void setWorker(int x, int y, char initial) throws NonExistingTileException {
+        getPlayerFromInitial(initial).addWorker(getBoard().getTile(x, y));
     }
 
     public Player getPlayerFromInitial(char initial) {

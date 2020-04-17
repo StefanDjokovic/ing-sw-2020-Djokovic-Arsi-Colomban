@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Worker;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -165,7 +165,7 @@ public class Tile {
             buildingLevel++;
             return this;
         } else if (buildingLevel == 3 && !this.hasDome()){
-            //buildingLevel++;
+            buildingLevel++;
             dome = true;
             return this;
         } else {
@@ -182,29 +182,27 @@ public class Tile {
 
         try {
             if (y > 0) {
-                if (x > 0){
-                    retList.add(currentBoard.getTile( y-1, x-1));
+                if (x > 0) {
+                    retList.add(currentBoard.getTile(x - 1, y - 1));
                 }
-                retList.add(currentBoard.getTile( y-1, x));
+                retList.add(currentBoard.getTile(x, y - 1));
                 if (x < 4) {
-                    retList.add(currentBoard.getTile( y-1, x+1));
+                    retList.add(currentBoard.getTile(x + 1, y - 1));
                 }
             }
             if (x < 4) {
-                retList.add(currentBoard.getTile( y, x+1));
+                retList.add(currentBoard.getTile(x + 1, y));
+                if (y < 4)
+                    retList.add(currentBoard.getTile(x + 1, y + 1));
             }
             if (y < 4) {
-                if (x < 4) {
-                    retList.add(currentBoard.getTile( y+1, x+1));
-                }
-                retList.add(currentBoard.getTile( y+1, x));
-                if (x > 0) {
-                    retList.add(currentBoard.getTile( y + 1, x-1));
-                }
+                retList.add(currentBoard.getTile(x, y + 1));
+                if (x > 0)
+                    retList.add(currentBoard.getTile(x - 1, y + 1));
             }
-            if (x > 0){
-                retList.add(currentBoard.getTile( y , x-1 ));
-            }
+            if (x > 0)
+                retList.add(currentBoard.getTile(x - 1, y));
+
         }
         catch (NonExistingTileException e) {
             System.out.println("Wait, what?! This should have not happened");
@@ -261,7 +259,7 @@ public class Tile {
         return from.getBuildingLevel() + moveUpMax >= dest.getBuildingLevel() && from.getBuildingLevel() - moveDownMax <= dest.getBuildingLevel();
     }
 
-    // todo: TEST THIS, THERE IS PROBABLY A MISTAKE SOMEWHERE, GetMovableWorker does not work properly I think
+    // todo:
     /**
      * Returns a list of tiles where a worker can move to, starting from this tile.
      * @param moveUpMax Limit of building level for "up" movement
@@ -279,6 +277,37 @@ public class Tile {
         result.removeIf(temp -> !(isMovableTo(this, temp, moveUpMax, moveDownMax)));
 
         return result;
+    }
+
+    /*
+    The worker is at this tile position.
+    upDiff is how many level of difference it can select upwards, downDiff is downwards, canIntoOpp if it's a special
+    power for which it can select opponent cells
+     */
+    public OptionSelection getOptions(int upDiff, int downDiff, boolean canIntoOpp) {
+        OptionSelection opt = new OptionSelection();
+
+        ArrayList<Tile> tiles = this.getNeighborsOptimized();
+        System.out.println("Neigbours:");
+        System.out.println(tiles);
+
+        ArrayList<Integer> cellOpt = new ArrayList<>();
+        cellOpt.add(this.getX());
+        cellOpt.add(this.getY());
+
+        for (Tile t: tiles) {
+            if (!t.hasWorker() || canIntoOpp) {     // if the tile does not have a worker or an opponent cell can be selected
+                if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
+                    cellOpt.add(t.getX());
+                    cellOpt.add(t.getY());
+                }
+            }
+        }
+
+        opt.setOptions(cellOpt);
+        System.out.println("Het opt tiles");
+        System.out.println(opt);
+        return opt;
     }
 
     @Override

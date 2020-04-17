@@ -3,7 +3,6 @@ package it.polimi.ingsw.messages.request;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.view.View;
 
-import java.util.ArrayList;
 
 public class RequestWorkerPosition extends Request {
 
