@@ -53,6 +53,7 @@ public class Game extends Observable {
         opt.add("Demeter");
         opt.add("Hephaestus");
         opt.add("Minotaur");
+        opt.add("Prometheus");
 
         for (Player player : players) {
             updateObservers(new RequestPlayerGod(player.getInitial(), opt));

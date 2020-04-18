@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 
 
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -215,6 +216,7 @@ public class View extends Observable implements Observer {
         System.out.println("Displaying options: ");
         System.out.println(opt);
         if (canPass) {
+            displayPossibleSelection(game.getBoard(), opt);
             if (askIfPassed()) {
                 Answer answer = new AnswerPowerCoordinates();
                 System.out.println("Sending stuff");
@@ -286,6 +288,21 @@ public class View extends Observable implements Observer {
 
         for (int i = 2; i < opt.size(); i += 2) {
             selectable[opt.get(i)][opt.get(i + 1)] = true;
+        }
+
+        printSelectableBoard(board, selectable);
+
+    }
+
+    public void displayPossibleSelection(Board board, OptionSelection opt) {
+
+        boolean[][] selectable = new boolean[5][5];
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                selectable[i][j] = false;
+
+        for (int i = 0; i < opt.getComb().size(); i++) {
+            selectable[opt.getComb().get(i).get(0)][opt.getComb().get(i).get(1)] = true;
         }
 
         printSelectableBoard(board, selectable);

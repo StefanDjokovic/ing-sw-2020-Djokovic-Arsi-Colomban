@@ -14,6 +14,9 @@ import it.polimi.ingsw.model.player.Worker;
 
 public class Move extends GodPower {
 
+    int moveUp = 1;
+    int moveDown = 99;
+
     public Move(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }
@@ -36,6 +39,6 @@ public class Move extends GodPower {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        return getGodLogic().getOptionsGodLogic(1, 99, false, null, getCanPass());
+        return getGodLogic().getOptionsGodLogic(moveUp, moveDown, false, null, getCanPass());
     }
 }

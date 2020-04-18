@@ -67,6 +67,11 @@ public class GodLogic extends Observable {
             turn.add(new Push(this, false));
             turn.add(new Build(this, false));
         }
+        else if (godLogicName.equals("Prometheus")) {
+            turn.add(new Build(this, true));
+            turn.add(new MoveLimited(this, false));
+            turn.add(new Build(this, false));
+        }
 
     }
 
