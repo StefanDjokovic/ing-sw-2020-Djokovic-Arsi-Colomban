@@ -6,6 +6,7 @@ import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Logger;
+import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.god.godPowers.*;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.board.Board;
@@ -17,18 +18,18 @@ public class GodLogic extends Observable {
     String godLogicName;
     Player player;
     ArrayList<GodPower> turn = new ArrayList<>();
-    int moveUpMax = 1;
-    int moveDownMax = 99;
     int currStep = 0;
     OptionSelection optionSelection;
+    Board board;
     boolean canPass = false;
     Logger logger;
 
 
-    public GodLogic(String godLogic, Player p, Logger logger) {
+    public GodLogic(String godLogic, Player p, Logger logger, Board board) {
         godLogicName = godLogic;
         this.player = p;
         this.logger = logger;
+        this.board = board;
         if (godLogicName.equals("Basic")) {
             turn.add(new Move(this, false));
             turn.add(new Build(this, false));
@@ -56,6 +57,11 @@ public class GodLogic extends Observable {
             turn.add(new Move(this, false));
             turn.add(new Build(this, false));
             turn.add(new BuildWithLimitation(this, true));
+        }
+        else if (godLogicName.equals("Hephaestus")) {
+            turn.add(new Move(this, false));
+            turn.add(new Build(this, false));
+            turn.add(new BuildOverOneTile(this, true));
         }
 
     }
@@ -106,15 +112,20 @@ public class GodLogic extends Observable {
         return godLogicName;
     }
 
-    public int getMoveUpMax() {
-        return moveUpMax;
-    }
-
-    public int getMoveDownMax() {
-        return moveDownMax;
+    public void setPass(boolean canPass) {
+        this.canPass = canPass;
     }
 
     public ArrayList<GodPower> getTurn() {
         return this.turn;
+    }
+
+    public int tileBuildingLevel(int posX, int posY) {
+        try {
+            return board.getTile(posX, posY).getBuildingLevel();
+        } catch (NonExistingTileException e) {
+            System.out.println("You dummy dum");
+        }
+        return -99;
     }
 }

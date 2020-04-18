@@ -29,9 +29,9 @@ public class Player {
 
     public String getName() { return name; }
     public char getInitial() { return inital; }
-    public GodLogic setGodLogic(String godLogic, Logger logger) {
+    public GodLogic setGodLogic(String godLogic, Logger logger, Board board) {
 
-        this.godLogic = new GodLogic(godLogic, this, logger);
+        this.godLogic = new GodLogic(godLogic, this, logger, board);
         return this.godLogic;
 
     }

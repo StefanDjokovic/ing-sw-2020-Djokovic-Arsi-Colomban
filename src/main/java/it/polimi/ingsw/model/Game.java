@@ -51,6 +51,7 @@ public class Game extends Observable {
         opt.add("Atlas");
         opt.add("Pan");
         opt.add("Demeter");
+        opt.add("Hephaestus");
 
         for (Player player : players) {
             updateObservers(new RequestPlayerGod(player.getInitial(), opt));
@@ -150,7 +151,7 @@ public class Game extends Observable {
     }
 
     public void setPlayerGod(String godName, char initial, View view) {
-        getPlayerFromInitial(initial).setGodLogic(godName, logger).addObserver(view);
+        getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard()).addObserver(view);
     }
 
     public void setWorker(int x, int y, char initial) throws NonExistingTileException {
