@@ -52,6 +52,11 @@ public class GodLogic extends Observable {
             turn.add(new MoveWithSpecialWinCondition(this, false, 2, 0));
             turn.add(new Build(this, false));
         }
+        else if (godLogicName.equals("Demeter")) {
+            turn.add(new Move(this, false));
+            turn.add(new Build(this, false));
+            turn.add(new BuildWithLimitation(this, true));
+        }
 
     }
 

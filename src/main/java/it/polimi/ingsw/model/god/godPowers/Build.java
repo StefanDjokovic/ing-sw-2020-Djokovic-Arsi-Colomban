@@ -18,9 +18,6 @@ public class Build extends GodPower {
         super(godLogic, canPass);
     }
 
-    public void power() {
-        System.out.println("test message: Build, Build, Build your boat");
-    }
 
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         System.out.println("IM BUILDING");
@@ -32,6 +29,7 @@ public class Build extends GodPower {
         }
         return 0;
     }
+
 
     @Override
     public OptionSelection getOptions(Logger logger) {
