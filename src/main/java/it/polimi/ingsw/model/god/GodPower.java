@@ -44,4 +44,5 @@ public abstract class GodPower {
     public boolean getCanPass() {
         return canPass;
     }
+
 }

@@ -36,6 +36,7 @@ public class Controller implements Observer {
         game.setPlayerGod(godName, initial, view);
     }
 
+
     public void setWorker(int x, int y, char initial) {
         try {
             game.setWorker(x, y, initial);

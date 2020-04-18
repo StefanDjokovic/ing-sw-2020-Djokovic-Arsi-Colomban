@@ -4,6 +4,7 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.messages.request.*;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.Tile;
+import it.polimi.ingsw.model.god.GodLogic;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Worker;
@@ -54,10 +55,17 @@ public class Game extends Observable {
         opt.add("Hephaestus");
         opt.add("Minotaur");
         opt.add("Prometheus");
+        opt.add("Athena");
 
         for (Player player : players) {
             updateObservers(new RequestPlayerGod(player.getInitial(), opt));
         }
+
+        for (Player player : players) {
+            setOtherGodLogic(player);
+            System.out.println("----------" + player.getGodLogic().getOtherGodLogic().size());
+        }
+
 
         System.out.println("Time to place the Workers on the board!");
         for (Player player : players) {
@@ -79,11 +87,15 @@ public class Game extends Observable {
     int currPlayer = 0;
     public void gameStart() {
 
-        System.out.println("Note: only 4 turns are applied, this is still in testing");
-
         printWorkerOptionPlayers();
 
-        players.get(currPlayer).executeTurn(this);
+        if (players.size() == 1) {
+            gameEnd();
+        }
+        else {
+            players.get(currPlayer).executeTurn(this);
+
+        }
     }
 
     // Skip option
@@ -121,14 +133,6 @@ public class Game extends Observable {
     }
 
 
-    public void turnLogic() {
-        for (int i = 0; i < 2; i++) {   // TESTING PURPOSES: just 2 turns
-            for (Player p : players)
-                p.executeTurn(this);
-        }
-    }
-
-
     public void initPlayer(String playerName) {
         Player newPlayer = new Player(playerName, '*');
         if (players.size() == numberOfPlayers)
@@ -154,6 +158,26 @@ public class Game extends Observable {
 
     public void setPlayerGod(String godName, char initial, View view) {
         getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard()).addObserver(view);
+    }
+
+    public void setOtherGodLogic(Player player) {
+        ArrayList<GodLogic> otherGodLogics = new ArrayList<>();
+
+        for (Player q: players) {
+            if (player.getInitial() != q.getInitial())
+                otherGodLogics.add(q.getGodLogic());
+        }
+
+        player.getGodLogic().setOtherGodLogic(otherGodLogics);
+    }
+
+    public void deletePlayer(Player p) {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i) == p) {
+                players.remove(p);
+            }
+        }
+        currPlayer = currPlayer % players.size();
     }
 
     public void setWorker(int x, int y, char initial) throws NonExistingTileException {
