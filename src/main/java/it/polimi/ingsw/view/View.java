@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 
 
-import javax.swing.text.html.Option;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -183,9 +182,18 @@ public class View extends Observable implements Observer {
         return scanner.nextInt();
     }
 
-    public boolean askIfPassed() {
+    public boolean askIfPass() {
         System.out.println("Please, type 'pass' if you want to skip to the next move, otherwise type 'go'");
-        return scanner.next().equals("pass");
+        String selected = null;
+        String opt;
+        while (selected == null) {
+            opt = scanner.next();
+            if (opt.equals("pass"))
+                selected = "pass";
+            else if (opt.equals("go"))
+                selected = "go";
+        }
+        return selected.equals("pass");
     }
 
     public void getWorkerSelectionOneOption(OptionSelection opt, boolean canPass) {
@@ -194,7 +202,7 @@ public class View extends Observable implements Observer {
         System.out.println("CAN PASS IN VIEW IS " + canPass);
         if (canPass) {
             displayPossibleSelection(game.getBoard(), opt.getComb().get(0));
-            if (askIfPassed()) {
+            if (askIfPass()) {
                 Answer answer = new AnswerPowerCoordinates();
                 System.out.println("Sending stuff");
                 updateObservers(answer);
@@ -217,7 +225,7 @@ public class View extends Observable implements Observer {
         System.out.println(opt);
         if (canPass) {
             displayPossibleSelection(game.getBoard(), opt);
-            if (askIfPassed()) {
+            if (askIfPass()) {
                 Answer answer = new AnswerPowerCoordinates();
                 System.out.println("Sending stuff");
                 updateObservers(answer);
