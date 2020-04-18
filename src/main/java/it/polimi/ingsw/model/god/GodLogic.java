@@ -63,6 +63,10 @@ public class GodLogic extends Observable {
             turn.add(new Build(this, false));
             turn.add(new BuildOverOneTile(this, true));
         }
+        else if (godLogicName.equals("Minotaur")) {
+            turn.add(new Push(this, false));
+            turn.add(new Build(this, false));
+        }
 
     }
 
@@ -127,5 +131,35 @@ public class GodLogic extends Observable {
             System.out.println("You dummy dum");
         }
         return -99;
+    }
+
+    public boolean hasOpposingWorker(int posX, int posY) {
+        try {
+            if (board.getTile(posX, posY).hasWorker()) {
+                if (board.getTile(posX, posY).getWorker().getOwner().getInitial() != getPlayer().getInitial())
+                    return true;
+                else
+                    return false;
+            }
+        } catch (NonExistingTileException e) {
+            System.out.println("no no no no!");
+        }
+        return false;
+    }
+
+    public boolean isBehindFree(int XFrom, int YFrom, int XTo, int YTo) {
+        int dx = XTo - XFrom;
+        int dy = YTo - YFrom;
+        if (XTo + dx >= 0 && XTo + dx <= 4 && YTo + dy >= 0 && YTo + dy <= 4) {
+            try {
+                if (board.getTile(XTo + dx, YTo + dy).isWalkable())
+                    return true;
+            } catch (NonExistingTileException e) {
+                e.printStackTrace();
+                System.out.println("Er det mulig?!?");
+            }
+        }
+        return false;
+
     }
 }

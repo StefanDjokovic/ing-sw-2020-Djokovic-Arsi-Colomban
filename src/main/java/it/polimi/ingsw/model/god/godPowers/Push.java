@@ -1,15 +1,17 @@
 package it.polimi.ingsw.model.god.godPowers;
 
 import it.polimi.ingsw.messages.OptionSelection;
+import it.polimi.ingsw.model.Log;
 import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.god.GodLogic;
 import it.polimi.ingsw.model.player.Worker;
 
-public class Swap extends Move {
+import java.util.ArrayList;
 
-    public Swap(GodLogic godLogic, boolean canPass) {
+public class Push extends Move {
+    public Push(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }
 
@@ -19,11 +21,11 @@ public class Swap extends Move {
             if (board.getTile(posXTo, posYTo).hasWorker()) {
                 Worker sourceWorker = board.getTile(posXFrom, posYFrom).getWorker();
                 Worker destWorker = board.getTile(posXTo, posYTo).getWorker();
-                sourceWorker.changePosition(destWorker.getPosTile());
-                destWorker.changePosition(board.getTile(posXFrom, posYFrom));
+                destWorker.changePosition(board.getTile(posXTo + posXTo - posXFrom, posYTo + posYTo - posYFrom));
+                sourceWorker.changePosition(board.getTile(posXTo, posYTo));
                 if (checkWinCondition(board.getTile(posXFrom, posYFrom), board.getTile(posXTo, posYTo)) == 2)
                     return 2;
-                System.out.println("You should have swapped... right?");
+                System.out.println("You could have swapped... right?");
                 return 1;
             }
             else
@@ -36,6 +38,23 @@ public class Swap extends Move {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        return getGodLogic().getOptionsGodLogic(1, 99, true, null, getCanPass());
+
+        OptionSelection opt = getGodLogic().getOptionsGodLogic(1, 99, true, null, getCanPass());
+
+        for (ArrayList<Integer> comb: opt.getComb()) {
+            for (int i = 2; i < comb.size(); i += 2) {
+                if (getGodLogic().hasOpposingWorker(comb.get(i), comb.get(i + 1))) {
+                    if (!(getGodLogic().isBehindFree(comb.get(0), comb.get(1), comb.get(i), comb.get(i + 1)))) {
+                        comb.remove(i + 1);
+                        comb.remove(i);
+                        i -= 2;
+                    }
+                }
+            }
+        }
+
+        return opt;
     }
+
+
 }
