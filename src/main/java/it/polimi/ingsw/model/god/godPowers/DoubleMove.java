@@ -3,15 +3,13 @@ package it.polimi.ingsw.model.god.godPowers;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.god.GodLogic;
-import it.polimi.ingsw.model.player.Worker;
 
 import java.util.ArrayList;
 
 public class DoubleMove extends Move {
 
-    ArrayList<Integer> limitations;
+    private ArrayList<Integer> limitations;
 
     public DoubleMove(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
@@ -33,7 +31,6 @@ public class DoubleMove extends Move {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        System.out.println("IM SELECTING FOR DOUBLEMOVING");
         OptionSelection opt;
         if (logger.getLastLog().getPlayerInit() == getGodLogic().getPlayer().getInitial()) {
             opt =  getGodLogic().getOptionsGodLogic(1, 99, false, limitations, true);

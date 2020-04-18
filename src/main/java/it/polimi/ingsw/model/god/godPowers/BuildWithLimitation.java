@@ -16,7 +16,6 @@ public class BuildWithLimitation extends Build {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        System.out.println("IM SELECTING FOR BUILDING");
         ArrayList<Integer> limit = new ArrayList<>();
         limit.add(logger.getLastLog().getAction(2));
         limit.add(logger.getLastLog().getAction(3));

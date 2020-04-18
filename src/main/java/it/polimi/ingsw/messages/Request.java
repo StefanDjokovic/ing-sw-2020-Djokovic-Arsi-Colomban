@@ -14,7 +14,6 @@ public abstract class Request {
         System.out.println(message);
     }
 
-    public void accept() {}
     public abstract void accept(View view);
 
 }

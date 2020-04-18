@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.god.godPowers;
 
 import it.polimi.ingsw.messages.OptionSelection;
-import it.polimi.ingsw.model.Log;
 import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.NonExistingTileException;
@@ -25,7 +24,6 @@ public class Push extends Move {
                 sourceWorker.changePosition(board.getTile(posXTo, posYTo));
                 if (checkWinCondition(board.getTile(posXFrom, posYFrom), board.getTile(posXTo, posYTo)) == 2)
                     return 2;
-                System.out.println("You could have swapped... right?");
                 return 1;
             }
             else

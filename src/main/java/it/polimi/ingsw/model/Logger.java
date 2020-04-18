@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 
 public class Logger {
-    ArrayList<Log> logHistory;
+    private ArrayList<Log> logHistory;
 
     public Logger() {
         logHistory = new ArrayList<>();
@@ -23,15 +23,11 @@ public class Logger {
             return new Log();
     }
 
-    public void addNewLog() {
-        logHistory.add(new Log());
-    }
-
-    public void addNewLog(int XFrom, int YFrom, int XTo, int YTo, char playerInit) {
+    void addNewLog(int XFrom, int YFrom, int XTo, int YTo, char playerInit) {
         logHistory.add(new Log(XFrom, YFrom, XTo, YTo, playerInit));
     }
 
-    public void addNewLog(char playerInit) {
+    void addNewLog(char playerInit) {
         logHistory.add(new Log(playerInit));
     }
 
@@ -41,7 +37,7 @@ public class Logger {
             StringBuilder toReturn = new StringBuilder();
             toReturn.append("Logged:\n");
             for (Log l: logHistory) {
-                toReturn.append(l.toString() + "\n");
+                toReturn.append(l.toString()).append("\n");
             }
 
             return String.valueOf(toReturn);

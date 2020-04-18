@@ -288,7 +288,7 @@ public class Tile {
         OptionSelection opt = new OptionSelection();
 
         ArrayList<Tile> tiles = this.getNeighborsOptimized();
-        System.out.println("Neigbours:");
+        System.out.println("Neighbours:");
         System.out.println(tiles);
 
         ArrayList<Integer> cellOpt = new ArrayList<>();

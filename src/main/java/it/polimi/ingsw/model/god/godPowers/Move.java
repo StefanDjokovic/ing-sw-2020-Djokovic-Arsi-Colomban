@@ -7,9 +7,6 @@ import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.Tile;
 import it.polimi.ingsw.model.god.GodLogic;
 import it.polimi.ingsw.model.god.GodPower;
-import it.polimi.ingsw.model.god.OccupiedTileException;
-import it.polimi.ingsw.model.god.UnreachableTileException;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Worker;
 
 public class Move extends GodPower {
@@ -29,7 +26,6 @@ public class Move extends GodPower {
             sourceWorker.changePosition(destTile);
             if (checkWinCondition(board.getTile(posXFrom, posYFrom), board.getTile(posXTo, posYTo)) == 2)
                 return 2;
-            System.out.println("Should have moved... right?");
             return 1;
         } catch (NonExistingTileException e) {
             System.out.println("You failed!");

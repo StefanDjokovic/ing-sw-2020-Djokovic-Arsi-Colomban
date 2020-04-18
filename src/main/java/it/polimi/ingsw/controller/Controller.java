@@ -22,8 +22,6 @@ public class Controller implements Observer {
     @Override
     public void update(Answer answer) {
 
-        System.out.print("Controller Update received: ");
-        answer.printMessage();
         answer.act(this);
 
     }
@@ -46,12 +44,12 @@ public class Controller implements Observer {
     }
 
     public void executePower(int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        System.out.println("Controller has received: " + posXFrom + " " + posYFrom + " " + posXTo + " " + posYTo);
+        // System.out.println("Controller has received: " + posXFrom + " " + posYFrom + " " + posXTo + " " + posYTo);
         game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
     }
 
     public void executePower() {
-        System.out.println("Controller has received: Pass" );
+        // System.out.println("Controller has received: Pass");
         game.gameReceiveOptions();
     }
 

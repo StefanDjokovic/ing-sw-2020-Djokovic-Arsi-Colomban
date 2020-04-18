@@ -14,9 +14,7 @@ public class App {
 
 
         Game game = new Game();
-        // todo: delete game from View, make a message schema to send board details to view
-        //      without accessing the model
-        View view = new View(game);
+        View view = new View();
         Controller controller = new Controller(game, view);
 
         // Set controller as Observer of view, set view as Observer of game
@@ -24,7 +22,7 @@ public class App {
         game.addObserver(view);
 
         // Simple printing board method, to delete (?)
-        view.displayBoard(game.getBoard());
+        view.printSelectableBoard(null);
 
         // Initializing the game components and states
         game.init();

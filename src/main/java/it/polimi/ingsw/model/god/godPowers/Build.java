@@ -20,7 +20,6 @@ public class Build extends GodPower {
 
 
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        System.out.println("IM BUILDING");
         try {
             board.getTile(posXTo, posYTo).buildUp();
             System.out.println("Should have built... right?");
@@ -33,7 +32,6 @@ public class Build extends GodPower {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        System.out.println("IM SELECTING FOR BUILDING");
         OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 99, false, null, getCanPass());
         if (logger.getLastLog().getPlayerInit() == getGodLogic().getPlayer().getInitial()) {
             Log log;

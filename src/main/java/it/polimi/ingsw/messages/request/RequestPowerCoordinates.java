@@ -5,8 +5,9 @@ import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.view.View;
 
 public class RequestPowerCoordinates extends Request {
-    OptionSelection opt;
-    Boolean canPass = false;
+
+    private OptionSelection opt;
+    private Boolean canPass;
 
 
     public RequestPowerCoordinates(OptionSelection opt, boolean canPass) {

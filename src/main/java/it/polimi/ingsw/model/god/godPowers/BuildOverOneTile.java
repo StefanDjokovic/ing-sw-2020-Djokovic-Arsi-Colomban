@@ -14,7 +14,6 @@ public class BuildOverOneTile extends Build {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        System.out.println("IM SELECTING FOR BUILDING");
         int posXBuild = logger.getLastLog().getAction(2);
         int posYBuild = logger.getLastLog().getAction(3);
         if (getGodLogic().tileBuildingLevel(posXBuild, posYBuild) <= 2) {

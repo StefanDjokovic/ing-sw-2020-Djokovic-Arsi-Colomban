@@ -3,7 +3,9 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.request.RequestDisplayBoard;
 import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
+import it.polimi.ingsw.messages.request.RequestUpdateBoardView;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.NonExistingTileException;
@@ -15,18 +17,18 @@ import java.util.ArrayList;
 
 public class GodLogic extends Observable {
 
-    String godLogicName;
-    Player player;
-    ArrayList<GodPower> turn = new ArrayList<>();
-    int currStep = 0;
+    private String godLogicName;
+    private Player player;
+    private ArrayList<GodPower> turn = new ArrayList<>();
+    private int currStep = 0;
     OptionSelection optionSelection;
-    Board board;
-    boolean canPass = false;
-    Logger logger;
-    int upDiffDebuff = 0;
-    int downDiffDebuff = 99;
-    boolean hasDebuff = false;
-    ArrayList<GodLogic> otherGodLogic;
+    private Board board;
+    private boolean canPass = false;
+    private Logger logger;
+    private int upDiffDebuff = 0;
+    private int downDiffDebuff = 99;
+    private boolean hasDebuff = false;
+    private ArrayList<GodLogic> otherGodLogic;
 
 
     public GodLogic(String godLogic, Player p, Logger logger, Board board) {
@@ -36,51 +38,53 @@ public class GodLogic extends Observable {
         this.board = board;
 
         // Initializing Turn Schema
-        if (godLogicName.equals("Basic")) {
-            turn.add(new Move(this, false));
-            turn.add(new Build(this, false));
-        }
-        else if (godLogicName.equals("Apollo")) {
-            turn.add(new Swap(this, false));
-            turn.add(new Build(this, false));
-        }
-        else if (godLogicName.equals("Artemis")) {
-            GodPower db = new DoubleMove(this, false);
-            turn.add(db);
-            turn.add(db);
-            turn.add(new Build(this, false));
-        }
-        else if (godLogicName.equals("Atlas")) {
-            turn.add(new Move(this, false));
-            turn.add(new Build(this, true));
-            turn.add(new BuildDome(this, false));
-        }
-        else if (godLogicName.equals("Pan")) {
-            turn.add(new MoveWithSpecialWinCondition(this, false, 2, 0));
-            turn.add(new Build(this, false));
-        }
-        else if (godLogicName.equals("Demeter")) {
-            turn.add(new Move(this, false));
-            turn.add(new Build(this, false));
-            turn.add(new BuildWithLimitation(this, true));
-        }
-        else if (godLogicName.equals("Hephaestus")) {
-            turn.add(new Move(this, false));
-            turn.add(new Build(this, false));
-            turn.add(new BuildOverOneTile(this, true));
-        }
-        else if (godLogicName.equals("Minotaur")) {
-            turn.add(new Push(this, false));
-            turn.add(new Build(this, false));
-        }
-        else if (godLogicName.equals("Prometheus")) {
-            turn.add(new Build(this, true));
-            turn.add(new MoveLimited(this, false));
-            turn.add(new Build(this, false));
-        }
-        else if (godLogicName.equals("Athena")) {
-            turn.add(new MoveLimiter(this, false));
-            turn.add(new Build(this, false));
+        switch (godLogicName) {
+            case "Basic":
+                turn.add(new Move(this, false));
+                turn.add(new Build(this, false));
+                break;
+            case "Apollo":
+                turn.add(new Swap(this, false));
+                turn.add(new Build(this, false));
+                break;
+            case "Artemis":
+                GodPower db = new DoubleMove(this, false);
+                turn.add(db);
+                turn.add(db);
+                turn.add(new Build(this, false));
+                break;
+            case "Atlas":
+                turn.add(new Move(this, false));
+                turn.add(new Build(this, true));
+                turn.add(new BuildDome(this, false));
+                break;
+            case "Pan":
+                turn.add(new MoveWithSpecialWinCondition(this, false, 2, 0));
+                turn.add(new Build(this, false));
+                break;
+            case "Demeter":
+                turn.add(new Move(this, false));
+                turn.add(new Build(this, false));
+                turn.add(new BuildWithLimitation(this, true));
+                break;
+            case "Hephaestus":
+                turn.add(new Move(this, false));
+                turn.add(new Build(this, false));
+                turn.add(new BuildOverOneTile(this, true));
+                break;
+            case "Minotaur":
+                turn.add(new Push(this, false));
+                turn.add(new Build(this, false));
+                break;
+            case "Prometheus":
+                turn.add(new Build(this, true));
+                turn.add(new MoveLimited(this, false));
+                turn.add(new Build(this, false));
+                break;
+            case "Athena":
+                turn.add(new MoveLimiter(this, false));
+                turn.add(new Build(this, false));
+                break;
         }
     }
 
@@ -89,19 +93,20 @@ public class GodLogic extends Observable {
     }
 
     public void executeTurn(Game game) {
-        System.out.println(logger);
         OptionSelection opt = turn.get(currStep).getOptions(logger);
-        System.out.println("CURRENTLY CANPASS IS " + canPass);
-        System.out.println(opt);
         if (opt != null) {
             if (hasOptions(opt)) {
                 this.optionSelection = opt;
                 Request request = new RequestPowerCoordinates(opt, this.canPass);
+                game.updateObservers(new RequestUpdateBoardView(board));
+                game.updateObservers(new RequestDisplayBoard());
                 game.updateObservers(request);
             }
             else {
                 System.out.println("THIS BOY HAS LOST!");
                 game.deletePlayer(getPlayer());
+                game.updateObservers(new RequestUpdateBoardView(board));
+                game.updateObservers(new RequestDisplayBoard());
                 game.gameStart();
             }
         }
@@ -120,7 +125,6 @@ public class GodLogic extends Observable {
 
     public void limitOpp(int upDiffDebuff) {
         for (GodLogic g: otherGodLogic) {
-            System.out.println("------------" + otherGodLogic.size());
             g.upDiffDebuff = upDiffDebuff;
             g.hasDebuff = true;
         }
@@ -162,9 +166,6 @@ public class GodLogic extends Observable {
         this.canPass = canPass;
     }
 
-    public ArrayList<GodPower> getTurn() {
-        return this.turn;
-    }
 
     public int tileBuildingLevel(int posX, int posY) {
         try {
@@ -178,10 +179,7 @@ public class GodLogic extends Observable {
     public boolean hasOpposingWorker(int posX, int posY) {
         try {
             if (board.getTile(posX, posY).hasWorker()) {
-                if (board.getTile(posX, posY).getWorker().getOwner().getInitial() != getPlayer().getInitial())
-                    return true;
-                else
-                    return false;
+                return board.getTile(posX, posY).getWorker().getOwner().getInitial() != getPlayer().getInitial();
             }
         } catch (NonExistingTileException e) {
             System.out.println("no no no no!");
@@ -205,7 +203,7 @@ public class GodLogic extends Observable {
 
     }
 
-    public boolean hasOptions(OptionSelection opt) {
+    private boolean hasOptions(OptionSelection opt) {
         for (ArrayList<Integer> o: opt.getComb()) {
             if (o.size() > 2)
                 return true;

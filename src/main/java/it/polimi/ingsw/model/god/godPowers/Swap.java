@@ -23,7 +23,6 @@ public class Swap extends Move {
                 destWorker.changePosition(board.getTile(posXFrom, posYFrom));
                 if (checkWinCondition(board.getTile(posXFrom, posYFrom), board.getTile(posXTo, posYTo)) == 2)
                     return 2;
-                System.out.println("You should have swapped... right?");
                 return 1;
             }
             else

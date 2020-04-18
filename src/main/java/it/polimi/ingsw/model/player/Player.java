@@ -2,10 +2,8 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.model.Logger;
-import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.Tile;
 import it.polimi.ingsw.model.god.GodLogic;
-import it.polimi.ingsw.model.god.GodPower;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.Game;
 
@@ -17,18 +15,18 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    final String name;
-    char inital;
-    GodLogic godLogic = null;
-    ArrayList<Worker> workers = new ArrayList<>();
+    private final String name;
+    private char initial;
+    private GodLogic godLogic = null;
+    private ArrayList<Worker> workers = new ArrayList<>();
 
     public Player(String name, char initial) {
         this.name = name;
-        this.inital = initial;
+        this.initial = initial;
     }
 
     public String getName() { return name; }
-    public char getInitial() { return inital; }
+    public char getInitial() { return initial; }
     public GodLogic setGodLogic(String godLogic, Logger logger, Board board) {
 
         this.godLogic = new GodLogic(godLogic, this, logger, board);
@@ -63,7 +61,7 @@ public class Player {
 
     }
 
-    public void setInitial(char initial) { this.inital = initial; }
+    public void setInitial(char initial) { this.initial = initial; }
 
     public void executeTurn(Game game) {
        godLogic.executeTurn(game);
@@ -77,28 +75,11 @@ public class Player {
         return getGodLogic().godLogicReceiveOptions(board, posXFrom, posYFrom, posXTo, posYTo);
     }
 
-    public int getWorkerIndexFromCoordinates(int posX, int posY) {
-        for (int i = 0; i < workers.size(); i++)
-            if (workers.get(i).getPosX() == posX && workers.get(i).getPosY() == posY)
-                return i;
-        return -1;
-    }
-
-    public Worker getWorkerFromCoordinates(int posX, int posY) {
-        for (Worker w: workers) {
-            if (w.getPosX() == posX && w.getPosY() == posY)
-                return w;
-        }
-        return null;
-    }
-
     public OptionSelection getOptionsPlayer(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
         OptionSelection opt = new OptionSelection();
         for (Worker w: workers) {
             opt.fuseOptions(w.getOptionsWorker(upDiff, downDiff, canIntoOpp, limitations));
         }
-        System.out.println("getOptionsPlayer:");
-        System.out.println(opt);
 
         return opt;
     }
@@ -106,7 +87,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Name: " + name + "; Initial: " + inital + "\nSelected God: " + godLogic.getGodLogicName() +
+        return "Name: " + name + "; Initial: " + initial + "\nSelected God: " + godLogic.getGodLogicName() +
                 "\nWorker 1 at: " + workers.get(0).toString() + "\nWorker 2 at: " + workers.get(1).toString();
     }
 }

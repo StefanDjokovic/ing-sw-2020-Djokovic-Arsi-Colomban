@@ -8,12 +8,8 @@ import it.polimi.ingsw.model.player.Worker;
 
 public class MoveWithSpecialWinCondition extends Move {
 
-    int fromLevel;
-    int toLevel;
-
-    public MoveWithSpecialWinCondition(GodLogic godLogic, boolean canPass) {
-        super(godLogic, canPass);
-    }
+    private int fromLevel;
+    private int toLevel;
 
     public MoveWithSpecialWinCondition(GodLogic godLogic, boolean canPass, int fromLevel, int toLevel) {
         super(godLogic, canPass);
@@ -29,7 +25,6 @@ public class MoveWithSpecialWinCondition extends Move {
             sourceWorker.changePosition(destTile);
             if (specialWinCondition(board.getTile(posXFrom, posYFrom).getBuildingLevel(), board.getTile(posXTo, posYTo).getBuildingLevel()))
                 return 2;
-            System.out.println("Should have moved... right?");
             return 1;
         } catch (NonExistingTileException e) {
             System.out.println("You failed!");

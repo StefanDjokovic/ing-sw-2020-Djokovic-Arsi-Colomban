@@ -14,10 +14,10 @@ import java.util.ArrayList;
 
 public class Game extends Observable {
 
-    ArrayList<Player> players;
-    Board board;
-    int numberOfPlayers = 2;    // Will let the players decide how many there are
-    Logger logger;
+    private ArrayList<Player> players;
+    private Board board;
+    private int numberOfPlayers = 2;    // Will let the players decide how many there are
+    private Logger logger;
 
 
     public Game() {
@@ -26,20 +26,12 @@ public class Game extends Observable {
         logger = new Logger();
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
     // For testing purposes
     public Board getBoard() {
         return board;
     }
 
     public void init() {
-
-        System.out.println("\u001B[31m" + "\n\n\nPLEASE NOTE THE GAME IS STILL IN DEVELOPMENT\n" +
-                "Debugging messages are active\n\n\n" +
-                "\u001B[0m");
         updateObservers(new RequestPlayerName("First"));
         updateObservers(new RequestPlayerName("Second"));
         if (numberOfPlayers == 3)
@@ -63,15 +55,15 @@ public class Game extends Observable {
 
         for (Player player : players) {
             setOtherGodLogic(player);
-            System.out.println("----------" + player.getGodLogic().getOtherGodLogic().size());
         }
 
 
         System.out.println("Time to place the Workers on the board!");
         for (Player player : players) {
             for (int i = 0; i < 2; i++) {
-                updateObservers(new RequestWorkerPosition(getAllWorkersAsMatrix(), player.getInitial()));
-                updateObservers(new RequestDisplayBoard(board));
+                updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), player.getInitial()));
+                updateObservers(new RequestUpdateBoardView(board));
+                updateObservers(new RequestDisplayBoard());
             }
         }
 
@@ -84,7 +76,7 @@ public class Game extends Observable {
         System.out.println("Setup completed. Let's play!");
     }
 
-    int currPlayer = 0;
+    private int currPlayer = 0;
     public void gameStart() {
 
         printWorkerOptionPlayers();
@@ -127,8 +119,9 @@ public class Game extends Observable {
         }
     }
 
-    public void gameEnd() {
-        updateObservers(new RequestDisplayBoard(getBoard()));
+    private void gameEnd() {
+        updateObservers(new RequestUpdateBoardView(board));
+        updateObservers(new RequestDisplayBoard());
         System.out.println("We have a winner! GG! Hope you enjoyed the game! :)");
     }
 
@@ -160,7 +153,7 @@ public class Game extends Observable {
         getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard()).addObserver(view);
     }
 
-    public void setOtherGodLogic(Player player) {
+    private void setOtherGodLogic(Player player) {
         ArrayList<GodLogic> otherGodLogics = new ArrayList<>();
 
         for (Player q: players) {
@@ -184,7 +177,7 @@ public class Game extends Observable {
         getPlayerFromInitial(initial).addWorker(getBoard().getTile(x, y));
     }
 
-    public Player getPlayerFromInitial(char initial) {
+    private Player getPlayerFromInitial(char initial) {
         for (Player p : players) {
             if (p.getInitial() == initial)
                 return p;
@@ -192,7 +185,7 @@ public class Game extends Observable {
         return null;
     }
 
-    public int[][] getAllWorkersAsMatrix() {
+    private int[][] getAllWorkersAsMatrix() {
 
         int nWorkers = 0;
         for (Player p : players) {
@@ -217,12 +210,10 @@ public class Game extends Observable {
 
     }
 
-    public void printWorkerOptionPlayers() {
+    private void printWorkerOptionPlayers() {
         for (Player p: players) {
             ArrayList<ArrayList<Tile>> result = p.getOptionTiles();
-            System.out.println("Options player " + p.getName());
             for (ArrayList<Tile> a: result) {
-                System.out.println("Options worker: " + a.get(0).toString());
                 for (Tile t: a) {
                     System.out.println(t.toString());
                 }
@@ -230,7 +221,7 @@ public class Game extends Observable {
         }
     }
 
-    public void printPlayersDescription() {
+    private void printPlayersDescription() {
         for (Player p : players) {
             System.out.println("Player: " + p.getName() + " Initial: " + p.getInitial());
         }
