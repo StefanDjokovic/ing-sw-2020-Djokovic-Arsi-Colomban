@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.god.godPowers;
 
+import it.polimi.ingsw.messages.OptionSelection;
+import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.NotBuildableException;
 import it.polimi.ingsw.model.god.AlreadyHasDomeException;
@@ -14,23 +16,31 @@ import it.polimi.ingsw.model.board.Tile;
 
 import java.util.Scanner;
 
-public class BuildDome extends Build{
+public class BuildDome extends Build {
 
-    public BuildDome(GodLogic godLogic) {
-        super(godLogic);
+    public BuildDome(GodLogic godLogic, boolean canPass) {
+        super(godLogic, canPass);
     }
 
-//    public void power(int x, int y, Worker worker, boolean usePower, Board board) throws NonExistingTileException, OccupiedTileException, AlreadyHasDomeException, NotBuildableException, OutOfReachException {    // Overloaded method. If usePower = true, then the worker builds a dome instead of a normal level
-//        Tile destination = board.getTile(x, y); // Tile the player wants build on
-//        if (usePower){
-//            if ( !destination.hasWorker() ) {
-//                if (!destination.hasDome()) { // Check if there's already a dome on the target tile
-//                    destination.setDome(true);
-//                } else throw new AlreadyHasDomeException("The selected tile already has a dome");
-//            } else throw new OccupiedTileException("The selected tile is occupied by another worker");
-//        }
-//        else super.power(x, y, worker, board);
-//    }
+    public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        System.out.println("IM BUILDING DOMES");
+        try {
+            board.getTile(posXTo, posYTo).setDome(true);
+            System.out.println("Should have built... right?");
+        } catch (NonExistingTileException e) {
+            System.out.println("You failed!");
+        }
+        return 0;
+    }
+
+    @Override
+    public OptionSelection getOptions(Logger logger) {
+        System.out.println("IM SELECTING FOR DOUBLE BUILDING");
+        if (logger.getLastLog().getType() == 1)
+            return super.getOptions(logger);
+        else
+            return null;
+    }
 
 
 }

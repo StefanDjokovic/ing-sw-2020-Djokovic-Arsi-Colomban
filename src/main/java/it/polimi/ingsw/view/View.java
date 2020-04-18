@@ -306,13 +306,13 @@ public class View extends Observable implements Observer {
                 for (int j = 0; j < 5; j++) {
                     System.out.print("║");
                     try {
-                        if (board.getTile(i, j).getBuildingLevel() == 0)
+                        if (board.getTile(i, j).getBuildingLevel() == 0 && !board.getTile(i, j).hasDome())
                             currColor = ANSI_GREEN_BACKGROUND;
-                        else if (board.getTile(i, j).getBuildingLevel() == 1)
+                        else if (board.getTile(i, j).getBuildingLevel() == 1 && !board.getTile(i, j).hasDome())
                             currColor = ANSI_YELLOW_BACKGROUND;
-                        else if (board.getTile(i, j).getBuildingLevel() == 2)
+                        else if (board.getTile(i, j).getBuildingLevel() == 2 && !board.getTile(i, j).hasDome())
                             currColor = ANSI_WHITE_BACKGROUND;
-                        else if (board.getTile(i, j).getBuildingLevel() == 3)
+                        else if (board.getTile(i, j).getBuildingLevel() == 3 && !board.getTile(i, j).hasDome())
                             currColor = ANSI_BRIGHTBLACK_BACKGROUND;
                         else
                             currColor = ANSI_BLUE_BACKGROUND;

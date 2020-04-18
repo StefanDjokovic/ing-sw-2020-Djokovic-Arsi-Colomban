@@ -9,8 +9,8 @@ import it.polimi.ingsw.model.player.Worker;
 
 public class Swap extends Move {
 
-    public Swap(GodLogic godLogic) {
-        super(godLogic);
+    public Swap(GodLogic godLogic, boolean canPass) {
+        super(godLogic, canPass);
     }
 
     @Override
@@ -36,6 +36,6 @@ public class Swap extends Move {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        return getGodLogic().getOptionsGodLogic(1, 99, true, null, false);
+        return getGodLogic().getOptionsGodLogic(1, 99, true, null, getCanPass());
     }
 }

@@ -13,8 +13,8 @@ public class DoubleMove extends Move {
 
     ArrayList<Integer> limitations;
 
-    public DoubleMove(GodLogic godLogic) {
-        super(godLogic);
+    public DoubleMove(GodLogic godLogic, boolean canPass) {
+        super(godLogic, canPass);
     }
 
     @Override

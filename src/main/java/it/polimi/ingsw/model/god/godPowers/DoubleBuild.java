@@ -17,8 +17,8 @@ import java.util.Scanner;
 public class DoubleBuild extends Build {
 
 
-    public DoubleBuild(GodLogic godLogic) {
-        super(godLogic);
+    public DoubleBuild(GodLogic godLogic, boolean canPass) {
+        super(godLogic, canPass);
     }
 //
 //    public void power(int x1, int y1, int x2, int y2, Worker worker, Board board) throws NonExistingTileException, NotBuildableException, AlreadyHasDomeException, OccupiedTileException, OutOfReachException { // Overload of Move's power method

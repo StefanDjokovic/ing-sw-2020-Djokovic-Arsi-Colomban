@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public class Build extends GodPower {
 
-    public Build(GodLogic godLogic) {
-        super(godLogic);
+    public Build(GodLogic godLogic, boolean canPass) {
+        super(godLogic, canPass);
     }
 
     public void power() {
@@ -38,7 +38,7 @@ public class Build extends GodPower {
     @Override
     public OptionSelection getOptions(Logger logger) {
         System.out.println("IM SELECTING FOR BUILDING");
-        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 99, false, null, false);
+        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 99, false, null, getCanPass());
         if (logger.getLastLog().getPlayerInit() == getGodLogic().getPlayer().getInitial()) {
             Log log;
             if (logger.getLastLog().getType() == 0) {

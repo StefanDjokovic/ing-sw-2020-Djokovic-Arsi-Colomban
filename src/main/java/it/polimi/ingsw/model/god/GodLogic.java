@@ -30,19 +30,25 @@ public class GodLogic extends Observable {
         this.player = p;
         this.logger = logger;
         if (godLogicName.equals("Basic")) {
-            turn.add(new Move(this));
-            turn.add(new Build(this));
+            turn.add(new Move(this, false));
+            turn.add(new Build(this, false));
         }
         else if (godLogicName.equals("Apollo")) {
-            turn.add(new Swap(this));
-            turn.add(new Build(this));
+            turn.add(new Swap(this, false));
+            turn.add(new Build(this, false));
         }
         else if (godLogicName.equals("Artemis")) {
-            GodPower db = new DoubleMove(this);
+            GodPower db = new DoubleMove(this, false);
             turn.add(db);
             turn.add(db);
-            turn.add(new Build(this));
+            turn.add(new Build(this, false));
         }
+        else if (godLogicName.equals("Atlas")) {
+            turn.add(new Move(this, false));
+            turn.add(new Build(this, true));
+            turn.add(new BuildDome(this, false));
+        }
+
     }
 
     public void executeTurn(Game game) {
@@ -50,9 +56,13 @@ public class GodLogic extends Observable {
         OptionSelection opt = turn.get(currStep).getOptions(logger);
         System.out.println("CURRENTLY CANPASS IS " + canPass);
         System.out.println(opt);
-        this.optionSelection = opt;
-        Request request = new RequestPowerCoordinates(opt, this.canPass);
-        game.updateObservers(request);
+        if (opt != null) {
+            this.optionSelection = opt;
+            Request request = new RequestPowerCoordinates(opt, this.canPass);
+            game.updateObservers(request);
+        }
+        else
+            game.gameReceiveOptions();
     }
 
     public int godLogicReceiveOptions() {
@@ -74,13 +84,6 @@ public class GodLogic extends Observable {
             return 1;
         }
         return 0;
-    }
-
-    public int lastWorkerUsedPosX(int lastWorkerUsed) {
-        return getPlayer().getWorkers().get(lastWorkerUsed).getPosX();
-    }
-    public int lastWorkerUsedPosY(int lastWorkerUsed) {
-        return getPlayer().getWorkers().get(lastWorkerUsed).getPosY();
     }
 
     public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations, boolean canPass) {

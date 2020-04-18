@@ -13,9 +13,11 @@ import java.util.ArrayList;
 public abstract class GodPower {
 
     private GodLogic godLogic;
+    boolean canPass;
 
-    public GodPower(GodLogic godLogic) {
+    public GodPower(GodLogic godLogic, boolean canPass) {
         this.godLogic = godLogic;
+        this.canPass = canPass;
     }
 
     public Worker power(ArrayList<Worker> workers) {
@@ -37,5 +39,9 @@ public abstract class GodPower {
             return 2;
         else
             return 0;
+    }
+
+    public boolean getCanPass() {
+        return canPass;
     }
 }
