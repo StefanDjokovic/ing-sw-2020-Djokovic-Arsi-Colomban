@@ -6,9 +6,7 @@ import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.NotBuildableException;
 import it.polimi.ingsw.model.god.*;
-import it.polimi.ingsw.model.player.Worker;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.Tile;
 
 
 import java.util.ArrayList;

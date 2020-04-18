@@ -48,6 +48,10 @@ public class GodLogic extends Observable {
             turn.add(new Build(this, true));
             turn.add(new BuildDome(this, false));
         }
+        else if (godLogicName.equals("Pan")) {
+            turn.add(new MoveWithSpecialWinCondition(this, false, 2, 0));
+            turn.add(new Build(this, false));
+        }
 
     }
 

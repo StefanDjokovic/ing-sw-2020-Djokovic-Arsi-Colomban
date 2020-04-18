@@ -49,6 +49,7 @@ public class Game extends Observable {
         opt.add("Apollo");
         opt.add("Artemis");
         opt.add("Atlas");
+        opt.add("Pan");
 
         for (Player player : players) {
             updateObservers(new RequestPlayerGod(player.getInitial(), opt));
