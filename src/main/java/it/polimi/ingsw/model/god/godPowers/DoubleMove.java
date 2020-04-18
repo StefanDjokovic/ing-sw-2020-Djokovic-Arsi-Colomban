@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.god.godPowers;
 
 import it.polimi.ingsw.messages.OptionSelection;
+import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.god.GodLogic;
@@ -31,13 +32,13 @@ public class DoubleMove extends Move {
     }
 
     @Override
-    public OptionSelection getOptions(int lastWorkerUsed) {
+    public OptionSelection getOptions(Logger logger) {
         System.out.println("IM SELECTING FOR DOUBLEMOVING");
         OptionSelection opt;
-        if (lastWorkerUsed != -1) {
+        if (logger.getLastLog().getPlayerInit() == getGodLogic().getPlayer().getInitial()) {
             opt =  getGodLogic().getOptionsGodLogic(1, 99, false, limitations, true);
-            int lastWorkerUsedX = getGodLogic().lastWorkerUsedPosX(lastWorkerUsed);
-            int lastWorkerUsedY = getGodLogic().lastWorkerUsedPosY(lastWorkerUsed);
+            int lastWorkerUsedX = logger.getLastLog().getAction(2);     // X position dest
+            int lastWorkerUsedY = logger.getLastLog().getAction(3);     // Y position dest
             for (ArrayList<Integer> a: opt.getComb()) {
                 if (a.get(0) == lastWorkerUsedX && a.get(1) == lastWorkerUsedY) {
                     opt = new OptionSelection();
@@ -48,7 +49,7 @@ public class DoubleMove extends Move {
             System.out.println(opt);
         }
         else
-            opt =  getGodLogic().getOptionsGodLogic(1, 99, false, limitations, false);
+            opt =  getGodLogic().getOptionsGodLogic(1, 99, false, null, false);
         return opt;
     }
 }

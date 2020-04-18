@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.god.godPowers;
 
 import it.polimi.ingsw.messages.OptionSelection;
+import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.Tile;
@@ -34,7 +35,7 @@ public class Move extends GodPower {
     }
 
     @Override
-    public OptionSelection getOptions(int lastWorkerUsed) {
+    public OptionSelection getOptions(Logger logger) {
         return getGodLogic().getOptionsGodLogic(1, 99, false, null, false);
     }
 }

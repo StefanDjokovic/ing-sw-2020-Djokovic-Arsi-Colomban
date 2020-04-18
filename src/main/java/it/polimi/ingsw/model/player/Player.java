@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.messages.OptionSelection;
+import it.polimi.ingsw.model.Logger;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.board.Tile;
 import it.polimi.ingsw.model.god.GodLogic;
@@ -28,9 +29,9 @@ public class Player {
 
     public String getName() { return name; }
     public char getInitial() { return inital; }
-    public GodLogic setGodLogic(String godLogic) {
+    public GodLogic setGodLogic(String godLogic, Logger logger) {
 
-        this.godLogic = new GodLogic(godLogic, this);
+        this.godLogic = new GodLogic(godLogic, this, logger);
         return this.godLogic;
 
     }

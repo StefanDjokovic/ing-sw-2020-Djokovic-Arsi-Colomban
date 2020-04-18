@@ -5,10 +5,8 @@ import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.god.godPowers.Build;
-import it.polimi.ingsw.model.god.godPowers.DoubleMove;
-import it.polimi.ingsw.model.god.godPowers.Move;
-import it.polimi.ingsw.model.god.godPowers.Swap;
+import it.polimi.ingsw.model.Logger;
+import it.polimi.ingsw.model.god.godPowers.*;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.board.Board;
 
@@ -23,13 +21,14 @@ public class GodLogic extends Observable {
     int moveDownMax = 99;
     int currStep = 0;
     OptionSelection optionSelection;
-    int lastWorkerUsed = -1;
     boolean canPass = false;
+    Logger logger;
 
 
-    public GodLogic(String godLogic, Player p) {
+    public GodLogic(String godLogic, Player p, Logger logger) {
         godLogicName = godLogic;
         this.player = p;
+        this.logger = logger;
         if (godLogicName.equals("Basic")) {
             turn.add(new Move(this));
             turn.add(new Build(this));
@@ -47,7 +46,8 @@ public class GodLogic extends Observable {
     }
 
     public void executeTurn(Game game) {
-        OptionSelection opt = turn.get(currStep).getOptions(lastWorkerUsed);
+        System.out.println(logger);
+        OptionSelection opt = turn.get(currStep).getOptions(logger);
         System.out.println("CURRENTLY CANPASS IS " + canPass);
         System.out.println(opt);
         this.optionSelection = opt;
@@ -65,7 +65,6 @@ public class GodLogic extends Observable {
     }
 
     public int godLogicReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        this.lastWorkerUsed = getPlayer().getWorkerIndexFromCoordinates(posXFrom, posYFrom);
         int status = turn.get(currStep).power(board, posXFrom, posYFrom, posXTo, posYTo);
         if (status == 2)
             return 2;
@@ -75,10 +74,6 @@ public class GodLogic extends Observable {
             return 1;
         }
         return 0;
-    }
-
-    public void deleteLastWorkerUsed() {
-        lastWorkerUsed = -1;
     }
 
     public int lastWorkerUsedPosX(int lastWorkerUsed) {

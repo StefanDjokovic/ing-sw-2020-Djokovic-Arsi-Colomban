@@ -16,11 +16,13 @@ public class Game extends Observable {
     ArrayList<Player> players;
     Board board;
     int numberOfPlayers = 2;    // Will let the players decide how many there are
+    Logger logger;
 
 
     public Game() {
         players = new ArrayList<>();
         board = new Board();
+        logger = new Logger();
     }
 
     public ArrayList<Player> getPlayers() {
@@ -35,7 +37,7 @@ public class Game extends Observable {
     public void init() {
 
         System.out.println("\u001B[31m" + "\n\n\nPLEASE NOTE THE GAME IS STILL IN DEVELOPMENT\n" +
-                "Debugging messages are active, the turn mechanic is not complete, and there are some bugs\n\n\n" +
+                "Debugging messages are active\n\n\n" +
                 "\u001B[0m");
         updateObservers(new RequestPlayerName("First"));
         updateObservers(new RequestPlayerName("Second"));
@@ -80,6 +82,7 @@ public class Game extends Observable {
 
     // Skip option
     public void gameReceiveOptions() {
+        logger.addNewLog(players.get(currPlayer).getInitial());
         int status = players.get(currPlayer).playerReceiveOptions();
         if (status == 1) {
             currPlayer = (currPlayer + 1) % players.size();
@@ -90,7 +93,9 @@ public class Game extends Observable {
         }
     }
 
+
     public void gameReceiveOptions(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        logger.addNewLog(posXFrom, posYFrom, posXTo, posYTo, players.get(currPlayer).getInitial());
         int status = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);
         if (status == 1) {
             currPlayer = (currPlayer + 1) % players.size();
@@ -142,7 +147,7 @@ public class Game extends Observable {
     }
 
     public void setPlayerGod(String godName, char initial, View view) {
-        getPlayerFromInitial(initial).setGodLogic(godName).addObserver(view);
+        getPlayerFromInitial(initial).setGodLogic(godName, logger).addObserver(view);
     }
 
     public void setWorker(int x, int y, char initial) throws NonExistingTileException {
