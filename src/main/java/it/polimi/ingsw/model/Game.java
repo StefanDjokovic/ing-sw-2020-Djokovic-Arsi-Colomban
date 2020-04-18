@@ -78,6 +78,18 @@ public class Game extends Observable {
         players.get(currPlayer).executeTurn(this);
     }
 
+    // Skip option
+    public void gameReceiveOptions() {
+        int status = players.get(currPlayer).playerReceiveOptions();
+        if (status == 1) {
+            currPlayer = (currPlayer + 1) % players.size();
+            players.get(currPlayer).executeTurn(this);
+        }
+        else {
+            players.get(currPlayer).executeTurn(this);
+        }
+    }
+
     public void gameReceiveOptions(int posXFrom, int posYFrom, int posXTo, int posYTo) {
         int status = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);
         if (status == 1) {

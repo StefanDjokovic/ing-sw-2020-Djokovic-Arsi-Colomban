@@ -49,6 +49,11 @@ public class Controller implements Observer {
         game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
     }
 
+    public void executePower() {
+        System.out.println("Controller has received: Pass" );
+        game.gameReceiveOptions();
+    }
+
     @Override
     public void update(Request request) {
         System.out.println("Controller should not receive Requests");

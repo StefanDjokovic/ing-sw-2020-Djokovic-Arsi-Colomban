@@ -44,46 +44,11 @@ public class View extends Observable implements Observer {
         this.game = game;
     }
 
-    // todo: improve task execution by using Message instead of String in update
     @Override
     public void update(Request request) {
         System.out.print("View Update received: ");
         request.printMessage();
         request.accept(this);
-
-
-/*      if (string.equals("Required Players Name")) { DONE
-            getPlayerInfo();
-        }
-        else if (string.equals("Required Players Gods")) {  DONE
-            while (game.getPlayers().get(0).getGodLogic() == null || game.getPlayers().get(1).getGodLogic() == null) {
-                if (game.getPlayers().get(0).getGodLogic() == null)
-                    getPlayersGod(game.getPlayers().get(0).getName());
-                else
-                    getPlayersGod(game.getPlayers().get(1).getName());
-            }
-        }
-        else if (string.equals("Required Worker Position")) {
-            while (game.getPlayers().get(0).getWorkersSize() < 2 || game.getPlayers().get(1).getWorkersSize() < 2) {
-                if (game.getPlayers().get(0).getWorkersSize() < 2)
-                    getWorkerPosition(game.getPlayers().get(0).getName());
-                else
-                    getWorkerPosition(game.getPlayers().get(1).getName());
-                funWithView(game.getBoard());
-            }
-        }
-        else if (string.split(" ")[1].equals("Pick")) {
-            // todo: pick should contain also the possible destinations for each pick to reduce load on model
-            String[] temp = string.split(" ");
-            if (temp.length > 5) {
-                System.out.println(Integer.parseInt(temp[3]) + " " + Integer.parseInt(temp[4]) + " " + Integer.parseInt(temp[5]) + " " + Integer.parseInt(temp[6]));
-                getPlayerSelection(game.getBoard(), Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), Integer.parseInt(temp[5]), Integer.parseInt(temp[6]));
-                System.out.println(Integer.parseInt(temp[3]) + " " + Integer.parseInt(temp[4]) + " " + Integer.parseInt(temp[5]) + " " + Integer.parseInt(temp[6]));
-            }
-            else
-                getPlayerSelection(game.getBoard(), Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), -1, -1);
-        }*/
-
     }
 
 
@@ -95,7 +60,7 @@ public class View extends Observable implements Observer {
 
     }
 
-    // todo: Missing all the other Gods, only basic is implemented
+    // note: to add new Gods you have to change things both in GodLogic and Game
     public void getPlayerGod(char initial, ArrayList<String> options) {
         System.out.println("Select " + initial + "'s God: ");
         for (String opt: options) {
@@ -217,9 +182,26 @@ public class View extends Observable implements Observer {
         return scanner.nextInt();
     }
 
-    public void getWorkerSelectionOneOption(OptionSelection opt) {
-        int w_select = getDestSelection(game.getBoard(), opt.getComb().get(0));
+    public boolean askIfPassed() {
+        System.out.println("Please, type 'pass' if you want to skip to the next move, otherwise type 'go'");
+        return scanner.next().equals("pass");
+    }
 
+    public void getWorkerSelectionOneOption(OptionSelection opt, boolean canPass) {
+        System.out.println("Displaying options: ");
+        System.out.println(opt);
+        System.out.println("CAN PASS IN VIEW IS " + canPass);
+        if (canPass) {
+            displayPossibleSelection(game.getBoard(), opt.getComb().get(0));
+            if (askIfPassed()) {
+                Answer answer = new AnswerPowerCoordinates();
+                System.out.println("Sending stuff");
+                updateObservers(answer);
+                return;
+            }
+        }
+
+        int w_select = getDestSelection(game.getBoard(), opt.getComb().get(0));
 
         Answer answer = new AnswerPowerCoordinates(
                 opt.getComb().get(0).get(0), opt.getComb().get(0).get(1),
@@ -229,9 +211,17 @@ public class View extends Observable implements Observer {
     }
 
 
-    public void getWorkerSelection(OptionSelection opt) {
+    public void getWorkerSelection(OptionSelection opt, boolean canPass) {
         System.out.println("Displaying options: ");
         System.out.println(opt);
+        if (canPass) {
+            if (askIfPassed()) {
+                Answer answer = new AnswerPowerCoordinates();
+                System.out.println("Sending stuff");
+                updateObservers(answer);
+                return;
+            }
+        }
         int selected = getWorkerSelection(game.getBoard(), opt.getComb().get(0).get(0), opt.getComb().get(0).get(1), opt.getComb().get(1).get(0), opt.getComb().get(1).get(1));
         int otherSelection = 0;
         if (selected == 0)
@@ -245,8 +235,6 @@ public class View extends Observable implements Observer {
                 otherSelection = temp;
             }
         } while (w_select == -1);
-
-
 
         Answer answer = new AnswerPowerCoordinates(
                 opt.getComb().get(selected).get(0), opt.getComb().get(selected).get(1),

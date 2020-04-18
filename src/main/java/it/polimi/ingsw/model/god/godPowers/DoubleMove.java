@@ -33,8 +33,9 @@ public class DoubleMove extends Move {
     @Override
     public OptionSelection getOptions(int lastWorkerUsed) {
         System.out.println("IM SELECTING FOR DOUBLEMOVING");
-        OptionSelection opt =  getGodLogic().getOptionsGodLogic(1, 99, false, limitations);
+        OptionSelection opt;
         if (lastWorkerUsed != -1) {
+            opt =  getGodLogic().getOptionsGodLogic(1, 99, false, limitations, true);
             int lastWorkerUsedX = getGodLogic().lastWorkerUsedPosX(lastWorkerUsed);
             int lastWorkerUsedY = getGodLogic().lastWorkerUsedPosY(lastWorkerUsed);
             for (ArrayList<Integer> a: opt.getComb()) {
@@ -46,6 +47,8 @@ public class DoubleMove extends Move {
             }
             System.out.println(opt);
         }
+        else
+            opt =  getGodLogic().getOptionsGodLogic(1, 99, false, limitations, false);
         return opt;
     }
 }

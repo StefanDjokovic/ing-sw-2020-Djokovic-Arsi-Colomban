@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.player.Worker;
 
 public class AnswerPowerCoordinates extends Answer {
 
-    private int posXFrom;
+    private int posXFrom = -1;
     private int posYFrom;
     private int posXTo;
     private int posYTo;
@@ -19,10 +19,17 @@ public class AnswerPowerCoordinates extends Answer {
         this.posYTo = posYTo;
     }
 
+    public AnswerPowerCoordinates() {
+        message = "Answer move coordinates";
+    }
+
 
     @Override
     public void act(Controller controller) {
-        controller.executePower(posXFrom, posYFrom, posXTo, posYTo);
+        if (posXFrom == -1)
+            controller.executePower();
+        else
+            controller.executePower(posXFrom, posYFrom, posXTo, posYTo);
     }
 
 }

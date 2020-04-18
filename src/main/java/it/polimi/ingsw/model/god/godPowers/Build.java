@@ -37,7 +37,7 @@ public class Build extends GodPower {
     @Override
     public OptionSelection getOptions(int lastWorkerUsed) {
         System.out.println("IM SELECTING FOR BUILDING");
-        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 99, false, null);
+        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 99, false, null, false);
         int lastWorkerUsedX = getGodLogic().lastWorkerUsedPosX(lastWorkerUsed);
         int lastWorkerUsedY = getGodLogic().lastWorkerUsedPosY(lastWorkerUsed);
         for (ArrayList<Integer> a: opt.getComb()) {

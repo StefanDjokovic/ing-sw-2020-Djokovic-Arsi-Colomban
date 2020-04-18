@@ -24,6 +24,7 @@ public class GodLogic extends Observable {
     int currStep = 0;
     OptionSelection optionSelection;
     int lastWorkerUsed = -1;
+    boolean canPass = false;
 
 
     public GodLogic(String godLogic, Player p) {
@@ -47,10 +48,20 @@ public class GodLogic extends Observable {
 
     public void executeTurn(Game game) {
         OptionSelection opt = turn.get(currStep).getOptions(lastWorkerUsed);
+        System.out.println("CURRENTLY CANPASS IS " + canPass);
         System.out.println(opt);
         this.optionSelection = opt;
-        Request request = new RequestPowerCoordinates(opt);
+        Request request = new RequestPowerCoordinates(opt, this.canPass);
         game.updateObservers(request);
+    }
+
+    public int godLogicReceiveOptions() {
+        currStep++;
+        if (currStep % turn.size() == 0) {
+            currStep = 0;
+            return 1;
+        }
+        return 0;
     }
 
     public int godLogicReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
@@ -77,7 +88,8 @@ public class GodLogic extends Observable {
         return getPlayer().getWorkers().get(lastWorkerUsed).getPosY();
     }
 
-    public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
+    public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations, boolean canPass) {
+        this.canPass = canPass;
         return getPlayer().getOptionsPlayer(upDiff, downDiff, canIntoOpp, limitations);
     }
 

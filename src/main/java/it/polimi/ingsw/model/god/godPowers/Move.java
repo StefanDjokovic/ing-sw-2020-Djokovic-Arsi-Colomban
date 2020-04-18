@@ -35,6 +35,6 @@ public class Move extends GodPower {
 
     @Override
     public OptionSelection getOptions(int lastWorkerUsed) {
-        return getGodLogic().getOptionsGodLogic(1, 99, false, null);
+        return getGodLogic().getOptionsGodLogic(1, 99, false, null, false);
     }
 }
