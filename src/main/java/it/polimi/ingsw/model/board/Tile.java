@@ -297,26 +297,27 @@ public class Tile {
 
         for (Tile t: tiles) {
             if (!t.hasWorker() || canIntoOpp) {     // if the tile does not have a worker or an opponent cell can be selected
-                if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
-                    if (limitations == null) {
-                        cellOpt.add(t.getX());
-                        cellOpt.add(t.getY());
-                    }
-                    else {
-                        boolean appeared = false;
-                        for (int i = 0; i < limitations.size(); i += 2) {
-                            if (limitations.get(i) == t.getX() && limitations.get(i + 1) == t.getY()) {
-                                appeared = true;
-                                break;
-                            }
-                        }
-                        if (!appeared) {
+                if (!canIntoOpp || (t.hasWorker() && t.getWorker().getOwner().getInitial() != this.getWorker().getOwner().getInitial()))
+                    if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
+                        if (limitations == null) {
                             cellOpt.add(t.getX());
                             cellOpt.add(t.getY());
                         }
-                    }
+                        else {
+                            boolean appeared = false;
+                            for (int i = 0; i < limitations.size(); i += 2) {
+                                if (limitations.get(i) == t.getX() && limitations.get(i + 1) == t.getY()) {
+                                    appeared = true;
+                                    break;
+                                }
+                            }
+                            if (!appeared) {
+                                cellOpt.add(t.getX());
+                                cellOpt.add(t.getY());
+                            }
+                        }
 
-                }
+                    }
             }
         }
 
