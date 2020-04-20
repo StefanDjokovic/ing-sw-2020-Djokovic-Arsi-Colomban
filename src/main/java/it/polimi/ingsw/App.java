@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewSimulated;
 
 
 public class App {
@@ -15,6 +16,8 @@ public class App {
 
         Game game = new Game();
         View view = new View();
+        //View view = new ViewSimulated(); Uncomment this and comment view to get simulated matches
+
         Controller controller = new Controller(game, view);
 
         // Set controller as Observer of view, set view as Observer of game
