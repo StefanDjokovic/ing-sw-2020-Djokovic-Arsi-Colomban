@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.logger;
+
+import it.polimi.ingsw.model.logger.Log;
 
 import java.util.ArrayList;
 
@@ -23,11 +25,11 @@ public class Logger {
             return new Log();
     }
 
-    void addNewLog(int XFrom, int YFrom, int XTo, int YTo, char playerInit) {
+    public void addNewLog(int XFrom, int YFrom, int XTo, int YTo, char playerInit) {
         logHistory.add(new Log(XFrom, YFrom, XTo, YTo, playerInit));
     }
 
-    void addNewLog(char playerInit) {
+    public void addNewLog(char playerInit) {
         logHistory.add(new Log(playerInit));
     }
 

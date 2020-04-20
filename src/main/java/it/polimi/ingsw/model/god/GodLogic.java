@@ -7,7 +7,7 @@ import it.polimi.ingsw.messages.request.RequestDisplayBoard;
 import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
 import it.polimi.ingsw.messages.request.RequestUpdateBoardView;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Logger;
+import it.polimi.ingsw.model.logger.Logger;
 import it.polimi.ingsw.model.board.NonExistingTileException;
 import it.polimi.ingsw.model.god.godPowers.*;
 import it.polimi.ingsw.model.player.Player;

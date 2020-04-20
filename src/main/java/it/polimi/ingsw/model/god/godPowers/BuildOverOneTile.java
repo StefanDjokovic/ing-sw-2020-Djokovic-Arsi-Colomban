@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.god.godPowers;
 
 import it.polimi.ingsw.messages.OptionSelection;
-import it.polimi.ingsw.model.Log;
-import it.polimi.ingsw.model.Logger;
+import it.polimi.ingsw.model.logger.Logger;
 import it.polimi.ingsw.model.god.GodLogic;
 
 import java.util.ArrayList;

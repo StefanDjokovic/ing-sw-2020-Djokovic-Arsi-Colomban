@@ -7,10 +7,7 @@ import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.*;
 import it.polimi.ingsw.model.BoardView;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.TileView;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.NonExistingTileException;
 
 
 import java.awt.*;
@@ -30,8 +27,7 @@ public class View extends Observable implements Observer {
     private String ANSI_BLUE_BACKGROUND = "\u001B[44m";
     private String ANSI_BRIGHTRED_BACKGROUND = "\u001B[101m";
 
-
-    String currColor = "";
+    private String currColor = "";
 
     private Scanner scanner;
 
@@ -108,7 +104,6 @@ public class View extends Observable implements Observer {
                     }
                 }
             }
-
         }
 
         updateObservers(new AnswerWorkersPosition(posX, posY, initial));
@@ -158,7 +153,6 @@ public class View extends Observable implements Observer {
                 }
             }
         }
-
 
         return -1;
     }
@@ -218,7 +212,6 @@ public class View extends Observable implements Observer {
                 return;
             }
         }
-
         int w_select = getDestSelection(opt.getComb().get(0));
 
         Answer answer = new AnswerPowerCoordinates(
@@ -269,7 +262,6 @@ public class View extends Observable implements Observer {
         selectable[X2][Y2] = true;
 
         printSelectableBoard(selectable);
-
     }
 
 
@@ -287,7 +279,6 @@ public class View extends Observable implements Observer {
         }
 
         printSelectableBoard(selectable);
-
     }
 
     private void displayPossibleSelection(ArrayList<Integer> opt) {
@@ -302,7 +293,6 @@ public class View extends Observable implements Observer {
         }
 
         printSelectableBoard(selectable);
-
     }
 
     private void displayPossibleSelection(OptionSelection opt) {
@@ -317,7 +307,6 @@ public class View extends Observable implements Observer {
         }
 
         printSelectableBoard(selectable);
-
     }
 
     public void printSelectableBoard(boolean[][] selectable) {
@@ -329,7 +318,6 @@ public class View extends Observable implements Observer {
         }
 
         String ANSI_WHITE = "\u001B[37m";
-
 
         Font f = new Font("serif", Font.PLAIN, 20);
 
