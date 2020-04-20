@@ -78,7 +78,6 @@ public class View extends Observable implements Observer {
             }
         }
 
-        System.out.println("Currently only Basic is picked");
         System.out.println("You picked " + godSelected);
         updateObservers(new AnswerPlayerGod(godSelected, initial));
     }

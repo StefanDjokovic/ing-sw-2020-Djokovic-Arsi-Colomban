@@ -56,10 +56,8 @@ public class ViewSimulated extends View {
     }
 
     public void getPlayerInfo() {
-        System.out.println("Please, input Player's name: ");
-        String playerName = scanner.nextLine();
 
-        updateObservers(new AnswerPlayerName(playerName));
+        updateObservers(new AnswerPlayerName("Aria"));
 
     }
 
@@ -70,18 +68,11 @@ public class ViewSimulated extends View {
         for (String opt: options) {
             System.out.print(opt + " ");
         }
-        String godSelected = null;
-        while (godSelected == null) {
-            String playerGod = scanner.next();
-            for (String opt: options) {
-                if (opt.equals(playerGod)) {
-                    godSelected = playerGod;
-                    break;
-                }
-            }
-        }
+        Random randomGenerator = new Random();
+        int a = randomGenerator.nextInt(10);
+        String godSelected = options.get(a);
 
-        System.out.println("Currently only Basic is picked");
+
         System.out.println("You picked " + godSelected);
         updateObservers(new AnswerPlayerGod(godSelected, initial));
     }
@@ -92,7 +83,6 @@ public class ViewSimulated extends View {
 
         int posX = -1, posY = -1;
         while(unselected) {
-            System.out.println("Select X and Y coordinates of your worker");
             posX = getValidInt();
             posY = getValidInt();
 
@@ -114,13 +104,11 @@ public class ViewSimulated extends View {
 
 
     private int getWorkerSelection(int x1, int y1, int x2, int y2) {
-        System.out.println("Now you should select a Worker");
         System.out.println("Options: " + x1 + " " + y1 + " or " + x2 + " " + y2);
         displayActiveWorkers(x1, y1, x2, y2);
         int posX = -1, posY = -1;
         boolean unselected = true;
         while (unselected) {
-            System.out.println("Please, select an available Worker");
             posX = getValidInt();
             posY = getValidInt();
             if (x1 == posX && y1 == posY || x2 == posX && y2 == posY) {
@@ -142,7 +130,6 @@ public class ViewSimulated extends View {
         int posX, posY;
         boolean unselected = true;
         while (unselected) {
-            System.out.println("Please, select an available Cell");
             posX = getValidInt();
             posY = getValidInt();
             unselected = true;
@@ -168,7 +155,6 @@ public class ViewSimulated extends View {
 
         int posX, posY;
         while (true) {
-            System.out.println("Please, select an available Cell");
             posX = getValidInt();
             posY = getValidInt();
             for (int i = 2; i < opt.size(); i += 2) {                   // from 2 because 0 and 1 contain the worker pos
