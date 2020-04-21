@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Log {
 
-    int type = -1;
-    char playerInit;
-    ArrayList<Integer> action;
+    private int type = -1;
+    private char playerInit;
+    private ArrayList<Integer> action;
 
 
     // If there are no logs a Log of type -1 is returned

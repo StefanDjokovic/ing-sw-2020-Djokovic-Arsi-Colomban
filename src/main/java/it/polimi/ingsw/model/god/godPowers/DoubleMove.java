@@ -36,7 +36,7 @@ public class DoubleMove extends Move {
             opt =  getGodLogic().getOptionsGodLogic(1, 99, false, limitations, true);
             int lastWorkerUsedX = logger.getLastLog().getAction(2);     // X position dest
             int lastWorkerUsedY = logger.getLastLog().getAction(3);     // Y position dest
-            for (ArrayList<Integer> a: opt.getComb()) {
+            for (ArrayList<Integer> a: opt.getValues()) {
                 if (a.get(0) == lastWorkerUsedX && a.get(1) == lastWorkerUsedY) {
                     opt = new OptionSelection();
                     opt.setOptions(a);

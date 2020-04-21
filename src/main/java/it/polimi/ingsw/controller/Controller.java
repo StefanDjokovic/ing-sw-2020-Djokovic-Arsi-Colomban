@@ -12,11 +12,9 @@ import it.polimi.ingsw.view.View;
 public class Controller implements Observer {
 
     private Game game;
-    private View view;
 
-    public Controller(Game game, View view) {
+    public Controller(Game game) {
         this.game = game;
-        this.view = view;
     }
 
     @Override
@@ -31,7 +29,7 @@ public class Controller implements Observer {
     }
 
     public void setPlayerGod(String godName, char initial) {
-        game.setPlayerGod(godName, initial, view);
+        game.setPlayerGod(godName, initial);
     }
 
 

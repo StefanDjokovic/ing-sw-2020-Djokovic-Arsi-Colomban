@@ -21,7 +21,7 @@ public class RequestPowerCoordinates extends Request {
 
     @Override
     public void accept(View view) {
-        if (opt.getComb().size() == 2)
+        if (opt.getValues().size() == 2)
             view.getWorkerSelection(opt, this.canPass);
         else
             view.getWorkerSelectionOneOption(opt, this.canPass);

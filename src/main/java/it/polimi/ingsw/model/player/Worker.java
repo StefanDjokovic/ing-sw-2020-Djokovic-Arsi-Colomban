@@ -70,6 +70,10 @@ public class Worker {
      */
     public Tile getPosTile() { return this.posTile; }
 
+    public void delete() {
+        posTile.deleteWorkerAndOwner();
+    }
+
     @Override
     public String toString() {
         return posTile.getX() + " " + posTile.getY();

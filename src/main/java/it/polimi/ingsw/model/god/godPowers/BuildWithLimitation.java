@@ -24,7 +24,7 @@ public class BuildWithLimitation extends Build {
             Log log = logger.getLastLog();
             int lastWorkerUsedX = log.getAction(0);
             int lastWorkerUsedY = log.getAction(1);
-            for (ArrayList<Integer> a: opt.getComb()) {
+            for (ArrayList<Integer> a: opt.getValues()) {
                 if (a.get(0) == lastWorkerUsedX && a.get(1) == lastWorkerUsedY) {
                     opt = new OptionSelection();
                     opt.setOptions(a);

@@ -3,13 +3,12 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.messages.request.*;
 import it.polimi.ingsw.model.board.NonExistingTileException;
-import it.polimi.ingsw.model.board.Tile;
 import it.polimi.ingsw.model.god.GodLogic;
 import it.polimi.ingsw.model.logger.Logger;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Worker;
-import it.polimi.ingsw.view.View;
+
 
 import java.util.ArrayList;
 
@@ -17,7 +16,7 @@ public class Game extends Observable {
 
     private ArrayList<Player> players;
     private Board board;
-    private int numberOfPlayers = 2;    // Will let the players decide how many there are
+    private int numberOfPlayers = 3;    // Will let the players decide how many there are
     private Logger logger;
 
 
@@ -79,8 +78,6 @@ public class Game extends Observable {
 
     private int currPlayer = 0;
     public void gameStart() {
-
-        printWorkerOptionPlayers();
 
         if (players.size() == 1) {
             gameEnd();
@@ -160,8 +157,8 @@ public class Game extends Observable {
 
     }
 
-    public void setPlayerGod(String godName, char initial, View view) {
-        getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard()).addObserver(view);
+    public void setPlayerGod(String godName, char initial) {
+        getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard());
     }
 
     private void setOtherGodLogic(Player player) {
@@ -178,6 +175,7 @@ public class Game extends Observable {
     public void deletePlayer(Player p) {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i) == p) {
+                players.get(i).delete();
                 players.remove(p);
             }
         }
@@ -219,17 +217,6 @@ public class Game extends Observable {
 
         return returnMatrix;
 
-    }
-
-    private void printWorkerOptionPlayers() {
-        for (Player p: players) {
-            ArrayList<ArrayList<Tile>> result = p.getOptionTiles();
-            for (ArrayList<Tile> a: result) {
-                for (Tile t: a) {
-                    System.out.println(t.toString());
-                }
-            }
-        }
     }
 
     private void printPlayersDescription() {

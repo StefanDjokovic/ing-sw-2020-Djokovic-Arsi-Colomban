@@ -4,26 +4,26 @@ import java.util.ArrayList;
 
 public class OptionSelection {
 
-    ArrayList<ArrayList<Integer>> comb = new ArrayList<>();
+    private ArrayList<ArrayList<Integer>> values = new ArrayList<>();
 
 
     public void setOptions(ArrayList<Integer> positions) {
-        comb.add(positions);
+        values.add(positions);
     }
 
     public void fuseOptions(OptionSelection opt) {
-        this.comb.addAll(opt.comb);
+        this.values.addAll(opt.values);
     }
 
-    public ArrayList<ArrayList<Integer>> getComb() {
-        return this.comb;
+    public ArrayList<ArrayList<Integer>> getValues() {
+        return this.values;
     }
 
     @Override
     public String toString() {
         StringBuilder p = new StringBuilder();
         int count = 1;
-        for (ArrayList<Integer> workerOptions : comb) {
+        for (ArrayList<Integer> workerOptions : values) {
             p.append("Worker ").append(count).append(" at");
             for (int j = 0; j < workerOptions.size(); j++) {
                 p.append(" ").append(workerOptions.get(j));

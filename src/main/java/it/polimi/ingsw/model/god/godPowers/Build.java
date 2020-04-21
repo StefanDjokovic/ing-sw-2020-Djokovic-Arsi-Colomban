@@ -43,7 +43,7 @@ public class Build extends GodPower {
             }
             int lastWorkerUsedX = log.getAction(2);
             int lastWorkerUsedY = log.getAction(3);
-            for (ArrayList<Integer> a: opt.getComb()) {
+            for (ArrayList<Integer> a: opt.getValues()) {
                 if (a.get(0) == lastWorkerUsedX && a.get(1) == lastWorkerUsedY) {
                     opt = new OptionSelection();
                     opt.setOptions(a);

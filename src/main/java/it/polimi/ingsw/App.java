@@ -13,12 +13,12 @@ public class App {
     public static void main( String[] args ) {
         System.out.println("Starting the game!");
 
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1; i++) {
             Game game = new Game();
             View view = new View();
             // View view = new ViewSimulated(); //Uncomment this and comment view to get simulated matches
 
-            Controller controller = new Controller(game, view);
+            Controller controller = new Controller(game);
 
             // Set controller as Observer of view, set view as Observer of game
             view.addObserver(controller);
@@ -33,6 +33,8 @@ public class App {
             // Start the game
             game.gameStart();
         }
+
+        System.out.println("END");
 
 
 

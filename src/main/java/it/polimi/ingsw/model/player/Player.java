@@ -83,28 +83,10 @@ public class Player {
     }
 
     /**
-     * Returns list of the workers possessed by the player.
-     * @return List of workers.
-     */
-    public ArrayList<ArrayList<Tile>> getOptionTiles() {
-        ArrayList<ArrayList<Tile>> optionTiles = new ArrayList<>();
-        for (Worker w: workers) {
-            ArrayList<Tile> optionWorker = new ArrayList<>();
-            optionWorker.add(w.getPosTile());
-            optionWorker.addAll(w.getPosTile().getNeighbors());
-            optionTiles.add(optionWorker);
-        }
-
-        return optionTiles;
-
-    }
-
-    /**
      * Sets the initial letter of the player.
      * @param inital String containing the initial letter to set.
      */
     public void setInitial(char initial) { this.initial = initial; }
-
 
     public void executeTurn(Game game) {
         godLogic.executeTurn(game);
@@ -125,6 +107,12 @@ public class Player {
         }
 
         return opt;
+    }
+
+    public void delete() {
+        for (Worker w: workers) {
+            w.delete();
+        }
     }
 
 

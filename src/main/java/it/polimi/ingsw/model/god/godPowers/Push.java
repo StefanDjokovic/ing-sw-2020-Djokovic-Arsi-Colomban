@@ -39,7 +39,7 @@ public class Push extends Move {
 
         OptionSelection opt = getGodLogic().getOptionsGodLogic(1, 99, true, null, getCanPass());
 
-        for (ArrayList<Integer> comb: opt.getComb()) {
+        for (ArrayList<Integer> comb: opt.getValues()) {
             for (int i = 2; i < comb.size(); i += 2) {
                 if (getGodLogic().hasOpposingWorker(comb.get(i), comb.get(i + 1))) {
                     if (!(getGodLogic().isBehindFree(comb.get(0), comb.get(1), comb.get(i), comb.get(i + 1)))) {

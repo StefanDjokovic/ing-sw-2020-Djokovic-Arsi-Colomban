@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.request.RequestDisplayBoard;
@@ -15,7 +14,7 @@ import it.polimi.ingsw.model.board.Board;
 
 import java.util.ArrayList;
 
-public class GodLogic extends Observable {
+public class GodLogic {
 
     private String godLogicName;
     private Player player;
@@ -130,10 +129,6 @@ public class GodLogic extends Observable {
         }
     }
 
-    public ArrayList<GodLogic> getOtherGodLogic() {
-        return otherGodLogic;
-    }
-
     public int godLogicReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         int status = turn.get(currStep).power(board, posXFrom, posYFrom, posXTo, posYTo);
         if (status == 2)
@@ -204,7 +199,7 @@ public class GodLogic extends Observable {
     }
 
     private boolean hasOptions(OptionSelection opt) {
-        for (ArrayList<Integer> o: opt.getComb()) {
+        for (ArrayList<Integer> o: opt.getValues()) {
             if (o.size() > 2)
                 return true;
         }

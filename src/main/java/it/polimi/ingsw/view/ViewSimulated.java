@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.Observable;
-import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
@@ -205,18 +203,18 @@ public class ViewSimulated extends View {
         System.out.println("Displaying options: ");
         System.out.println(opt);
         if (canPass) {
-            displayPossibleSelection(opt.getComb().get(0));
+            displayPossibleSelection(opt.getValues().get(0));
             if (askIfPass()) {
                 Answer answer = new AnswerPowerCoordinates();
                 updateObservers(answer);
                 return;
             }
         }
-        int w_select = getDestSelection(opt.getComb().get(0));
+        int w_select = getDestSelection(opt.getValues().get(0));
 
         Answer answer = new AnswerPowerCoordinates(
-                opt.getComb().get(0).get(0), opt.getComb().get(0).get(1),
-                opt.getComb().get(0).get(w_select), opt.getComb().get(0).get(w_select + 1));
+                opt.getValues().get(0).get(0), opt.getValues().get(0).get(1),
+                opt.getValues().get(0).get(w_select), opt.getValues().get(0).get(w_select + 1));
         updateObservers(answer);
     }
 
@@ -230,13 +228,13 @@ public class ViewSimulated extends View {
                 return;
             }
         }
-        int selected = getWorkerSelection(opt.getComb().get(0).get(0), opt.getComb().get(0).get(1), opt.getComb().get(1).get(0), opt.getComb().get(1).get(1));
+        int selected = getWorkerSelection(opt.getValues().get(0).get(0), opt.getValues().get(0).get(1), opt.getValues().get(1).get(0), opt.getValues().get(1).get(1));
         int otherSelection = 0;
         if (selected == 0)
             otherSelection = 1;
         int w_select;
         do {
-            w_select = getDestSelection(opt.getComb().get(selected), opt.getComb().get(otherSelection).get(0), opt.getComb().get(otherSelection).get(1));
+            w_select = getDestSelection(opt.getValues().get(selected), opt.getValues().get(otherSelection).get(0), opt.getValues().get(otherSelection).get(1));
             if (w_select == -1) {
                 int temp = selected;
                 selected = otherSelection;
@@ -245,8 +243,8 @@ public class ViewSimulated extends View {
         } while (w_select == -1);
 
         Answer answer = new AnswerPowerCoordinates(
-                opt.getComb().get(selected).get(0), opt.getComb().get(selected).get(1),
-                opt.getComb().get(selected).get(w_select), opt.getComb().get(selected).get(w_select + 1));
+                opt.getValues().get(selected).get(0), opt.getValues().get(selected).get(1),
+                opt.getValues().get(selected).get(w_select), opt.getValues().get(selected).get(w_select + 1));
         updateObservers(answer);
     }
 
@@ -302,8 +300,8 @@ public class ViewSimulated extends View {
             for (int j = 0; j < 5; j++)
                 selectable[i][j] = false;
 
-        for (int i = 0; i < opt.getComb().size(); i++) {
-            selectable[opt.getComb().get(i).get(0)][opt.getComb().get(i).get(1)] = true;
+        for (int i = 0; i < opt.getValues().size(); i++) {
+            selectable[opt.getValues().get(i).get(0)][opt.getValues().get(i).get(1)] = true;
         }
 
         printSelectableBoard(selectable);
