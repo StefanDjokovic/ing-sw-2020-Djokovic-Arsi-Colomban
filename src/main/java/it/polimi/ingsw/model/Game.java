@@ -131,16 +131,26 @@ public class Game extends Observable {
         Player newPlayer = new Player(playerName, '*');
         if (players.size() == numberOfPlayers)
             updateObservers(new RequestCriticalError());
+        char initial = playerName.charAt(0);
         // Will update for 3 players with same name in the future
         if (players.size() > 0) {
+            int countStartingInitials = 0;
             for (Player player : players) {
-                if (player.getInitial() == playerName.charAt(0)) {
-                    if (player.getInitial() == 'A')
-                        newPlayer.setInitial('B');
-                    else
-                        newPlayer.setInitial('A');
+                if (player.getInitial() == initial) {
+                    if (player.getInitial() == 'A') {
+                        initial = 'B';
+                        countStartingInitials++;
+                    }
+                    else if (player.getInitial() == 'B') {
+                        initial = 'A';
+                        countStartingInitials++;
+                    }
                 }
             }
+            if (countStartingInitials != 2)
+                newPlayer.setInitial(initial);
+            else
+                newPlayer.setInitial('C');
         }
         if (newPlayer.getInitial() == '*')
             newPlayer.setInitial(playerName.charAt(0));

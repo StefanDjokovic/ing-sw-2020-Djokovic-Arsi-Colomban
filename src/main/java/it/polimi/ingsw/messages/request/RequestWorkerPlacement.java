@@ -12,6 +12,7 @@ public class RequestWorkerPlacement extends Request {
     public RequestWorkerPlacement(int[][] workers, char initial) {
         this.workers = workers;
         this.initial = initial;
+        this.message = "Need worker position";
     }
 
 

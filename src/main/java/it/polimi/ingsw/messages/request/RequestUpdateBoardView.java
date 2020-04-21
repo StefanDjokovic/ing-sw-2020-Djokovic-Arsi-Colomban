@@ -15,6 +15,7 @@ public class RequestUpdateBoardView extends Request {
 
     public RequestUpdateBoardView(Board board) {
         this.boardView = new BoardView(board);
+        this.message = "Update boardView";
     }
 
     @Override

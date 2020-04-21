@@ -10,7 +10,7 @@
 | Functionality | State |
 |:-----------------------|:------------------------------------:|
 | Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Complete rules | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
 | Socket | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | GUI | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
@@ -18,6 +18,8 @@
 | Persistence | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Advanced Gods | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Undo | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+
+**TODO for complete rules:** test 3 players game and delete the workers of the player that gets stuck 
 
 <!--
 [![RED](https://placehold.it/15/f03c15/f03c15)](#)

@@ -296,35 +296,41 @@ public class Tile {
         cellOpt.add(this.getY());
 
         for (Tile t: tiles) {
-            if (!t.hasWorker() || canIntoOpp) {     // if the tile does not have a worker or an opponent cell can be selected
-                if (!canIntoOpp || (t.hasWorker() && t.getWorker().getOwner().getInitial() != this.getWorker().getOwner().getInitial()))
-                    if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
-                        if (limitations == null) {
-                            cellOpt.add(t.getX());
-                            cellOpt.add(t.getY());
-                        }
-                        else {
-                            boolean appeared = false;
-                            for (int i = 0; i < limitations.size(); i += 2) {
-                                if (limitations.get(i) == t.getX() && limitations.get(i + 1) == t.getY()) {
-                                    appeared = true;
-                                    break;
-                                }
-                            }
-                            if (!appeared) {
-                                cellOpt.add(t.getX());
-                                cellOpt.add(t.getY());
-                            }
-                        }
+            if (!t.hasWorker()) {     // if the tile does not have a worker or an opponent cell can be selected{
+                addOpt(upDiff, downDiff, limitations, cellOpt, t);
 
-                    }
+            }
+            else if (canIntoOpp && (t.getWorker().getOwner().getInitial() != this.getWorker().getOwner().getInitial())) {
+                addOpt(upDiff, downDiff, limitations, cellOpt, t);
+
             }
         }
 
         opt.setOptions(cellOpt);
-        System.out.println("Het opt tiles");
-        System.out.println(opt);
         return opt;
+    }
+
+    private void addOpt(int upDiff, int downDiff, ArrayList<Integer> limitations, ArrayList<Integer> cellOpt, Tile t) {
+        if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
+            if (limitations == null) {
+                cellOpt.add(t.getX());
+                cellOpt.add(t.getY());
+            }
+            else {
+                boolean appeared = false;
+                for (int i = 0; i < limitations.size(); i += 2) {
+                    if (limitations.get(i) == t.getX() && limitations.get(i + 1) == t.getY()) {
+                        appeared = true;
+                        break;
+                    }
+                }
+                if (!appeared) {
+                    cellOpt.add(t.getX());
+                    cellOpt.add(t.getY());
+                }
+            }
+
+        }
     }
 
     @Override

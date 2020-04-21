@@ -6,9 +6,7 @@ import it.polimi.ingsw.model.board.Board;
 
 public class RequestDisplayBoard extends Request {
 
-    public RequestDisplayBoard() {
-
-    }
+    public RequestDisplayBoard() { message = "Board display";}
 
     @Override
     public void accept(View view) {
