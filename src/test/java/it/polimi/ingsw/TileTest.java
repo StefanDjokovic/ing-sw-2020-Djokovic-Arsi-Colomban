@@ -3,12 +3,12 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Worker;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 //import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 //import static org.junit.jupiter.api.Assertions.*;
 
@@ -135,7 +135,7 @@ public class TileTest {
         //assertNull(tile.getWorkerOwner());
 
         Player p = new Player("abc", 'a');
-        Worker w = new Worker(p);
+        Worker w = new Worker(p, tile);
         tile.setWorker(w);
         //tile.setWorkerOwner(p);
 
@@ -152,13 +152,13 @@ public class TileTest {
 
     @Test
     public void getWalkableNeighborsTest() {
-        try { assertEquals(3, new Board().getTile(0,0).getWalkableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum)); }
+        try { assertEquals(3, new Board().getTile(0,0).getWalkableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum), 0); }
         catch(NonExistingTileException | NoWalkableTilesException e) { fail(); }
 
-        try { assertEquals(5, new Board().getTile(0,2).getWalkableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum)); }
+        try { assertEquals(5, new Board().getTile(0,2).getWalkableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum), 0); }
         catch(NonExistingTileException | NoWalkableTilesException e) { fail(); }
 
-        try { assertEquals(8, new Board().getTile(2,2).getWalkableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum)); }
+        try { assertEquals(8, new Board().getTile(2,2).getWalkableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum), 0); }
         catch(NonExistingTileException | NoWalkableTilesException e) { fail(); }
 
 
@@ -175,7 +175,7 @@ public class TileTest {
         }
         try {
             Player p = new Player("test", 'a');
-            board.getTile(1, 0).setWorker(new Worker(p));
+            board.getTile(1, 0).setWorker(new Worker(p, board.getTile(1, 0)));
             //board.getTile(1, 0).setWorkerOwner(p);
         } catch (NonExistingTileException e) {
             fail();
@@ -191,13 +191,13 @@ public class TileTest {
 
     @Test
     public void getBuildableNeighborsTest() {
-        try { assertEquals(3, new Board().getTile(0,0).getBuildableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum)); }
+        try { assertEquals(3, new Board().getTile(0,0).getBuildableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum), 0); }
         catch(NonExistingTileException | NoBuildableTilesException e) { fail(); }
 
-        try { assertEquals(5, new Board().getTile(0,2).getBuildableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum)); }
+        try { assertEquals(5, new Board().getTile(0,2).getBuildableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum), 0); }
         catch(NonExistingTileException | NoBuildableTilesException e) { fail(); }
 
-        try { assertEquals(8, new Board().getTile(2,2).getBuildableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum)); }
+        try { assertEquals(8, new Board().getTile(2,2).getBuildableNeighbors().stream().map(x -> 1).reduce(0, Integer::sum), 0); }
         catch(NonExistingTileException | NoBuildableTilesException e) { fail(); }
 
 
@@ -214,7 +214,7 @@ public class TileTest {
         }
         try {
             Player p = new Player("test", 'a');
-            board.getTile(1, 0).setWorker(new Worker(p));
+            board.getTile(1, 0).setWorker(new Worker(p, board.getTile(1, 0)));
             //board.getTile(1, 0).setWorkerOwner(p);
         } catch (NonExistingTileException e) {
             fail();
@@ -339,9 +339,9 @@ public class TileTest {
         try {
             tile1 = board.getTile(0, 0);
             tile2 = board.getTile(0, 1);
-            assertTrue(tile1.isMovableTo(tile1, tile2, 1, 3));
+            assertTrue(tile1.isMovableTo(tile1, tile2, 1, 99));
             tile2.buildUp().buildUp().buildUp().buildUp();
-            assertFalse(tile1.isMovableTo(tile1, tile2, 1, 3));
+            assertFalse(tile1.isMovableTo(tile1, tile2, 1, 99));
         } catch (NonExistingTileException | NotBuildableException e) {
             fail();
         }
@@ -357,7 +357,7 @@ public class TileTest {
             board.getTile(0, 1).buildUp().buildUp().buildUp().buildUp();
             assertEquals(2, tile1.getMovableToNeigh(1, 3).size());
             board.getTile(1, 1).buildUp().buildUp().buildUp().buildUp();
-            board.getTile(1, 0).setWorker(new Worker(new Player("ramses", 'r')));
+            board.getTile(1, 0).setWorker(new Worker(new Player("ramses", 'r'), board.getTile(1, 0)));
             assertEquals(0, tile1.getMovableToNeigh(1, 3).size());
         } catch (NonExistingTileException | NotBuildableException e) {
             fail();

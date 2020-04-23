@@ -6,8 +6,8 @@ public class TileView {
     private boolean hasDome;
     private char initWorker;
 
-
-    TileView(int buildingLevel, boolean hasDome, char initWorker) {
+    //set to public, otherwise not testable
+    public TileView(int buildingLevel, boolean hasDome, char initWorker) {
         this.buildingLevel = buildingLevel;
         this.hasDome = hasDome;
         this.initWorker = initWorker;

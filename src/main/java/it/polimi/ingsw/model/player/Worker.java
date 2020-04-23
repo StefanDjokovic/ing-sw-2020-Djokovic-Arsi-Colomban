@@ -15,10 +15,6 @@ public class Worker {
     private final Player owner;
     private Tile posTile;
 
-    public Worker(Player owner) {
-        this.owner = owner;
-    }
-
     /**
      * Constructor.
      * @param owner The player that owns the worker (final).

@@ -165,7 +165,7 @@ public class Tile {
             buildingLevel++;
             return this;
         } else if (buildingLevel == 3 && !this.hasDome()){
-            buildingLevel++;
+            //buildingLevel++;
             dome = true;
             return this;
         } else {
@@ -254,7 +254,9 @@ public class Tile {
      * @return true if the worker can move, false otherwise
      */
     public boolean isMovableTo(Tile from, Tile dest, int moveUpMax, int moveDownMax) {
-        if (isWalkable())
+        //fixed totally wrong code, maybe I'm missing something
+        //if (isWalkable())
+        if (!dest.isWalkable())
             return false;
         return from.getBuildingLevel() + moveUpMax >= dest.getBuildingLevel() && from.getBuildingLevel() - moveDownMax <= dest.getBuildingLevel();
     }

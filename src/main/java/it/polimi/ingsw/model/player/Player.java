@@ -59,6 +59,7 @@ public class Player {
      * @return Reference to the god logic class implemented.
      */
     public GodLogic getGodLogic() { return godLogic; }
+
     public int getWorkersSize() {
         return workers.size();
     }

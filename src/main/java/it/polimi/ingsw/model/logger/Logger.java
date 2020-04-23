@@ -46,6 +46,5 @@ public class Logger {
         }
         else
             return "Nothing Logged yet";
-
     }
 }
