@@ -25,12 +25,11 @@
       <version>4.13</version>
       <scope>test</scope>
     </dependency>
-    <!--  <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter</artifactId>
-          <version>RELEASE</version>
-          <scope>test</scope>
-      </dependency>-->
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>13</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -75,6 +74,14 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-maven-plugin</artifactId>
+          <version>0.0.3</version>
+          <configuration>
+            <mainClass>it.polimi.ingsw.view.clientGUI</mainClass>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
       <plugins>
@@ -82,8 +89,8 @@
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-compiler-plugin</artifactId>
               <configuration>
-                  <source>8</source>
-                  <target>8</target>
+                  <source>13</source>
+                  <target>13</target>
               </configuration>
           </plugin>
       </plugins>
