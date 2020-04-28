@@ -4,25 +4,26 @@ import it.polimi.ingsw.model.TileView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
+import javafx.event.EventHandler;
+import javafx.geometry.*;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javafx.scene.input.MouseEvent;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class clientGUI extends Application{
 
@@ -31,6 +32,20 @@ public class clientGUI extends Application{
     private ArrayList<String> others;
     private TileView[][] board;
     private Button[][] boardSlots;
+    private ArrayList<ToggleButton> godButtons;
+    private ArrayList<String> selectedGods;
+    private int playersNum;
+
+    EventHandler<MouseEvent> workerHandler = e -> {
+        returnWorker(GridPane.getRowIndex(((Node)e.getSource())), GridPane.getColumnIndex(((Node)e.getSource())));
+    };
+    EventHandler<MouseEvent> tileHandler = e -> {
+        returnTile(GridPane.getRowIndex(((Node)e.getSource())), GridPane.getColumnIndex(((Node)e.getSource())));
+    };
+
+    //start -> loginUI (chiede nome) -> sendName (invia nome)
+    // startGodSelectionUI (riceve iniziale corretta e nome altri) -> godSelectionUI (chiede gods) -> sendGods (invia gods)
+    // startGameUI (riceve conferma) -> gameUI
 
     @Override
     public void start(Stage stage) {
@@ -60,7 +75,7 @@ public class clientGUI extends Application{
         lbl2.setFont(Font.font("Futura", FontWeight.NORMAL, 18));
 
         Button bt = new Button();
-        bt.setText("Esci");
+        bt.setText("Exit");
         bt.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt.setOnAction((ActionEvent event) -> {
             Platform.exit();
@@ -71,7 +86,7 @@ public class clientGUI extends Application{
 
 
         Button bt2 = new Button();
-        bt2.setText("Gioca");
+        bt2.setText("Play");
         bt2.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt2.setOnAction((ActionEvent event) -> {
             if(!txtf.getCharacters().toString().equals("")) {
@@ -113,6 +128,63 @@ public class clientGUI extends Application{
         stage.show();
     }
 
+    private void godSelectionUI(Stage stage) {
+        godButtons=createGodButtons();
+        ScrollPane sp = new ScrollPane();
+        FlowPane fp = new FlowPane(Orientation.HORIZONTAL);
+        fp.getStylesheets().add("style.css");
+        GridPane root = new GridPane();
+        root.setHgap(25);
+        root.setVgap(25);
+        fp.setHgap(8);
+        fp.setVgap(8);
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        //fp.setPrefWrapLength(sp.getWidth());
+        sp.setFitToWidth(true);
+        sp.setFitToHeight(true);
+
+        Scene scene = new Scene(root, 800, 700);
+
+        ColumnConstraints c = new ColumnConstraints();
+        c.setHgrow(Priority.ALWAYS);
+        root.getColumnConstraints().add(c);
+        RowConstraints r1 = new RowConstraints();
+        r1.setVgrow(Priority.NEVER);
+        RowConstraints r2 = new RowConstraints();
+        r2.setVgrow(Priority.ALWAYS);
+        RowConstraints r3 = new RowConstraints();
+        r3.setVgrow(Priority.NEVER);
+        root.getRowConstraints().addAll(r1, r2, r3);
+
+        godButtons.forEach(x -> fp.getChildren().add(x));
+
+        fp.setPadding(new Insets(25));
+        sp.setContent(fp);
+
+        Label l = new Label("Select the gods");
+        l.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
+        GridPane.setHalignment(l, HPos.CENTER);
+
+        Button b = new Button("Continue");
+        b.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
+        b.setOnAction((ActionEvent event) -> {
+            sendGods(selectedGods);
+            stage.close();
+        });
+        GridPane.setHalignment(b, HPos.CENTER);
+
+        root.add(l, 0, 0);
+        root.add(sp, 0, 1);
+        root.add(b, 0, 2);
+
+        root.setPadding(new Insets(25));
+        root.setAlignment(Pos.CENTER);
+        stage.setTitle("God selection");
+        stage.setScene(scene);
+        //stage.setResizable(false);
+        stage.show();
+    }
+
     private void gameUI(Stage stage) {
         GridPane root = new GridPane();
         GridPane grid = new GridPane();
@@ -120,12 +192,22 @@ public class clientGUI extends Application{
         root.setPadding(new Insets(25));
         grid.setHgap(8);
         grid.setVgap(8);
-        root.setHgap(4);
-        root.setVgap(4);
+        root.setHgap(8);
+        root.setVgap(8);
 
-        Scene scene = new Scene(root, 620, 460);
+        Scene scene = new Scene(root, 630, 470);
         grid.getStylesheets().add("style.css");
         root.getStylesheets().add("style.css");
+
+        Button regole = new Button();
+        regole.setId("buttontutorial");
+        regole.setText("Show rules");
+        regole.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
+        regole.setOnAction((ActionEvent event) -> {
+            rulesUI(new Stage());
+        });
+        GridPane.setHalignment(regole, HPos.LEFT);
+        root.add(regole, 0, 1);
 
         Button bt = new Button();
         bt.setId("buttonexit");
@@ -136,7 +218,7 @@ public class clientGUI extends Application{
         });
         GridPane.setHalignment(bt, HPos.LEFT);
         GridPane.setValignment(bt, VPos.BOTTOM);
-        root.add(bt, 0, 1);
+        root.add(bt, 0, 2);
 
         VBox leftInfo = new VBox();
 
@@ -149,6 +231,12 @@ public class clientGUI extends Application{
         lbl3.setText("Player name: "+playerName);
         lbl3.setFont(Font.font("Futura", 12));
         leftInfo.getChildren().add(lbl3);
+
+        Label gods = new Label();
+        gods.setText("Gods: "+selectedGods.stream().collect(Collectors.joining(", ")));
+        gods.setWrapText(true);
+        gods.setFont(Font.font("Futura", 12));
+        leftInfo.getChildren().add(gods);
 
         Label lbl4 = new Label();
         lbl4.setText("Player initial: "+playerInit);
@@ -208,9 +296,10 @@ public class clientGUI extends Application{
         dome.setFont(Font.font("Futura", 12));
         leftInfo.getChildren().add(dome);
 
+        //insert all the buttons
         for(int a = 0 ; a < 5 ; a++){
             for(int b = 0 ; b < 5 ; b++){
-                grid.add(boardSlots[a][b], a, b);
+                grid.add(boardSlots[a][b], b, a);
             }
         }
 
@@ -219,21 +308,144 @@ public class clientGUI extends Application{
 
         //debug
         //root.setGridLinesVisible(true);
-
         //boardSlots[2][2].setId("button3");
         //boardSlots[2][2].setDisable(true);
+        //addListener(2, 2);
+        /*ArrayList<Integer> a = new ArrayList<>();
+        a.add(0);
+        a.add(0);
+        a.add(1);
+        a.add(1);
+        a.add(0);
+        a.add(1);
+        a.add(1);
+        a.add(0);
+        askForTile(a);*/
 
-        stage.setTitle("Santorini");
+        stage.setTitle("God selection");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
+    public void rulesUI(Stage stage) {
+        ScrollPane sp = new ScrollPane();
+        //FlowPane fp = new FlowPane(Orientation.HORIZONTAL);
+        VBox vb = new VBox();
+        //fp.getStylesheets().add("style.css");
+        GridPane root = new GridPane();
+        root.setHgap(25);
+        root.setVgap(25);
+        //fp.setHgap(8);
+        //fp.setVgap(8);
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setFitToWidth(true);
+
+        Scene scene = new Scene(root, 800, 700);
+
+        //fp.width
+        /*vb.prefWidthProperty().bind(sp.widthProperty());
+        vb.setFillWidth(true);*/
+
+        ColumnConstraints c = new ColumnConstraints();
+        c.setHgrow(Priority.ALWAYS);
+        root.getColumnConstraints().add(c);
+        RowConstraints r1 = new RowConstraints();
+        r1.setVgrow(Priority.NEVER);
+        RowConstraints r2 = new RowConstraints();
+        r2.setVgrow(Priority.ALWAYS);
+        root.getRowConstraints().addAll(r1, r2);
+
+
+        try {
+            ImageView si = new ImageView();
+            si.setImage(new Image(new FileInputStream("src/resources/pages/0.jpg")));
+            si.setFitWidth(650);
+            si.setPreserveRatio(true);
+            vb.getChildren().add(si);
+            si = new ImageView();
+            si.setImage(new Image(new FileInputStream("src/resources/pages/1.jpg")));
+            si.setFitWidth(650);
+            si.setPreserveRatio(true);
+            vb.getChildren().add(si);
+            si = new ImageView();
+            si.setImage(new Image(new FileInputStream("src/resources/pages/2.jpg")));
+            si.setFitWidth(650);
+            si.setPreserveRatio(true);
+            vb.getChildren().add(si);
+            si = new ImageView();
+            si.setImage(new Image(new FileInputStream("src/resources/pages/3.jpg")));
+            si.setFitWidth(650);
+            si.setPreserveRatio(true);
+            vb.getChildren().add(si);
+            si = new ImageView();
+            si.setImage(new Image(new FileInputStream("src/resources/pages/4.jpg")));
+            si.setFitWidth(650);
+            si.setPreserveRatio(true);
+            vb.getChildren().add(si);
+            si = new ImageView();
+            si.setImage(new Image(new FileInputStream("src/resources/pages/5.jpg")));
+            si.setFitWidth(650);
+            si.setPreserveRatio(true);
+            vb.getChildren().add(si);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        vb.setAlignment(Pos.CENTER);
+        vb.setPadding(new Insets(25));
+        sp.setContent(vb);
+
+        Label l = new Label("Rules");
+        l.setFont(Font.font("Futura", FontWeight.NORMAL, 30));
+        GridPane.setHalignment(l, HPos.CENTER);
+
+        root.add(l, 0, 0);
+        root.add(sp, 0, 1);
+
+        root.setPadding(new Insets(25));
+        root.setAlignment(Pos.CENTER);
+        stage.setTitle("God selection");
+        stage.setScene(scene);
+        //stage.setResizable(false);
+        stage.show();
+    }
+
     public void sendName(String name) {
         System.out.println("Read: "+name);
-        playerName=name;
-        //if successful
-        gameUI(new Stage());
+        this.playerName=name;
+        this.playerInit=String.valueOf(name.charAt(0));
+        //send
+
+        //debug
+        startGodSelectionUI(this.playerInit.charAt(0), new ArrayList<String>(Arrays.asList("giovanni", "giacomo")));
+    }
+
+    public void sendGods(ArrayList<String> gods) {
+        System.out.println("Gods: "+selectedGods.stream().collect(Collectors.joining(", ")));
+        //send
+
+
+        //debug
+        startGameUI(true);
+    }
+
+    public void startGodSelectionUI(char initial, ArrayList<String> others) {
+        //sets stuff from server info
+        this.playerInit=String.valueOf(initial);
+        this.others=others;
+        this.playersNum=others.size()+1;
+
+        //start game
+        godSelectionUI(new Stage());
+    }
+
+    public void startGameUI(Boolean conferma) {
+        if(conferma) {
+            gameUI(new Stage());
+        } else {
+            System.out.println("Something went wrong...");
+        }
     }
 
     private void initBoardSlots() {
@@ -244,18 +456,10 @@ public class clientGUI extends Application{
                 boardSlots[a][b] = new Button();
                 boardSlots[a][b].setPrefSize(75, 75);
                 boardSlots[a][b].setFont(Font.font("Futura", 8));
-                boardSlots[a][b].setText("");
+                boardSlots[a][b].setText(a+" "+b);
                 boardSlots[a][b].setId("button");
                 boardSlots[a][b].setAccessibleRoleDescription(a+","+b);
                 boardSlots[a][b].setOnAction((ActionEvent event) -> {
-                    /*for(int x = 0 ; x < 5 ; x++) {
-                        for(int y = 0 ; y < 5 ; y++) {
-                            if(boardSlots[x][y].equals(event.getSource())) {
-                                System.out.println("Tile pressed: " + x + "," + y);
-                            }
-                        }
-                    }*/
-                    //System.out.println("Tile pressed: " + (((Control)event.getSource()).getAccessibleRoleDescription()));
                     System.out.println("Tile pressed: " + GridPane.getRowIndex(((Node)event.getSource())) + "," + (GridPane.getColumnIndex(((Node)event.getSource()))));
                 });
             }
@@ -266,29 +470,155 @@ public class clientGUI extends Application{
         board = new TileView[5][5];
     }
 
-    public void setOthers(ArrayList<String> others) {
-        this.others = others;
-    }
-
     private void updateBoardSlots(BoardView boardview) {
-        TileView[][] bv = boardview.getBoardView();
+        board = boardview.getBoardView();
+
+        //update for workers and board state
         for(int x = 0 ; x < 5 ; x++) {
             for(int y = 0 ; y < 5 ; y++) {
-                if(!boardSlots[x][y].getText().equals(String.valueOf(bv[x][y].getInitWorker()))) {
-                    boardSlots[x][y].setText(String.valueOf(bv[x][y].getInitWorker()));
+                boardSlots[x][y].setText(String.valueOf(board[x][y].getInitWorker()));
+                if(board[x][y].hasDome()){
+                    boardSlots[x][y].setId("buttondome");
                 }
-                if(boardSlots[x][y].isDisabled() && String.valueOf(bv[x][y].getInitWorker()).equals(this.playerInit)) {
-                    boardSlots[x][y].setDisable(false);
+                else if(board[x][y].getBuildingLevel()==0){
+                    boardSlots[x][y].setId("button0");
                 }
-                if(!boardSlots[x][y].isDisabled() && !String.valueOf(bv[x][y].getInitWorker()).equals(this.playerInit)) {
-                    boardSlots[x][y].setDisable(true);
+                else if(board[x][y].getBuildingLevel()==1){
+                    boardSlots[x][y].setId("button1");
+                }
+                else if(board[x][y].getBuildingLevel()==2){
+                    boardSlots[x][y].setId("button2");
+                }
+                else if(board[x][y].getBuildingLevel()==3){
+                    boardSlots[x][y].setId("button3");
                 }
             }
         }
     }
 
-    public void setPlayerInit(String init) {
-        this.playerInit=init;
+    public void askForWorker(ArrayList<Integer> options) {
+        for(int x = 0 ; x < 5 ; x++) {
+            for(int y = 0 ; y < 5 ; y++) {
+                boardSlots[x][y].setDisable(true);
+            }
+        }
+        for(int a = 0 ; a < options.size() - 1 ; a+=2) {
+            //addListenerWorker(options.get(a), options.get(a+1));
+            boardSlots[options.get(a)][options.get(a+1)].addEventFilter(MouseEvent.MOUSE_CLICKED, workerHandler);
+            boardSlots[options.get(a)][options.get(a+1)].setDisable(false);
+        }
+    }
+
+    public void askForTile(ArrayList<Integer> options) {
+        for(int x = 0 ; x < 5 ; x++) {
+            for(int y = 0 ; y < 5 ; y++) {
+                boardSlots[x][y].setDisable(true);
+            }
+        }
+        for(int a = 0 ; a < options.size() - 1 ; a+=2) {
+            //addListenerTile(options.get(a), options.get(a+1));
+            boardSlots[options.get(a)][options.get(a+1)].addEventFilter(MouseEvent.MOUSE_CLICKED, tileHandler);
+            boardSlots[options.get(a)][options.get(a+1)].setDisable(false);
+        }
+    }
+
+    public void returnWorker(int row, int column) {
+        //if is valid
+        boardSlots[row][column].removeEventFilter(MouseEvent.MOUSE_CLICKED, workerHandler);
+        System.out.println("Worker: " + row + " " + column);
+    }
+
+    public void returnTile(int row, int column) {
+        //if is valid
+        boardSlots[row][column].removeEventFilter(MouseEvent.MOUSE_CLICKED, tileHandler);
+        System.out.println("Tile: " + row + " " + column);
+    }
+
+    private ArrayList<ToggleButton> createGodButtons() {
+        ArrayList<ToggleButton> buttons = new ArrayList<>();
+        selectedGods = new ArrayList<>();
+
+        ToggleButton b = new ToggleButton();
+        b.setId("apollo");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("artemis");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("athena");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("atlas");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("demeter");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("hephaestus");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("hermes");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("minotaur");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("pan");
+        buttons.add(b);
+        b = new ToggleButton();
+        b.setId("prometheus");
+        buttons.add(b);
+
+        //debug
+        //System.out.println(godButtons.toString());
+
+        ToggleButton x;
+        for(int a = 1 ; a <= buttons.size() ;  a++){
+            x = buttons.get(a-1);
+            x.setFont(Font.font("Futura", 12));
+            x.setPrefSize(200, 300);
+            x.setOnAction((ActionEvent event) -> {
+                /*if(selectedGods.size() < playersNum) {
+                    if (!selectedGods.contains(((Control) event.getSource()).getId())) {
+                        selectedGods.add(String.valueOf(((Control) event.getSource()).getId()));
+                        System.out.println("Add: " + String.valueOf(((Control) event.getSource()).getId()));
+                    } else {
+                        selectedGods.remove(String.valueOf(((Control) event.getSource()).getId()));
+                        System.out.println("Remove: " + String.valueOf(((Control) event.getSource()).getId()));
+                    }
+                } else {
+                    ((ToggleButton) event.getSource()).setSelected(false);
+                }*/
+                if(selectedGods.contains(((Control) event.getSource()).getId())) {
+                    selectedGods.remove(String.valueOf(((Control) event.getSource()).getId()));
+                    System.out.println("Remove: " + String.valueOf(((Control) event.getSource()).getId()));
+                } else {
+                    if(selectedGods.size() < playersNum) {
+                        selectedGods.add(String.valueOf(((Control) event.getSource()).getId()));
+                        System.out.println("Add: " + String.valueOf(((Control) event.getSource()).getId()));
+                    } else {
+                        ((ToggleButton) event.getSource()).setSelected(false);
+                    }
+                }
+            });
+            System.out.println(String.format("%02d", a));
+            x.setBackground(new Background(new BackgroundImage(new Image("/graphic_resources/godCards/"+String.format("%02d", a)+".png", x.getWidth(), x.getHeight(), false, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(x.getWidth(), x.getHeight(), true, true, true, false))));
+        }
+
+        //debug
+        /*Button b;
+        int x=0;
+        while(x < 30){
+            b = new Button();
+            b.setId("generic god");
+            b.setFont(Font.font("Futura", 12));
+            b.setPrefSize(200, 300);
+            b.setBackground(new Background(new BackgroundImage(new Image("/graphic_resources/godCards/02.png", b.getWidth(), b.getHeight(), false, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(b.getWidth(), b.getHeight(), true, true, true, false))));
+            buttons.add(b);
+            x++;
+        }*/
+
+        return buttons;
     }
 
     public static void main(String[] args) {

@@ -31,6 +31,19 @@
     -fx-border-width: 2 2 2 2;
 }
 
+#buttontutorial {
+    -fx-background-radius:0;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color:transparent;
+    -fx-border-width: 2 2 2 2;
+}
+
+#buttontutorial:hover {
+    -fx-background-radius:0;
+    -fx-border-color:blue;
+    -fx-border-width: 2 2 2 2;
+}
+
 #buttonexit:disabled {
     -fx-background-radius:0;
     -fx-border-color:red;
@@ -96,5 +109,15 @@
     -fx-background-radius:0;
     -fx-background-color: #1338BE;
     -fx-border-color:transparent;
+    -fx-border-width: 2 2 2 2;
+}
+
+#artemis, #apollo, #athena, #atlas, #demeter, #haephestus, #hermes, #minotaur, #pan, #prometheus {
+    -fx-border-color:transparent;
+    -fx-border-width: 2 2 2 2;
+}
+
+#artemis:selected, #apollo:selected, #athena:selected, #atlas:selected, #demeter:selected, #hephaestus:selected, #hermes:selected, #minotaur:selected, #pan:selected, #prometheus:selected {
+    -fx-border-color:lime;
     -fx-border-width: 2 2 2 2;
 }
