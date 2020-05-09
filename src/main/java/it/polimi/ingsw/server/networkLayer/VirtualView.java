@@ -1,3 +1,4 @@
+/*
 package it.polimi.ingsw.server.networkLayer;
 
 import it.polimi.ingsw.Observable;
@@ -46,14 +47,13 @@ public class VirtualView extends Observable implements Observer  {
 
     @Override
     public void update(Request request) {
-        MessageReceiver messageReceiver = new MessageReceiver();
-        messageReceiver.update(request);
+        clientConnection.send(request);
     }
 
 
     @Override
     public void update(Answer answer) {
-        MessageReceiver messageReceiver = new MessageReceiver();
-        messageReceiver.update(answer);
+       System.out.println("View shouldn't receive answers");
     }
 }
+*/

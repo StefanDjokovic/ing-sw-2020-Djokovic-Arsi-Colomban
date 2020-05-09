@@ -4,6 +4,7 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.answers.AnswerPlayerName;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.player.Player;
@@ -53,17 +54,20 @@ public class ServerHandler{
             SocketConnection c1 = waitingConnection.get(keys.get(0));
             SocketConnection c2 = waitingConnection.get(keys.get(1));
             Player player1 = new Player(keys.get(0), '*');
-            Player player2 = new Player(keys.get(0),'*');
-            VirtualView virtualView1 = new VirtualView(player1, c1);
-            VirtualView virtualView2 = new VirtualView(player2, c2);
+            Player player2 = new Player(keys.get(1),'*');
+            //VirtualView virtualView1 = new VirtualView(player1, c1);
+            //VirtualView virtualView2 = new VirtualView(player2, c2);
             Game game = new Game(player1, player2);
             Controller controller = new Controller(game);
 
             // Set controller as Observer of view, set view as Observer of game
-            game.addObserver(virtualView1);
-            game.addObserver(virtualView2);
-            virtualView1.addObserver(controller);
-            virtualView2.addObserver(controller);
+            game.addObserver(c1);
+            game.addObserver(c2);
+            c1.addObserver(controller);
+            c2.addObserver(controller);
+
+            //c1.updateObservers(new AnswerPlayerName(player1.getName()));
+           // c2.updateObservers(new AnswerPlayerName(player2.getName()));
 
             playingConnection.put(c1, c2);
             playingConnection.put(c2, c1);
@@ -73,7 +77,8 @@ public class ServerHandler{
             game.init();
 
             // Start the game
-            game.gameStart();        }
+            game.gameStart();
+        }
     }
 
     public void run() {
@@ -83,7 +88,7 @@ public class ServerHandler{
                 SocketConnection connection = new SocketConnection(clientSocket, this);
                 executor.submit(connection); // Creates new thread
             } catch (IOException e){
-                System.err.println(e.getMessage());
+                System.err.println("This" + e.getMessage());
             }
         }
     }

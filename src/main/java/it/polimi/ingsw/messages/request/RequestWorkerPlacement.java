@@ -22,4 +22,5 @@ public class RequestWorkerPlacement extends Request {
         view.getWorkerPosition(workers, initial);
     }
 
+    public char getInitial() { return this.initial; }
 }

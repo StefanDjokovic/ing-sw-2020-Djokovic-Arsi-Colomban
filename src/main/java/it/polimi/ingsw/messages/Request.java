@@ -3,7 +3,9 @@ package it.polimi.ingsw.messages;
 import it.polimi.ingsw.client.networkLayer.Client;
 import it.polimi.ingsw.client.view.View;
 
-public abstract class Request {
+import java.io.Serializable;
+
+public abstract class Request implements Serializable {
 
     protected String message;
 

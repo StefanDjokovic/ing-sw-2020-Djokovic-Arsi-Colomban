@@ -55,7 +55,6 @@ public class View extends Observable implements Observer {
     public void getPlayerInfo() {
         System.out.println("Please, input Player's name: ");
         String playerName = scanner.nextLine();
-
         updateObservers(new AnswerPlayerName(playerName));
 
     }

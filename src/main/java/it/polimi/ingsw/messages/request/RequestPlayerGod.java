@@ -20,4 +20,6 @@ public class RequestPlayerGod extends Request {
     public void accept(View view) {
         view.getPlayerGod(initial, options);
     }
+
+    public char getInitial() { return this.initial; }
 }

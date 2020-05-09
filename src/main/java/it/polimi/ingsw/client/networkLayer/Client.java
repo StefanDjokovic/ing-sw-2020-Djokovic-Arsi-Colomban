@@ -5,6 +5,7 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.request.RequestPlayerName;
 
 
 import java.io.IOException;
@@ -86,9 +87,9 @@ public class Client implements Observer {
 
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
-        Scanner stdin = new Scanner(System.in);
-        inputStream = new ObjectInputStream(socket.getInputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
+        outputStream.flush();
+        inputStream = new ObjectInputStream(socket.getInputStream());
 
         try {
             Thread t = asyncSocketRead(inputStream);
