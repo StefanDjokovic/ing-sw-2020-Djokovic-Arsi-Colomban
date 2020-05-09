@@ -1,7 +1,8 @@
 package it.polimi.ingsw.messages;
 
 
-import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.client.networkLayer.Client;
+import it.polimi.ingsw.server.controller.Controller;
 
 public abstract class Answer {
 
@@ -12,6 +13,5 @@ public abstract class Answer {
     }
 
     public abstract void act(Controller controller);
-
 
 }

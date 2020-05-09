@@ -1,6 +1,6 @@
 package it.polimi.ingsw.messages.answers;
 
-import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.messages.Answer;
 
 public class AnswerWorkersPosition extends Answer {

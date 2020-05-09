@@ -1,11 +1,12 @@
+/*
 package it.polimi.ingsw;
 
 
-import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.model.Game;
 
-import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.ViewSimulated;
+import it.polimi.ingsw.server.controller.Controller;
+import it.polimi.ingsw.server.model.Game;
+
+import it.polimi.ingsw.client.view.View;
 
 
 public class App {
@@ -42,3 +43,4 @@ public class App {
 
     }
 }
+*/

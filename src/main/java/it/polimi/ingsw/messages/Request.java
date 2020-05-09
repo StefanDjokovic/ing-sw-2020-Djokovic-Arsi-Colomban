@@ -1,6 +1,7 @@
 package it.polimi.ingsw.messages;
 
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.client.networkLayer.Client;
+import it.polimi.ingsw.client.view.View;
 
 public abstract class Request {
 
@@ -15,5 +16,6 @@ public abstract class Request {
     }
 
     public abstract void accept(View view);
+
 
 }

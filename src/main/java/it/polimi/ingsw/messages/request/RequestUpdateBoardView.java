@@ -1,9 +1,9 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.model.BoardView;
-import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.server.model.BoardView;
+import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.server.model.board.Board;
 
 public class RequestUpdateBoardView extends Request {
 

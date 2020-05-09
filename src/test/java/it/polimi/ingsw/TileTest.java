@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.board.*;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Worker;
+import it.polimi.ingsw.server.model.board.*;
+import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.player.Worker;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

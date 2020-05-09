@@ -1,5 +1,5 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.model.logger.Logger;
+import it.polimi.ingsw.server.model.logger.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.NonExistingTileException;
-import it.polimi.ingsw.model.board.Tile;
+import it.polimi.ingsw.server.model.board.Board;
+import it.polimi.ingsw.server.model.board.NonExistingTileException;
+import it.polimi.ingsw.server.model.board.Tile;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

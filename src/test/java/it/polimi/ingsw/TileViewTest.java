@@ -1,5 +1,5 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.model.TileView;
+import it.polimi.ingsw.server.model.TileView;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

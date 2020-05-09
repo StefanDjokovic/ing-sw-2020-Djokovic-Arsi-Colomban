@@ -2,7 +2,7 @@ package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.client.view.View;
 
 public class RequestPowerCoordinates extends Request {
 
