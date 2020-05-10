@@ -8,6 +8,7 @@ import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.*;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
+import javafx.application.Application;
 
 
 import java.awt.*;
@@ -31,9 +32,58 @@ public class View extends Observable implements Observer {
 
     private Scanner scanner;
 
+    //added vars
+    private final int gameMode;
+    private static View instance = null;
+    private String playerName;
+    private ArrayList<String> players;
+    private int playersNum;
+    private char playerInit;
+    private ArrayList<String> selectedGods;
+
+    //gui specific method
+    public static View getInstance() {
+        return instance;
+    }
+
+    //gui specific method
+    public void setOtherPlayers(ArrayList<String> pl) {
+        this.players = pl;
+        this.playersNum = pl.stream().map(x -> 1).reduce(0, Integer::sum) + 1;
+    }
+
+    //gui specific method
+    public ArrayList<String> getPlayers() {
+        return this.players;
+    }
+
+    //gui specific method
+    public int getPlayersNum() {
+        return this.playersNum;
+    }
+
+    //adapted
     public View() {
         boardView = new BoardView().getBoardView();
         scanner = new Scanner(System.in);
+        instance = this;
+
+        //select game mode
+        System.out.println("Please select game mode:\n1) GUI\n2) CLI");
+        Scanner s = new Scanner(System.in);
+        String gm;
+        while(true){
+            gm = s.nextLine();
+            if(gm.equals("1")) {
+                gameMode=1;
+                break;
+            } else if (gm.equals("2")) {
+                gameMode=2;
+                break;
+            } else {
+                System.out.println("Wrong game mode selected.");
+            }
+        }
     }
 
     @Override
@@ -49,38 +99,81 @@ public class View extends Observable implements Observer {
     }
 
     public void updateBoardView(BoardView boardView) {
-        this.boardView = boardView.getBoardView();
+        if(gameMode == 1) {
+
+        }
+        if(gameMode == 2) {
+            this.boardView = boardView.getBoardView();
+        }
     }
 
+    //adapted
     public void getPlayerInfo() {
-        System.out.println("Please, input Player's name: ");
-        String playerName = scanner.nextLine();
-        updateObservers(new AnswerPlayerName(playerName));
-
+        if (gameMode == 1) {
+            Application.launch(loginGUI.class);
+        } else if (gameMode == 2) {
+            System.out.println("Please, input Player's name: ");
+            String playerName = scanner.nextLine();
+            updateObservers(new AnswerPlayerName(playerName));
+        } else {
+            System.out.println("GameMode error");
+        }
     }
 
+    //gui specific method
+    public void sendPlayerInfo(String name) {
+        this.playerName = name;
+        updateObservers(new AnswerPlayerName(name));
+    }
+
+    //gui specific method
+    public String getName() {
+        return this.playerName;
+    }
+
+    //gui specific method
+    public char getInit() {
+        return this.playerInit;
+    }
 
     // note: to add new Gods you have to change things both in GodLogic and Game
     public void getPlayerGod(char initial, ArrayList<String> options) {
-        System.out.println("Select " + initial + "'s God: ");
-        for (String opt: options) {
-            System.out.print(opt + " ");
+        if(this.gameMode == 1) {
+            this.playerInit = initial;
+            Application.launch(godSelectionGUI.class);
         }
-        String godSelected = null;
-        while (godSelected == null) {
-            String playerGod = scanner.next();
-            for (String opt: options) {
-                if (opt.equals(playerGod)) {
-                    godSelected = playerGod;
-                    break;
+        if(this.gameMode == 2) {
+            System.out.println("Select " + initial + "'s God: ");
+            for (String opt : options) {
+                System.out.print(opt + " ");
+            }
+            String godSelected = null;
+            while (godSelected == null) {
+                String playerGod = scanner.next();
+                for (String opt : options) {
+                    if (opt.equals(playerGod)) {
+                        godSelected = playerGod;
+                        break;
+                    }
                 }
             }
-        }
 
-        System.out.println("You picked " + godSelected);
-        updateObservers(new AnswerPlayerGod(godSelected, initial));
+            System.out.println("You picked " + godSelected);
+            updateObservers(new AnswerPlayerGod(godSelected, initial));
+        }
     }
 
+    //gui specific method
+    public void sendGods(ArrayList<String> gods) {
+        //TODO add possibility to send list of gods, not only 1 god
+        this.selectedGods = gods;
+        //updateObservers(new AnswerPlayerGod(gods, this.playerInit));
+    }
+
+    //gui specific method
+    public ArrayList<String> getGods() {
+        return this.selectedGods;
+    }
 
     public void getWorkerPosition(int[][] workers, char initial) {
         boolean unselected = true;
