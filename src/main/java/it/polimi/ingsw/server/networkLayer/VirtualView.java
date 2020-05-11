@@ -1,20 +1,11 @@
-/*
 package it.polimi.ingsw.server.networkLayer;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
-import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.server.controller.Controller;
-import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.player.Player;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 public class VirtualView extends Observable implements Observer  {
 
@@ -25,19 +16,14 @@ public class VirtualView extends Observable implements Observer  {
 
         @Override
         public void update(Answer answer) {
-            try{
-
-            }catch(IllegalArgumentException e){
-                // clientConnection.asyncSend("Error!");
-            }
+            VirtualView.this.updateObservers(answer);
         }
 
         @Override
         public void update(Request request) {
-            System.out.println("No");
+            System.out.println("Controller shouldn't receive Requests");
         }
     }
-
 
     public VirtualView(Player player, SocketConnection clientConnection) {
         this.player = player;
@@ -47,7 +33,9 @@ public class VirtualView extends Observable implements Observer  {
 
     @Override
     public void update(Request request) {
-        clientConnection.send(request);
+        if(player.getName().charAt(0) == request.getInitial()) {
+            clientConnection.send(request);
+        }
     }
 
 
@@ -56,4 +44,3 @@ public class VirtualView extends Observable implements Observer  {
        System.out.println("View shouldn't receive answers");
     }
 }
-*/

@@ -18,4 +18,8 @@ public class AnswerPlayerGod extends Answer {
     public void act(Controller controller) {
         controller.setPlayerGod(godName, initial);
     }
+
+    public String getGodName() {
+        return this.godName;
+    }
 }

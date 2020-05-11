@@ -116,10 +116,12 @@ public class Player {
         }
     }
 
-
+/*
     @Override
     public String toString() {
         return "Name: " + name + "; Initial: " + initial + "\nSelected God: " + godLogic.getGodLogicName() +
                 "\nWorker 1 at: " + workers.get(0).toString() + "\nWorker 2 at: " + workers.get(1).toString();
     }
+
+ */
 }

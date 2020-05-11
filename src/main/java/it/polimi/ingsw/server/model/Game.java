@@ -12,7 +12,9 @@ import it.polimi.ingsw.server.model.player.Worker;
 
 import java.util.ArrayList;
 
-public class Game extends Observable {
+import static java.lang.Thread.sleep;
+
+public class Game extends Observable{
 
     private ArrayList<Player> players;
     private Board board;
@@ -33,6 +35,7 @@ public class Game extends Observable {
         return board;
     }
 
+
     public void init() {
         /*
         updateObservers(new RequestPlayerName("First"));
@@ -40,6 +43,7 @@ public class Game extends Observable {
         if (numberOfPlayers == 3)
             updateObservers(new RequestPlayerName("Third"));
         */
+        /*
         ArrayList<String> opt = new ArrayList<>();
         opt.add("Basic");
         opt.add("Apollo");
@@ -55,7 +59,7 @@ public class Game extends Observable {
         for (Player player : players) {
             updateObservers(new RequestPlayerGod(player.getInitial(), opt));
         }
-
+        */
         for (Player player : players) {
             setOtherGodLogic(player);
         }
@@ -72,7 +76,7 @@ public class Game extends Observable {
 
         int count = 1;
         for (Player p: players) {
-            System.out.println("Player " + count + " : " + p.toString());
+            //System.out.println("Player " + count + " : " + p.toString());
             count++;
         }
 
@@ -83,11 +87,10 @@ public class Game extends Observable {
     public void gameStart() {
 
         if (players.size() == 1) {
-            gameEnd();
+               gameEnd();
         }
         else {
             players.get(currPlayer).executeTurn(this);
-
         }
     }
 
@@ -171,7 +174,7 @@ public class Game extends Observable {
                 otherGodLogics.add(q.getGodLogic());
         }
 
-        player.getGodLogic().setOtherGodLogic(otherGodLogics);
+    //    player.getGodLogic().setOtherGodLogic(otherGodLogics);
     }
 
     public void deletePlayer(Player p) {

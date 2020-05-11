@@ -4,15 +4,18 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.answers.AnswerPlayerGod;
 import it.polimi.ingsw.messages.answers.AnswerPlayerName;
 import it.polimi.ingsw.messages.request.RequestPlayerGod;
 import it.polimi.ingsw.messages.request.RequestPlayerName;
 import it.polimi.ingsw.messages.request.RequestWorkerPlacement;
+import it.polimi.ingsw.server.model.player.Player;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SocketConnection extends Observable implements Runnable, Observer {
@@ -74,20 +77,35 @@ public class SocketConnection extends Observable implements Runnable, Observer {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Asking for player's name...");
-            // send("Input player name");
             send(new RequestPlayerName("."));
             AnswerPlayerName playerName = (AnswerPlayerName) inputStream.readObject();
             //updateObservers(playerName);
             this.playerName = playerName.getString();
-            server.lobby(this, playerName.getString());
 
-            while(isActive()) {
+            // TODO: dirty fix, make it better and include it in Game
+            ArrayList<String> opt = new ArrayList<>();
+            opt.add("Basic");
+            opt.add("Apollo");
+            opt.add("Artemis");
+            opt.add("Atlas");
+            opt.add("Pan");
+            opt.add("Demeter");
+            opt.add("Hephaestus");
+            opt.add("Minotaur");
+            opt.add("Prometheus");
+            opt.add("Athena");
+            send(new RequestPlayerGod(this.playerName.charAt(0), opt));
+            AnswerPlayerGod playerGod = (AnswerPlayerGod) inputStream.readObject();
+            //TODO: end of the dirty fix
+
+            server.lobby(this, playerName.getString(), playerGod.getGodName());
+
+            while(true) {
                 Answer answer = (Answer) inputStream.readObject();
                 updateObservers(answer);
-                System.out.println("test");
             }
-        }  catch(IOException | ClassNotFoundException e){
-            System.err.println(e.getMessage());
+        }  catch(Exception e){
+            e.printStackTrace();
         } finally {
             close();
         }

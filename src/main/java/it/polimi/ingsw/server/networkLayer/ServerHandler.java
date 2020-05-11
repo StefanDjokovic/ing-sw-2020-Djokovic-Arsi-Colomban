@@ -26,6 +26,7 @@ public class ServerHandler{
     private ExecutorService executor = Executors.newFixedThreadPool(64);
     private Map<String, SocketConnection> waitingConnection = new HashMap<>();
     private Map<SocketConnection, SocketConnection> playingConnection = new HashMap<>();
+    private Map<String, String> nameGodLogicMap = new HashMap<>();
 
     public ServerHandler() throws IOException    {
         this.serverSocket = new ServerSocket(4567);
@@ -47,27 +48,30 @@ public class ServerHandler{
     }
 
     // This function gets created when one player is connect and it's waiting for another one. WIP: works only with 2 players
-    public synchronized void lobby(SocketConnection connection, String name) {
+    public synchronized void lobby(SocketConnection connection, String name, String godName) {
+        nameGodLogicMap.put(name, godName);
         waitingConnection.put(name, connection);
         if (waitingConnection.size() == 2) {  // Right now only works with 2 players
             ArrayList<String> keys = new ArrayList<>(waitingConnection.keySet());
             SocketConnection c1 = waitingConnection.get(keys.get(0));
             SocketConnection c2 = waitingConnection.get(keys.get(1));
+            String name1 = keys.get(0);
+            String name2 = keys.get(1);
             Player player1 = new Player(keys.get(0), '*');
             Player player2 = new Player(keys.get(1),'*');
-            //VirtualView virtualView1 = new VirtualView(player1, c1);
-            //VirtualView virtualView2 = new VirtualView(player2, c2);
+            VirtualView virtualView1 = new VirtualView(player1, c1);
+            VirtualView virtualView2 = new VirtualView(player2, c2);
             Game game = new Game(player1, player2);
             Controller controller = new Controller(game);
 
             // Set controller as Observer of view, set view as Observer of game
-            game.addObserver(c1);
-            game.addObserver(c2);
-            c1.addObserver(controller);
-            c2.addObserver(controller);
+            game.addObserver(virtualView1);
+            game.addObserver(virtualView2);
+            virtualView1.addObserver(controller);
+            virtualView2.addObserver(controller);
 
             //c1.updateObservers(new AnswerPlayerName(player1.getName()));
-           // c2.updateObservers(new AnswerPlayerName(player2.getName()));
+            //c2.updateObservers(new AnswerPlayerName(player2.getName()));
 
             playingConnection.put(c1, c2);
             playingConnection.put(c2, c1);
@@ -75,6 +79,9 @@ public class ServerHandler{
 
             // Initializing the game components and states
             game.init();
+
+            game.setPlayerGod(nameGodLogicMap.get(name1), name1.charAt(0));
+            game.setPlayerGod(nameGodLogicMap.get(name2), name2.charAt(0));
 
             // Start the game
             game.gameStart();
