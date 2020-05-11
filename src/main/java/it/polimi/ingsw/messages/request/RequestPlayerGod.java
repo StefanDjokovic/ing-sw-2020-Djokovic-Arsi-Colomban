@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class RequestPlayerGod extends Request {
 
-    char initial;
     ArrayList<String> options;
 
     public RequestPlayerGod(char initial, ArrayList<String> options) {

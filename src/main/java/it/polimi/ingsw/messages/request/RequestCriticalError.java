@@ -5,6 +5,10 @@ import it.polimi.ingsw.client.view.View;
 
 public class RequestCriticalError extends Request {
 
+    public RequestCriticalError() {
+        this.initial = '*';
+        this.message = "critical error";
+    }
 
     @Override
     public void accept(View view) {

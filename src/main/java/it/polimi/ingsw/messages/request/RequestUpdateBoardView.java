@@ -10,10 +10,12 @@ public class RequestUpdateBoardView extends Request {
     private BoardView boardView;
 
     public RequestUpdateBoardView(BoardView boardView) {
+        this.initial = '*';
         this.boardView = boardView;
     }
 
     public RequestUpdateBoardView(Board board) {
+        this.initial = '*';
         this.boardView = new BoardView(board);
         this.message = "Update boardView";
     }

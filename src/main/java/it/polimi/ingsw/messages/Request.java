@@ -8,6 +8,7 @@ import java.io.Serializable;
 public abstract class Request implements Serializable {
 
     protected String message;
+    protected char initial;
 
     public Request() {
         message = "This message should be set by subclasses";
@@ -19,5 +20,7 @@ public abstract class Request implements Serializable {
 
     public abstract void accept(View view);
 
-
+    public char getInitial() {
+        return this.initial;
+    }
 }

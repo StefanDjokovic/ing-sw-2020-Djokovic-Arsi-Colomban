@@ -5,7 +5,10 @@ import it.polimi.ingsw.client.view.View;
 
 public class RequestDisplayBoard extends Request {
 
-    public RequestDisplayBoard() { message = "Board display";}
+    public RequestDisplayBoard() {
+        initial = '*';
+        message = "Board display";
+    }
 
     @Override
     public void accept(View view) {

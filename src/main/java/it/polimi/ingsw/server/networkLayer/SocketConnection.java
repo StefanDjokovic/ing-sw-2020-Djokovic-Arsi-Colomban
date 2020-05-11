@@ -95,20 +95,11 @@ public class SocketConnection extends Observable implements Runnable, Observer {
 
     @Override
     public void update(Request request) {
-        send(request);
-    }
-
-    public void update(RequestPlayerGod request) {
-        if (request.getInitial() == playerName.charAt(0)) {
+        if(this.playerName.charAt(0) == request.getInitial()) {
             send(request);
         }
     }
 
-    public void update(RequestWorkerPlacement request) {
-        if (request.getInitial() == playerName.charAt(0)) {
-            send(request);
-        }
-    }
 
     @Override
     public void update(Answer answer) {

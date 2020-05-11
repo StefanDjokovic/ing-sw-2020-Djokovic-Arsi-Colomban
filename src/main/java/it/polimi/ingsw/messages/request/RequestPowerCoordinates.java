@@ -11,6 +11,7 @@ public class RequestPowerCoordinates extends Request {
 
 
     public RequestPowerCoordinates(OptionSelection opt, boolean canPass) {
+        this.initial = '*';
         this.opt = opt;
         this.canPass = canPass;
         if (canPass)

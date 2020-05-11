@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.view.View;
 public class RequestPlayerName extends Request {
 
     public RequestPlayerName(String numberPlayer) {
+        initial = '*';
         message = "Required " + numberPlayer + "'s Name";
     }
 
