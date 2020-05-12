@@ -42,7 +42,7 @@ public class Client implements Observer {
             @Override
             public void run() {
                 try {
-                    while(isActive()) {
+                    while(true) {
                         Request request = (Request) inputStream.readObject();
                         request.accept(view);
                     }

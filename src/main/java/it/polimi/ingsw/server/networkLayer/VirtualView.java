@@ -16,6 +16,7 @@ public class VirtualView extends Observable implements Observer  {
 
         @Override
         public void update(Answer answer) {
+            System.out.println("Answer inbound!");
             VirtualView.this.updateObservers(answer);
         }
 

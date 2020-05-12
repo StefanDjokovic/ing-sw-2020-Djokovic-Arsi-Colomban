@@ -60,6 +60,7 @@ public class Game extends Observable{
             updateObservers(new RequestPlayerGod(player.getInitial(), opt));
         }
         */
+        /*
         for (Player player : players) {
             setOtherGodLogic(player);
         }
@@ -78,7 +79,7 @@ public class Game extends Observable{
         for (Player p: players) {
             //System.out.println("Player " + count + " : " + p.toString());
             count++;
-        }
+        }*/
 
         System.out.println("Setup completed. Let's play!");
     }
@@ -199,7 +200,7 @@ public class Game extends Observable{
         return null;
     }
 
-    private int[][] getAllWorkersAsMatrix() {
+    public int[][] getAllWorkersAsMatrix() {
 
         int nWorkers = 0;
         for (Player p : players) {

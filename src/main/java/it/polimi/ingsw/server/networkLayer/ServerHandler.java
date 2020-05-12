@@ -5,6 +5,10 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerPlayerName;
+import it.polimi.ingsw.messages.answers.AnswerWorkersPosition;
+import it.polimi.ingsw.messages.request.RequestDisplayBoard;
+import it.polimi.ingsw.messages.request.RequestUpdateBoardView;
+import it.polimi.ingsw.messages.request.RequestWorkerPlacement;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.player.Player;
@@ -57,18 +61,18 @@ public class ServerHandler{
             SocketConnection c2 = waitingConnection.get(keys.get(1));
             String name1 = keys.get(0);
             String name2 = keys.get(1);
-            Player player1 = new Player(keys.get(0), '*');
-            Player player2 = new Player(keys.get(1),'*');
+            Player player1 = new Player(name1, '*');
+            Player player2 = new Player(name2,'*');
             VirtualView virtualView1 = new VirtualView(player1, c1);
             VirtualView virtualView2 = new VirtualView(player2, c2);
             Game game = new Game(player1, player2);
             Controller controller = new Controller(game);
 
             // Set controller as Observer of view, set view as Observer of game
-            game.addObserver(virtualView1);
-            game.addObserver(virtualView2);
-            virtualView1.addObserver(controller);
-            virtualView2.addObserver(controller);
+            game.addObserver(c1);
+            game.addObserver(c2);
+            c1.addObserver(controller);
+            c2.addObserver(controller);
 
             //c1.updateObservers(new AnswerPlayerName(player1.getName()));
             //c2.updateObservers(new AnswerPlayerName(player2.getName()));
@@ -78,10 +82,25 @@ public class ServerHandler{
             waitingConnection.clear();
 
             // Initializing the game components and states
-            game.init();
-
             game.setPlayerGod(nameGodLogicMap.get(name1), name1.charAt(0));
             game.setPlayerGod(nameGodLogicMap.get(name2), name2.charAt(0));
+            for(int i = 0; i < 2; i++){
+                c1.send(new RequestWorkerPlacement(game.getAllWorkersAsMatrix(), name1.charAt(0)));
+                AnswerWorkersPosition answer = c1.readPosition();
+                System.out.println("Answer received");
+                controller.update(answer);
+                c1.send(new RequestUpdateBoardView(game.getBoard()));
+                c1.send(new RequestDisplayBoard());
+            }
+            for(int i = 0; i < 2; i++){
+                c2.send(new RequestWorkerPlacement(game.getAllWorkersAsMatrix(), name2.charAt(0)));
+                c2.readPosition();
+                c2.send(new RequestUpdateBoardView(game.getBoard()));
+                c2.send(new RequestDisplayBoard());
+            }
+            game.init();
+
+
 
             // Start the game
             game.gameStart();

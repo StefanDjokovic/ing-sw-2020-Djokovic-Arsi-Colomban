@@ -16,7 +16,7 @@ public class Controller implements Observer {
 
     @Override
     public void update(Answer answer) {
-
+        System.out.println("Controller received answer");
         answer.act(this);
 
     }

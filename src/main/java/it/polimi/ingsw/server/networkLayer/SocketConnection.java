@@ -6,9 +6,9 @@ import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerPlayerGod;
 import it.polimi.ingsw.messages.answers.AnswerPlayerName;
-import it.polimi.ingsw.messages.request.RequestPlayerGod;
-import it.polimi.ingsw.messages.request.RequestPlayerName;
-import it.polimi.ingsw.messages.request.RequestWorkerPlacement;
+import it.polimi.ingsw.messages.answers.AnswerPowerCoordinates;
+import it.polimi.ingsw.messages.answers.AnswerWorkersPosition;
+import it.polimi.ingsw.messages.request.*;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.io.IOException;
@@ -53,6 +53,46 @@ public class SocketConnection extends Observable implements Runnable, Observer {
                     send(request);
             }
         }).start();
+    }
+
+    public synchronized AnswerWorkersPosition readPosition() {
+        try {
+                AnswerWorkersPosition answer = (AnswerWorkersPosition) inputStream.readObject();
+                //updateObservers(answer);
+                return answer;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Thread asyncReadTurn(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    while(true) {
+                        Answer answer = (Answer) inputStream.readObject();
+                        updateObservers(answer);
+                    }
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        return thread;
+    }
+
+    public synchronized void readTurn() {
+        try{
+            while(true) {
+                AnswerPowerCoordinates answer = (AnswerPowerCoordinates) inputStream.readObject();
+                updateObservers(answer);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public synchronized void closeConnection() {
@@ -100,14 +140,11 @@ public class SocketConnection extends Observable implements Runnable, Observer {
 
             server.lobby(this, playerName.getString(), playerGod.getGodName());
 
-            while(true) {
-                Answer answer = (Answer) inputStream.readObject();
-                updateObservers(answer);
-            }
+            readPosition();
         }  catch(Exception e){
             e.printStackTrace();
         } finally {
-            close();
+           //close();
         }
     }
 
