@@ -15,7 +15,7 @@ public class ClientApp {
         //Application.launch(clientGUI.class);
 
         View view = new View();
-        view.printSelectableBoard(null);
+        view.printSelectableBoard(null);    //TODO move this method inside view constructor
         Client client = new Client("127.0.0.1", 4567, view); // TODO: will fix later, let the user input ip address and port
         try{
             client.run();

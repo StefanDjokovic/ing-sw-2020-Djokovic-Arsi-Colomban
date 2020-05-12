@@ -101,8 +101,7 @@ public class View extends Observable implements Observer {
     public void updateBoardView(BoardView boardView) {
         if(gameMode == 1) {
 
-        }
-        if(gameMode == 2) {
+        } else if(gameMode == 2) {
             this.boardView = boardView.getBoardView();
         }
     }
@@ -138,11 +137,10 @@ public class View extends Observable implements Observer {
 
     // note: to add new Gods you have to change things both in GodLogic and Game
     public void getPlayerGod(char initial, ArrayList<String> options) {
-        if(this.gameMode == 1) {
+        if (this.gameMode == 1) {
             this.playerInit = initial;
             Application.launch(godSelectionGUI.class);
-        }
-        if(this.gameMode == 2) {
+        } else if (this.gameMode == 2) {
             System.out.println("Select " + initial + "'s God: ");
             for (String opt : options) {
                 System.out.print(opt + " ");
