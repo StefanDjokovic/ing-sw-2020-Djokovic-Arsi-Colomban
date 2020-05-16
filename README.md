@@ -1,6 +1,6 @@
 # Rework-Socket-Todo:
-* Fix Closing statement at the end of the game
-* Fix Client or Server Disconnect
+* Check if everything works when a player has to be deleted because stuck
+* Set everything up for 3 player games
 
 # Prova Finale Ingegneria del Software 2020
 

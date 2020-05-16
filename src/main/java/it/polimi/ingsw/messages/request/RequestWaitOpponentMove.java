@@ -6,7 +6,7 @@ import it.polimi.ingsw.messages.Request;
 public class RequestWaitOpponentMove extends Request {
 
     public RequestWaitOpponentMove() {
-        this.message = "Need worker position";
+        this.message = "Waiting Opponents' move";
         this.isAsync = true;
     }
 

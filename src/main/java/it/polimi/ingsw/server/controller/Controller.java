@@ -31,11 +31,20 @@ public class Controller implements Observer {
         System.out.println("ARE WE HERE???");
         game.setPlayerGod(godName, initial);
         System.out.println("hmm???");
+    }
 
+    public void killPlayer(char initial) {
+        game.deletePlayer(game.getPlayerFromInitial(initial));
+    }
+
+    public void killGame() {
+        game.killGame();
     }
 
     public void initProcess() {
         game.initGods();
+        game.initWorker();
+        game.gameStart();
     }
 
 

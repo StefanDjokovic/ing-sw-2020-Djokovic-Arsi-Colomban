@@ -21,6 +21,10 @@ public class Observable {
             observers.add(o);
     }
 
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
     public void updateObservers(Request request) {
         for (Observer o : observers)
             o.update(request);

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.answers.AnswerKillPlayer;
 import it.polimi.ingsw.messages.answers.AnswerPlayerName;
 import it.polimi.ingsw.messages.request.*;
 
@@ -42,6 +43,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             outputStream.flush();
             System.out.println("flushed ServerSocket");
         } catch (IOException e) {
+            System.out.println("IO Exception on send, you are dumb");
             System.err.println(e.getMessage());
         }
     }
@@ -66,33 +68,35 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             //server.readAnswer(answer);
             //return answer;
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
+            closeServerSocket();
+            updateObservers(new AnswerKillPlayer(playerInitial));
         }
         return null;
     }
 
-    public Thread asyncReadTurn(){
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(true) {
-                        System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
-                        Object temp = inputStream.readObject();
-                        Answer answer = (Answer) temp;
-                        answer.setInitial(playerInitial);
-                        System.out.println("AAAAAAAAAAAAAAAAAAAA\n");
-                        updateObservers(answer);
-                        System.out.println("Im closing the asnycronous read turn\n");
-                    }
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-        return thread;
-    }
+//    public Thread asyncReadTurn(){
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try{
+//                    while(true) {
+//                        System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
+//                        Object temp = inputStream.readObject();
+//                        Answer answer = (Answer) temp;
+//                        answer.setInitial(playerInitial);
+//                        System.out.println("AAAAAAAAAAAAAAAAAAAA\n");
+//                        updateObservers(answer);
+//                        System.out.println("Im closing the asnycronous read turn\n");
+//                    }
+//                } catch(Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//        thread.start();
+//        return thread;
+//    }
 //
 //    public synchronized void readTurn() {
 //        try{
@@ -112,6 +116,15 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             System.err.println(e.getMessage());
         }
         isActiveFlag = false;
+    }
+
+    public void closeServerSocket() {
+        isActiveFlag = false;
+
+//        closeConnection();
+//        System.out.println("Deregistering client...");
+//        server.deregisterConnection(this);
+//        System.out.println("Done!");
     }
 
     public void close() {
@@ -147,9 +160,9 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             System.out.println("\nNow would go here\n");
             server.lobby(this, playerName.getString());
 
-
         }  catch(Exception e){
             e.printStackTrace();
+            //close();
         } finally {
            //close();
         }
@@ -157,20 +170,25 @@ public class ServerSocket extends Observable implements Runnable, Observer {
 
     @Override
     public void update(Request request) {
-        if (this.playerInitial == request.getInitial() || request.getInitial() == '*') {
-            request.printMessage();
-            System.out.println("Request sent to " + request.getInitial());
-            send(request);
-            if (!request.isAsync()) {
-                readFromSocket();
-//                try {
-//                    Thread t = asyncReadTurn();
-//                    t.join();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+        if (isActiveFlag) {
+            if (this.playerInitial == request.getInitial() || request.getInitial() == '*') {
+                request.printMessage();
+                System.out.println("Request sent to " + request.getInitial());
+                send(request);
+                if (!request.isAsync()) {
+                    readFromSocket();
+                    //                try {
+                    //                    Thread t = asyncReadTurn();
+                    //                    t.join();
+                    //                } catch (InterruptedException e) {
+                    //                    e.printStackTrace();
+                    //                }
+                }
+                System.out.println("Terminating update ServerSocket " + playerInitial);
             }
-            System.out.println("Terminating update ServerSocket " + playerInitial);
+            else {
+                send(new RequestWaitOpponentMove());
+            }
         }
     }
 

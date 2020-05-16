@@ -203,7 +203,7 @@ public class clientCLI extends Observable implements Observer {
         }
         System.out.println("Sending answerWorkerPosition");
         //updateObservers(new AnswerDebug());
-        updateObservers(new AnswerWorkersPosition(posX, posY, initial));    // Implanting int values?
+        updateObservers(new AnswerWorkersPosition(posX, posY, initial));
     }
 
 
@@ -404,6 +404,15 @@ public class clientCLI extends Observable implements Observer {
         }
 
         printSelectableBoard(selectable);
+    }
+
+    public void displayGameEnd(char winnerInit) {
+        if (winnerInit == playerInit) {
+            System.out.println("YOU WON! GOOD JOB!");
+        }
+        else {
+            System.out.println("You lost, noob!");
+        }
     }
 
     public void printSelectableBoard(boolean[][] selectable) {

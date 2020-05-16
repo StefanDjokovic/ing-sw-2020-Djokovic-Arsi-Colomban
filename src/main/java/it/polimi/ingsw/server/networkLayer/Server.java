@@ -25,7 +25,7 @@ public class Server {
 
     private static final int nPlayers = 2;
 
-    public static final int PORT = 4567;
+    public static final int PORT = 4568;
     private java.net.ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(64);
     private Map<String, ServerSocket> waitingConnection = new HashMap<>();
@@ -51,7 +51,11 @@ public class Server {
         }
     }
 
+    public synchronized void removeSocketConnection(ServerSocket connection) {
+        game.removeObserver(connection);
+    }
 
+    public Game game;
     public synchronized void lobby(ServerSocket connection, String name) {
         waitingConnection.put(name, connection);
         if (waitingConnection.size() == nPlayers) {
@@ -62,7 +66,7 @@ public class Server {
             String name1 = keys.get(0);
             String name2 = keys.get(1);
             System.out.println(name1 + " and " + name2);
-            Game game = new Game();
+            game = new Game();
             Controller controller = new Controller(game);
             char player1Init = controller.initPlayer(name1);
             c1.setPlayerInitial(player1Init);
@@ -81,6 +85,9 @@ public class Server {
             playingConnection.put(c2, c1);
 
             controller.initProcess();
+
+            c1.close();
+            c2.close();
         }
     }
 //

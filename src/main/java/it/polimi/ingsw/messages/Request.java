@@ -28,4 +28,8 @@ public abstract class Request implements Serializable {
     }
 
     public boolean isAsync() {return isAsync;}
+
+    public String getMessage() {
+        return message;
+    }
 }

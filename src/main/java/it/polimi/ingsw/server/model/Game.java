@@ -55,14 +55,11 @@ public class Game extends Observable{
         if (players.get(0).getGodLogic() == null) {
             updateObservers(new RequestPlayerGod(players.get(0).getInitial(), opt));
         }
-        else if (players.get(1).getGodLogic() == null) {
+        if (players.get(1).getGodLogic() == null) {
             updateObservers(new RequestPlayerGod(players.get(1).getInitial(), opt));
         }
-        else if (players.size() > 2 && players.get(2).getGodLogic() == null) {
+        if (players.size() > 2 && players.get(2).getGodLogic() == null) {
             updateObservers(new RequestPlayerGod(players.get(2).getInitial(), opt));
-        }
-        else {
-            initWorker();
         }
     }
 
@@ -70,22 +67,28 @@ public class Game extends Observable{
         System.out.println("Init worker");
         printPlayersDescription();
         updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
-        if (players.get(0).getWorkersSize() < 2) {
-            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(0).getInitial()));
-        }
-        else if (players.get(1).getWorkersSize() < 2) {
-            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(1).getInitial()));
-        }
-        else {
-            // Setting up otherGodLogic for each player (essential feature for Athena)
-            for (Player player : players) {
-                setOtherGodLogic(player);
-            }
+        updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(0).getInitial()));
+        updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
+        updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(0).getInitial()));
+        updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
+        updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(1).getInitial()));
+        updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
+        updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(1).getInitial()));
+        updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
+        if (players.size() > 2) {
+            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(2).getInitial()));
             updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
-            System.out.println("Everything is ready for the game!");
-            gameStart();
-            updateObservers(new RequestInternalAsyncRead());
+            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(2).getInitial()));
+            updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
         }
+
+        // Setting up otherGodLogic for each player (essential feature for Athena)
+        for (Player player : players) {
+            setOtherGodLogic(player);
+        }
+        updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
+        System.out.println("Everything is ready for the game!");
+
     }
 
     public void init() {
@@ -138,10 +141,16 @@ public class Game extends Observable{
     private int currPlayer = 0;
     public void gameStart() {
 
-        while (players.size() != 1 && status != 2) {
+        while (players != null  && players.size() != 1 && status != 2) {
             System.out.println("Executing turn!");
             players.get(currPlayer).executeTurn(this);
             System.out.println("Turn completed!\n");
+        }
+        if (players != null) {
+            if (players.size() == 1)
+                updateObservers(new RequestGameEnd(players.get(0).getInitial()));
+            else
+                updateObservers(new RequestGameEnd('*'));
         }
         gameEnd();
 
@@ -169,7 +178,7 @@ public class Game extends Observable{
     private void gameEnd() {
 //        updateObservers(new RequestUpdateBoardView(board));   // TODO: end of game requests
 //        updateObservers(new RequestDisplayBoard());
-        System.out.println("We have a winner! GG! Hope you enjoyed the game! :)");
+        System.out.println("End of the game!");
     }
 
 
@@ -223,10 +232,20 @@ public class Game extends Observable{
 
     }
 
+    public void killPlayer(char initial) {
+        for (Player p: players) {
+            if (p.getInitial() == initial) {
+                p.delete();
+                players.remove(p);
+            }
+            break;
+        }
+    }
+
     public void setPlayerGod(String godName, char initial) {
         getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard());
         opt.remove(godName);
-        initGods();
+        //initGods();
     }
 //
 //    public void setPlayerGod(String godName, String name) {
@@ -265,12 +284,16 @@ public class Game extends Observable{
         currPlayer = currPlayer % players.size();
     }
 
-    public void setWorker(int x, int y, char initial) throws NonExistingTileException {
-        getPlayerFromInitial(initial).addWorker(getBoard().getTile(x, y));
-        initWorker();
+    public void killGame() {
+        System.out.println("A used has disconnected, killing everything");
+        players = null;     // Killing the whole thing
     }
 
-    private Player getPlayerFromInitial(char initial) {
+    public void setWorker(int x, int y, char initial) throws NonExistingTileException {
+        getPlayerFromInitial(initial).addWorker(getBoard().getTile(x, y));
+    }
+
+    public Player getPlayerFromInitial(char initial) {
         for (Player p : players) {
             if (p.getInitial() == initial)
                 return p;

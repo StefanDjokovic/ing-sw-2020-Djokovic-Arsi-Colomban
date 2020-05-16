@@ -116,9 +116,9 @@ public class GodLogic {
             else {
                 System.out.println("THIS BOY HAS LOST!");
                 game.deletePlayer(getPlayer());
-                game.updateObservers(new RequestUpdateBoardView(board, player.getInitial()));
-                game.updateObservers(new RequestDisplayBoard(player.getInitial()));
-                game.gameStart();
+//                game.updateObservers(new RequestUpdateBoardView(board, player.getInitial()));
+//                game.updateObservers(new RequestDisplayBoard(player.getInitial()));
+                //game.gameStart(); TODO: is it useful? Gotta check
             }
         }
         else
