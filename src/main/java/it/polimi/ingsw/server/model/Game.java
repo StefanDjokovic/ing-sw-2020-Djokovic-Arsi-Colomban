@@ -18,16 +18,13 @@ public class Game extends Observable{
 
     private ArrayList<Player> players;
     private Board board;
-    private int numberOfPlayers = 3;    // Will let the players decide how many there are
+    private int numberOfPlayers = 2;    // Will let the players decide how many there are
     private Logger logger;
 
-
-    public Game(Player player1, Player player2) {
+    public Game() {
         players = new ArrayList<>();
         board = new Board();
         logger = new Logger();
-        initPlayer(player1);
-        initPlayer(player2);
     }
 
     // For testing purposes
@@ -35,6 +32,59 @@ public class Game extends Observable{
         return board;
     }
 
+    private int waitGodSelection = 0;
+    private ArrayList<String> opt;
+
+    public void initGods() {
+        System.out.println("Initializing Process: Asking for God's name");
+
+        if (opt == null) {
+            opt = new ArrayList<>();
+            opt.add("Basic");
+            opt.add("Apollo");
+            opt.add("Artemis");
+            opt.add("Atlas");
+            opt.add("Pan");
+            opt.add("Demeter");
+            opt.add("Hephaestus");
+            opt.add("Minotaur");
+            opt.add("Prometheus");
+            opt.add("Athena");
+        }
+
+        if (players.get(0).getGodLogic() == null) {
+            updateObservers(new RequestPlayerGod(players.get(0).getInitial(), opt));
+        }
+        else if (players.get(1).getGodLogic() == null) {
+            updateObservers(new RequestPlayerGod(players.get(1).getInitial(), opt));
+        }
+        else if (players.size() > 2 && players.get(2).getGodLogic() == null) {
+            updateObservers(new RequestPlayerGod(players.get(2).getInitial(), opt));
+        }
+        else {
+            initWorker();
+        }
+    }
+
+    public void initWorker() {
+        System.out.println("Init worker");
+        printPlayersDescription();
+        if (players.get(0).getWorkersSize() < 2) {
+            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(0).getInitial()));
+        }
+        else if (players.get(1).getWorkersSize() < 2) {
+            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(1).getInitial()));
+        }
+        else {
+            // Setting up otherGodLogic for each player (essential feature for Athena)
+            for (Player player : players) {
+                setOtherGodLogic(player);
+            }
+            System.out.println("Everything is ready for the game!");
+            gameStart();
+            updateObservers(new RequestInternalAsyncRead());
+        }
+    }
 
     public void init() {
         /*
@@ -91,6 +141,7 @@ public class Game extends Observable{
                gameEnd();
         }
         else {
+            System.out.println("Executing turn!");
             players.get(currPlayer).executeTurn(this);
         }
     }
@@ -125,49 +176,84 @@ public class Game extends Observable{
     }
 
     private void gameEnd() {
-        updateObservers(new RequestUpdateBoardView(board));
-        updateObservers(new RequestDisplayBoard());
+//        updateObservers(new RequestUpdateBoardView(board));   // TODO: end of game requests
+//        updateObservers(new RequestDisplayBoard());
         System.out.println("We have a winner! GG! Hope you enjoyed the game! :)");
     }
 
 
-    public void initPlayer(Player newPlayer) {
-        if (players.size() == numberOfPlayers)
-            updateObservers(new RequestCriticalError());
-        char initial = newPlayer.getName().charAt(0);
-        // Will update for 3 players with same name in the future
-        if (players.size() > 0) {
-            int countStartingInitials = 0;
-            for (Player player : players) {
-                if (player.getInitial() == initial) {
-                    if (player.getInitial() == 'A') {
-                        initial = 'B';
-                        countStartingInitials++;
-                    }
-                    else if (player.getInitial() == 'B') {
-                        initial = 'A';
-                        countStartingInitials++;
-                    }
-                }
-            }
-            if (countStartingInitials != 2)
-                newPlayer.setInitial(initial);
-            else
-                newPlayer.setInitial('C');
+    public char initPlayer(String newPlayerName) {
+        if (players.size() == numberOfPlayers) {
+            updateObservers(new RequestCriticalError('*'));
+            System.out.println("ER DET MULIG, HERREGOD");
         }
-        if (newPlayer.getInitial() == '*')
-            newPlayer.setInitial(newPlayer.getName().charAt(0));
+        char initial = newPlayerName.charAt(0);
+
+        Player newPlayer = new Player(newPlayerName, '*');
+
+        if (players.size() == 0) {
+            newPlayer.setInitial('A');
+        }
+        else if (players.size() == 1) {
+            newPlayer.setInitial('B');
+        }
+        else {
+            newPlayer.setInitial('C');
+        }
+
+//        if (players.size() > 0) {
+//            int countStartingInitials = 0;
+//            for (Player player : players) {
+//                if (player.getInitial() == initial) {
+//                    if (player.getInitial() == 'A') {
+//                        initial = 'B';
+//                        countStartingInitials++;
+//                    }
+//                    else if (player.getInitial() == 'B') {
+//                        initial = 'A';
+//                        countStartingInitials++;
+//                    }
+//                }
+//            }
+//            if (countStartingInitials != 2)
+//                newPlayer.setInitial(initial);
+//            else
+//                newPlayer.setInitial('C');
+//        }
+//        if (newPlayer.getInitial() == '*')
+//            newPlayer.setInitial(newPlayer.getName().charAt(0));
         players.add(newPlayer);
+        System.out.println("\n\nIM ASSIGNING HIM THIS INITIAL: " + newPlayer.getInitial() + "\n\n\n");
+        System.out.println("Kommer du her?");
 
         printPlayersDescription();
+
+        return newPlayer.getInitial();
 
     }
 
     public void setPlayerGod(String godName, char initial) {
         getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard());
+        opt.remove(godName);
+        initGods();
+    }
+//
+//    public void setPlayerGod(String godName, String name) {
+//        getPlayerFromName(name).setGodLogic(godName, logger, getBoard());
+//    }
+
+    public Player getPlayerFromName(String name) {
+        for (Player p: players) {
+            if (p.getName().equals(name))
+                return p;
+        }
+
+        System.out.println("You are so bad, look at what you have done");
+        return null;
     }
 
     private void setOtherGodLogic(Player player) {
+        System.out.println("Setting up " + player.getName() + "other god logics:");
         ArrayList<GodLogic> otherGodLogics = new ArrayList<>();
 
         for (Player q: players) {
@@ -175,7 +261,7 @@ public class Game extends Observable{
                 otherGodLogics.add(q.getGodLogic());
         }
 
-    //    player.getGodLogic().setOtherGodLogic(otherGodLogics);
+        player.getGodLogic().setOtherGodLogic(otherGodLogics);
     }
 
     public void deletePlayer(Player p) {
@@ -190,6 +276,7 @@ public class Game extends Observable{
 
     public void setWorker(int x, int y, char initial) throws NonExistingTileException {
         getPlayerFromInitial(initial).addWorker(getBoard().getTile(x, y));
+        initWorker();
     }
 
     private Player getPlayerFromInitial(char initial) {
@@ -198,6 +285,11 @@ public class Game extends Observable{
                 return p;
         }
         return null;
+    }
+
+    // TODO: delete this horriblenesssss
+    public Player getPlayerFromNumber(int i) {
+        return players.get(i);
     }
 
     public int[][] getAllWorkersAsMatrix() {
@@ -225,9 +317,26 @@ public class Game extends Observable{
 
     }
 
-    private void printPlayersDescription() {
+    public void getPrintableGameStatus() {
+        printPlayersDescription();
+        if (board != null)
+            System.out.println("Board is on");
+
+    }
+
+    public void printPlayersDescription() {
         for (Player p : players) {
-            System.out.println("Player: " + p.getName() + " Initial: " + p.getInitial());
+            if (p.getWorkersSize() == 2) {
+                System.out.println(p);
+            }
+            else
+                System.out.println("Player: " + p.getName() + " Initial: " + p.getInitial());
+            if (p.getGodLogic() != null)
+                System.out.println("Has god logic!");
+            else
+                System.out.println("It doesn't have a godLogic");
+            System.out.println("Workers size: " + p.getWorkersSize());
+
         }
     }
 

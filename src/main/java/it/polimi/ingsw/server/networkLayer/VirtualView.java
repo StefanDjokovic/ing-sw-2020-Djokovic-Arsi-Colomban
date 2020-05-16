@@ -10,14 +10,14 @@ import it.polimi.ingsw.server.model.player.Player;
 public class VirtualView extends Observable implements Observer  {
 
     private Player player;
-    private SocketConnection clientConnection;
+    private ServerSocket clientConnection;
 
     private class MessageReceiver implements Observer {
 
         @Override
         public void update(Answer answer) {
             System.out.println("Answer inbound!");
-            VirtualView.this.updateObservers(answer);
+            updateObservers(answer);
         }
 
         @Override
@@ -26,7 +26,7 @@ public class VirtualView extends Observable implements Observer  {
         }
     }
 
-    public VirtualView(Player player, SocketConnection clientConnection) {
+    public VirtualView(Player player, ServerSocket clientConnection) {
         this.player = player;
         this.clientConnection = clientConnection;
         clientConnection.addObserver(new MessageReceiver());
@@ -42,6 +42,6 @@ public class VirtualView extends Observable implements Observer  {
 
     @Override
     public void update(Answer answer) {
-       System.out.println("View shouldn't receive answers");
+       System.out.println("clientCLI shouldn't receive answers");
     }
 }

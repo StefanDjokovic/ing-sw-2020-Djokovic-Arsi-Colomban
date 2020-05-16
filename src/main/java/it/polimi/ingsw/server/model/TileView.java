@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.model;
 
-public class TileView {
+import java.io.Serializable;
+
+public class TileView implements Serializable {
 
     private int buildingLevel;
     private boolean hasDome;

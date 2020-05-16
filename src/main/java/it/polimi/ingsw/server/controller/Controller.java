@@ -17,21 +17,31 @@ public class Controller implements Observer {
     @Override
     public void update(Answer answer) {
         System.out.println("Controller received answer");
+        answer.printMessage();
         answer.act(this);
 
     }
-/*
-    public void initPlayer(String name) {
-        game.initPlayer(name);
+
+    public char initPlayer(String name) {
+        return game.initPlayer(name);
     }
-*/
+
     public void setPlayerGod(String godName, char initial) {
+        System.out.println("ARE WE HERE???");
         game.setPlayerGod(godName, initial);
+        System.out.println("hmm???");
+
+    }
+
+    public void initProcess() {
+        game.initGods();
     }
 
 
     public void setWorker(int x, int y, char initial) {
         try {
+            System.out.println("Setting worker from controller: Initial: " + initial);
+            System.out.println("Positions at: " + x + " " + y);
             game.setWorker(x, y, initial);
         } catch (NonExistingTileException e) {
             System.out.println("Sth wrong");
@@ -46,6 +56,10 @@ public class Controller implements Observer {
     public void executePower() {
         // System.out.println("Controller has received: Pass");
         game.gameReceiveOptions();
+    }
+
+    public void debugMessage() {
+        System.out.println("Controller is ON");
     }
 
     @Override

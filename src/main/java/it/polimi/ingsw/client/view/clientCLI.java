@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class View extends Observable implements Observer {
+public class clientCLI extends Observable implements Observer {
 
     private TileView[][] boardView;
 
@@ -34,7 +34,7 @@ public class View extends Observable implements Observer {
 
     //added vars
     private final int gameMode;
-    private static View instance = null;
+    private static clientCLI instance = null;
     private String playerName;
     private ArrayList<String> players;
     private int playersNum;
@@ -42,7 +42,7 @@ public class View extends Observable implements Observer {
     private ArrayList<String> selectedGods;
 
     //gui specific method
-    public static View getInstance() {
+    public static clientCLI getInstance() {
         return instance;
     }
 
@@ -62,8 +62,12 @@ public class View extends Observable implements Observer {
         return this.playersNum;
     }
 
+    public void setPlayerInit(char init) {
+        this.playerInit = init;
+    }
+
     //adapted
-    public View() {
+    public clientCLI() {
         boardView = new BoardView().getBoardView();
         scanner = new Scanner(System.in);
         instance = this;
@@ -88,14 +92,14 @@ public class View extends Observable implements Observer {
 
     @Override
     public void update(Request request) {
-        // System.out.print("View Update received: ");
+        // System.out.print("clientCLI Update received: ");
         request.printMessage();
         request.accept(this);
     }
 
     @Override
     public void update(Answer answer) {
-        System.out.println("View should not receive answers");
+        System.out.println("clientCLI should not receive answers");
     }
 
     public void updateBoardView(BoardView boardView) {
@@ -138,7 +142,6 @@ public class View extends Observable implements Observer {
     // note: to add new Gods you have to change things both in GodLogic and Game
     public void getPlayerGod(char initial, ArrayList<String> options) {
         if (this.gameMode == 1) {
-            this.playerInit = initial;
             Application.launch(godSelectionGUI.class);
         } else if (this.gameMode == 2) {
             System.out.println("Select " + initial + "'s God: ");
@@ -173,6 +176,10 @@ public class View extends Observable implements Observer {
         return this.selectedGods;
     }
 
+    public void waitingOpponent() {
+        System.out.println("Waiting opponent move");
+    }
+
     public void getWorkerPosition(int[][] workers, char initial) {
         boolean unselected = true;
 
@@ -194,8 +201,9 @@ public class View extends Observable implements Observer {
                 }
             }
         }
-
-        updateObservers(new AnswerWorkersPosition(posX, posY, initial));
+        System.out.println("Sending answerWorkerPosition");
+        //updateObservers(new AnswerDebug());
+        updateObservers(new AnswerWorkersPosition(posX, posY, initial));    // Implanting int values?
     }
 
 

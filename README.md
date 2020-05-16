@@ -1,3 +1,7 @@
+# Rework-Socket-Todo:
+* Fix Map Display and Update on Clients
+* Fix Closing statement at the end of the game
+
 # Prova Finale Ingegneria del Software 2020
 
 ## Gruppo AM04

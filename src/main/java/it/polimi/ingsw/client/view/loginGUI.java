@@ -17,9 +17,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class loginGUI extends Application {
 
     public static void main(String[] args) {
@@ -99,6 +96,6 @@ public class loginGUI extends Application {
 
     public void sendName(String name) {
         System.out.println("Read: "+name);
-        View.getInstance().sendPlayerInfo(name);
+        clientCLI.getInstance().sendPlayerInfo(name);
     }
 }

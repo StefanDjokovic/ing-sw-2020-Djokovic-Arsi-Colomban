@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class ViewSimulated extends View {
+public class clientCLISimulated extends clientCLI {
 
     private TileView[][] boardView;
 
@@ -31,7 +31,7 @@ public class ViewSimulated extends View {
     private Scanner scanner;
     private Random randomGenerator;
 
-    public ViewSimulated() {
+    public clientCLISimulated() {
         boardView = new BoardView().getBoardView();
         scanner = new Scanner(System.in);
         Random randomGenerator = new Random();
@@ -39,14 +39,14 @@ public class ViewSimulated extends View {
 
     @Override
     public void update(Request request) {
-        // System.out.print("View Update received: ");
+        // System.out.print("clientCLI Update received: ");
         request.printMessage();
         request.accept(this);
     }
 
     @Override
     public void update(Answer answer) {
-        System.out.println("View should not receive answers");
+        System.out.println("clientCLI should not receive answers");
     }
 
     public void updateBoardView(BoardView boardView) {

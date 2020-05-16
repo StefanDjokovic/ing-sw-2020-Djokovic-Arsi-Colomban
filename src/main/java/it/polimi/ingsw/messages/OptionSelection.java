@@ -1,8 +1,9 @@
 package it.polimi.ingsw.messages;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OptionSelection {
+public class OptionSelection implements Serializable {
 
     private ArrayList<ArrayList<Integer>> values = new ArrayList<>();
 

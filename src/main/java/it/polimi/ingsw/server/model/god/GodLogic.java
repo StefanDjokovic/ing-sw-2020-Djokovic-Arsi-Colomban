@@ -2,9 +2,11 @@ package it.polimi.ingsw.server.model.god;
 
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.request.RequestCriticalError;
 import it.polimi.ingsw.messages.request.RequestDisplayBoard;
 import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
 import it.polimi.ingsw.messages.request.RequestUpdateBoardView;
+import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.logger.Logger;
 import it.polimi.ingsw.server.model.board.NonExistingTileException;
@@ -94,18 +96,26 @@ public class GodLogic {
     public void executeTurn(Game game) {
         OptionSelection opt = turn.get(currStep).getOptions(logger);
         if (opt != null) {
+            game.printPlayersDescription();
             if (hasOptions(opt)) {
                 this.optionSelection = opt;
-                Request request = new RequestPowerCoordinates(opt, this.canPass);
-                game.updateObservers(new RequestUpdateBoardView(board));
-                game.updateObservers(new RequestDisplayBoard());
+                RequestUpdateBoardView RequestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), player.getInitial());
+                Request request = new RequestPowerCoordinates(opt, this.canPass, player.getInitial(), RequestUpdateBoardView);
+                System.out.println("Sending stuff");
+                //BoardView boardView = new BoardView(board);
+//                game.updateObservers(new RequestUpdateBoardView(new BoardView(board), player.getInitial()));
+//                System.out.println("Please, display the board");
+//                game.updateObservers(new RequestDisplayBoard(player.getInitial()));
+//                System.out.println("Sending the real request");
                 game.updateObservers(request);
+
+                System.out.println("here?");
             }
             else {
                 System.out.println("THIS BOY HAS LOST!");
                 game.deletePlayer(getPlayer());
-                game.updateObservers(new RequestUpdateBoardView(board));
-                game.updateObservers(new RequestDisplayBoard());
+                game.updateObservers(new RequestUpdateBoardView(board, player.getInitial()));
+                game.updateObservers(new RequestDisplayBoard(player.getInitial()));
                 game.gameStart();
             }
         }
@@ -123,6 +133,7 @@ public class GodLogic {
     }
 
     public void limitOpp(int upDiffDebuff) {
+        System.out.println("OTHERGODLOGIC SIZE : " + otherGodLogic.size());
         for (GodLogic g: otherGodLogic) {
             g.upDiffDebuff = upDiffDebuff;
             g.hasDebuff = true;

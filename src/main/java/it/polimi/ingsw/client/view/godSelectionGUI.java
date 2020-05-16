@@ -117,7 +117,7 @@ public class godSelectionGUI extends Application {
         b.setId("prometheus");
         buttons.add(b);
 
-        int playersNum = View.getInstance().getPlayersNum();
+        int playersNum = clientCLI.getInstance().getPlayersNum();
 
         ToggleButton x;
         for(int a = 1 ; a <= buttons.size() ;  a++){
@@ -147,6 +147,6 @@ public class godSelectionGUI extends Application {
     public void sendGods(ArrayList<String> gods) {
         System.out.println("Gods: "+selectedGods.stream().collect(Collectors.joining(", ")));
         //send
-        View.getInstance().sendGods(gods);
+        clientCLI.getInstance().sendGods(gods);
     }
 }
