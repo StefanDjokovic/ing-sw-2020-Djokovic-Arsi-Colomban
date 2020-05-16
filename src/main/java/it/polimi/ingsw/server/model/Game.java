@@ -200,7 +200,7 @@ public class Game extends Observable{
         else {
             newPlayer.setInitial('C');
         }
-
+//
 //        if (players.size() > 0) {
 //            int countStartingInitials = 0;
 //            for (Player player : players) {
@@ -223,7 +223,7 @@ public class Game extends Observable{
 //        if (newPlayer.getInitial() == '*')
 //            newPlayer.setInitial(newPlayer.getName().charAt(0));
         players.add(newPlayer);
-        System.out.println("\n\nIM ASSIGNING HIM THIS INITIAL: " + newPlayer.getInitial() + "\n\n\n");
+        System.out.println("\nIM ASSIGNING" + newPlayerName + " THIS INITIAL: " + newPlayer.getInitial() + "\n");
         System.out.println("Kommer du her?");
 
         printPlayersDescription();

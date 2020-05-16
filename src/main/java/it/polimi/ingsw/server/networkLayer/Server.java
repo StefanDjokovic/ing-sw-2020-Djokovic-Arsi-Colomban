@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    private static final int nPlayers = 2;
+    private final int nPlayers;
 
     public static final int PORT = 4568;
     private java.net.ServerSocket serverSocket;
@@ -32,8 +32,10 @@ public class Server {
     private Map<ServerSocket, ServerSocket> playingConnection = new HashMap<>();
     private Map<String, String> nameGodLogicMap = new HashMap<>();
 
-    public Server() throws IOException    {
+
+    public Server(int nPlayers) throws IOException    {
         this.serverSocket = new java.net.ServerSocket(PORT);
+        this.nPlayers = nPlayers;
     }
 
     public synchronized void deregisterConnection(ServerSocket connection) {    // TODO: make it work for 3 players
@@ -62,18 +64,46 @@ public class Server {
             System.out.println("Are we at least here?");
             ArrayList<String> keys = new ArrayList<>(waitingConnection.keySet());
             ServerSocket c1 = waitingConnection.get(keys.get(0));
-            ServerSocket c2 = waitingConnection.get(keys.get(1));
             String name1 = keys.get(0);
+            ServerSocket c2 = waitingConnection.get(keys.get(1));
             String name2 = keys.get(1);
-            System.out.println(name1 + " and " + name2);
+            ServerSocket c3 = null;
+
             game = new Game();
             Controller controller = new Controller(game);
             char player1Init = controller.initPlayer(name1);
             c1.setPlayerInitial(player1Init);
             char player2Init = controller.initPlayer(name2);
             c2.setPlayerInitial(player2Init);
-            c1.sendGameInformation(new RequestGameInformation(name1, name2, player1Init, player2Init));
-            c2.sendGameInformation(new RequestGameInformation(name2, name1, player2Init, player1Init));
+
+            System.out.print(name1 + " and " + name2 + " ");
+            if (nPlayers == 3) {
+                c3 = waitingConnection.get(keys.get(2));
+                String name3 = keys.get(2);
+                System.out.println("and " + name3);
+                char player3Init = controller.initPlayer(name3);
+                c3.setPlayerInitial(player3Init);
+                c1.sendGameInformation(new RequestGameInformation(name1, name2, name3, player1Init, player2Init, player3Init));
+                c2.sendGameInformation(new RequestGameInformation(name2, name3, name1, player2Init, player3Init, player1Init));
+                c3.sendGameInformation(new RequestGameInformation(name3, name1, name2, player3Init, player1Init, player2Init));
+
+                game.addObserver(c3);
+                c3.addObserver(controller);
+
+                playingConnection.put(c1, c2);
+                playingConnection.put(c2, c3);
+                playingConnection.put(c3, c1);
+            }
+            System.out.println();
+
+            if (nPlayers == 2) {
+                c1.sendGameInformation(new RequestGameInformation(name1, name2, player1Init, player2Init));
+                c2.sendGameInformation(new RequestGameInformation(name2, name1, player2Init, player1Init));
+
+                playingConnection.put(c1, c2);
+                playingConnection.put(c2, c1);
+            }
+
 
             // Set controller as Observer of view, set view as Observer of game
             game.addObserver(c1);
@@ -81,13 +111,13 @@ public class Server {
             c1.addObserver(controller);
             c2.addObserver(controller);
 
-            playingConnection.put(c1, c2);
-            playingConnection.put(c2, c1);
 
             controller.initProcess();
 
             c1.close();
             c2.close();
+            if (c3 != null)
+                c3.close();
         }
     }
 //
