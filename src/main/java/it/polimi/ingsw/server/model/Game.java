@@ -69,6 +69,7 @@ public class Game extends Observable{
     public void initWorker() {
         System.out.println("Init worker");
         printPlayersDescription();
+        updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
         if (players.get(0).getWorkersSize() < 2) {
             updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(0).getInitial()));
         }
@@ -80,6 +81,7 @@ public class Game extends Observable{
             for (Player player : players) {
                 setOtherGodLogic(player);
             }
+            updateObservers(new RequestDisplayBoard('*', new RequestUpdateBoardView(new BoardView(board), '*')));
             System.out.println("Everything is ready for the game!");
             gameStart();
             updateObservers(new RequestInternalAsyncRead());
@@ -130,20 +132,19 @@ public class Game extends Observable{
             //System.out.println("Player " + count + " : " + p.toString());
             count++;
         }*/
-
-        System.out.println("Setup completed. Let's play!");
+        System.out.println("Setup completed. Let's play!\n");
     }
 
     private int currPlayer = 0;
     public void gameStart() {
 
-        if (players.size() == 1) {
-               gameEnd();
-        }
-        else {
+        while (players.size() != 1 && status != 2) {
             System.out.println("Executing turn!");
             players.get(currPlayer).executeTurn(this);
+            System.out.println("Turn completed!\n");
         }
+        gameEnd();
+
     }
 
     // Skip option
@@ -152,26 +153,16 @@ public class Game extends Observable{
         int status = players.get(currPlayer).playerReceiveOptions();
         if (status == 1) {
             currPlayer = (currPlayer + 1) % players.size();
-            players.get(currPlayer).executeTurn(this);
         }
-        else {
-            players.get(currPlayer).executeTurn(this);
-        }
+
     }
 
-
+    public int status = -1;
     public void gameReceiveOptions(int posXFrom, int posYFrom, int posXTo, int posYTo) {
         logger.addNewLog(posXFrom, posYFrom, posXTo, posYTo, players.get(currPlayer).getInitial());
-        int status = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);
+        status = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);
         if (status == 1) {
             currPlayer = (currPlayer + 1) % players.size();
-            players.get(currPlayer).executeTurn(this);
-        }
-        else if (status == 0) {
-            players.get(currPlayer).executeTurn(this);
-        }
-        else if (status == 2) {
-            gameEnd();
         }
     }
 

@@ -18,8 +18,9 @@ public class Controller implements Observer {
     public void update(Answer answer) {
         System.out.println("Controller received answer");
         answer.printMessage();
+        System.out.println("Yes. Look.");
         answer.act(this);
-
+        System.out.println("Controller has completed its duties");
     }
 
     public char initPlayer(String name) {
@@ -49,6 +50,7 @@ public class Controller implements Observer {
     }
 
     public void executePower(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        System.out.println("Controller is executing its power");
         // System.out.println("Controller has received: " + posXFrom + " " + posYFrom + " " + posXTo + " " + posYTo);
         game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
     }

@@ -12,7 +12,7 @@ public abstract class Answer implements Serializable {
     public char initial = '*';
 
     public void printMessage() {
-        message = "This string should have been overridden";
+        System.out.println(message);
     }
 
     public abstract void act(Controller controller);

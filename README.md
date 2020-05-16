@@ -1,6 +1,6 @@
 # Rework-Socket-Todo:
-* Fix Map Display and Update on Clients
 * Fix Closing statement at the end of the game
+* Fix Client or Server Disconnect
 
 # Prova Finale Ingegneria del Software 2020
 

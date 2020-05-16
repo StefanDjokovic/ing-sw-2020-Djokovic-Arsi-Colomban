@@ -465,4 +465,50 @@ public class clientCLI extends Observable implements Observer {
         }
         System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
     }
+
+
+    public void displayBoard() {
+
+        String ANSI_WHITE = "\u001B[37m";
+
+        Font f = new Font("serif", Font.PLAIN, 20);
+
+        System.out.println();
+        System.out.println(ANSI_WHITE + "╔═════════╦═════════╦═════════╦═════════╦═════════╗");
+        for (int i = 0; i < 5; i++) {
+            for (int k = 0; k < 3; k++) {
+                for (int j = 0; j < 5; j++) {
+                    System.out.print("║");
+                    if (boardView[i][j].getBuildingLevel() == 0 && !boardView[i][j].hasDome())
+                        currColor = ANSI_GREEN_BACKGROUND;
+                    else if (boardView[i][j].getBuildingLevel() == 1 && !boardView[i][j].hasDome())
+                        currColor = ANSI_YELLOW_BACKGROUND;
+                    else if (boardView[i][j].getBuildingLevel() == 2 && !boardView[i][j].hasDome())
+                        currColor = ANSI_WHITE_BACKGROUND;
+                    else if (boardView[i][j].getBuildingLevel() == 3 && !boardView[i][j].hasDome())
+                        currColor = ANSI_BRIGHTBLACK_BACKGROUND;
+                    else
+                        currColor = ANSI_BLUE_BACKGROUND;
+
+                    if (k != 1) {
+                        System.out.print(currColor + "         " + ANSI_RESET);
+                    }
+                    else {
+                        if (boardView[i][j].getInitWorker() != '?')
+                            System.out.print(currColor + "    " + ANSI_BLACK + boardView[i][j].getInitWorker() + "    " + ANSI_RESET);
+                        else
+                            System.out.print(currColor + "         " + ANSI_RESET);
+                    }
+
+                }
+                System.out.print("║");
+                System.out.println();
+            }
+
+            if (i != 4)
+                System.out.println("╠═════════╬═════════╬═════════╬═════════╬═════════╣");
+
+        }
+        System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
+    }
 }

@@ -101,15 +101,17 @@ public class GodLogic {
                 this.optionSelection = opt;
                 RequestUpdateBoardView RequestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), player.getInitial());
                 Request request = new RequestPowerCoordinates(opt, this.canPass, player.getInitial(), RequestUpdateBoardView);
-                System.out.println("Sending stuff");
+                System.out.println("\u001B[101m" +  "Sending stuff" + "\u001B[0m");
                 //BoardView boardView = new BoardView(board);
 //                game.updateObservers(new RequestUpdateBoardView(new BoardView(board), player.getInitial()));
 //                System.out.println("Please, display the board");
 //                game.updateObservers(new RequestDisplayBoard(player.getInitial()));
 //                System.out.println("Sending the real request");
                 game.updateObservers(request);
+                RequestUpdateBoardView requestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), player.getInitial());
+                game.updateObservers(new RequestDisplayBoard(player.getInitial(), requestUpdateBoardView));
 
-                System.out.println("here?");
+                System.out.println("\u001B[101m" + "\n\nhere?\n\n" + "\u001B[0m");
             }
             else {
                 System.out.println("THIS BOY HAS LOST!");

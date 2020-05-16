@@ -83,6 +83,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                         answer.setInitial(playerInitial);
                         System.out.println("AAAAAAAAAAAAAAAAAAAA\n");
                         updateObservers(answer);
+                        System.out.println("Im closing the asnycronous read turn\n");
                     }
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -161,13 +162,15 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             System.out.println("Request sent to " + request.getInitial());
             send(request);
             if (!request.isAsync()) {
-                try {
-                    Thread t = asyncReadTurn();
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                readFromSocket();
+//                try {
+//                    Thread t = asyncReadTurn();
+//                    t.join();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             }
+            System.out.println("Terminating update ServerSocket " + playerInitial);
         }
     }
 

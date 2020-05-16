@@ -45,9 +45,9 @@ public class RequestPowerCoordinates extends Request {
     @Override
     public void accept(clientCLI clientCLI) {
         printMessage();
+        if (requestUpdateBoardViewBoardView != null)
+            requestUpdateBoardViewBoardView.accept(clientCLI);
         if (opt.getValues().size() == 2) {
-            if (requestUpdateBoardViewBoardView != null)
-                requestUpdateBoardViewBoardView.accept(clientCLI);
             clientCLI.getWorkerSelection(opt, this.canPass);
         }
         else
