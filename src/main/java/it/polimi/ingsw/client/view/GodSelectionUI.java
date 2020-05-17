@@ -121,7 +121,7 @@ public class GodSelectionUI {
         b.setId("prometheus");
         buttons.add(b);
 
-        int playersNum = View.getInstance().getPlayersNum();
+        int playersNum = clientCLI.getInstance().getPlayersNum();
 
         ToggleButton x;
         for(int a = 1 ; a <= buttons.size() ;  a++){

@@ -1,17 +1,18 @@
 package it.polimi.ingsw.messages.request;
 
+import it.polimi.ingsw.client.view.clientCLI;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.client.view.View;
 
 public class RequestCriticalError extends Request {
 
-    public RequestCriticalError() {
-        this.initial = '*';
+    public RequestCriticalError(char initial) {
+        this.initial = initial;
         this.message = "critical error";
+        this.isAsync = true;
     }
 
     @Override
-    public void accept(View view) {
-        System.out.println("\n\n\n********* Critical Error, View was sent unexpected input *********\n\n\n");
+    public void accept(clientCLI clientCLI) {
+        System.out.println("\n\n\n********* Critical Error, clientCLI was sent unexpected input *********\n\n\n");
     }
 }

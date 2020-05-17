@@ -85,11 +85,12 @@ public class Player {
 
     /**
      * Sets the initial letter of the player.
-     * @param inital String containing the initial letter to set.
+     * @param initial String containing the initial letter to set.
      */
     public void setInitial(char initial) { this.initial = initial; }
 
     public void executeTurn(Game game) {
+        System.out.println(godLogic);
         godLogic.executeTurn(game);
     }
 
@@ -116,12 +117,10 @@ public class Player {
         }
     }
 
-/*
     @Override
     public String toString() {
         return "Name: " + name + "; Initial: " + initial + "\nSelected God: " + godLogic.getGodLogicName() +
                 "\nWorker 1 at: " + workers.get(0).toString() + "\nWorker 2 at: " + workers.get(1).toString();
     }
 
- */
 }

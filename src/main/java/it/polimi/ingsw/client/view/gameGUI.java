@@ -73,18 +73,18 @@ public class gameGUI extends Application {
         leftInfo.getChildren().add(lbl2);
 
         Label lbl3 = new Label();
-        lbl3.setText("Player name: "+View.getInstance().getName());
+        lbl3.setText("Player name: "+ clientCLI.getInstance().getName());
         lbl3.setFont(Font.font("Futura", 12));
         leftInfo.getChildren().add(lbl3);
 
         Label gods = new Label();
-        gods.setText("Gods: "+View.getInstance().getGods().stream().collect(Collectors.joining(", ")));
+        gods.setText("Gods: "+ clientCLI.getInstance().getGods().stream().collect(Collectors.joining(", ")));
         gods.setWrapText(true);
         gods.setFont(Font.font("Futura", 12));
         leftInfo.getChildren().add(gods);
 
         Label lbl4 = new Label();
-        lbl4.setText("Player initial: "+View.getInstance().getInit());
+        lbl4.setText("Player initial: "+ clientCLI.getInstance().getInit());
         lbl4.setFont(Font.font("Futura", 12));
         leftInfo.getChildren().add(lbl4);
 
@@ -98,8 +98,8 @@ public class gameGUI extends Application {
         lbl5.setFont(Font.font("Futura", 20));
         leftInfo.getChildren().add(lbl5);
 
-        if(View.getInstance().getPlayers()!=null) {
-            View.getInstance().getPlayers().forEach(player -> {
+        if(clientCLI.getInstance().getPlayers()!=null) {
+            clientCLI.getInstance().getPlayers().forEach(player -> {
                 Label l = new Label(player);
                 l.setFont(Font.font("Futura", 12));
                 leftInfo.getChildren().add(l);

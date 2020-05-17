@@ -16,7 +16,7 @@ public class AnswerPlayerName extends Answer {
 
     @Override
     public void act(Controller controller) {
-        //controller.initPlayer(string);
+        controller.initPlayer(string);
     }
 
     public String getString() {

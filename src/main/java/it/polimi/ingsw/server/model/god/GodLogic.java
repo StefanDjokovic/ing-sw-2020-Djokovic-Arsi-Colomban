@@ -2,9 +2,11 @@ package it.polimi.ingsw.server.model.god;
 
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.request.RequestCriticalError;
 import it.polimi.ingsw.messages.request.RequestDisplayBoard;
 import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
 import it.polimi.ingsw.messages.request.RequestUpdateBoardView;
+import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.logger.Logger;
 import it.polimi.ingsw.server.model.board.NonExistingTileException;
@@ -36,6 +38,7 @@ public class GodLogic {
         this.logger = logger;
         this.board = board;
 
+        // TODO: pull this informations from JSON file
         // Initializing Turn Schema
         switch (godLogicName) {
             case "Basic":
@@ -87,48 +90,39 @@ public class GodLogic {
         }
     }
 
-    public void setOtherGodLogic(ArrayList<GodLogic> otherGodLogic) {
-        this.otherGodLogic = otherGodLogic;
+    public Player getPlayer() { return this.player; }
+    public String getGodLogicName() {
+        return godLogicName;
     }
+    public void setPass(boolean canPass) {
+        this.canPass = canPass;
+    }
+    public void setOtherGodLogic(ArrayList<GodLogic> otherGodLogic) { this.otherGodLogic = otherGodLogic; }
 
+    // Executes the turn routine
     public void executeTurn(Game game) {
         OptionSelection opt = turn.get(currStep).getOptions(logger);
         if (opt != null) {
+            game.printPlayersDescription();
             if (hasOptions(opt)) {
                 this.optionSelection = opt;
-                Request request = new RequestPowerCoordinates(opt, this.canPass);
-                game.updateObservers(new RequestUpdateBoardView(board));
-                game.updateObservers(new RequestDisplayBoard());
+                RequestUpdateBoardView RequestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), player.getInitial());
+                Request request = new RequestPowerCoordinates(opt, this.canPass, player.getInitial(), RequestUpdateBoardView);
+                System.out.println("\u001B[101m" +  "Sending stuff" + "\u001B[0m");
                 game.updateObservers(request);
+                RequestUpdateBoardView requestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), player.getInitial());
+                game.updateObservers(new RequestDisplayBoard(player.getInitial(), requestUpdateBoardView));
             }
             else {
                 System.out.println("THIS BOY HAS LOST!");
                 game.deletePlayer(getPlayer());
-                game.updateObservers(new RequestUpdateBoardView(board));
-                game.updateObservers(new RequestDisplayBoard());
-                game.gameStart();
             }
         }
         else
             game.gameReceiveOptions();
     }
 
-    public int godLogicReceiveOptions() {
-        currStep++;
-        if (currStep % turn.size() == 0) {
-            currStep = 0;
-            return 1;
-        }
-        return 0;
-    }
-
-    public void limitOpp(int upDiffDebuff) {
-        for (GodLogic g: otherGodLogic) {
-            g.upDiffDebuff = upDiffDebuff;
-            g.hasDebuff = true;
-        }
-    }
-
+    // Executes the turn routine and it either increases the currStep or resets it when it is completed
     public int godLogicReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         int status = turn.get(currStep).power(board, posXFrom, posYFrom, posXTo, posYTo);
         if (status == 2)
@@ -141,6 +135,26 @@ public class GodLogic {
         return 0;
     }
 
+    // godLogicReceiveOptions for passes
+    public int godLogicReceiveOptions() {
+        currStep++;
+        if (currStep % turn.size() == 0) {
+            currStep = 0;
+            return 1;
+        }
+        return 0;
+    }
+
+    // Debuffes opponents when a particular power is used
+    public void debuffOpponents(int upDiffDebuff) {
+        System.out.println("OTHERGODLOGIC SIZE : " + otherGodLogic.size());
+        for (GodLogic g: otherGodLogic) {
+            g.upDiffDebuff = upDiffDebuff;
+            g.hasDebuff = true;
+        }
+    }
+
+    // Gets the possible player's options by calling the player with the parameters set by the power
     public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations, boolean canPass) {
         this.canPass = canPass;
         if (!hasDebuff || upDiff > 4)
@@ -151,18 +165,8 @@ public class GodLogic {
         }
     }
 
-    public Player getPlayer() { return this.player; }
-
-    public String getGodLogicName() {
-        return godLogicName;
-    }
-
-    public void setPass(boolean canPass) {
-        this.canPass = canPass;
-    }
-
-
-    public int tileBuildingLevel(int posX, int posY) {
+    // Gets the building level of a tile
+    public int getBuildingLevel(int posX, int posY) {
         try {
             return board.getTile(posX, posY).getBuildingLevel();
         } catch (NonExistingTileException e) {
@@ -171,7 +175,8 @@ public class GodLogic {
         return -99;
     }
 
-    public boolean hasOpposingWorker(int posX, int posY) {
+    // Asks if there is an opponent's worker in that tile
+    public boolean hasOpposingOpponentWorker(int posX, int posY) {
         try {
             if (board.getTile(posX, posY).hasWorker()) {
                 return board.getTile(posX, posY).getWorker().getOwner().getInitial() != getPlayer().getInitial();
@@ -182,6 +187,7 @@ public class GodLogic {
         return false;
     }
 
+    // Asks if the tile behind an adjacent worker is free (so that it exists, that is is free from Domes or other workers)
     public boolean isBehindFree(int XFrom, int YFrom, int XTo, int YTo) {
         int dx = XTo - XFrom;
         int dy = YTo - YFrom;
@@ -195,9 +201,9 @@ public class GodLogic {
             }
         }
         return false;
-
     }
 
+    // Returns true or false if the player has options to play
     private boolean hasOptions(OptionSelection opt) {
         for (ArrayList<Integer> o: opt.getValues()) {
             if (o.size() > 2)

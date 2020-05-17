@@ -1,7 +1,7 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.clientCLI;
 
 
 public class RequestWorkerPlacement extends Request {
@@ -18,8 +18,8 @@ public class RequestWorkerPlacement extends Request {
 
 
     @Override
-    public void accept(View view) {
-        view.getWorkerPosition(workers, initial);
+    public void accept(clientCLI clientCLI) {
+        clientCLI.getWorkerPlacement(workers, initial);
     }
 
     public char getInitial() { return this.initial; }

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.server.model;
 
-public class TileView {
+import java.io.Serializable;
+
+public class TileView implements Serializable {
 
     private int buildingLevel;
     private boolean hasDome;
-    private char initWorker;
+    private char initWorker;    // '?' if there is no worker
 
     //set to public, otherwise not testable
     public TileView(int buildingLevel, boolean hasDome, char initWorker) {
@@ -19,6 +21,10 @@ public class TileView {
 
     public boolean hasDome() {
         return hasDome;
+    }
+
+    public boolean hasWorker() {
+        return this.initWorker != '?';
     }
 
     public int getBuildingLevel() {

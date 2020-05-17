@@ -9,6 +9,7 @@ public class AnswerPlayerGod extends Answer {
     char initial;
 
     public AnswerPlayerGod(String godName, char initial) {
+        System.out.println("HERE IT IS!");
         message = "Answer Player's name";
         this.godName = godName;
         this.initial = initial;

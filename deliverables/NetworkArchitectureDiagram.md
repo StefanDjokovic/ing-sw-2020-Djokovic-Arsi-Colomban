@@ -3,10 +3,10 @@
 * __Server__: the server is composed of __Model__ and __Controller__, and a __network layer__, consisting of:
   + __ServerHandler__: the class that initializes the server. It has methods that init all the game components, described more in-depth in the "initialization" paragraph of this document
   + __SocketConnection__:  they're the threads that handle the connections with each client
-  + __VirtualView__: Model and Controller see it as they would see the view on a not-networked solution, it gets messages from and delivers messages to the SocketConnection instances, and then notifies its observers. There's one for each player, and it's linked to exactly one SocketConnection.
+  + __VirtualView__: Model and Controller see it as they would see the clientCLI on a not-networked solution, it gets messages from and delivers messages to the SocketConnection instances, and then notifies its observers. There's one for each player, and it's linked to exactly one SocketConnection.
 ---
 * __Client__: the client is composed of __View__ and a __network layer__, consisting of a single class, called
-  + __Client__: it handles all networking elements, the View sees it as it would see Model and Controller, so when a message arrives the Client class updates its observers (the view), delivering the message, and when the View updates its observers (the Client class) with a message, the client sends it to the server.
+  + __Client__: it handles all networking elements, the View sees it as it would see Model and Controller, so when a message arrives the Client class updates its observers (the clientCLI), delivering the message, and when the View updates its observers (the Client class) with a message, the client sends it to the server.
 
 ---
 

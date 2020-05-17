@@ -17,39 +17,59 @@ public class Controller implements Observer {
     @Override
     public void update(Answer answer) {
         System.out.println("Controller received answer");
+        answer.printMessage();
+        System.out.println("Yes. Look.");
         answer.act(this);
+        System.out.println("Controller has completed its duties");
+    }
 
+    @Override
+    public void update(Request request) {
+        System.out.println("Controller should not receive Requests");
     }
-/*
-    public void initPlayer(String name) {
-        game.initPlayer(name);
+
+    // Initializes Player's name
+    public char initPlayer(String name) {
+        return game.initPlayer(name);
     }
-*/
+
+    // Setting the God picked by the client
     public void setPlayerGod(String godName, char initial) {
         game.setPlayerGod(godName, initial);
     }
 
+    // Method called by ServerSocket when a Player is disconnected, and thus gets deleted from the game
+    public void killPlayer(char initial) {
+        game.deletePlayer(game.getPlayerFromInitial(initial));
+    }
 
+    // First asks for the gods, than workers, and then starts the game
+    public void startGame() {
+        game.initGods();
+        game.initWorker();
+        game.gameStart();
+    }
+
+    // Sets the worker in the right position
     public void setWorker(int x, int y, char initial) {
         try {
+            System.out.println("Setting worker from controller: Initial: " + initial);
+            System.out.println("Positions at: " + x + " " + y);
             game.setWorker(x, y, initial);
         } catch (NonExistingTileException e) {
             System.out.println("Sth wrong");
         }
     }
 
-    public void executePower(int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        // System.out.println("Controller has received: " + posXFrom + " " + posYFrom + " " + posXTo + " " + posYTo);
+    // Executes the movement routine
+    public void executeMoveOrBuild(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        System.out.println("Controller is executing Move");
         game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
     }
 
-    public void executePower() {
-        // System.out.println("Controller has received: Pass");
+    // Executes the pass routine
+    public void executePass() {
+        System.out.println("Controller has received a pass");
         game.gameReceiveOptions();
-    }
-
-    @Override
-    public void update(Request request) {
-        System.out.println("Controller should not receive Requests");
     }
 }

@@ -17,7 +17,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class View extends Observable implements Observer {
+public class clientCLI extends Observable implements Observer {
 
     private TileView[][] boardView;
 
@@ -34,38 +34,17 @@ public class View extends Observable implements Observer {
 
     private Scanner scanner;
 
-    //added vars
     private final int gameMode;
-    private static View instance;
+    private static clientCLI instance = null;
     private String playerName;
     private ArrayList<String> players;
     private int playersNum;
     private char playerInit;
     private ArrayList<String> selectedGods;
 
-    //gui specific method
-    public static View getInstance() {
-        return instance;
-    }
-
-    //gui specific method
-    public void setOtherPlayers(ArrayList<String> pl) {
-        this.players = pl;
-        this.playersNum = pl.stream().map(x -> 1).reduce(0, Integer::sum) + 1;
-    }
-
-    //gui specific method
-    public ArrayList<String> getPlayers() {
-        return this.players;
-    }
-
-    //gui specific method
-    public int getPlayersNum() {
-        return this.playersNum;
-    }
-
-    //adapted
-    public View() {
+    // TODO: NOT LIKE THIS
+    // adapted
+    public clientCLI() {
         boardView = new BoardView().getBoardView();
         scanner = new Scanner(System.in);
         instance = this;
@@ -74,21 +53,10 @@ public class View extends Observable implements Observer {
         System.out.println("Please select game mode:\n1) GUI\n2) CLI");
         Scanner s = new Scanner(System.in);
         String gm;
-        while(true){
+        while (true) {
             gm = s.nextLine();
-            if(gm.equals("1")) {
-                gameMode = 1;
-
-                //starts GUI thread
-                ThreadGUI tg = new ThreadGUI();
-                tg.start();
-
-                /*Stage ss = ClientGUI.getStage();
-                Platform.runLater(() -> {
-                    LoginUI l = new LoginUI();
-                    ss.setScene(l.getScene());
-                });*/
-
+            if (gm.equals("1")) {
+                gameMode=1;
                 break;
             } else if (gm.equals("2")) {
                 gameMode = 2;
@@ -102,25 +70,51 @@ public class View extends Observable implements Observer {
 
     @Override
     public void update(Request request) {
-        // System.out.print("View Update received: ");
         request.printMessage();
         request.accept(this);
     }
-
     @Override
     public void update(Answer answer) {
-        System.out.println("View should not receive answers");
+        System.out.println("clientCLI should not receive answers");
     }
 
+
+    // gui specific method
+    public static clientCLI getInstance() {
+        return instance;
+    }
+
+    // gui specific method
+    public void setOtherPlayers(ArrayList<String> pl) {
+        this.players = pl;
+        this.playersNum = pl.stream().map(x -> 1).reduce(0, Integer::sum) + 1;
+    }
+
+    // gui specific method
+    public ArrayList<String> getPlayers() {
+        return this.players;
+    }
+
+    // gui specific method
+    public int getPlayersNum() {
+        return this.playersNum;
+    }
+
+    // sets players initial as decided by the model
+    public void setPlayerInit(char init) {
+        this.playerInit = init;
+    }
+
+    // TODO: should be like this!!!
     public void updateBoardView(BoardView boardView) {
-        if(gameMode == 1) {
+        if (gameMode == 1) {
 
         } else if(gameMode == 2) {
             this.boardView = boardView.getBoardView();
         }
     }
 
-    //adapted
+    // TODO: not like this!
     public void getPlayerInfo() {
         System.out.println("ciao");
         if (gameMode == 1) {
@@ -138,7 +132,7 @@ public class View extends Observable implements Observer {
         }
     }
 
-    //gui specific method
+    // gui specific method
     public void sendPlayerInfo(String name) {
         this.playerName = name;
         updateObservers(new AnswerPlayerName(name));
@@ -154,15 +148,10 @@ public class View extends Observable implements Observer {
         return this.playerInit;
     }
 
-    // note: to add new Gods you have to change things both in GodLogic and Game
+    // Simple method that accepts only a god that comes from the options given from the server
     public void getPlayerGod(char initial, ArrayList<String> options) {
         if (this.gameMode == 1) {
-            this.playerInit = initial;
-            Stage ss = ClientGUI.getStage();
-            Platform.runLater(() -> {
-                GodSelectionUI g = new GodSelectionUI();
-                ss.setScene(g.getScene());
-            });
+            Application.launch(godSelectionGUI.class);
         } else if (this.gameMode == 2) {
             System.out.println("Select " + initial + "'s God: ");
             for (String opt : options) {
@@ -171,11 +160,8 @@ public class View extends Observable implements Observer {
             String godSelected = null;
             while (godSelected == null) {
                 String playerGod = scanner.next();
-                for (String opt : options) {
-                    if (opt.equals(playerGod)) {
-                        godSelected = playerGod;
-                        break;
-                    }
+                if (options.contains(playerGod)) {
+                    godSelected = playerGod;
                 }
             }
 
@@ -184,22 +170,29 @@ public class View extends Observable implements Observer {
         }
     }
 
-    //gui specific method
+    // gui specific method
     public void sendGods(ArrayList<String> gods) {
         //TODO add possibility to send list of gods, not only 1 god
         this.selectedGods = gods;
         //updateObservers(new AnswerPlayerGod(gods, this.playerInit));
     }
 
-    //gui specific method
+    // gui specific method
     public ArrayList<String> getGods() {
         return this.selectedGods;
     }
 
-    public void getWorkerPosition(int[][] workers, char initial) {
+    // Displays waiting for opponents' move message
+    public void waitingOpponent() {
+        System.out.println("Waiting opponent move");
+    }
+
+    // Let's the player choose where to place the worker from the available positions
+    public void getWorkerPlacement(int[][] workers, char initial) {
         boolean unselected = true;
 
         int posX = -1, posY = -1;
+        // very ugly, will fix later
         while(unselected) {
             System.out.println("Select X and Y coordinates of your worker");
             posX = getValidInt();
@@ -217,11 +210,11 @@ public class View extends Observable implements Observer {
                 }
             }
         }
-
+        System.out.println("Sending answerWorkerPosition");
         updateObservers(new AnswerWorkersPosition(posX, posY, initial));
     }
 
-
+    // Asks the selection of a valid worker
     private int getWorkerSelection(int x1, int y1, int x2, int y2) {
         System.out.println("Now you should select a Worker");
         System.out.println("Options: " + x1 + " " + y1 + " or " + x2 + " " + y2);
@@ -242,11 +235,11 @@ public class View extends Observable implements Observer {
             return 1;
     }
 
-
+    // Asks for the destination of the worker selected; posXOtherWorker and posYOtherWorker == -1 if not existan
     private int getDestSelection(ArrayList<Integer> opt, int posXOtherWorker, int posYOtherWorker) {
         System.out.println("Select position or your other Worker");
         System.out.println(opt);
-        displayPossibleSelection(opt, posXOtherWorker, posYOtherWorker);
+        generateSelectableWorkers(opt, posXOtherWorker, posYOtherWorker);
 
         int posX, posY;
         boolean unselected = true;
@@ -255,7 +248,7 @@ public class View extends Observable implements Observer {
             posX = getValidInt();
             posY = getValidInt();
             unselected = true;
-            if (posX == posXOtherWorker && posY == posYOtherWorker)
+            if (posXOtherWorker != -1 && posYOtherWorker != -1 && posX == posXOtherWorker && posY == posYOtherWorker)
                 unselected = false;
             else {
                 for (int i = 2; i < opt.size(); i += 2) {                   // from 2 because 0 and 1 contain the worker pos
@@ -269,35 +262,16 @@ public class View extends Observable implements Observer {
         return -1;
     }
 
-
-    private int getDestSelection(ArrayList<Integer> opt) {
-        System.out.println("Select position");
-        System.out.println(opt);
-        displayPossibleSelection(opt);
-
-        int posX, posY;
-        while (true) {
-            System.out.println("Please, select an available Cell");
-            posX = getValidInt();
-            posY = getValidInt();
-            for (int i = 2; i < opt.size(); i += 2) {                   // from 2 because 0 and 1 contain the worker pos
-                if (opt.get(i) == posX && opt.get(i + 1) == posY) {
-                    return i;
-                }
-            }
-        }
-    }
-
-
+    // Checks if the input number is an int, else displays a message
     private int getValidInt() {
         while (!scanner.hasNextInt()) {
-            System.out.println("An int between 0 and 4 (included) is required");
+            System.out.println("Must be a valid int");
             scanner.next();
         }
         return scanner.nextInt();
     }
 
-
+    // Displays pass question and reads the input; returns true if pass, else false
     private boolean askIfPass() {
         System.out.println("Please, type 'pass' if you want to skip to the next move, otherwise type 'go'");
         String selected = null;
@@ -312,19 +286,29 @@ public class View extends Observable implements Observer {
         return selected.equals("pass");
     }
 
+    // Method called at the beginning of the selection phase
+    public void getSelectedWorker(OptionSelection opt, boolean canPass) {
+        if (opt.getValues().size() == 2) {
+            getWorkerSelection(opt, canPass);
+        }
+        else {
+            getWorkerSelectionOneOption(opt, canPass);
+        }
+    }
 
+    // Selection method when there is only one selectable worker
     public void getWorkerSelectionOneOption(OptionSelection opt, boolean canPass) {
         System.out.println("Displaying options: ");
         System.out.println(opt);
         if (canPass) {
-            displayPossibleSelection(opt.getValues().get(0));
+            generateSelectableWorkers(opt.getValues().get(0), -1, -1);
             if (askIfPass()) {
                 Answer answer = new AnswerPowerCoordinates();
                 updateObservers(answer);
                 return;
             }
         }
-        int w_select = getDestSelection(opt.getValues().get(0));
+        int w_select = getDestSelection(opt.getValues().get(0), -1, -1);
 
         Answer answer = new AnswerPowerCoordinates(
                 opt.getValues().get(0).get(0), opt.getValues().get(0).get(1),
@@ -332,10 +316,10 @@ public class View extends Observable implements Observer {
         updateObservers(answer);
     }
 
-
+    // Selection phase when there are multiple selectable workers
     public void getWorkerSelection(OptionSelection opt, boolean canPass) {
         if (canPass) {
-            displayPossibleSelection(opt);
+            generateSelectableWorkers(opt);
             if (askIfPass()) {
                 Answer answer = new AnswerPowerCoordinates();
                 updateObservers(answer);
@@ -362,7 +346,7 @@ public class View extends Observable implements Observer {
         updateObservers(answer);
     }
 
-
+    // Displays the workers that can be selected
     private void displayActiveWorkers(int X1, int Y1, int X2, int Y2) {
 
         boolean[][] selectable = new boolean[5][5];
@@ -376,15 +360,17 @@ public class View extends Observable implements Observer {
         printSelectableBoard(selectable);
     }
 
-
-    private void displayPossibleSelection(ArrayList<Integer> opt, int posXOtherWorker, int posYOtherWorker) {
+    // Sets to true all the selectable cells considering opt and the other worker position
+    private void generateSelectableWorkers(ArrayList<Integer> opt, int posXOtherWorker, int posYOtherWorker) {
 
         boolean[][] selectable = new boolean[5][5];
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++)
                 selectable[i][j] = false;
+        }
 
-        selectable[posXOtherWorker][posYOtherWorker] = true;
+        if (posXOtherWorker != -1 && posYOtherWorker != -1)
+            selectable[posXOtherWorker][posYOtherWorker] = true;
 
         for (int i = 2; i < opt.size(); i += 2) {
             selectable[opt.get(i)][opt.get(i + 1)] = true;
@@ -393,21 +379,8 @@ public class View extends Observable implements Observer {
         printSelectableBoard(selectable);
     }
 
-    private void displayPossibleSelection(ArrayList<Integer> opt) {
-
-        boolean[][] selectable = new boolean[5][5];
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++)
-                selectable[i][j] = false;
-
-        for (int i = 2; i < opt.size(); i += 2) {
-            selectable[opt.get(i)][opt.get(i + 1)] = true;
-        }
-
-        printSelectableBoard(selectable);
-    }
-
-    private void displayPossibleSelection(OptionSelection opt) {
+    // Same as above, but generates the selectable workers
+    private void generateSelectableWorkers(OptionSelection opt) {
 
         boolean[][] selectable = new boolean[5][5];
         for (int i = 0; i < 5; i++)
@@ -421,6 +394,17 @@ public class View extends Observable implements Observer {
         printSelectableBoard(selectable);
     }
 
+    // Displays end game message
+    public void displayGameEnd(char winnerInit) {
+        if (winnerInit == playerInit) {
+            System.out.println("YOU WON! GOOD JOB!");
+        }
+        else {
+            System.out.println("You lost, NOOB!");
+        }
+    }
+
+    // Displays the board with the possible selectable tiles
     public void printSelectableBoard(boolean[][] selectable) {
 
         if (selectable == null) {
@@ -430,8 +414,6 @@ public class View extends Observable implements Observer {
         }
 
         String ANSI_WHITE = "\u001B[37m";
-
-        Font f = new Font("serif", Font.PLAIN, 20);
 
         System.out.println();
         System.out.println(ANSI_WHITE + "╔═════════╦═════════╦═════════╦═════════╦═════════╗");
@@ -477,6 +459,47 @@ public class View extends Observable implements Observer {
             if (i != 4)
                 System.out.println("╠═════════╬═════════╬═════════╬═════════╬═════════╣");
 
+        }
+        System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
+    }
+
+    // Display a board with the current boardView state and without selection
+    public void displayBoard() {
+
+        String ANSI_WHITE = "\u001B[37m";
+
+        System.out.println();
+        System.out.println(ANSI_WHITE + "╔═════════╦═════════╦═════════╦═════════╦═════════╗");
+        for (int i = 0; i < 5; i++) {
+            for (int k = 0; k < 3; k++) {
+                for (int j = 0; j < 5; j++) {
+                    System.out.print("║");
+                    if (boardView[i][j].getBuildingLevel() == 0 && !boardView[i][j].hasDome())
+                        currColor = ANSI_GREEN_BACKGROUND;
+                    else if (boardView[i][j].getBuildingLevel() == 1 && !boardView[i][j].hasDome())
+                        currColor = ANSI_YELLOW_BACKGROUND;
+                    else if (boardView[i][j].getBuildingLevel() == 2 && !boardView[i][j].hasDome())
+                        currColor = ANSI_WHITE_BACKGROUND;
+                    else if (boardView[i][j].getBuildingLevel() == 3 && !boardView[i][j].hasDome())
+                        currColor = ANSI_BRIGHTBLACK_BACKGROUND;
+                    else
+                        currColor = ANSI_BLUE_BACKGROUND;
+
+                    if (k != 1) {
+                        System.out.print(currColor + "         " + ANSI_RESET);
+                    }
+                    else {
+                        if (boardView[i][j].getInitWorker() != '?')
+                            System.out.print(currColor + "    " + ANSI_BLACK + boardView[i][j].getInitWorker() + "    " + ANSI_RESET);
+                        else
+                            System.out.print(currColor + "         " + ANSI_RESET);
+                    }
+                }
+                System.out.print("║");
+                System.out.println();
+            }
+            if (i != 4)
+                System.out.println("╠═════════╬═════════╬═════════╬═════════╬═════════╣");
         }
         System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
     }

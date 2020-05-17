@@ -6,7 +6,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.model.Game;
 
-import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.clientCLI;
 
 
 public class App {
@@ -14,10 +14,9 @@ public class App {
     public static void main( String[] args ) {
         System.out.println("Starting the game!");
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 100000; i++) {
             Game game = new Game();
-            View view = new View();
-            // View view = new ViewSimulated(); //Uncomment this and comment view to get simulated matches
+            clientCLI view = new clientCLI();
 
             Controller controller = new Controller(game);
 

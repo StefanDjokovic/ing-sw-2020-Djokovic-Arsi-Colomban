@@ -1,18 +1,15 @@
 package it.polimi.ingsw.client.networkLayer;
 
-import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
-import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.clientCLI;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.messages.request.RequestPlayerName;
-
+import it.polimi.ingsw.server.model.BoardView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client implements Observer {
 
@@ -21,12 +18,12 @@ public class Client implements Observer {
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
     private boolean isActiveFlag = true;
-    private View view;
+    private clientCLI clientCLI;
 
-    public Client(String ip, int port, View view) {
+    public Client(String ip, int port, clientCLI clientCLI) {
         this.ip = ip;
         this.port = port;
-        this.view = view;
+        this.clientCLI = clientCLI;
     }
 
     public boolean isActive() {
@@ -37,14 +34,20 @@ public class Client implements Observer {
         this.isActiveFlag = flag;
     }
 
+    public boolean noWinners = true;
     public Thread asyncSocketRead(final ObjectInputStream inputStream) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    while(true) {
-                        Request request = (Request) inputStream.readObject();
-                        request.accept(view);
+                    while(noWinners) {
+                        //System.out.println("Am I at least reading it?");
+                        Object request = inputStream.readObject();
+                        //System.out.println("YES! reading!");
+                        Request r = (Request)request ;
+                        r.accept(clientCLI);
+                        if (r.getMessage().equals("END"))
+                            noWinners = false;
                     }
                 } catch (Exception e) {
                     setActive(false);
@@ -77,13 +80,15 @@ public class Client implements Observer {
     }
 */
     public synchronized void socketWrite(Answer answer) throws IOException {
-        outputStream.reset();
+        //outputStream.reset();
+        //System.out.println("Am I writing it at least?");
         outputStream.writeObject(answer);
+        //System.out.println("Am I writing it at least 2?");
         outputStream.flush();
     }
 
     public void run() throws IOException {
-        view.addObserver(this);
+        clientCLI.addObserver(this);
 
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
@@ -100,18 +105,21 @@ public class Client implements Observer {
             inputStream.close();
             outputStream.close();
             socket.close();
+            System.out.println("DISCONNECTED FROM SERVER");
         }
     }
 
     @Override
     public void update(Request request) {
-        System.out.println("Error: controller shouldn't receive requests");
+        System.out.println("Error: client should send Requests");
     }
 
     @Override
     public void update(Answer answer) {
         try {
+            //System.out.println("Is this sent?");
             this.socketWrite(answer);
+            System.out.println("Sent!?");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

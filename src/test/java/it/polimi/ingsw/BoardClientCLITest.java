@@ -8,7 +8,7 @@ import it.polimi.ingsw.server.model.player.Worker;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class BoardViewTest {
+public class BoardClientCLITest {
     @Test
         public void genericTest() {
 

@@ -15,7 +15,7 @@ public class BuildOverOneTile extends Build {
     public OptionSelection getOptions(Logger logger) {
         int posXBuild = logger.getLastLog().getAction(2);
         int posYBuild = logger.getLastLog().getAction(3);
-        if (getGodLogic().tileBuildingLevel(posXBuild, posYBuild) <= 2) {
+        if (getGodLogic().getBuildingLevel(posXBuild, posYBuild) <= 2) {
             ArrayList<Integer> temp = new ArrayList<>();
             temp.add(logger.getLastLog().getAction(0));
             temp.add(logger.getLastLog().getAction(1));
