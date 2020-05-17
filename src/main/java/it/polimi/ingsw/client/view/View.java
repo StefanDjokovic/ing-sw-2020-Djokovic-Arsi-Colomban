@@ -9,6 +9,8 @@ import it.polimi.ingsw.messages.answers.*;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 
 import java.awt.*;
@@ -34,7 +36,7 @@ public class View extends Observable implements Observer {
 
     //added vars
     private final int gameMode;
-    private static View instance = null;
+    private static View instance;
     private String playerName;
     private ArrayList<String> players;
     private int playersNum;
@@ -75,10 +77,22 @@ public class View extends Observable implements Observer {
         while(true){
             gm = s.nextLine();
             if(gm.equals("1")) {
-                gameMode=1;
+                gameMode = 1;
+
+                //starts GUI thread
+                ThreadGUI tg = new ThreadGUI();
+                tg.start();
+
+                /*Stage ss = ClientGUI.getStage();
+                Platform.runLater(() -> {
+                    LoginUI l = new LoginUI();
+                    ss.setScene(l.getScene());
+                });*/
+
                 break;
             } else if (gm.equals("2")) {
-                gameMode=2;
+                gameMode = 2;
+                this.printSelectableBoard(null);
                 break;
             } else {
                 System.out.println("Wrong game mode selected.");
@@ -108,8 +122,13 @@ public class View extends Observable implements Observer {
 
     //adapted
     public void getPlayerInfo() {
+        System.out.println("ciao");
         if (gameMode == 1) {
-            Application.launch(loginGUI.class);
+            Stage ss = ClientGUI.getStage();
+            Platform.runLater(() -> {
+                LoginUI l = new LoginUI();
+                ss.setScene(l.getScene());
+            });
         } else if (gameMode == 2) {
             System.out.println("Please, input Player's name: ");
             String playerName = scanner.nextLine();
@@ -139,7 +158,11 @@ public class View extends Observable implements Observer {
     public void getPlayerGod(char initial, ArrayList<String> options) {
         if (this.gameMode == 1) {
             this.playerInit = initial;
-            Application.launch(godSelectionGUI.class);
+            Stage ss = ClientGUI.getStage();
+            Platform.runLater(() -> {
+                GodSelectionUI g = new GodSelectionUI();
+                ss.setScene(g.getScene());
+            });
         } else if (this.gameMode == 2) {
             System.out.println("Select " + initial + "'s God: ");
             for (String opt : options) {

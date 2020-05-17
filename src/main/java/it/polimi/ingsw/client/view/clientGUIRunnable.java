@@ -5,6 +5,6 @@ import javafx.application.Application;
 public class clientGUIRunnable {
     public static void main(String[] args){
         System.out.println("Starting GUI!");
-        //Application.launch(clientGUI.class);
+        Application.launch(clientGUI_old.class);
     }
 }

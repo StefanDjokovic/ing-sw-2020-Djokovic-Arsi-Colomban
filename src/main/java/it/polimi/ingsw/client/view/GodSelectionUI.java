@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -17,16 +18,17 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class godSelectionGUI extends Application {
+public class GodSelectionUI {
 
     private ArrayList<String> selectedGods;
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         launch(args);
-    }
+    }*/
 
-    @Override
-    public void start(Stage stage) {
+    private final Scene godSelectionScene;
+
+    public GodSelectionUI() {
         ArrayList<ToggleButton> godButtons = createGodButtons();
         ScrollPane sp = new ScrollPane();
         FlowPane fp = new FlowPane(Orientation.HORIZONTAL);
@@ -41,7 +43,8 @@ public class godSelectionGUI extends Application {
         sp.setFitToWidth(true);
         sp.setFitToHeight(true);
 
-        Scene scene = new Scene(root, 800, 700);
+        godSelectionScene = new Scene(root, 800, 700);
+
 
         ColumnConstraints c = new ColumnConstraints();
         c.setHgrow(Priority.ALWAYS);
@@ -66,8 +69,9 @@ public class godSelectionGUI extends Application {
         Button b = new Button("Continue");
         b.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
         b.setOnAction((ActionEvent event) -> {
-            sendGods(selectedGods);
-            stage.close();
+            //sendGods(selectedGods);
+            View.getInstance().sendGods(selectedGods);
+            Platform.exit();
         });
         GridPane.setHalignment(b, HPos.CENTER);
 
@@ -77,9 +81,9 @@ public class godSelectionGUI extends Application {
 
         root.setPadding(new Insets(25));
         root.setAlignment(Pos.CENTER);
-        stage.setTitle("God selection");
+        /*stage.setTitle("God selection");
         stage.setScene(scene);
-        stage.show();
+        stage.show();*/
     }
 
     private ArrayList<ToggleButton> createGodButtons() {
@@ -144,9 +148,13 @@ public class godSelectionGUI extends Application {
         return buttons;
     }
 
-    public void sendGods(ArrayList<String> gods) {
+    /*public void sendGods(ArrayList<String> gods) {
         System.out.println("Gods: "+selectedGods.stream().collect(Collectors.joining(", ")));
         //send
         View.getInstance().sendGods(gods);
+    }*/
+
+    public Scene getScene() {
+        return this.godSelectionScene;
     }
 }

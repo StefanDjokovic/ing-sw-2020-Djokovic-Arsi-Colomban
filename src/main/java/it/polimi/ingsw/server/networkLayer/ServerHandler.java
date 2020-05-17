@@ -33,7 +33,7 @@ public class ServerHandler{
     private Map<String, String> nameGodLogicMap = new HashMap<>();
 
     public ServerHandler() throws IOException    {
-        this.serverSocket = new ServerSocket(4567);
+        this.serverSocket = new ServerSocket(4568);
     }
 
     public synchronized void deregisterConnection(SocketConnection connection) {    //TODO: make it work for 3 players

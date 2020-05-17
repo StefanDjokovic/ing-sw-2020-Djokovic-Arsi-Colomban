@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
@@ -15,25 +14,18 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+public class LoginUI {
 
-public class loginGUI extends Application {
+    private final Scene loginScene;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) {
+    public LoginUI() {
         GridPane root = new GridPane();
         root.setHgap(8);
         root.setVgap(8);
         root.getStylesheets().add("style.css");
 
-        Scene scene = new Scene(root, 400, 350);
+        loginScene = new Scene(root, 400, 350);
 
         Label lbl = new Label("Santorini");
         lbl.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
@@ -59,8 +51,9 @@ public class loginGUI extends Application {
         bt2.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt2.setOnAction((ActionEvent event) -> {
             if(!txtf.getCharacters().toString().equals("")) {
-                sendName(txtf.getCharacters().toString());
-                stage.close();
+                //sendName(txtf.getCharacters().toString());
+                System.out.println("Read: "+txtf.getCharacters().toString());
+                View.getInstance().sendPlayerInfo(txtf.getCharacters().toString());
             }
         });
 
@@ -88,17 +81,9 @@ public class loginGUI extends Application {
         root.setPadding(new Insets(25));
         root.setAlignment(Pos.CENTER);
         //root.setSpacing(25);
-
-        //Scene scene2 = new Scene(root2, 280, 200);
-
-        stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
     }
 
-    public void sendName(String name) {
-        System.out.println("Read: "+name);
-        View.getInstance().sendPlayerInfo(name);
+    public Scene getScene() {
+        return this.loginScene;
     }
 }
