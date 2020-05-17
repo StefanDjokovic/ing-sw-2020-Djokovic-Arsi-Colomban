@@ -47,10 +47,6 @@ public class RequestPowerCoordinates extends Request {
         printMessage();
         if (requestUpdateBoardViewBoardView != null)
             requestUpdateBoardViewBoardView.accept(clientCLI);
-        if (opt.getValues().size() == 2) {
-            clientCLI.getWorkerSelection(opt, this.canPass);
-        }
-        else
-            clientCLI.getWorkerSelectionOneOption(opt, this.canPass);
+        clientCLI.getSelectedWorker(opt, this.canPass);
     }
 }

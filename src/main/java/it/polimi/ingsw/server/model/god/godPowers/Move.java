@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.model.god.GodLogic;
 import it.polimi.ingsw.server.model.god.GodPower;
 import it.polimi.ingsw.server.model.player.Worker;
 
+// Standard movement GodPower
 public class Move extends GodPower {
 
     int moveUp = 1;

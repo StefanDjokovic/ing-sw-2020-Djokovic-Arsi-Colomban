@@ -3,6 +3,7 @@ package it.polimi.ingsw.messages.answers;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.server.controller.Controller;
 
+// ONLY sent by the ServerSocket to delete a player
 public class AnswerKillPlayer extends Answer {
 
     char initial;

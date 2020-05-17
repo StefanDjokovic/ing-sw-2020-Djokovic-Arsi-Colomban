@@ -19,7 +19,7 @@ public class RequestWorkerPlacement extends Request {
 
     @Override
     public void accept(clientCLI clientCLI) {
-        clientCLI.getWorkerPosition(workers, initial);
+        clientCLI.getWorkerPlacement(workers, initial);
     }
 
     public char getInitial() { return this.initial; }

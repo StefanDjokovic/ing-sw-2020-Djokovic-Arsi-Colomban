@@ -11,7 +11,7 @@ import it.polimi.ingsw.server.model.board.Board;
 
 import java.util.ArrayList;
 
-
+// Standard build GodPower
 public class Build extends GodPower {
 
     public Build(GodLogic godLogic, boolean canPass) {

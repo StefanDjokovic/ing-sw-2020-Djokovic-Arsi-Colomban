@@ -26,9 +26,9 @@ public class AnswerPowerCoordinates extends Answer {
     @Override
     public void act(Controller controller) {
         if (posXFrom == -1)
-            controller.executePower();
+            controller.executePass();
         else
-            controller.executePower(posXFrom, posYFrom, posXTo, posYTo);
+            controller.executeMoveOrBuild(posXFrom, posYFrom, posXTo, posYTo);
     }
 
 }

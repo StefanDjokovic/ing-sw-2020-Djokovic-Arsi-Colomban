@@ -38,7 +38,7 @@ public class RequestGameInformation extends Request {
 
     }
 
-
+    // TODO: this method can pass the information about the other players, currently sets only playerInit1
     @Override
     public void accept(clientCLI clientCLI) {
         clientCLI.setPlayerInit(playerInit1);

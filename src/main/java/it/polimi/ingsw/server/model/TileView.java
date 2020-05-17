@@ -6,7 +6,7 @@ public class TileView implements Serializable {
 
     private int buildingLevel;
     private boolean hasDome;
-    private char initWorker;
+    private char initWorker;    // '?' if there is no worker
 
     //set to public, otherwise not testable
     public TileView(int buildingLevel, boolean hasDome, char initWorker) {
@@ -21,6 +21,10 @@ public class TileView implements Serializable {
 
     public boolean hasDome() {
         return hasDome;
+    }
+
+    public boolean hasWorker() {
+        return this.initWorker != '?';
     }
 
     public int getBuildingLevel() {

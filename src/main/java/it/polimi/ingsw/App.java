@@ -16,8 +16,7 @@ public class App {
 
         for (int i = 0; i < 100000; i++) {
             Game game = new Game();
-            // clientCLI view = new clientCLI();
-            clientCLI view = new clientCLISimulated(); //Uncomment this and comment view to get simulated matches
+            clientCLI view = new clientCLI();
 
             Controller controller = new Controller(game);
 

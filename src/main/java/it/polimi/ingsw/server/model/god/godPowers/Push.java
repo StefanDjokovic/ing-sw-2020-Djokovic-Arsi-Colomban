@@ -41,7 +41,7 @@ public class Push extends Move {
 
         for (ArrayList<Integer> comb: opt.getValues()) {
             for (int i = 2; i < comb.size(); i += 2) {
-                if (getGodLogic().hasOpposingWorker(comb.get(i), comb.get(i + 1))) {
+                if (getGodLogic().hasOpposingOpponentWorker(comb.get(i), comb.get(i + 1))) {
                     if (!(getGodLogic().isBehindFree(comb.get(0), comb.get(1), comb.get(i), comb.get(i + 1)))) {
                         comb.remove(i + 1);
                         comb.remove(i);

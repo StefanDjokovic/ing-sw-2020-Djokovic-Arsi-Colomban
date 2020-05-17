@@ -29,9 +29,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         this.server = server;
     }
 
-//    private synchronized boolean isActive() {
-//        return isActiveFlag;
-//    }
 
     public void send(Request request) {
         try {
@@ -47,15 +44,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             System.err.println(e.getMessage());
         }
     }
-//
-//    public void asyncSend(final Request request){
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                    send(request);
-//            }
-//        }).start();
-//    }
+
 
     public Answer readFromSocket() {
         try {
@@ -65,8 +54,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             answer.setInitial(playerInitial);
             System.out.println("AAAAAAAAAAAAAAAAAAAA\n");
             updateObservers(answer);
-            //server.readAnswer(answer);
-            //return answer;
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
             closeServerSocket();
@@ -75,39 +62,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         return null;
     }
 
-//    public Thread asyncReadTurn(){
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try{
-//                    while(true) {
-//                        System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
-//                        Object temp = inputStream.readObject();
-//                        Answer answer = (Answer) temp;
-//                        answer.setInitial(playerInitial);
-//                        System.out.println("AAAAAAAAAAAAAAAAAAAA\n");
-//                        updateObservers(answer);
-//                        System.out.println("Im closing the asnycronous read turn\n");
-//                    }
-//                } catch(Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//        thread.start();
-//        return thread;
-//    }
-//
-//    public synchronized void readTurn() {
-//        try{
-//            while(true) {
-//                AnswerPowerCoordinates answer = (AnswerPowerCoordinates) inputStream.readObject();
-//                updateObservers(answer);
-//            }
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     public synchronized void closeConnection() {
         try {
@@ -120,23 +74,15 @@ public class ServerSocket extends Observable implements Runnable, Observer {
 
     public void closeServerSocket() {
         isActiveFlag = false;
-
-//        closeConnection();
-//        System.out.println("Deregistering client...");
-//        server.deregisterConnection(this);
-//        System.out.println("Done!");
     }
 
     public void close() {
         closeConnection();
-        System.out.println("Deregistering client...");
+        System.out.println("De-registering client...");
         server.deregisterConnection(this);
         System.out.println("Done!");
     }
 
-    public void waitingOpponentMove() {
-        send(new RequestWaitOpponentMove());
-    }
 
     public void setPlayerInitial(char playerInitial) {
         this.playerInitial = playerInitial;
@@ -148,7 +94,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     }
 
     @Override
-    public void run(){
+    public void run() {
         try {
             System.out.println("Running ServerSocket");
             inputStream = new ObjectInputStream(socket.getInputStream());
@@ -177,12 +123,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                 send(request);
                 if (!request.isAsync()) {
                     readFromSocket();
-                    //                try {
-                    //                    Thread t = asyncReadTurn();
-                    //                    t.join();
-                    //                } catch (InterruptedException e) {
-                    //                    e.printStackTrace();
-                    //                }
                 }
                 System.out.println("Terminating update ServerSocket " + playerInitial);
             }
