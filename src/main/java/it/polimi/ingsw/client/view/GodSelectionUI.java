@@ -70,7 +70,7 @@ public class GodSelectionUI {
         b.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
         b.setOnAction((ActionEvent event) -> {
             //sendGods(selectedGods);
-            View.getInstance().sendGods(selectedGods);
+            clientCLI.getInstance().sendGods(selectedGods);
             Platform.exit();
         });
         GridPane.setHalignment(b, HPos.CENTER);

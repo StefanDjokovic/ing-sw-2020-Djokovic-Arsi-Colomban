@@ -8,12 +8,10 @@ import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.*;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -118,7 +116,7 @@ public class clientCLI extends Observable implements Observer {
     public void getPlayerInfo() {
         System.out.println("ciao");
         if (gameMode == 1) {
-            Stage ss = ClientGUI.getStage();
+            Stage ss = clientGUI.getStage();
             Platform.runLater(() -> {
                 LoginUI l = new LoginUI();
                 ss.setScene(l.getScene());
@@ -151,7 +149,7 @@ public class clientCLI extends Observable implements Observer {
     // Simple method that accepts only a god that comes from the options given from the server
     public void getPlayerGod(char initial, ArrayList<String> options) {
         if (this.gameMode == 1) {
-            Application.launch(godSelectionGUI.class);
+            //Application.launch(godSelectionGUI.class);
         } else if (this.gameMode == 2) {
             System.out.println("Select " + initial + "'s God: ");
             for (String opt : options) {

@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.view;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class ClientGUI extends Application {
+public class clientGUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -13,19 +13,19 @@ public class ClientGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        synchronized (ClientGUI.class) {
+        synchronized (clientGUI.class) {
             thisStage = primaryStage;
             primaryStage.show();
-            ClientGUI.class.notifyAll();
+            clientGUI.class.notifyAll();
         }
     }
 
     public static Stage getStage() {
         System.out.println("ciao");
-        synchronized (ClientGUI.class) {
+        synchronized (clientGUI.class) {
             try {
                 while(thisStage == null) {
-                    ClientGUI.class.wait();
+                    clientGUI.class.wait();
                 }
                 return thisStage;
             } catch (InterruptedException e) {
