@@ -55,6 +55,15 @@ public class clientCLI extends Observable implements Observer {
             gm = s.nextLine();
             if (gm.equals("1")) {
                 gameMode=1;
+                //starts GUI thread
+                ThreadGUI tg = new ThreadGUI();
+                tg.start();
+
+//                Stage ss = clientGUI.getStage();
+//                Platform.runLater(() -> {
+//                    LoginUI l = new LoginUI();
+//                    ss.setScene(l.getScene());
+//                });
                 break;
             } else if (gm.equals("2")) {
                 gameMode = 2;
