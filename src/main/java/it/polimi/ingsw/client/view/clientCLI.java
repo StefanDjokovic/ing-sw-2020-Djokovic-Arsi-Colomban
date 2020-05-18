@@ -32,7 +32,7 @@ public class clientCLI extends Observable implements Observer {
 
     private Scanner scanner;
 
-    private final int gameMode;
+    //private final int gameMode;
     private static clientCLI instance = null;
     private String playerName;
     private ArrayList<String> players;
@@ -46,8 +46,9 @@ public class clientCLI extends Observable implements Observer {
         boardView = new BoardView().getBoardView();
         scanner = new Scanner(System.in);
         instance = this;
+        this.printSelectableBoard(null);
 
-        //select game mode
+        /*//select game mode
         System.out.println("Please select game mode:\n1) GUI\n2) CLI");
         Scanner s = new Scanner(System.in);
         String gm;
@@ -72,7 +73,7 @@ public class clientCLI extends Observable implements Observer {
             } else {
                 System.out.println("Wrong game mode selected.");
             }
-        }
+        }*/
     }
 
     @Override
@@ -125,7 +126,7 @@ public class clientCLI extends Observable implements Observer {
     public void getPlayerInfo() {
         System.out.println("ciao");
         if (gameMode == 1) {
-            Stage ss = clientGUI.getStage();
+            Stage ss = CoreGUI.getStage();
             Platform.runLater(() -> {
                 LoginUI l = new LoginUI();
                 ss.setScene(l.getScene());
@@ -158,7 +159,11 @@ public class clientCLI extends Observable implements Observer {
     // Simple method that accepts only a god that comes from the options given from the server
     public void getPlayerGod(char initial, ArrayList<String> options) {
         if (this.gameMode == 1) {
-            //Application.launch(godSelectionGUI.class);
+            Stage ss = CoreGUI.getStage();
+            Platform.runLater(() -> {
+                GodSelectionUI l = new GodSelectionUI();
+                ss.setScene(l.getScene());
+            });
         } else if (this.gameMode == 2) {
             System.out.println("Select " + initial + "'s God: ");
             for (String opt : options) {

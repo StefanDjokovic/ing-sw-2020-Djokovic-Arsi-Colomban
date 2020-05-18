@@ -1,37 +1,29 @@
 package it.polimi.ingsw.client.view;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import it.polimi.ingsw.Observable;
+import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.server.model.TileView;
 
-public class clientGUI extends Application {
+import java.util.ArrayList;
 
-    public static void main(String[] args) {
-        launch(args);
+public class clientGUI extends Observable implements Observer {
+    private TileView[][] boardView;
+    private static clientCLI instance = null;
+    private String playerName;
+    private ArrayList<String> players;
+    private int playersNum;
+    private char playerInit;
+    private ArrayList<String> selectedGods;
+
+    public clientGUI() {
+
     }
-
-    private static Stage thisStage;
 
     @Override
-    public void start(Stage primaryStage) {
-        synchronized (clientGUI.class) {
-            thisStage = primaryStage;
-            primaryStage.show();
-            clientGUI.class.notifyAll();
-        }
-    }
-
-    public static Stage getStage() {
-        System.out.println("ciao");
-        synchronized (clientGUI.class) {
-            try {
-                while(thisStage == null) {
-                    clientGUI.class.wait();
-                }
-                return thisStage;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return thisStage;
+    public void update(Request request) {
+        //TODO FIX REQUEST ISSUE NOT ACCEPTING CLIENTGUI
+        request.printMessage();
+        //request.accept(this);
     }
 }

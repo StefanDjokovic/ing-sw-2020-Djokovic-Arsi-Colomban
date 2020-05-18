@@ -39,6 +39,7 @@ public class clientGUI_old extends Application{
     EventHandler<MouseEvent> workerHandler = e -> {
         returnWorker(GridPane.getRowIndex(((Node)e.getSource())), GridPane.getColumnIndex(((Node)e.getSource())));
     };
+
     EventHandler<MouseEvent> tileHandler = e -> {
         returnTile(GridPane.getRowIndex(((Node)e.getSource())), GridPane.getColumnIndex(((Node)e.getSource())));
     };
