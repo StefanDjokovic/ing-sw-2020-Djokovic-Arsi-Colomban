@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
@@ -13,10 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class GodSelectionUI {
 
@@ -70,7 +67,7 @@ public class GodSelectionUI {
         b.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
         b.setOnAction((ActionEvent event) -> {
             //sendGods(selectedGods);
-            clientCLI.getInstance().sendGods(selectedGods);
+            ClientGUI.getInstance().sendGods(selectedGods);
             Platform.exit();
         });
         GridPane.setHalignment(b, HPos.CENTER);
@@ -121,7 +118,7 @@ public class GodSelectionUI {
         b.setId("prometheus");
         buttons.add(b);
 
-        int playersNum = clientCLI.getInstance().getPlayersNum();
+        int playersNum = ClientGUI.getInstance().getPlayersNum();
 
         ToggleButton x;
         for(int a = 1 ; a <= buttons.size() ;  a++){

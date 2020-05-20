@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
@@ -15,20 +14,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 import java.util.stream.Collectors;
 
-public class gameGUI extends Application {
+public class GameUI {
 
+    private final Scene gameScene;
     private Button[][] boardSlots;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) {
+    public GameUI() {
+        initBoardSlots();
         GridPane root = new GridPane();
         GridPane grid = new GridPane();
         //grid.setPadding(new Insets(25));
@@ -38,9 +33,7 @@ public class gameGUI extends Application {
         root.setHgap(8);
         root.setVgap(8);
 
-        initBoardSlots();
-
-        Scene scene = new Scene(root, 630, 470);
+        gameScene = new Scene(root, 630, 470);
         grid.getStylesheets().add("style.css");
         root.getStylesheets().add("style.css");
 
@@ -50,6 +43,7 @@ public class gameGUI extends Application {
         regole.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         regole.setOnAction((ActionEvent event) -> {
             //rulesUI(new Stage());
+            System.out.println("not yet implemented");
         });
         GridPane.setHalignment(regole, HPos.LEFT);
         root.add(regole, 0, 1);
@@ -98,7 +92,7 @@ public class gameGUI extends Application {
         lbl5.setFont(Font.font("Futura", 20));
         leftInfo.getChildren().add(lbl5);
 
-        if(ClientGUI.getInstance().getPlayers()!=null) {
+        if(ClientGUI.getInstance().getPlayers() != null) {
             ClientGUI.getInstance().getPlayers().forEach(player -> {
                 Label l = new Label(player);
                 l.setFont(Font.font("Futura", 12));
@@ -150,11 +144,6 @@ public class gameGUI extends Application {
 
         root.add(leftInfo, 0, 0);
         root.add(grid, 1, 0, 1, 2);
-
-        stage.setTitle("God selection");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
     }
 
     private void initBoardSlots() {
@@ -173,5 +162,9 @@ public class gameGUI extends Application {
                 });
             }
         }
+    }
+
+    public Scene getScene() {
+        return this.gameScene;
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.messages.request;
 
-import it.polimi.ingsw.client.view.clientCLI;
+import it.polimi.ingsw.client.view.ClientCLI;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 
@@ -43,7 +43,7 @@ public class RequestPowerCoordinates extends Request {
     }
 
     @Override
-    public void accept(clientCLI clientCLI) {
+    public void accept(ClientCLI clientCLI) {
         printMessage();
         if (requestUpdateBoardViewBoardView != null)
             requestUpdateBoardViewBoardView.accept(clientCLI);

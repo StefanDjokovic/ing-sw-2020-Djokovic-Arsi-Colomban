@@ -1,10 +1,9 @@
 package it.polimi.ingsw.client.networkLayer;
 
 import it.polimi.ingsw.Observer;
-import it.polimi.ingsw.client.view.clientCLI;
+import it.polimi.ingsw.client.view.ClientCLI;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.server.model.BoardView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,9 +17,9 @@ public class Client implements Observer {
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
     private boolean isActiveFlag = true;
-    private clientCLI clientCLI;
+    private ClientCLI clientCLI;
 
-    public Client(String ip, int port, clientCLI clientCLI) {
+    public Client(String ip, int port, ClientCLI clientCLI) {
         this.ip = ip;
         this.port = port;
         this.clientCLI = clientCLI;

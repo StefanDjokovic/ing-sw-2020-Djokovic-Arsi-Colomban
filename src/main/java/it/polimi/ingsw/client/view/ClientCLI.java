@@ -8,14 +8,12 @@ import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.*;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
-import javafx.application.Platform;
-import javafx.stage.Stage;
 
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class clientCLI extends Observable implements Observer {
+public class ClientCLI extends Observable implements Observer, ClientView {
 
     private TileView[][] boardView;
 
@@ -33,7 +31,7 @@ public class clientCLI extends Observable implements Observer {
     private Scanner scanner;
 
     //private final int gameMode;
-    private static clientCLI instance = null;
+    private static ClientCLI instance = null;
     private String playerName;
     private ArrayList<String> players;
     private int playersNum;
@@ -42,7 +40,7 @@ public class clientCLI extends Observable implements Observer {
 
     // TODO: NOT LIKE THIS
     // adapted
-    public clientCLI() {
+    public ClientCLI() {
         boardView = new BoardView().getBoardView();
         scanner = new Scanner(System.in);
         instance = this;
@@ -87,7 +85,7 @@ public class clientCLI extends Observable implements Observer {
     }
 
 
-    // gui specific method
+    /*// gui specific method
     public static clientCLI getInstance() {
         return instance;
     }
@@ -106,7 +104,7 @@ public class clientCLI extends Observable implements Observer {
     // gui specific method
     public int getPlayersNum() {
         return this.playersNum;
-    }
+    }*/
 
     // sets players initial as decided by the model
     public void setPlayerInit(char init) {
@@ -115,17 +113,17 @@ public class clientCLI extends Observable implements Observer {
 
     // TODO: should be like this!!!
     public void updateBoardView(BoardView boardView) {
-        if (gameMode == 1) {
+        /*if (gameMode == 1) {
 
         } else if(gameMode == 2) {
             this.boardView = boardView.getBoardView();
-        }
+        }*/
+        this.boardView = boardView.getBoardView();
     }
 
     // TODO: not like this!
     public void getPlayerInfo() {
-        System.out.println("ciao");
-        if (gameMode == 1) {
+        /*if (gameMode == 1) {
             Stage ss = CoreGUI.getStage();
             Platform.runLater(() -> {
                 LoginUI l = new LoginUI();
@@ -137,10 +135,13 @@ public class clientCLI extends Observable implements Observer {
             updateObservers(new AnswerPlayerName(playerName));
         } else {
             System.out.println("GameMode error");
-        }
+        }*/
+        System.out.println("Please, input Player's name: ");
+        String playerName = scanner.nextLine();
+        updateObservers(new AnswerPlayerName(playerName));
     }
 
-    // gui specific method
+    /*// gui specific method
     public void sendPlayerInfo(String name) {
         this.playerName = name;
         updateObservers(new AnswerPlayerName(name));
@@ -154,11 +155,11 @@ public class clientCLI extends Observable implements Observer {
     //gui specific method
     public char getInit() {
         return this.playerInit;
-    }
+    }*/
 
     // Simple method that accepts only a god that comes from the options given from the server
     public void getPlayerGod(char initial, ArrayList<String> options) {
-        if (this.gameMode == 1) {
+        /*if (this.gameMode == 1) {
             Stage ss = CoreGUI.getStage();
             Platform.runLater(() -> {
                 GodSelectionUI l = new GodSelectionUI();
@@ -179,10 +180,24 @@ public class clientCLI extends Observable implements Observer {
 
             System.out.println("You picked " + godSelected);
             updateObservers(new AnswerPlayerGod(godSelected, initial));
+        }*/
+        System.out.println("Select " + initial + "'s God: ");
+        for (String opt : options) {
+            System.out.print(opt + " ");
         }
+        String godSelected = null;
+        while (godSelected == null) {
+            String playerGod = scanner.next();
+            if (options.contains(playerGod)) {
+                godSelected = playerGod;
+            }
+        }
+
+        System.out.println("You picked " + godSelected);
+        updateObservers(new AnswerPlayerGod(godSelected, initial));
     }
 
-    // gui specific method
+    /*// gui specific method
     public void sendGods(ArrayList<String> gods) {
         //TODO add possibility to send list of gods, not only 1 god
         this.selectedGods = gods;
@@ -192,7 +207,7 @@ public class clientCLI extends Observable implements Observer {
     // gui specific method
     public ArrayList<String> getGods() {
         return this.selectedGods;
-    }
+    }*/
 
     // Displays waiting for opponents' move message
     public void waitingOpponent() {

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.messages;
 
-import it.polimi.ingsw.client.view.clientCLI;
+import it.polimi.ingsw.client.view.ClientCLI;
 import it.polimi.ingsw.server.model.BoardView;
 
 import java.io.Serializable;
@@ -21,7 +21,7 @@ public abstract class Request implements Serializable {
         System.out.println(message);
     }
 
-    public abstract void accept(clientCLI clientCLI);
+    public abstract void accept(ClientCLI clientCLI);
 
     public char getInitial() {
         return this.initial;

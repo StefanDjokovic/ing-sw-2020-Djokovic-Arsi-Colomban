@@ -1,7 +1,7 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.client.view.clientCLI;
+import it.polimi.ingsw.client.view.ClientCLI;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public class RequestPlayerGod extends Request {
     }
 
     @Override
-    public void accept(clientCLI clientCLI) {
+    public void accept(ClientCLI clientCLI) {
         clientCLI.getPlayerGod(initial, options);
     }
 

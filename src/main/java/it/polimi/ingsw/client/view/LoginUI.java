@@ -53,7 +53,7 @@ public class LoginUI {
             if(!txtf.getCharacters().toString().equals("")) {
                 //sendName(txtf.getCharacters().toString());
                 System.out.println("Read: "+txtf.getCharacters().toString());
-                clientCLI.getInstance().sendPlayerInfo(txtf.getCharacters().toString());
+                ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString());
             }
         });
 
