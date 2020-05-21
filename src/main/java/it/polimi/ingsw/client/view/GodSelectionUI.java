@@ -68,7 +68,6 @@ public class GodSelectionUI {
         b.setOnAction((ActionEvent event) -> {
             //sendGods(selectedGods);
             ClientGUI.getInstance().sendGods(selectedGods);
-            Platform.exit();
         });
         GridPane.setHalignment(b, HPos.CENTER);
 

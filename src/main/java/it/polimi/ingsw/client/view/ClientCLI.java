@@ -84,28 +84,6 @@ public class ClientCLI extends Observable implements Observer, ClientView {
         System.out.println("clientCLI should not receive answers");
     }
 
-
-    /*// gui specific method
-    public static clientCLI getInstance() {
-        return instance;
-    }
-
-    // gui specific method
-    public void setOtherPlayers(ArrayList<String> pl) {
-        this.players = pl;
-        this.playersNum = pl.stream().map(x -> 1).reduce(0, Integer::sum) + 1;
-    }
-
-    // gui specific method
-    public ArrayList<String> getPlayers() {
-        return this.players;
-    }
-
-    // gui specific method
-    public int getPlayersNum() {
-        return this.playersNum;
-    }*/
-
     // sets players initial as decided by the model
     public void setPlayerInit(char init) {
         this.playerInit = init;
@@ -113,74 +91,18 @@ public class ClientCLI extends Observable implements Observer, ClientView {
 
     // TODO: should be like this!!!
     public void updateBoardView(BoardView boardView) {
-        /*if (gameMode == 1) {
-
-        } else if(gameMode == 2) {
-            this.boardView = boardView.getBoardView();
-        }*/
         this.boardView = boardView.getBoardView();
     }
 
     // TODO: not like this!
     public void getPlayerInfo() {
-        /*if (gameMode == 1) {
-            Stage ss = CoreGUI.getStage();
-            Platform.runLater(() -> {
-                LoginUI l = new LoginUI();
-                ss.setScene(l.getScene());
-            });
-        } else if (gameMode == 2) {
-            System.out.println("Please, input Player's name: ");
-            String playerName = scanner.nextLine();
-            updateObservers(new AnswerPlayerName(playerName));
-        } else {
-            System.out.println("GameMode error");
-        }*/
         System.out.println("Please, input Player's name: ");
         String playerName = scanner.nextLine();
         updateObservers(new AnswerPlayerName(playerName));
     }
 
-    /*// gui specific method
-    public void sendPlayerInfo(String name) {
-        this.playerName = name;
-        updateObservers(new AnswerPlayerName(name));
-    }
-
-    //gui specific method
-    public String getName() {
-        return this.playerName;
-    }
-
-    //gui specific method
-    public char getInit() {
-        return this.playerInit;
-    }*/
-
     // Simple method that accepts only a god that comes from the options given from the server
     public void getPlayerGod(char initial, ArrayList<String> options) {
-        /*if (this.gameMode == 1) {
-            Stage ss = CoreGUI.getStage();
-            Platform.runLater(() -> {
-                GodSelectionUI l = new GodSelectionUI();
-                ss.setScene(l.getScene());
-            });
-        } else if (this.gameMode == 2) {
-            System.out.println("Select " + initial + "'s God: ");
-            for (String opt : options) {
-                System.out.print(opt + " ");
-            }
-            String godSelected = null;
-            while (godSelected == null) {
-                String playerGod = scanner.next();
-                if (options.contains(playerGod)) {
-                    godSelected = playerGod;
-                }
-            }
-
-            System.out.println("You picked " + godSelected);
-            updateObservers(new AnswerPlayerGod(godSelected, initial));
-        }*/
         System.out.println("Select " + initial + "'s God: ");
         for (String opt : options) {
             System.out.print(opt + " ");

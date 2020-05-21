@@ -3,9 +3,14 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
+import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.answers.AnswerPlayerGod;
 import it.polimi.ingsw.messages.answers.AnswerPlayerName;
+import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -55,12 +60,6 @@ public class ClientGUI extends Observable implements Observer, ClientView {
         return this.playersNum;
     }
 
-    // gui specific method
-    public void sendPlayerInfo(String name) {
-        this.playerName = name;
-        updateObservers(new AnswerPlayerName(name));
-    }
-
     //gui specific method
     public String getName() {
         return this.playerName;
@@ -72,14 +71,56 @@ public class ClientGUI extends Observable implements Observer, ClientView {
     }
 
     // gui specific method
+    public ArrayList<String> getGods() {
+        return this.selectedGods;
+    }
+
+    public void updateBoardView(BoardView bv) {
+
+    }
+
+    public void getPlayerInfo() {
+        Stage ss = CoreGUI.getStage();
+        Platform.runLater(() -> {
+            LoginUI l = new LoginUI();
+            ss.setScene(l.getScene());
+        });
+    }
+
+    // gui specific method
+    public void sendPlayerInfo(String name) {
+        this.playerName = name;
+        updateObservers(new AnswerPlayerName(name));
+    }
+
+    public void getPlayerGod(char initial, ArrayList<String> options) {
+        Stage ss = CoreGUI.getStage();
+        Platform.runLater(() -> {
+            GodSelectionUI l = new GodSelectionUI();
+            ss.setScene(l.getScene());
+        });
+    }
+
+    // gui specific method
     public void sendGods(ArrayList<String> gods) {
         //TODO add possibility to send list of gods, not only 1 god
         this.selectedGods = gods;
         //updateObservers(new AnswerPlayerGod(gods, this.playerInit));
     }
 
-    // gui specific method
-    public ArrayList<String> getGods() {
-        return this.selectedGods;
+    public void getWorkerPlacement(int[][] workers, char initial) {
+
+    }
+
+    public void getSelectedWorker(OptionSelection opt, boolean canPass) {
+
+    }
+
+    public void getWorkerSelection(OptionSelection opt, boolean canPass) {
+
+    }
+
+    public void displayGameEnd(char winnerInit) {
+
     }
 }
