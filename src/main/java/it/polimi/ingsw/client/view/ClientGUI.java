@@ -7,6 +7,7 @@ import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerPlayerGod;
 import it.polimi.ingsw.messages.answers.AnswerPlayerName;
+import it.polimi.ingsw.messages.answers.AnswerWorkersPosition;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
 import javafx.application.Platform;
@@ -120,28 +121,43 @@ public class ClientGUI extends Observable implements Observer, ClientView {
         //updateObservers(new AnswerPlayerGod(gods, this.playerInit));
     }
 
+    private int called = 0;
+
     //TODO COMPLETE THE FUNCTION
     public void getWorkerPlacement(int[][] workers, char initial) {
-        playerInit = initial;
-        Stage ss = CoreGUI.getStage();
-        GameUI l = new GameUI();
-        Platform.runLater(() -> {
-            ss.setScene(l.getScene());
-        });
+        if(called == 0) {
+            playerInit = initial;
+            Stage ss = CoreGUI.getStage();
+            GameUI l = new GameUI();
+            Platform.runLater(() -> {
+                ss.setScene(l.getScene());
+            });
 
-        CoreGUI.getInstance().placeWorkers(workers);
+            CoreGUI.getInstance().placeWorkers(workers);
+        } else if (called == 1) {
+            sendWorkerPlacement(selectedTiles);
+        }
     }
 
-    public void sendWorkerPlacement(ArrayList<String> tiles) {
-        GameUI.getConfirmButton().setDisable(true);
-        Button[][] bs = GameUI.getBoardSlots();
-        for(int a = 0 ; a < 5 ; a++){
-            for(int b = 0 ; b < 5 ; b++){
-                bs[a][b].setDisable(true);
-            }
-        }
+    ArrayList<String> selectedTiles;
 
-        //TODO send selected tiles for worker
+    public void sendWorkerPlacement(ArrayList<String> tiles) {
+        if(called == 0) {
+            called++;
+            selectedTiles=tiles;
+            updateObservers(new AnswerWorkersPosition(tiles.get(0).charAt(0), tiles.get(0).charAt(1), playerInit));
+        } else if (called==1) {
+            GameUI.getConfirmButton().setDisable(true);
+            Button[][] bs = GameUI.getBoardSlots();
+            for (int a = 0; a < 5; a++) {
+                for (int b = 0; b < 5; b++) {
+                    bs[a][b].setDisable(true);
+                }
+            }
+
+            //TODO send selected tiles for worker
+            updateObservers(new AnswerWorkersPosition(tiles.get(1).charAt(0), tiles.get(1).charAt(1), playerInit));
+        }
     }
 
     public void getSelectedWorker(OptionSelection opt, boolean canPass) {

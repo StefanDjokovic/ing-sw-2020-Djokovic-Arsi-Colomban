@@ -68,10 +68,10 @@ public class CoreGUI extends Application {
     }
 
     ArrayList<String> placedWorkers = new ArrayList<>();
-    int placeCount=0;
+    //int placeCount=0;
 
     public void placeWorkers(int[][] workers) {
-        placeCount++;
+        //placeCount++;
         //add filter to board
         Button[][] buttons = ClientGUI.getInstance().getBoardSlots();
         Boolean f;
