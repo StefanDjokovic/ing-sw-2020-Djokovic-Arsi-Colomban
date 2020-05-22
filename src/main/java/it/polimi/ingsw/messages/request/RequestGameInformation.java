@@ -1,6 +1,6 @@
 package it.polimi.ingsw.messages.request;
 
-import it.polimi.ingsw.client.view.ClientCLI;
+import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
 
 public class RequestGameInformation extends Request {
@@ -40,8 +40,8 @@ public class RequestGameInformation extends Request {
 
     // TODO: this method can pass the information about the other players, currently sets only playerInit1
     @Override
-    public void accept(ClientCLI clientCLI) {
-        clientCLI.setPlayerInit(playerInit1);
+    public void accept(ClientView clientView) {
+        clientView.setPlayerInit(playerInit1);
     }
 
     public char getInitial() { return this.initial; }
