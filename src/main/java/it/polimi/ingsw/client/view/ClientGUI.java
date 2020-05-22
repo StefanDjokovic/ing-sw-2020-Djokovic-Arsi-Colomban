@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class ClientGUI extends Observable implements Observer, ClientView {
+public class ClientGUI extends ClientView {
     //private TileView[][] boardView;
     private BoardView bv;
     private TileView[][] boardView;

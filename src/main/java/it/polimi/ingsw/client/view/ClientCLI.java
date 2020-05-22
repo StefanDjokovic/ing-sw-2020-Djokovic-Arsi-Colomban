@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.client.networkLayer.Client;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
@@ -13,7 +14,7 @@ import it.polimi.ingsw.server.model.TileView;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ClientCLI extends Observable implements Observer, ClientView {
+public class ClientCLI extends ClientView {
 
     private TileView[][] boardView;
 
