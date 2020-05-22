@@ -51,6 +51,7 @@ public class GameUI {
 
         Button bt1 = new Button();
         confirmButton = bt1;
+        bt1.setId("buttontutorial");
         bt1.setDisable(true);
         bt1.setText("Confirm");
         bt1.setFont(Font.font("Futura", FontWeight.NORMAL, 15));

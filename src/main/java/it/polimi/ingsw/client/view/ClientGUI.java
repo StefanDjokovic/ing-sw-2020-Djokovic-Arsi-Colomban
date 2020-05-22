@@ -26,7 +26,7 @@ public class ClientGUI extends ClientView {
     private int playersNum = 1;
     private char playerInit;
     private ArrayList<String> selectedGods;
-    private Button[][] boardSlots;
+    //private Button[][] boardSlots;
 
     public ClientGUI() {
         instance = this;
@@ -79,14 +79,14 @@ public class ClientGUI extends ClientView {
     public ArrayList<String> getGods() {
         return this.selectedGods;
     }
-
+/*
     public void setBoardSlots(Button[][] bs) {
         this.boardSlots = bs;
     }
 
     public Button[][] getBoardSlots() {
         return this.boardSlots;
-    }
+    }*/
 
     public void updateBoardView(BoardView bv) {
         this.bv=bv;
@@ -125,15 +125,16 @@ public class ClientGUI extends ClientView {
 
     //TODO COMPLETE THE FUNCTION
     public void getWorkerPlacement(int[][] workers, char initial) {
+        System.out.println("ciao");
         if(called == 0) {
             //playerInit = initial;
             Stage ss = CoreGUI.getStage();
-            GameUI l = new GameUI();
-            Platform.runLater(() -> {
-                ss.setScene(l.getScene());
-            });
 
-            CoreGUI.getInstance().placeWorkers(workers);
+            Platform.runLater(() -> {
+                GameUI l = new GameUI();
+                ss.setScene(l.getScene());
+                CoreGUI.getInstance().placeWorkers(workers);
+            });
         } else if (called == 1) {
             sendWorkerPlacement(selectedTiles);
         }
@@ -142,10 +143,14 @@ public class ClientGUI extends ClientView {
     private ArrayList<String> selectedTiles;
 
     public void sendWorkerPlacement(ArrayList<String> tiles) {
+
+        System.out.println("ciao2");
+
         if(called == 0) {
             called++;
             selectedTiles=tiles;
-            updateObservers(new AnswerWorkersPosition(tiles.get(0).charAt(0), tiles.get(0).charAt(1), playerInit));
+            System.out.println(Integer.valueOf(tiles.get(0).charAt(0))+" "+Integer.valueOf(tiles.get(0).charAt(2)));
+            updateObservers(new AnswerWorkersPosition(Integer.valueOf(tiles.get(0).charAt(0)), Integer.valueOf(tiles.get(0).charAt(2)), playerInit));
         } else if (called==1) {
             GameUI.getConfirmButton().setDisable(true);
             Button[][] bs = GameUI.getBoardSlots();
@@ -155,7 +160,8 @@ public class ClientGUI extends ClientView {
                 }
             }
 
-            updateObservers(new AnswerWorkersPosition(tiles.get(1).charAt(0), tiles.get(1).charAt(1), playerInit));
+            System.out.println(Integer.valueOf(tiles.get(1).charAt(0))+" "+Integer.valueOf(tiles.get(1).charAt(2)));
+            updateObservers(new AnswerWorkersPosition(Integer.valueOf(tiles.get(1).charAt(0)), Integer.valueOf(tiles.get(1).charAt(2)), playerInit));
         }
     }
 

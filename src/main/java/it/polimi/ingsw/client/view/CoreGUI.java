@@ -73,7 +73,7 @@ public class CoreGUI extends Application {
     public void placeWorkers(int[][] workers) {
         //placeCount++;
         //add filter to board
-        Button[][] buttons = ClientGUI.getInstance().getBoardSlots();
+        Button[][] buttons = GameUI.getBoardSlots();
         Boolean f;
         for (int x = 0 ; x < 5 ; x++) {
             for (int y = 0 ; y < 5 ; y++) {
@@ -86,6 +86,7 @@ public class CoreGUI extends Application {
                 }
                 if(f==false) {
                     //put filter on button
+                    buttons[x][y].setDisable(false);
                     buttons[x][y].setId("selectionType0");
                     buttons[x][y].setOnAction((ActionEvent event) -> {
                         String selTile = GridPane.getRowIndex(((Node) event.getSource())) + " " + GridPane.getColumnIndex(((Node) event.getSource()));
@@ -93,7 +94,7 @@ public class CoreGUI extends Application {
                             placedWorkers.remove(selTile);
                             ((Node) event.getSource()).setId("selectionType0");
                         } else {
-                            if (placedWorkers.size() < ClientGUI.getInstance().getPlayersNum()) {
+                            if (placedWorkers.size() < 2) {
                                 placedWorkers.add(selTile);
                                 ((Node) event.getSource()).setId("selectionType1");
                             }
@@ -106,7 +107,8 @@ public class CoreGUI extends Application {
         GameUI.getConfirmButton().setText("Confirm");
         GameUI.getConfirmButton().setDisable(false);
         GameUI.getConfirmButton().setOnAction((ActionEvent event) -> {
-            if(placedWorkers.size() == ClientGUI.getInstance().getPlayersNum()) {
+            if(placedWorkers.size() == 2) {
+                System.out.println("ciaoooo");
                 ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
             }
         });
