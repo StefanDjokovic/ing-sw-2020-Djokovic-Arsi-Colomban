@@ -37,7 +37,7 @@ public class ClientGUI extends ClientView {
     @Override
     public void update(Request request) {
         request.printMessage();
-        //request.accept(this);
+        request.accept(this);
     }
     @Override
     public void update(Answer answer) {
@@ -107,6 +107,7 @@ public class ClientGUI extends ClientView {
     }
 
     public void getPlayerGod(char initial, ArrayList<String> options) {
+        playerInit = initial;
         Stage ss = CoreGUI.getStage();
         Platform.runLater(() -> {
             GodSelectionUI l = new GodSelectionUI();
@@ -116,9 +117,8 @@ public class ClientGUI extends ClientView {
 
     // gui specific method
     public void sendGods(ArrayList<String> gods) {
-        //TODO add possibility to send list of gods, not only 1 god
         this.selectedGods = gods;
-        //updateObservers(new AnswerPlayerGod(gods, this.playerInit));
+        updateObservers(new AnswerPlayerGod(gods.get(0), this.playerInit));
     }
 
     private int called = 0;
@@ -126,7 +126,7 @@ public class ClientGUI extends ClientView {
     //TODO COMPLETE THE FUNCTION
     public void getWorkerPlacement(int[][] workers, char initial) {
         if(called == 0) {
-            playerInit = initial;
+            //playerInit = initial;
             Stage ss = CoreGUI.getStage();
             GameUI l = new GameUI();
             Platform.runLater(() -> {
@@ -139,7 +139,7 @@ public class ClientGUI extends ClientView {
         }
     }
 
-    ArrayList<String> selectedTiles;
+    private ArrayList<String> selectedTiles;
 
     public void sendWorkerPlacement(ArrayList<String> tiles) {
         if(called == 0) {

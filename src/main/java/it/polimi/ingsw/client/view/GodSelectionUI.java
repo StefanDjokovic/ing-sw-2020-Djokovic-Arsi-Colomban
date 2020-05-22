@@ -87,34 +87,34 @@ public class GodSelectionUI {
         selectedGods = new ArrayList<>();
 
         ToggleButton b = new ToggleButton();
-        b.setId("apollo");
+        b.setId("Apollo");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("artemis");
+        b.setId("Artemis");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("athena");
+        b.setId("Athena");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("atlas");
+        b.setId("Atlas");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("demeter");
+        b.setId("Demeter");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("hephaestus");
+        b.setId("Hephaestus");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("hermes");
+        b.setId("Hermes");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("minotaur");
+        b.setId("Minotaur");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("pan");
+        b.setId("Pan");
         buttons.add(b);
         b = new ToggleButton();
-        b.setId("prometheus");
+        b.setId("Prometheus");
         buttons.add(b);
 
         int playersNum = ClientGUI.getInstance().getPlayersNum();
@@ -137,7 +137,7 @@ public class GodSelectionUI {
                     }
                 }
             });
-            System.out.println(String.format("%02d", a));
+            //System.out.println(String.format("%02d", a));
             x.setBackground(new Background(new BackgroundImage(new Image("/graphic_resources/godCards/"+String.format("%02d", a)+".png", x.getWidth(), x.getHeight(), false, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(x.getWidth(), x.getHeight(), true, true, true, false))));
         }
 
