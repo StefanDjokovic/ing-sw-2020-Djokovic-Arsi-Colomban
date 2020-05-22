@@ -121,3 +121,17 @@
     -fx-border-color:lime;
     -fx-border-width: 2 2 2 2;
 }
+
+#selectionType0 {
+    -fx-background-radius:0;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color:transparent;
+    -fx-border-width: 2 2 2 2;
+}
+
+#selectionType1 {
+    -fx-background-radius:0;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color:lime;
+    -fx-border-width: 2 2 2 2;
+}

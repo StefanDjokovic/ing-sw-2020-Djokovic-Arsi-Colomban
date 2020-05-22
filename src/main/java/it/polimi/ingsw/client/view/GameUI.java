@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -9,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -20,10 +22,20 @@ import java.util.stream.Collectors;
 public class GameUI {
 
     private final Scene gameScene;
-    private Button[][] boardSlots;
+    private static Button[][] boardSlots;
+    private static Button confirmButton;
+
+    public static Button[][] getBoardSlots() {
+        return boardSlots;
+    }
+
+    public static Button getConfirmButton() {
+        return confirmButton;
+    }
 
     public GameUI() {
         initBoardSlots();
+        //ClientGUI.getInstance().setBoardSlots(boardSlots);
         GridPane root = new GridPane();
         GridPane grid = new GridPane();
         //grid.setPadding(new Insets(25));
@@ -37,6 +49,15 @@ public class GameUI {
         grid.getStylesheets().add("style.css");
         root.getStylesheets().add("style.css");
 
+        Button bt1 = new Button();
+        confirmButton = bt1;
+        bt1.setDisable(true);
+        bt1.setText("Confirm");
+        bt1.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
+        GridPane.setHalignment(bt1, HPos.LEFT);
+        GridPane.setValignment(bt1, VPos.BOTTOM);
+        root.add(bt1, 0, 1);
+
         Button regole = new Button();
         regole.setId("buttontutorial");
         regole.setText("Show rules");
@@ -46,7 +67,7 @@ public class GameUI {
             System.out.println("not yet implemented");
         });
         GridPane.setHalignment(regole, HPos.LEFT);
-        root.add(regole, 0, 1);
+        root.add(regole, 0, 2);
 
         Button bt = new Button();
         bt.setId("buttonexit");
@@ -57,7 +78,7 @@ public class GameUI {
         });
         GridPane.setHalignment(bt, HPos.LEFT);
         GridPane.setValignment(bt, VPos.BOTTOM);
-        root.add(bt, 0, 2);
+        root.add(bt, 0, 3);
 
         VBox leftInfo = new VBox();
 

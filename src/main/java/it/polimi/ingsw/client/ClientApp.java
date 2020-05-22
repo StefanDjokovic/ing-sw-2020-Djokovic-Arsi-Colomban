@@ -19,16 +19,14 @@ public class ClientApp {
             gm = s.nextLine();
             if (gm.equals("1")) {
                 //gameMode = 1;
-                //ClientView clientGUI = new ClientView(1);
-                //Client client = new Client("127.0.0.1", 4568, clientGUI);
+                //Client client = new Client("127.0.0.1", 4568, new clientGUI());
                 break;
             } else if (gm.equals("2")) {
                 //gameMode = 2;
-                //ClientView clientCLI = new ClientView(2);
-                //Client client = new Client("127.0.0.1", 4568, clientCLI);
+                //Client client = new Client("127.0.0.1", 4568, clientCLI());
                 break;
             } else {
-                System.out.println("Wrong game mode selected.");
+                System.out.println("Wrong game mode selected, please select again.");
             }
         }
 

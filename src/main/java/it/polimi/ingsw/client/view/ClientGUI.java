@@ -10,18 +10,21 @@ import it.polimi.ingsw.messages.answers.AnswerPlayerName;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class ClientGUI extends Observable implements Observer, ClientView {
-    private TileView[][] boardView;
+    //private TileView[][] boardView;
+    private BoardView bv;
     private static ClientGUI instance;
     private String playerName;
     private ArrayList<String> players;
     private int playersNum;
     private char playerInit;
     private ArrayList<String> selectedGods;
+    private Button[][] boardSlots;
 
     public ClientGUI() {
         instance = this;
@@ -75,8 +78,16 @@ public class ClientGUI extends Observable implements Observer, ClientView {
         return this.selectedGods;
     }
 
-    public void updateBoardView(BoardView bv) {
+    public void setBoardSlots(Button[][] bs) {
+        this.boardSlots = bs;
+    }
 
+    public Button[][] getBoardSlots() {
+        return this.boardSlots;
+    }
+
+    public void updateBoardView(BoardView bv) {
+        this.bv=bv;
     }
 
     public void getPlayerInfo() {
@@ -108,8 +119,28 @@ public class ClientGUI extends Observable implements Observer, ClientView {
         //updateObservers(new AnswerPlayerGod(gods, this.playerInit));
     }
 
+    //TODO COMPLETE THE FUNCTION
     public void getWorkerPlacement(int[][] workers, char initial) {
+        playerInit = initial;
+        Stage ss = CoreGUI.getStage();
+        GameUI l = new GameUI();
+        Platform.runLater(() -> {
+            ss.setScene(l.getScene());
+        });
 
+        CoreGUI.getInstance().placeWorkers();
+    }
+
+    public void sendWorkerPlacement(ArrayList<String> tiles) {
+        GameUI.getConfirmButton().setDisable(true);
+        Button[][] bs = GameUI.getBoardSlots();
+        for(int a = 0 ; a < 5 ; a++){
+            for(int b = 0 ; b < 5 ; b++){
+                bs[a][b].setDisable(true);
+            }
+        }
+
+        //TODO send selected tiles for worker
     }
 
     public void getSelectedWorker(OptionSelection opt, boolean canPass) {
