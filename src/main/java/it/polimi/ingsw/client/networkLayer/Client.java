@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.networkLayer;
 
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.client.view.ClientCLI;
+import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
 
@@ -17,12 +18,12 @@ public class Client implements Observer {
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
     private boolean isActiveFlag = true;
-    private ClientCLI clientCLI;
+    private ClientView clientView;
 
-    public Client(String ip, int port, ClientCLI clientCLI) {
+    public Client(String ip, int port, ClientView clientView) {
         this.ip = ip;
         this.port = port;
-        this.clientCLI = clientCLI;
+        this.clientView = clientView;
     }
 
     public boolean isActive() {
@@ -44,7 +45,7 @@ public class Client implements Observer {
                         Object request = inputStream.readObject();
                         //System.out.println("YES! reading!");
                         Request r = (Request)request ;
-                        r.accept(clientCLI);
+                        r.accept(clientView);
                         if (r.getMessage().equals("END"))
                             noWinners = false;
                     }
@@ -87,7 +88,7 @@ public class Client implements Observer {
     }
 
     public void run() throws IOException {
-        clientCLI.addObserver(this);
+        clientView.addObserver(this);
 
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
