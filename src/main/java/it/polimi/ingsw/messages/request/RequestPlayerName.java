@@ -1,6 +1,7 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.client.view.ClientCLI;
+import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
 
 public class RequestPlayerName extends Request {
@@ -11,8 +12,8 @@ public class RequestPlayerName extends Request {
     }
 
     @Override
-    public void accept(ClientCLI clientCLI) {
-        clientCLI.getPlayerInfo();
+    public void accept(ClientView clientView) {
+        clientView.getPlayerInfo();
     }
 
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.messages.request;
 
-import it.polimi.ingsw.client.view.ClientCLI;
+import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
 
 public class RequestCriticalError extends Request {
@@ -12,7 +12,7 @@ public class RequestCriticalError extends Request {
     }
 
     @Override
-    public void accept(ClientCLI clientCLI) {
-        System.out.println("\n\n\n********* Critical Error, clientCLI was sent unexpected input *********\n\n\n");
+    public void accept(ClientView clientView) {
+        System.out.println("\n\n\n********* Critical Error, client was sent unexpected input *********\n\n\n");
     }
 }

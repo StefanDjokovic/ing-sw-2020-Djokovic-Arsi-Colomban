@@ -1,6 +1,7 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.client.view.ClientCLI;
+import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
 
 public class RequestGameEnd extends Request {
@@ -14,7 +15,7 @@ public class RequestGameEnd extends Request {
     }
 
     @Override
-    public void accept(ClientCLI clientCLI) {
-        clientCLI.displayGameEnd(winnerInitial);
+    public void accept(ClientView clientView) {
+        clientView.displayGameEnd(winnerInitial);
     }
 }

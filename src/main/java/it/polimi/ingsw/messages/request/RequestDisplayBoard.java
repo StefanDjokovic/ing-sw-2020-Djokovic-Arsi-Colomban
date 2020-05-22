@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages.request;
 
+import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.client.view.ClientCLI;
 
@@ -21,9 +22,9 @@ public class RequestDisplayBoard extends Request {
     }
 
     @Override
-    public void accept(ClientCLI clientCLI) {
+    public void accept(ClientView clientView) {
         if (requestUpdateBoardViewBoardView != null)
-            requestUpdateBoardViewBoardView.accept(clientCLI);
-        clientCLI.displayBoard();
+            requestUpdateBoardViewBoardView.accept(clientView);
+        clientView.displayBoard();
     }
 }

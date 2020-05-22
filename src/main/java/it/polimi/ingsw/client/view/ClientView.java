@@ -13,4 +13,7 @@ public interface ClientView {
     public void getSelectedWorker(OptionSelection opt, boolean canPass);
     public void getWorkerSelection(OptionSelection opt, boolean canPass);
     public void displayGameEnd(char winnerInit);
+    public void waitingOpponent();
+    public void setPlayerInit(char init);
+    public void displayBoard();
 }

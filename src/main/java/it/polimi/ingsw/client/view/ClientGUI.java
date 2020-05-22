@@ -155,4 +155,16 @@ public class ClientGUI extends Observable implements Observer, ClientView {
     public void displayGameEnd(char winnerInit) {
 
     }
+
+    public void displayBoard() {
+
+    }
+
+    public void setPlayerInit(char init) {
+
+    }
+
+    public void waitingOpponent() {
+
+    }
 }

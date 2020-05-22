@@ -1,6 +1,7 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.client.view.ClientCLI;
+import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
 
 public class RequestWaitOpponentMove extends Request {
@@ -13,8 +14,8 @@ public class RequestWaitOpponentMove extends Request {
 
 
     @Override
-    public void accept(ClientCLI clientCLI) {
-        clientCLI.waitingOpponent();
+    public void accept(ClientView clientView) {
+        clientView.waitingOpponent();
     }
 
     public char getInitial() { return this.initial; }
