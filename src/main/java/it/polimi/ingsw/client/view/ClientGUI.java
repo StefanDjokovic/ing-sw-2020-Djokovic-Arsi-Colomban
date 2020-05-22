@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class ClientGUI extends Observable implements Observer, ClientView {
     //private TileView[][] boardView;
     private BoardView bv;
+    private TileView[][] boardView;
     private static ClientGUI instance;
     private String playerName;
     private ArrayList<String> players;
