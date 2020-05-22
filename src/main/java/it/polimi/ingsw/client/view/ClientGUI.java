@@ -23,7 +23,7 @@ public class ClientGUI extends ClientView {
     private static ClientGUI instance;
     private String playerName;
     private ArrayList<String> players;
-    private int playersNum;
+    private int playersNum = 1;
     private char playerInit;
     private ArrayList<String> selectedGods;
     private Button[][] boardSlots;
@@ -155,7 +155,6 @@ public class ClientGUI extends ClientView {
                 }
             }
 
-            //TODO send selected tiles for worker
             updateObservers(new AnswerWorkersPosition(tiles.get(1).charAt(0), tiles.get(1).charAt(1), playerInit));
         }
     }
