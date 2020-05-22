@@ -129,7 +129,7 @@ public class ClientGUI extends Observable implements Observer, ClientView {
             ss.setScene(l.getScene());
         });
 
-        CoreGUI.getInstance().placeWorkers();
+        CoreGUI.getInstance().placeWorkers(workers);
     }
 
     public void sendWorkerPlacement(ArrayList<String> tiles) {

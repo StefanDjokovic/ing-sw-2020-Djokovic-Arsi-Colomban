@@ -179,8 +179,10 @@ public class GameUI {
                 boardSlots[a][b].setId("button");
                 boardSlots[a][b].setAccessibleRoleDescription(a+","+b);
                 boardSlots[a][b].setOnAction((ActionEvent event) -> {
-                    System.out.println("Tile pressed: " + GridPane.getRowIndex(((Node)event.getSource())) + "," + (GridPane.getColumnIndex(((Node)event.getSource()))));
+                    //System.out.println("Tile pressed: " + GridPane.getRowIndex(((Node)event.getSource())) + "," + (GridPane.getColumnIndex(((Node)event.getSource()))));
                 });
+
+                boardSlots[a][b].setDisable(true);
             }
         }
     }

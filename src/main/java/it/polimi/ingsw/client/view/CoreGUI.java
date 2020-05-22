@@ -68,25 +68,38 @@ public class CoreGUI extends Application {
     }
 
     ArrayList<String> placedWorkers = new ArrayList<>();
+    int placeCount=0;
 
-    public void placeWorkers() {
+    public void placeWorkers(int[][] workers) {
+        placeCount++;
         //add filter to board
         Button[][] buttons = ClientGUI.getInstance().getBoardSlots();
+        Boolean f;
         for (int x = 0 ; x < 5 ; x++) {
             for (int y = 0 ; y < 5 ; y++) {
-                buttons[x][y].setId("selectionType0");
-                buttons[x][y].setOnAction((ActionEvent event) -> {
-                    String selTile = GridPane.getRowIndex(((Node)event.getSource()))+" "+GridPane.getColumnIndex(((Node)event.getSource()));
-                    if(placedWorkers.contains(selTile)) {
-                        placedWorkers.remove(selTile);
-                        ((Node) event.getSource()).setId("selectionType0");
-                    } else {
-                        if(placedWorkers.size() < ClientGUI.getInstance().getPlayersNum()) {
-                            placedWorkers.add(selTile);
-                            ((Node) event.getSource()).setId("selectionType1");
-                        }
+                f=false;
+                for (int z = 0 ; z < workers.length ; z++) {
+                    if(workers[z][0] == x && workers[z][1] == y) {
+                        f=true;
+                        break;
                     }
-                });
+                }
+                if(f==false) {
+                    //put filter on button
+                    buttons[x][y].setId("selectionType0");
+                    buttons[x][y].setOnAction((ActionEvent event) -> {
+                        String selTile = GridPane.getRowIndex(((Node) event.getSource())) + " " + GridPane.getColumnIndex(((Node) event.getSource()));
+                        if (placedWorkers.contains(selTile)) {
+                            placedWorkers.remove(selTile);
+                            ((Node) event.getSource()).setId("selectionType0");
+                        } else {
+                            if (placedWorkers.size() < ClientGUI.getInstance().getPlayersNum()) {
+                                placedWorkers.add(selTile);
+                                ((Node) event.getSource()).setId("selectionType1");
+                            }
+                        }
+                    });
+                }
             }
         }
 
