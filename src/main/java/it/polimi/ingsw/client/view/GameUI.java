@@ -249,15 +249,63 @@ public class GameUI {
         confirmButton.setDisable(false);
         confirmButton.setOnAction((ActionEvent event) -> {
             if(placedWorkers.size() == 1) {
-                ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
+                sendWorkers();
             }
         });
     }
 
-    public void selectWorker(OptionSelection opt) {
-        ArrayList<ArrayList<Integer>> workers = opt.getValues();
+    private void sendWorkers() {
+        //disable
+        confirmButton.setDisable(true);
+        skipButton.setDisable(true);
+        for (int x = 0; x < 5; x++) {
+            for (int y = 0; y < 5; y++) {
+                boardSlots[x][y].setDisable(true);
+            }
+        }
+        //send
+        ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
+    }
 
-        //TODO
+    ArrayList<String> movement = new ArrayList<>();
+
+    public void selectWorker(OptionSelection opt) {
+        ArrayList<ArrayList<Integer>> options = opt.getValues();
+        Boolean found;
+        for (int x = 0; x < 5; x++) {
+            for (int y = 0; y < 5; y++) {
+                found=false;
+                for (int z = 0 ; z < options.size() ; z++) {
+                    if(options.get(z).get(0) == x && options.get(z).get(1) == y) {
+                        found=true;
+                        break;
+                    }
+                }
+                if(found == true) {
+                    boardSlots[x][y].setDisable(false);
+                    boardSlots[x][y].setOnAction((ActionEvent e) -> {
+                        //robe
+                    });
+                }
+            }
+        }
+
+        confirmButton.setOnAction((ActionEvent e) -> {
+            sendMovement();
+        });
+    }
+
+    private void sendMovement() {
+        //disable
+        confirmButton.setDisable(true);
+        skipButton.setDisable(true);
+        for (int x = 0; x < 5; x++) {
+            for (int y = 0; y < 5; y++) {
+                boardSlots[x][y].setDisable(true);
+            }
+        }
+        //send
+        ClientGUI.getInstance().sendSelectedWorker(movement);
     }
 
     public void updateBoard(TileView[][] tv) {

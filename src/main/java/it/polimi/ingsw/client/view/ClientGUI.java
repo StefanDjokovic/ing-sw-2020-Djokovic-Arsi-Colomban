@@ -147,13 +147,13 @@ public class ClientGUI extends ClientView {
     //private ArrayList<String> selectedTiles;
 
     public void sendWorkerPlacement(ArrayList<String> tiles) {
-        GameUI.getConfirmButton().setDisable(true);
-        Button[][] bs = GameUI.getBoardSlots();
-        for (int a = 0; a < 5; a++) {
-            for (int b = 0; b < 5; b++) {
-                bs[a][b].setDisable(true);
-            }
-        }
+//        GameUI.getConfirmButton().setDisable(true);
+//        Button[][] bs = GameUI.getBoardSlots();
+//        for (int a = 0; a < 5; a++) {
+//            for (int b = 0; b < 5; b++) {
+//                bs[a][b].setDisable(true);
+//            }
+//        }
         //System.out.println(tiles.get(0));
         //System.out.println(Integer.valueOf(tiles.get(0).charAt(0) - 48)+" "+Integer.valueOf(tiles.get(0).charAt(2) - 48));
         updateObservers(new AnswerWorkersPosition(Integer.valueOf(tiles.get(0).charAt(0) - 48), Integer.valueOf(tiles.get(0).charAt(2) - 48), playerInit));
@@ -166,8 +166,8 @@ public class ClientGUI extends ClientView {
         }
     }
 
-    public void sendSelectedWorker() {
-
+    public void sendSelectedWorker(ArrayList<String> mov) {
+        //send the movement
     }
 
     public void sendPass() {
