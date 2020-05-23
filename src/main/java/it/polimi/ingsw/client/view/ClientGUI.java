@@ -34,6 +34,7 @@ public class ClientGUI extends ClientView {
 
     public ClientGUI() {
         instance = this;
+        //bv=new BoardView();
         ThreadGUI tg = new ThreadGUI();
         tg.start();
     }
@@ -125,48 +126,66 @@ public class ClientGUI extends ClientView {
         updateObservers(new AnswerPlayerGod(gods.get(0), this.playerInit));
     }
 
-    private int called = 0;
+    //private int called = 0;
 
     //TODO COMPLETE THE FUNCTION
     public void getWorkerPlacement(int[][] workers, char initial) {
         //System.out.println("ciao");
-        if(called == 0) {
-            //playerInit = initial;
-            Stage ss = CoreGUI.getStage();
+//        if(called == 0) {
+//            //playerInit = initial;
+//            Stage ss = CoreGUI.getStage();
+//
+//            Platform.runLater(() -> {
+//                GameUI game = new GameUI();
+//                ss.setScene(game.getScene());
+//                game.updateBoard(bv.getBoardView());
+//                game.placeWorkers(workers);
+//            });
+//        } else if (called == 1) {
+//            sendWorkerPlacement(selectedTiles);
+//        }
 
-            Platform.runLater(() -> {
-                GameUI game = new GameUI();
-                ss.setScene(game.getScene());
-                game.placeWorkers(workers);
-            });
-        } else if (called == 1) {
-            sendWorkerPlacement(selectedTiles);
-        }
+        Stage ss = CoreGUI.getStage();
+        Platform.runLater(() -> {
+            GameUI game = new GameUI();
+            ss.setScene(game.getScene());
+            game.updateBoard(bv.getBoardView());
+            game.placeWorkers(workers);
+        });
     }
 
-    private ArrayList<String> selectedTiles;
+    //private ArrayList<String> selectedTiles;
 
     public void sendWorkerPlacement(ArrayList<String> tiles) {
 
         //System.out.println("ciao2");
 
-        if(called == 0) {
-            called++;
-            selectedTiles=tiles;
-            //System.out.println(Integer.valueOf(tiles.get(0).charAt(0))+" "+Integer.valueOf(tiles.get(0).charAt(2)));
-            updateObservers(new AnswerWorkersPosition((int) tiles.get(0).charAt(0), (int) tiles.get(0).charAt(2), playerInit));
-        } else if (called==1) {
-            GameUI.getConfirmButton().setDisable(true);
-            Button[][] bs = GameUI.getBoardSlots();
-            for (int a = 0; a < 5; a++) {
-                for (int b = 0; b < 5; b++) {
-                    bs[a][b].setDisable(true);
-                }
+//        if(called == 0) {
+//            called++;
+//            selectedTiles=tiles;
+//            //System.out.println(Integer.valueOf(tiles.get(0).charAt(0))+" "+Integer.valueOf(tiles.get(0).charAt(2)));
+//            updateObservers(new AnswerWorkersPosition((int) tiles.get(0).charAt(0), (int) tiles.get(0).charAt(2), playerInit));
+//        } else if (called==1) {
+//            GameUI.getConfirmButton().setDisable(true);
+//            Button[][] bs = GameUI.getBoardSlots();
+//            for (int a = 0; a < 5; a++) {
+//                for (int b = 0; b < 5; b++) {
+//                    bs[a][b].setDisable(true);
+//                }
+//            }
+//
+//            //System.out.println(Integer.valueOf(tiles.get(1).charAt(0))+" "+Integer.valueOf(tiles.get(1).charAt(2)));
+//            updateObservers(new AnswerWorkersPosition((int) tiles.get(1).charAt(0), (int) tiles.get(1).charAt(2), playerInit));
+//        }
+        GameUI.getConfirmButton().setDisable(true);
+        Button[][] bs = GameUI.getBoardSlots();
+        for (int a = 0; a < 5; a++) {
+            for (int b = 0; b < 5; b++) {
+                bs[a][b].setDisable(true);
             }
-
-            //System.out.println(Integer.valueOf(tiles.get(1).charAt(0))+" "+Integer.valueOf(tiles.get(1).charAt(2)));
-            updateObservers(new AnswerWorkersPosition((int) tiles.get(1).charAt(0), (int) tiles.get(1).charAt(2), playerInit));
         }
+        System.out.println(Integer.valueOf(tiles.get(0).charAt(0))+" "+Integer.valueOf(tiles.get(0).charAt(2)));
+        updateObservers(new AnswerWorkersPosition((int) tiles.get(0).charAt(0), (int) tiles.get(0).charAt(2), playerInit));
     }
 
     public void getSelectedWorker(OptionSelection opt, boolean canPass) {
@@ -182,7 +201,9 @@ public class ClientGUI extends ClientView {
     }
 
     public void displayBoard() {
-
+//        if(game != null && bv != null) {
+//            game.updateBoard(bv.getBoardView());
+//        }
     }
 
     public void setPlayerInit(char init) {

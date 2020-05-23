@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.server.model.TileView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -192,12 +193,13 @@ public class GameUI {
     }
 
 
-    ArrayList<String> placedWorkers = new ArrayList<>();
+    private ArrayList<String> placedWorkers = new ArrayList<>();
 
     public void placeWorkers(int[][] workers) {
         //placeCount++;
         //add filter to board
         //Button[][] buttons = GameUI.getBoardSlots();
+        placedWorkers.clear();
         Button[][] buttons = boardSlots;
         Boolean f;
         for (int x = 0 ; x < 5 ; x++) {
@@ -209,17 +211,19 @@ public class GameUI {
                         break;
                     }
                 }
+                buttons[x][y].setId("selectionType0");
                 if(f==false) {
                     //put filter on button
                     buttons[x][y].setDisable(false);
-                    buttons[x][y].setId("selectionType0");
+                    //buttons[x][y].setId("selectionType0");
                     buttons[x][y].setOnAction((ActionEvent event) -> {
                         String selTile = GridPane.getRowIndex(((Node) event.getSource())) + " " + GridPane.getColumnIndex(((Node) event.getSource()));
+                        System.out.println(selTile);
                         if (placedWorkers.contains(selTile)) {
                             placedWorkers.remove(selTile);
                             ((Node) event.getSource()).setId("selectionType0");
                         } else {
-                            if (placedWorkers.size() < 2) {
+                            if (placedWorkers.size() < 1) {
                                 placedWorkers.add(selTile);
                                 ((Node) event.getSource()).setId("selectionType1");
                             }
@@ -232,10 +236,33 @@ public class GameUI {
         confirmButton.setText("Confirm");
         confirmButton.setDisable(false);
         confirmButton.setOnAction((ActionEvent event) -> {
-            if(placedWorkers.size() == 2) {
+            if(placedWorkers.size() == 1) {
                 ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
             }
         });
+    }
+
+//    public void showBoard(TileView[][] tv) {
+//        synchronized (CoreGUI.class) {
+//            try {
+//                while(bv==null)
+//            }
+//            for (int x = 0; x < 5; x++) {
+//                for (int y = 0; y < 5; y++) {
+//                    boardSlots[x][y].setText(String.valueOf(tv[x][y].getInitWorker()));
+//                    boardSlots[x][y].setId("level" + tv[x][y].getBuildingLevel());
+//                }
+//            }
+//        }
+//    }
+
+    public void updateBoard(TileView[][] tv) {
+        for (int x = 0; x < 5; x++) {
+            for (int y = 0; y < 5; y++) {
+                boardSlots[x][y].setText(String.valueOf(tv[x][y].getInitWorker()));
+                boardSlots[x][y].setId("level" + tv[x][y].getBuildingLevel());
+            }
+        }
     }
 
     public Scene getScene() {
