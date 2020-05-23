@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.server.model.TileView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -27,6 +28,7 @@ public class GameUI {
     private final Scene gameScene;
     private static Button[][] boardSlots;
     private static Button confirmButton;
+    private static Button skipButton;
 
     public static Button[][] getBoardSlots() {
         return boardSlots;
@@ -53,6 +55,16 @@ public class GameUI {
         root.getStylesheets().add("style.css");
         root.setStyle("-fx-background-color: #CBE1EF");
 
+        Button bb = new Button();
+        skipButton = bb;
+        bb.setId("buttontutorial");
+        bb.setDisable(true);
+        bb.setText("Skip");
+        bb.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
+        GridPane.setHalignment(bb, HPos.LEFT);
+        GridPane.setValignment(bb, VPos.BOTTOM);
+        root.add(bb, 0, 1);
+
         Button bt1 = new Button();
         confirmButton = bt1;
         bt1.setId("buttontutorial");
@@ -61,7 +73,7 @@ public class GameUI {
         bt1.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         GridPane.setHalignment(bt1, HPos.LEFT);
         GridPane.setValignment(bt1, VPos.BOTTOM);
-        root.add(bt1, 0, 1);
+        root.add(bt1, 0, 2);
 
         Button regole = new Button();
         regole.setId("buttontutorial");
@@ -72,7 +84,7 @@ public class GameUI {
             System.out.println("not yet implemented");
         });
         GridPane.setHalignment(regole, HPos.LEFT);
-        root.add(regole, 0, 2);
+        root.add(regole, 0, 3);
 
         Button bt = new Button();
         bt.setId("buttonexit");
@@ -83,7 +95,7 @@ public class GameUI {
         });
         GridPane.setHalignment(bt, HPos.LEFT);
         GridPane.setValignment(bt, VPos.BOTTOM);
-        root.add(bt, 0, 3);
+        root.add(bt, 0, 4);
 
         VBox leftInfo = new VBox();
 
@@ -218,7 +230,7 @@ public class GameUI {
                     //buttons[x][y].setId("selectionType0");
                     buttons[x][y].setOnAction((ActionEvent event) -> {
                         String selTile = GridPane.getRowIndex(((Node) event.getSource())) + " " + GridPane.getColumnIndex(((Node) event.getSource()));
-                        System.out.println(selTile);
+                        //System.out.println(selTile);
                         if (placedWorkers.contains(selTile)) {
                             placedWorkers.remove(selTile);
                             ((Node) event.getSource()).setId("selectionType0");
@@ -242,19 +254,11 @@ public class GameUI {
         });
     }
 
-//    public void showBoard(TileView[][] tv) {
-//        synchronized (CoreGUI.class) {
-//            try {
-//                while(bv==null)
-//            }
-//            for (int x = 0; x < 5; x++) {
-//                for (int y = 0; y < 5; y++) {
-//                    boardSlots[x][y].setText(String.valueOf(tv[x][y].getInitWorker()));
-//                    boardSlots[x][y].setId("level" + tv[x][y].getBuildingLevel());
-//                }
-//            }
-//        }
-//    }
+    public void selectWorker(OptionSelection opt) {
+        ArrayList<ArrayList<Integer>> workers = opt.getValues();
+
+        //TODO
+    }
 
     public void updateBoard(TileView[][] tv) {
         for (int x = 0; x < 5; x++) {
@@ -265,6 +269,21 @@ public class GameUI {
                 boardSlots[x][y].setId("level" + tv[x][y].getBuildingLevel());
             }
         }
+    }
+
+    public void makeSkippable() {
+        skipButton.setDisable(false);
+        skipButton.setOnAction((ActionEvent e) -> {
+            for (int a = 0; a < 5; a++) {
+                for (int b = 0; b < 5; b++) {
+                    boardSlots[a][b].setDisable(true);
+                }
+            }
+            skipButton.setDisable(true);
+            confirmButton.setDisable(true);
+
+            ClientGUI.getInstance().sendPass();
+        });
     }
 
     public Scene getScene() {

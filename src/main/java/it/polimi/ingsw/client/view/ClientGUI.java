@@ -7,6 +7,7 @@ import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerPlayerGod;
 import it.polimi.ingsw.messages.answers.AnswerPlayerName;
+import it.polimi.ingsw.messages.answers.AnswerPowerCoordinates;
 import it.polimi.ingsw.messages.answers.AnswerWorkersPosition;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
@@ -95,6 +96,9 @@ public class ClientGUI extends ClientView {
 
     public void updateBoardView(BoardView bv) {
         this.bv=bv;
+        if(game != null) {
+            game.updateBoard(bv.getBoardView());
+        }
     }
 
     public void getPlayerInfo() {
@@ -130,20 +134,6 @@ public class ClientGUI extends ClientView {
 
     //TODO COMPLETE THE FUNCTION
     public void getWorkerPlacement(int[][] workers, char initial) {
-        //System.out.println("ciao");
-//        if(called == 0) {
-//            //playerInit = initial;
-//            Stage ss = CoreGUI.getStage();
-//
-//            Platform.runLater(() -> {
-//                GameUI game = new GameUI();
-//                ss.setScene(game.getScene());
-//                game.updateBoard(bv.getBoardView());
-//                game.placeWorkers(workers);
-//            });
-//        } else if (called == 1) {
-//            sendWorkerPlacement(selectedTiles);
-//        }
 
         Stage ss = CoreGUI.getStage();
         Platform.runLater(() -> {
@@ -157,26 +147,6 @@ public class ClientGUI extends ClientView {
     //private ArrayList<String> selectedTiles;
 
     public void sendWorkerPlacement(ArrayList<String> tiles) {
-
-        //System.out.println("ciao2");
-
-//        if(called == 0) {
-//            called++;
-//            selectedTiles=tiles;
-//            //System.out.println(Integer.valueOf(tiles.get(0).charAt(0))+" "+Integer.valueOf(tiles.get(0).charAt(2)));
-//            updateObservers(new AnswerWorkersPosition((int) tiles.get(0).charAt(0), (int) tiles.get(0).charAt(2), playerInit));
-//        } else if (called==1) {
-//            GameUI.getConfirmButton().setDisable(true);
-//            Button[][] bs = GameUI.getBoardSlots();
-//            for (int a = 0; a < 5; a++) {
-//                for (int b = 0; b < 5; b++) {
-//                    bs[a][b].setDisable(true);
-//                }
-//            }
-//
-//            //System.out.println(Integer.valueOf(tiles.get(1).charAt(0))+" "+Integer.valueOf(tiles.get(1).charAt(2)));
-//            updateObservers(new AnswerWorkersPosition((int) tiles.get(1).charAt(0), (int) tiles.get(1).charAt(2), playerInit));
-//        }
         GameUI.getConfirmButton().setDisable(true);
         Button[][] bs = GameUI.getBoardSlots();
         for (int a = 0; a < 5; a++) {
@@ -184,13 +154,24 @@ public class ClientGUI extends ClientView {
                 bs[a][b].setDisable(true);
             }
         }
-        System.out.println(tiles.get(0));
-        System.out.println(Integer.valueOf(tiles.get(0).charAt(0) - 48)+" "+Integer.valueOf(tiles.get(0).charAt(2) - 48));
+        //System.out.println(tiles.get(0));
+        //System.out.println(Integer.valueOf(tiles.get(0).charAt(0) - 48)+" "+Integer.valueOf(tiles.get(0).charAt(2) - 48));
         updateObservers(new AnswerWorkersPosition(Integer.valueOf(tiles.get(0).charAt(0) - 48), Integer.valueOf(tiles.get(0).charAt(2) - 48), playerInit));
     }
 
     public void getSelectedWorker(OptionSelection opt, boolean canPass) {
+        game.selectWorker(opt);
+        if(canPass) {
+            game.makeSkippable();
+        }
+    }
 
+    public void sendSelectedWorker() {
+
+    }
+
+    public void sendPass() {
+        updateObservers(new AnswerPowerCoordinates());
     }
 
     public void getWorkerSelection(OptionSelection opt, boolean canPass) {
@@ -202,6 +183,7 @@ public class ClientGUI extends ClientView {
     }
 
     public void displayBoard() {
+//        System.out.println("ciao");
 //        if(game != null && bv != null) {
 //            game.updateBoard(bv.getBoardView());
 //        }
