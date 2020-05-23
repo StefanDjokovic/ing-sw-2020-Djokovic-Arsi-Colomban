@@ -26,6 +26,7 @@ public class LoginUI {
         root.getStylesheets().add("style.css");
 
         loginScene = new Scene(root, 400, 350);
+        root.setStyle("-fx-background-color: #CBE1EF");
 
         Label lbl = new Label("Santorini");
         lbl.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
@@ -36,6 +37,7 @@ public class LoginUI {
         lbl2.setFont(Font.font("Futura", FontWeight.NORMAL, 18));
 
         Button bt = new Button();
+        bt.setId("buttonexit");
         bt.setText("Exit");
         bt.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt.setOnAction((ActionEvent event) -> {
@@ -47,6 +49,7 @@ public class LoginUI {
 
 
         Button bt2 = new Button();
+        bt2.setId("button");
         bt2.setText("Play");
         bt2.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt2.setOnAction((ActionEvent event) -> {

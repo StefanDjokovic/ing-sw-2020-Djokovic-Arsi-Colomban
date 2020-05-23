@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -41,7 +42,7 @@ public class GodSelectionUI {
         sp.setFitToHeight(true);
 
         godSelectionScene = new Scene(root, 800, 700);
-
+        root.setStyle("-fx-background-color: #CBE1EF");
 
         ColumnConstraints c = new ColumnConstraints();
         c.setHgrow(Priority.ALWAYS);
@@ -64,6 +65,7 @@ public class GodSelectionUI {
         GridPane.setHalignment(l, HPos.CENTER);
 
         Button b = new Button("Continue");
+        b.setId("button");
         b.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
         b.setOnAction((ActionEvent event) -> {
             //sendGods(selectedGods);

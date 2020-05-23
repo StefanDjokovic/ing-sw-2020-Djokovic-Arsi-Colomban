@@ -14,9 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class GameUI {
@@ -45,9 +47,10 @@ public class GameUI {
         root.setHgap(8);
         root.setVgap(8);
 
-        gameScene = new Scene(root, 630, 470);
+        gameScene = new Scene(root, 630, 550, Color.rgb(94, 169, 190));
         grid.getStylesheets().add("style.css");
         root.getStylesheets().add("style.css");
+        root.setStyle("-fx-background-color: #CBE1EF");
 
         Button bt1 = new Button();
         confirmButton = bt1;
@@ -176,7 +179,7 @@ public class GameUI {
                 boardSlots[a][b] = new Button();
                 boardSlots[a][b].setPrefSize(75, 75);
                 boardSlots[a][b].setFont(Font.font("Futura", 8));
-                boardSlots[a][b].setText(a+" "+b);
+                //boardSlots[a][b].setText(a+" "+b);
                 boardSlots[a][b].setId("button");
                 boardSlots[a][b].setAccessibleRoleDescription(a+","+b);
                 //boardSlots[a][b].setOnAction((ActionEvent event) -> {
@@ -186,6 +189,53 @@ public class GameUI {
                 boardSlots[a][b].setDisable(true);
             }
         }
+    }
+
+
+    ArrayList<String> placedWorkers = new ArrayList<>();
+
+    public void placeWorkers(int[][] workers) {
+        //placeCount++;
+        //add filter to board
+        //Button[][] buttons = GameUI.getBoardSlots();
+        Button[][] buttons = boardSlots;
+        Boolean f;
+        for (int x = 0 ; x < 5 ; x++) {
+            for (int y = 0 ; y < 5 ; y++) {
+                f=false;
+                for (int z = 0 ; z < workers.length ; z++) {
+                    if(workers[z][0] == x && workers[z][1] == y) {
+                        f=true;
+                        break;
+                    }
+                }
+                if(f==false) {
+                    //put filter on button
+                    buttons[x][y].setDisable(false);
+                    buttons[x][y].setId("selectionType0");
+                    buttons[x][y].setOnAction((ActionEvent event) -> {
+                        String selTile = GridPane.getRowIndex(((Node) event.getSource())) + " " + GridPane.getColumnIndex(((Node) event.getSource()));
+                        if (placedWorkers.contains(selTile)) {
+                            placedWorkers.remove(selTile);
+                            ((Node) event.getSource()).setId("selectionType0");
+                        } else {
+                            if (placedWorkers.size() < 2) {
+                                placedWorkers.add(selTile);
+                                ((Node) event.getSource()).setId("selectionType1");
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        confirmButton.setText("Confirm");
+        confirmButton.setDisable(false);
+        confirmButton.setOnAction((ActionEvent event) -> {
+            if(placedWorkers.size() == 2) {
+                ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
+            }
+        });
     }
 
     public Scene getScene() {
