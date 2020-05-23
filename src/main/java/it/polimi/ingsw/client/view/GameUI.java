@@ -274,14 +274,20 @@ public class GameUI {
         Boolean found;
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
-                found=false;
-                for (int z = 0 ; z < options.size() ; z++) {
-                    if(options.get(z).get(0) == x && options.get(z).get(1) == y) {
-                        found=true;
-                        break;
-                    }
-                }
-                if(found == true) {
+//                found=false;
+//                for (int z = 0 ; z < options.size() ; z++) {
+//                    if((options.get(0).get(0) == x && options.get(0).get(1) == y) || (options.get(1).get(0) == x && options.get(1).get(1) == y)) {
+//                        found=true;
+//                        break;
+//                    }
+//                }
+//                if(found == true) {
+//                    boardSlots[x][y].setDisable(false);
+//                    boardSlots[x][y].setOnAction((ActionEvent e) -> {
+//                        //robe
+//                    });
+//                }
+                if((options.get(0).get(0) == x && options.get(0).get(1) == y) || (options.get(1).get(0) == x && options.get(1).get(1) == y)) {
                     boardSlots[x][y].setDisable(false);
                     boardSlots[x][y].setOnAction((ActionEvent e) -> {
                         //robe
