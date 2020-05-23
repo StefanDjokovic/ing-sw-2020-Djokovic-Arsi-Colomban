@@ -108,7 +108,6 @@ public class CoreGUI extends Application {
         GameUI.getConfirmButton().setDisable(false);
         GameUI.getConfirmButton().setOnAction((ActionEvent event) -> {
             if(placedWorkers.size() == 2) {
-                System.out.println("ciaoooo");
                 ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
             }
         });
