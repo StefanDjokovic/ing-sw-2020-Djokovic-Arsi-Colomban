@@ -184,8 +184,9 @@ public class ClientGUI extends ClientView {
                 bs[a][b].setDisable(true);
             }
         }
-        System.out.println(Integer.valueOf(tiles.get(0).charAt(0))+" "+Integer.valueOf(tiles.get(0).charAt(2)));
-        updateObservers(new AnswerWorkersPosition((int) tiles.get(0).charAt(0), (int) tiles.get(0).charAt(2), playerInit));
+        System.out.println(tiles.get(0));
+        System.out.println(Integer.valueOf(tiles.get(0).charAt(0) - 48)+" "+Integer.valueOf(tiles.get(0).charAt(2) - 48));
+        updateObservers(new AnswerWorkersPosition(Integer.valueOf(tiles.get(0).charAt(0) - 48), Integer.valueOf(tiles.get(0).charAt(2) - 48), playerInit));
     }
 
     public void getSelectedWorker(OptionSelection opt, boolean canPass) {
