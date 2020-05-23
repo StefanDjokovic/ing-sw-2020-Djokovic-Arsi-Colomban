@@ -179,7 +179,7 @@ public class GameUI {
             for(int b = 0 ; b < 5 ; b++){
                 boardSlots[a][b] = new Button();
                 boardSlots[a][b].setPrefSize(75, 75);
-                boardSlots[a][b].setFont(Font.font("Futura", 8));
+                boardSlots[a][b].setFont(Font.font("Futura", 14));
                 //boardSlots[a][b].setText(a+" "+b);
                 boardSlots[a][b].setId("button");
                 boardSlots[a][b].setAccessibleRoleDescription(a+","+b);
@@ -259,7 +259,9 @@ public class GameUI {
     public void updateBoard(TileView[][] tv) {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
-                boardSlots[x][y].setText(String.valueOf(tv[x][y].getInitWorker()));
+                if(String.valueOf(tv[x][y].getInitWorker()) != "?") {
+                    boardSlots[x][y].setText(String.valueOf(tv[x][y].getInitWorker()));
+                }
                 boardSlots[x][y].setId("level" + tv[x][y].getBuildingLevel());
             }
         }

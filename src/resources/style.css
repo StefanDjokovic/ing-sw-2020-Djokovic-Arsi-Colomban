@@ -8,7 +8,7 @@
 #button:hover {
     -fx-background-radius:3;
     -fx-border-color:lime;
-    -fx-border-radius:4;
+    -fx-border-radius:2;
     -fx-border-width: 2 2 2 2;
 }
 
@@ -30,7 +30,7 @@
 
 #buttonexit:hover {
     -fx-background-radius:3;
-    -fx-border-radius:4;
+    -fx-border-radius:2;
     -fx-border-color:red;
     -fx-border-width: 2 2 2 2;
 }
@@ -45,14 +45,14 @@
 
 #buttontutorial:hover {
     -fx-background-radius:3;
-    -fx-border-radius:4;
+    -fx-border-radius:2;
     -fx-border-color:blue;
     -fx-border-width: 2 2 2 2;
 }
 
 #buttonexit:disabled {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-border-color:red;
     -fx-text-fill:#000000;
     -fx-opacity: 1;
@@ -61,37 +61,37 @@
 
 #level0 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-text-fill:#59bdE6;
 }
 
 #level1 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-text-fill:#FF6600;
 }
 
 #level2 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-text-fill:#d9534f;
 }
 
 #level3 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-text-fill:#5cb85c;
 }
 
 #dome {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-text-fill:#1338BE;
 }
 
 #button0 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-background-color: #59bdE6;
     -fx-border-color:transparent;
     -fx-border-width: 2 2 2 2;
@@ -99,7 +99,7 @@
 
 #button1 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-background-color: #F9D71C;
     -fx-border-color:transparent;
     -fx-border-width: 2 2 2 2;
@@ -107,7 +107,7 @@
 
 #button2 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-background-color: #d9534f;
     -fx-border-color:transparent;
     -fx-border-width: 2 2 2 2;
@@ -115,7 +115,7 @@
 
 #button3 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-background-color: #5cb85c;
     -fx-border-color:transparent;
     -fx-border-width: 2 2 2 2;
@@ -123,7 +123,7 @@
 
 #buttondome {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-background-color: #1338BE;
     -fx-border-color:transparent;
     -fx-border-width: 2 2 2 2;
@@ -141,7 +141,7 @@
 
 #selectionType0 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-background-color: #FFFFFF;
     -fx-border-color:transparent;
     -fx-border-width: 2 2 2 2;
@@ -149,7 +149,7 @@
 
 #selectionType0:disabled {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-opacity:1;
     -fx-background-color: #FFFFFF;
     -fx-border-color:transparent;
@@ -158,7 +158,7 @@
 
 #selectionType1 {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-background-color: #FFFFFF;
     -fx-border-color:lime;
     -fx-border-width: 2 2 2 2;
@@ -166,7 +166,7 @@
 
 #selectionType1:disabled {
     -fx-background-radius:3;
-    -fx-border-radius:3;
+    -fx-border-radius:2;
     -fx-opacity:1;
     -fx-background-color: #FFFFFF;
     -fx-border-color:transparent;
