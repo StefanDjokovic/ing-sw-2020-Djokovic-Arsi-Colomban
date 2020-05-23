@@ -97,7 +97,9 @@ public class ClientGUI extends ClientView {
     public void updateBoardView(BoardView bv) {
         this.bv=bv;
         if(game != null) {
-            game.updateBoard(bv.getBoardView());
+            Platform.runLater(() -> {
+                game.updateBoard(bv.getBoardView());
+            });
         }
     }
 
@@ -137,7 +139,7 @@ public class ClientGUI extends ClientView {
 
         Stage ss = CoreGUI.getStage();
         Platform.runLater(() -> {
-            GameUI game = new GameUI();
+            game = new GameUI();
             ss.setScene(game.getScene());
             game.updateBoard(bv.getBoardView());
             game.placeWorkers(workers);
@@ -166,8 +168,15 @@ public class ClientGUI extends ClientView {
         }
     }
 
-    public void sendSelectedWorker(ArrayList<String> mov) {
+    public void sendSelectedWorker(ArrayList<Integer> mov) {
         //send the movement
+        //System.out.println(Integer.valueOf(mov.get(0).charAt(0) - 48)+Integer.valueOf(mov.get(0).charAt(2) - 48)+Integer.valueOf(mov.get(1).charAt(0) - 48)+Integer.valueOf(mov.get(1).charAt(2) - 48));
+        //Answer answer = new AnswerPowerCoordinates(Integer.valueOf(mov.get(0).charAt(0) - 48), Integer.valueOf(mov.get(0).charAt(2) - 48), Integer.valueOf(mov.get(1).charAt(0) - 48), Integer.valueOf(mov.get(1).charAt(2) - 48));
+
+        System.out.println(mov.get(0)+" "+ mov.get(1)+" "+ mov.get(2)+" "+ mov.get(3));
+        Answer answer = new AnswerPowerCoordinates(mov.get(0), mov.get(1), mov.get(2), mov.get(3));
+
+        updateObservers(answer);
     }
 
     public void sendPass() {

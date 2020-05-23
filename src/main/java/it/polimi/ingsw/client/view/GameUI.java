@@ -267,35 +267,63 @@ public class GameUI {
         ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
     }
 
-    ArrayList<String> movement = new ArrayList<>();
+    ArrayList<Integer> movement = new ArrayList<>();
 
     public void selectWorker(OptionSelection opt) {
         ArrayList<ArrayList<Integer>> options = opt.getValues();
         Boolean found;
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
-//                found=false;
-//                for (int z = 0 ; z < options.size() ; z++) {
-//                    if((options.get(0).get(0) == x && options.get(0).get(1) == y) || (options.get(1).get(0) == x && options.get(1).get(1) == y)) {
-//                        found=true;
-//                        break;
-//                    }
-//                }
-//                if(found == true) {
-//                    boardSlots[x][y].setDisable(false);
-//                    boardSlots[x][y].setOnAction((ActionEvent e) -> {
-//                        //robe
-//                    });
-//                }
-                if((options.get(0).get(0) == x && options.get(0).get(1) == y) || (options.get(1).get(0) == x && options.get(1).get(1) == y)) {
+                boardSlots[x][y].setId("selectionType0");
+                if(options.get(0).get(0) == x && options.get(0).get(1) == y) {
                     boardSlots[x][y].setDisable(false);
                     boardSlots[x][y].setOnAction((ActionEvent e) -> {
-                        //robe
+                        ((Node) e.getSource()).setId("selectionType1");
+                        movement.clear();
+                        //movement.add(GridPane.getRowIndex(((Node) e.getSource())) + " " + GridPane.getColumnIndex(((Node) e.getSource())));
+                        movement.add(GridPane.getRowIndex(((Node) e.getSource())));
+                        movement.add(GridPane.getColumnIndex(((Node) e.getSource())));
+                        ((Node) e.getSource()).setDisable(true);
+
+                        for(int z = 2 ; z < options.get(0).size() ; z=z+2) {
+                            boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setDisable(false);
+                            boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setOnAction((ActionEvent a) -> {
+                                if(movement.size()==2) {
+                                    ((Node) a.getSource()).setId("selectionType1");
+                                    //movement.add(GridPane.getRowIndex(((Node) a.getSource())) + " " + GridPane.getColumnIndex(((Node) a.getSource())));
+                                    movement.add(GridPane.getRowIndex(((Node) a.getSource())));
+                                    movement.add(GridPane.getColumnIndex(((Node) a.getSource())));
+                                }
+                            });
+                        }
+                    });
+                } else if (options.get(1).get(0) == x && options.get(1).get(1) == y) {
+                    boardSlots[x][y].setDisable(false);
+                    boardSlots[x][y].setOnAction((ActionEvent e) -> {
+                        ((Node) e.getSource()).setId("selectionType1");
+                        movement.clear();
+                        //movement.add(GridPane.getRowIndex(((Node) e.getSource())) + " " + GridPane.getColumnIndex(((Node) e.getSource())));
+                        movement.add(GridPane.getRowIndex(((Node) e.getSource())));
+                        movement.add(GridPane.getColumnIndex(((Node) e.getSource())));
+                        ((Node) e.getSource()).setDisable(true);
+
+                        for(int z = 2 ; z < options.get(1).size() ; z=z+2) {
+                            boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setDisable(false);
+                            boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setOnAction((ActionEvent a) -> {
+                                if(movement.size()==2) {
+                                    ((Node) a.getSource()).setId("selectionType1");
+                                    //movement.add(GridPane.getRowIndex(((Node) a.getSource())) + " " + GridPane.getColumnIndex(((Node) a.getSource())));
+                                    movement.add(GridPane.getRowIndex(((Node) a.getSource())));
+                                    movement.add(GridPane.getColumnIndex(((Node) a.getSource())));
+                                }
+                            });
+                        }
                     });
                 }
             }
         }
 
+        confirmButton.setDisable(false);
         confirmButton.setOnAction((ActionEvent e) -> {
             sendMovement();
         });
