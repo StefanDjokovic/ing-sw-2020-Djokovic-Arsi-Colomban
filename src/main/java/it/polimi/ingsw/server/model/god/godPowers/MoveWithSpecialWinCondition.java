@@ -8,13 +8,8 @@ import it.polimi.ingsw.server.model.player.Worker;
 
 public class MoveWithSpecialWinCondition extends Move {
 
-    private int fromLevel;
-    private int toLevel;
-
-    public MoveWithSpecialWinCondition(GodLogic godLogic, boolean canPass, int fromLevel, int toLevel) {
+    public MoveWithSpecialWinCondition(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
-        this.fromLevel = fromLevel;
-        this.toLevel = toLevel;
     }
 
     @Override
@@ -33,7 +28,7 @@ public class MoveWithSpecialWinCondition extends Move {
     }
 
     private boolean specialWinCondition(int fromLevel, int toLevel) {
-        return fromLevel - toLevel >= this.fromLevel - this.toLevel;
+        return fromLevel - toLevel >= 2;
     }
 
 }

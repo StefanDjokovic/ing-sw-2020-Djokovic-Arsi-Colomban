@@ -20,6 +20,19 @@ public class OptionSelection implements Serializable {
         return this.values;
     }
 
+    public void removeXAndY(OptionSelection opt, int x, int y) {
+        for (ArrayList<Integer> comb: opt.getValues()) {
+            for (int i = 2; i < comb.size(); i += 2) {
+                if (comb.get(i) == x && comb.get(i + 1) == y) {
+                    comb.remove(i+1);
+                    comb.remove(i);
+                    i -= 2;
+                }
+            }
+        }
+
+    }
+
     @Override
     public String toString() {
         StringBuilder p = new StringBuilder();
