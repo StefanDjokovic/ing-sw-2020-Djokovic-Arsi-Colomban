@@ -19,6 +19,14 @@ public class LoginUI {
 
     private final Scene loginScene;
 
+    private TextField txtf;
+
+    private Button bt;
+
+    private Button bt2;
+
+    private Label info;
+
     public LoginUI() {
         GridPane root = new GridPane();
         root.setHgap(8);
@@ -36,7 +44,7 @@ public class LoginUI {
         Label lbl2 = new Label("Please specify your nickname");
         lbl2.setFont(Font.font("Futura", FontWeight.NORMAL, 18));
 
-        Button bt = new Button();
+        bt = new Button();
         bt.setId("buttonexit");
         bt.setText("Exit");
         bt.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
@@ -44,21 +52,27 @@ public class LoginUI {
             Platform.exit();
         });
 
-        TextField txtf = new TextField();
+        txtf = new TextField();
         txtf.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
 
 
-        Button bt2 = new Button();
+        bt2 = new Button();
         bt2.setId("button");
         bt2.setText("Play");
         bt2.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt2.setOnAction((ActionEvent event) -> {
             if(!txtf.getCharacters().toString().equals("")) {
                 //sendName(txtf.getCharacters().toString());
-                System.out.println("Read: "+txtf.getCharacters().toString());
-                ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString());
+                //System.out.println("Read: "+txtf.getCharacters().toString());
+                sendName();
             }
         });
+
+        info = new Label();
+        info.setId("infoLabel");
+        info.setWrapText(true);
+        info.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+        GridPane.setHalignment(info, HPos.CENTER);
 
         GridPane.setHalignment(lbl, HPos.CENTER);
         GridPane.setHalignment(lbl3, HPos.CENTER);
@@ -79,11 +93,22 @@ public class LoginUI {
         p.setPrefHeight(75);
         root.add(p, 0, 6);
         root.add(bt, 0, 7);
+        root.add(info, 0, 8);
 
         //HBox root2 = new HBox();
         root.setPadding(new Insets(25));
         root.setAlignment(Pos.CENTER);
         //root.setSpacing(25);
+    }
+
+    private void sendName() {
+        //disable
+        bt.setDisable(true);
+        bt2.setDisable(true);
+        txtf.setDisable(true);
+        info.setText("Waiting for other player(s)");
+        //send
+        ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString());
     }
 
     public Scene getScene() {

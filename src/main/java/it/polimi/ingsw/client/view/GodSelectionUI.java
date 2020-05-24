@@ -24,12 +24,21 @@ public class GodSelectionUI {
         launch(args);
     }*/
 
+    private ArrayList<ToggleButton> godButtons;
+
+    private FlowPane fp;
+
     private final Scene godSelectionScene;
 
+    private Label info;
+
+    private Button b;
+
     public GodSelectionUI() {
-        ArrayList<ToggleButton> godButtons = createGodButtons();
+        godButtons = createGodButtons();
+        godButtons.stream().forEach(x -> x.setDisable(true));
         ScrollPane sp = new ScrollPane();
-        FlowPane fp = new FlowPane(Orientation.HORIZONTAL);
+        fp = new FlowPane(Orientation.HORIZONTAL);
         fp.getStylesheets().add("style.css");
         GridPane root = new GridPane();
         root.getStylesheets().add("style.css");
@@ -55,7 +64,7 @@ public class GodSelectionUI {
         r3.setVgrow(Priority.NEVER);
         root.getRowConstraints().addAll(r1, r2, r3);
 
-        godButtons.forEach(x -> fp.getChildren().add(x));
+        //godButtons.forEach(x -> fp.getChildren().add(x));
 
         fp.setPadding(new Insets(25));
         sp.setContent(fp);
@@ -64,24 +73,28 @@ public class GodSelectionUI {
         l.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
         GridPane.setHalignment(l, HPos.CENTER);
 
-        Button b = new Button("Continue");
+        b = new Button("Continue");
         b.setId("button");
+        b.setDisable(true);
         b.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
         b.setOnAction((ActionEvent event) -> {
-            //sendGods(selectedGods);
-            ClientGUI.getInstance().sendGods(selectedGods);
+            sendGods(selectedGods);
         });
         GridPane.setHalignment(b, HPos.CENTER);
+
+        info = new Label();
+        info.setId("infoLabel");
+        info.setWrapText(true);
+        info.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+        GridPane.setHalignment(info, HPos.CENTER);
 
         root.add(l, 0, 0);
         root.add(sp, 0, 1);
         root.add(b, 0, 2);
+        root.add(info, 0, 3);
 
         root.setPadding(new Insets(25));
         root.setAlignment(Pos.CENTER);
-        /*stage.setTitle("God selection");
-        stage.setScene(scene);
-        stage.show();*/
     }
 
     private ArrayList<ToggleButton> createGodButtons() {
@@ -146,11 +159,24 @@ public class GodSelectionUI {
         return buttons;
     }
 
-    /*public void sendGods(ArrayList<String> gods) {
-        System.out.println("Gods: "+selectedGods.stream().collect(Collectors.joining(", ")));
+    public void startGodSelection(ArrayList<String> options) {
+        godButtons.stream().forEach(x -> {
+            if (options.contains(x.getId())) {
+                x.setDisable(false);
+                fp.getChildren().add(x);
+            }
+        });
+        b.setDisable(false);
+    }
+
+    public void sendGods(ArrayList<String> gods) {
+        //disable
+        b.setDisable(true);
+        godButtons.stream().forEach(x -> x.setDisable(true));
+        info.setText("Waiting for other player(s)");
         //send
-        View.getInstance().sendGods(gods);
-    }*/
+        ClientGUI.getInstance().sendGods(gods);
+    }
 
     public Scene getScene() {
         return this.godSelectionScene;
