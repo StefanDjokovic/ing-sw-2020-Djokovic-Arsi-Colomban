@@ -179,3 +179,8 @@
     -fx-opacity: 1;
     -fx-border-width: 2 2 2 2;
 }
+
+#infoLabel {
+    -fx-background-radius: 0;
+    -fx-border-color:transparent;
+}
