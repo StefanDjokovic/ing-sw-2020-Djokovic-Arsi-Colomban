@@ -20,11 +20,12 @@
     -fx-border-width: 3 3 3 3;
 }
 
-#buttonexit {
+#buttonexit, #buttonexit:disabled {
     -fx-background-radius:3;
     -fx-border-radius:3;
     -fx-background-color: #FFFFFF;
     -fx-border-color:transparent;
+    -fx-opacity: 1;
     -fx-border-width: 3 3 3 3;
 }
 
@@ -47,15 +48,6 @@
     -fx-background-radius:3;
     -fx-border-radius:2;
     -fx-border-color:blue;
-    -fx-border-width: 3 3 3 3;
-}
-
-#buttonexit:disabled {
-    -fx-background-radius:3;
-    -fx-border-radius:2;
-    -fx-border-color:red;
-    -fx-text-fill:#000000;
-    -fx-opacity: 1;
     -fx-border-width: 3 3 3 3;
 }
 

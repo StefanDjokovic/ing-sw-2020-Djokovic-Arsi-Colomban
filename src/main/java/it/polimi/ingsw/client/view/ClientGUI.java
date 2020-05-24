@@ -121,8 +121,9 @@ public class ClientGUI extends ClientView {
         playerInit = initial;
         Stage ss = CoreGUI.getStage();
         Platform.runLater(() -> {
-            GodSelectionUI selection = new GodSelectionUI();
+            selection = new GodSelectionUI();
             ss.setScene(selection.getScene());
+            selection.startGodSelection(options);
         });
     }
 
@@ -168,7 +169,6 @@ public class ClientGUI extends ClientView {
         if(opt.getValues().size() == 2) {
             game.selectWorker(opt);
         } else if (opt.getValues().size() == 1) {
-            //TODO change name
             game.selectWorkerOneOption(opt);
         }
     }
@@ -195,7 +195,11 @@ public class ClientGUI extends ClientView {
     }
 
     public void displayGameEnd(char winnerInit) {
-
+        if(winnerInit == playerInit) {
+            game.youWin();
+        } else {
+            game.youLose();
+        }
     }
 
     public void displayBoard() {
