@@ -172,3 +172,10 @@
     -fx-border-color:transparent;
     -fx-border-width: 2 2 2 2;
 }
+
+#boardButton, #boardButton:disabled {
+    -fx-background-radius:2;
+    -fx-border-radius:2;
+    -fx-opacity: 1;
+    -fx-border-width: 2 2 2 2;
+}
