@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -190,6 +191,7 @@ public class GameUI {
         info.setId("infoLabel");
         info.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         info.setWrapText(true);
+        info.setTextAlignment(TextAlignment.RIGHT);
         GridPane.setHalignment(info, HPos.RIGHT);
 
         root.add(leftInfo, 0, 0);
@@ -304,12 +306,12 @@ public class GameUI {
                         movement.add(GridPane.getColumnIndex(((Node) e.getSource())));
                         ((Node) e.getSource()).setDisable(true);
 
-                        System.out.println(options.get(0));
+                        //System.out.println(options.get(0));
                         for(int z = 2 ; z < options.get(0).size() ; z=z+2) {
-                            System.out.println(options.get(0).get(z)+" "+options.get(0).get(z+1));
+                            //System.out.println(options.get(0).get(z)+" "+options.get(0).get(z+1));
                             boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setDisable(false);
                             boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setOnAction((ActionEvent a) -> {
-                                System.out.println(GridPane.getRowIndex(((Node) a.getSource()))+" "+GridPane.getColumnIndex(((Node) a.getSource())));
+                                //System.out.println(GridPane.getRowIndex(((Node) a.getSource()))+" "+GridPane.getColumnIndex(((Node) a.getSource())));
                                 if(movement.size()==2) {
                                     //((Node) a.getSource()).setId("selectionType1");
                                     ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
@@ -354,7 +356,7 @@ public class GameUI {
                 sendMovement();
             }
         });
-        Platform.runLater(() -> {infoLabel.setText("Choose the worker you want to move");});
+        Platform.runLater(() -> {infoLabel.setText("Choose the worker you want to move and where you want to move it to");});
     }
 
     private void sendMovement() {
