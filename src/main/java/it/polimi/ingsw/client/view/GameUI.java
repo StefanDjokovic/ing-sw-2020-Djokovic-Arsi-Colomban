@@ -50,7 +50,7 @@ public class GameUI {
         root.setHgap(8);
         root.setVgap(8);
 
-        gameScene = new Scene(root, 630, 550, Color.rgb(94, 169, 190));
+        gameScene = new Scene(root, 650, 600, Color.rgb(94, 169, 190));
         grid.getStylesheets().add("style.css");
         root.getStylesheets().add("style.css");
         root.setStyle("-fx-background-color: #CBE1EF");
@@ -272,7 +272,7 @@ public class GameUI {
 
     public void selectWorker(OptionSelection opt) {
         ArrayList<ArrayList<Integer>> options = opt.getValues();
-        Boolean found;
+        //Boolean found;
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 //boardSlots[x][y].setId("selectionType0");
@@ -341,10 +341,59 @@ public class GameUI {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 boardSlots[x][y].setDisable(true);
+                boardSlots[x][y].setId("boardButton");
             }
         }
         //send
-        ClientGUI.getInstance().sendSelectedWorker(movement);
+        ClientGUI.getInstance().sendPower(movement);
+    }
+
+    ArrayList<Integer> buildInfo = new ArrayList<>();
+
+    public void buildWorker(OptionSelection opt) {
+        ArrayList<ArrayList<Integer>> options = opt.getValues();
+        for (int x = 0; x < 5; x++) {
+            for (int y = 0; y < 5; y++) {
+                if(options.get(0).get(0) == x && options.get(0).get(1) == y) {
+                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color:orange; -fx-border-width: 2 2 2 2;");
+                    buildInfo.add(x);
+                    buildInfo.add(y);
+                    for(int z = 2 ; z < options.get(0).size() ; z=z+2) {
+                        boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setDisable(false);
+                        boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setOnAction((ActionEvent a) -> {
+                            if (buildInfo.size() == 2) {
+                                ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime; -fx-border-width: 2 2 2 2;");
+                                buildInfo.add(GridPane.getRowIndex(((Node) a.getSource())));
+                                buildInfo.add(GridPane.getColumnIndex(((Node) a.getSource())));
+                            } else if (buildInfo.size() == 4) {
+                                ((Node) a.getSource()).setId("boardButton");
+                                buildInfo.remove(3);
+                                buildInfo.remove(2);
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+        confirmButton.setDisable(false);
+        confirmButton.setOnAction((ActionEvent e) -> {
+            sendBuildInfo();
+        });
+    }
+
+    private void sendBuildInfo() {
+        //disable
+        confirmButton.setDisable(true);
+        skipButton.setDisable(true);
+        for (int x = 0; x < 5; x++) {
+            for (int y = 0; y < 5; y++) {
+                boardSlots[x][y].setDisable(true);
+                boardSlots[x][y].setId("boardButton");
+            }
+        }
+        //send
+        ClientGUI.getInstance().sendPower(buildInfo);
     }
 
     public void updateBoard(TileView[][] tv) {

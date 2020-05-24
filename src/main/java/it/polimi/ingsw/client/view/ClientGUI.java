@@ -162,19 +162,23 @@ public class ClientGUI extends ClientView {
     }
 
     public void getSelectedWorker(OptionSelection opt, boolean canPass) {
-        game.selectWorker(opt);
-        if(canPass) {
+        if(opt.getValues().size() == 2) {
+            game.selectWorker(opt);
+        } else if (opt.getValues().size() == 1) {
+            game.buildWorker(opt);
+        }
+        if (canPass) {
             game.makeSkippable();
         }
     }
 
-    public void sendSelectedWorker(ArrayList<Integer> mov) {
+    public void sendPower(ArrayList<Integer> pow) {
         //send the movement
         //System.out.println(Integer.valueOf(mov.get(0).charAt(0) - 48)+Integer.valueOf(mov.get(0).charAt(2) - 48)+Integer.valueOf(mov.get(1).charAt(0) - 48)+Integer.valueOf(mov.get(1).charAt(2) - 48));
         //Answer answer = new AnswerPowerCoordinates(Integer.valueOf(mov.get(0).charAt(0) - 48), Integer.valueOf(mov.get(0).charAt(2) - 48), Integer.valueOf(mov.get(1).charAt(0) - 48), Integer.valueOf(mov.get(1).charAt(2) - 48));
 
-        System.out.println(mov.get(0)+" "+ mov.get(1)+" "+ mov.get(2)+" "+ mov.get(3));
-        Answer answer = new AnswerPowerCoordinates(mov.get(0), mov.get(1), mov.get(2), mov.get(3));
+        System.out.println(pow.get(0)+" "+ pow.get(1)+" "+ pow.get(2)+" "+ pow.get(3));
+        Answer answer = new AnswerPowerCoordinates(pow.get(0), pow.get(1), pow.get(2), pow.get(3));
 
         updateObservers(answer);
     }
