@@ -97,7 +97,8 @@ public class GameUI {
         bt.setText("Esci");
         bt.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt.setOnAction((ActionEvent event) -> {
-            Platform.exit();
+            //Platform.exit();
+            System.exit(0);
         });
         GridPane.setHalignment(bt, HPos.LEFT);
         GridPane.setValignment(bt, VPos.BOTTOM);
@@ -293,36 +294,27 @@ public class GameUI {
 
     public void selectWorker(OptionSelection opt) {
         ArrayList<ArrayList<Integer>> options = opt.getValues();
-        //Boolean found;
+
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
-                //boardSlots[x][y].setId("selectionType0");
+
                 if(options.get(0).get(0) == x && options.get(0).get(1) == y) {
                     boardSlots[x][y].setDisable(false);
                     //TODO not working
-                    //System.out.println(boardSlots[x][y].getStyle());
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color: orange;");
-                    //System.out.println(boardSlots[x][y].getStyle());
+                    //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color: orange;");
+
                     boardSlots[x][y].setOnAction((ActionEvent e) -> {
-                        //((Node) e.getSource()).setId("selectionType1");
+                        disableAllButtons();
                         ((Node) e.getSource()).setStyle(((Node) e.getSource()).getStyle()+"-fx-border-color:lime;");
-                        //movement.clear();
-                        //movement.add(GridPane.getRowIndex(((Node) e.getSource())) + " " + GridPane.getColumnIndex(((Node) e.getSource())));
                         movement.add(GridPane.getRowIndex(((Node) e.getSource())));
                         movement.add(GridPane.getColumnIndex(((Node) e.getSource())));
                         ((Node) e.getSource()).setDisable(true);
-
-                        //System.out.println(options.get(0));
                         for(int z = 2 ; z < options.get(0).size() ; z=z+2) {
-                            //System.out.println(options.get(0).get(z)+" "+options.get(0).get(z+1));
                             boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setDisable(false);
-                            boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setStyle(boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].getStyle()+"-fx-border-color: orange;");
+                            //boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setStyle(boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].getStyle()+"-fx-border-color: orange;");
                             boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setOnAction((ActionEvent a) -> {
-                                //System.out.println(GridPane.getRowIndex(((Node) a.getSource()))+" "+GridPane.getColumnIndex(((Node) a.getSource())));
                                 if(movement.size()==2) {
-                                    //((Node) a.getSource()).setId("selectionType1");
                                     ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
-                                    //movement.add(GridPane.getRowIndex(((Node) a.getSource())) + " " + GridPane.getColumnIndex(((Node) a.getSource())));
                                     movement.add(GridPane.getRowIndex(((Node) a.getSource())));
                                     movement.add(GridPane.getColumnIndex(((Node) a.getSource())));
                                 }
@@ -332,24 +324,20 @@ public class GameUI {
                 } else if (options.get(1).get(0) == x && options.get(1).get(1) == y) {
                     boardSlots[x][y].setDisable(false);
                     //TODO not working
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color: orange;");
+                    //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color: orange;");
+
                     boardSlots[x][y].setOnAction((ActionEvent e) -> {
-                        //((Node) e.getSource()).setId("selectionType1");
+                        disableAllButtons();
                         ((Node) e.getSource()).setStyle(((Node) e.getSource()).getStyle()+"-fx-border-color:lime;");
-                        //movement.clear();
-                        //movement.add(GridPane.getRowIndex(((Node) e.getSource())) + " " + GridPane.getColumnIndex(((Node) e.getSource())));
                         movement.add(GridPane.getRowIndex(((Node) e.getSource())));
                         movement.add(GridPane.getColumnIndex(((Node) e.getSource())));
                         ((Node) e.getSource()).setDisable(true);
-
                         for(int z = 2 ; z < options.get(1).size() ; z=z+2) {
                             boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setDisable(false);
-                            boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setStyle(boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].getStyle()+"-fx-border-color: orange;");
+                            //boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setStyle(boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].getStyle()+"-fx-border-color: orange;");
                             boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setOnAction((ActionEvent a) -> {
                                 if(movement.size()==2) {
-                                    //((Node) a.getSource()).setId("selectionType1");
                                     ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
-                                    //movement.add(GridPane.getRowIndex(((Node) a.getSource())) + " " + GridPane.getColumnIndex(((Node) a.getSource())));
                                     movement.add(GridPane.getRowIndex(((Node) a.getSource())));
                                     movement.add(GridPane.getColumnIndex(((Node) a.getSource())));
                                 }
@@ -393,12 +381,12 @@ public class GameUI {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 if(options.get(0).get(0) == x && options.get(0).get(1) == y) {
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color:orange;");
+                    //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color:orange;");
                     buildInfo.add(x);
                     buildInfo.add(y);
                     for(int z = 2 ; z < options.get(0).size() ; z=z+2) {
                         boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setDisable(false);
-                        boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setStyle(boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].getStyle()+"-fx-border-color: orange;");
+                        //boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setStyle(boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].getStyle()+"-fx-border-color: orange;");
                         boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setOnAction((ActionEvent a) -> {
                             if (buildInfo.size() == 2) {
                                 ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
@@ -449,7 +437,10 @@ public class GameUI {
                     boardSlots[x][y].setText(String.valueOf(tv[x][y].getInitWorker()));
                 }
                 //boardSlots[x][y].setId("level" + tv[x][y].getBuildingLevel());
-                if(tv[x][y].getBuildingLevel()==0) {
+
+                if(tv[x][y].hasDome()) {
+                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #1338BE; -fx-border-color: transparent;");
+                } else if(tv[x][y].getBuildingLevel()==0) {
                     boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #59bdE6; -fx-border-color: transparent;");
                 } else if(tv[x][y].getBuildingLevel() == 1) {
                     boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #FF6600; -fx-border-color: transparent;");
@@ -457,8 +448,6 @@ public class GameUI {
                     boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #d9534f; -fx-border-color: transparent;");
                 } else if(tv[x][y].getBuildingLevel() == 3 && !tv[x][y].hasDome()) {
                     boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #5cb85c; -fx-border-color: transparent;");
-                } else if(tv[x][y].getBuildingLevel() == 3 && tv[x][y].hasDome()) {
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #1338BE; -fx-border-color: transparent;");
                 }
             }
         }
@@ -480,6 +469,14 @@ public class GameUI {
 
             ClientGUI.getInstance().sendPass();
         });
+    }
+
+    private void disableAllButtons() {
+        for (int a = 0; a < 5; a++) {
+            for (int b = 0; b < 5; b++) {
+                boardSlots[a][b].setDisable(true);
+            }
+        }
     }
 
     public void youWin() {
