@@ -476,6 +476,7 @@ public class GameUI {
             confirmButton.setDisable(true);
             movement.clear();
             buildInfo.clear();
+            infoLabel.setText("Waiting for other player(s)");
 
             ClientGUI.getInstance().sendPass();
         });
