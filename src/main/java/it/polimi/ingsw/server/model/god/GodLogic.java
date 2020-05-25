@@ -50,9 +50,8 @@ public class GodLogic {
                 turn.add(new Build(this, false));
                 break;
             case "Artemis":
-                GodPower db = new DoubleMove(this, false);
-                turn.add(db);
-                turn.add(db);
+                turn.add(new Move(this, false));
+                turn.add(new DoubleMove(this, true));
                 turn.add(new Build(this, false));
                 break;
             case "Atlas":
@@ -61,7 +60,7 @@ public class GodLogic {
                 turn.add(new BuildDome(this, false));
                 break;
             case "Pan":
-                turn.add(new MoveWithSpecialWinCondition(this, false, 2, 0));
+                turn.add(new MoveWithSpecialWinCondition(this, false));
                 turn.add(new Build(this, false));
                 break;
             case "Demeter":
