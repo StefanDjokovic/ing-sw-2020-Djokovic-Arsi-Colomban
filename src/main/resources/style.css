@@ -176,3 +176,35 @@
     -fx-background-radius: 0;
     -fx-border-color:transparent;
 }
+
+.transparentBorder {
+    -fx-border-color: transparent;
+}
+
+.orangeBorder {
+    -fx-border-color: orange;
+}
+
+.greenBorder {
+    -fx-border-color: lime;
+}
+
+.dome {
+    -fx-background-color: #1338BE;
+}
+
+.level0 {
+    -fx-background-color: #59bdE6;
+}
+
+.level1 {
+    -fx-background-color: #FF6600;
+}
+
+.level2 {
+    -fx-background-color: #d9534f;
+}
+
+.level3 {
+    -fx-background-color: #5cb85c;
+}

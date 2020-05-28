@@ -251,12 +251,14 @@ public class GameUI {
                         //System.out.println(selTile);
                         if (placedWorkers.contains(selTile)) {
                             placedWorkers.remove(selTile);
-                            ((Node) event.getSource()).setStyle(((Node) event.getSource()).getStyle()+"-fx-border-color:transparent;");
+                            //((Node) event.getSource()).setStyle(((Node) event.getSource()).getStyle()+"-fx-border-color:transparent;");
+                            removeCSSClass((Node) event.getSource(), "greenBorder");
                             //((Node) event.getSource()).setId("selectionType0");
                         } else {
                             if (placedWorkers.size() < 1) {
                                 placedWorkers.add(selTile);
-                                ((Node) event.getSource()).setStyle(((Node) event.getSource()).getStyle()+"-fx-border-color:lime;");
+                                //((Node) event.getSource()).setStyle(((Node) event.getSource()).getStyle()+"-fx-border-color:lime;");
+                                addCSSClass((Node) event.getSource(), "greenBorder");
                                 //((Node) event.getSource()).setId("selectionType1");
                             }
                         }
@@ -282,10 +284,11 @@ public class GameUI {
         infoLabel.setText("Waiting for other player(s)");
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
-                boardSlots[x][y].setDisable(true);
+                //boardSlots[x][y].setDisable(true);
                 boardSlots[x][y].setId("boardButton");
             }
         }
+        disableAllButtons();
         //send
         ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
     }
@@ -302,19 +305,24 @@ public class GameUI {
                     boardSlots[x][y].setDisable(false);
                     //TODO not working
                     //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color: orange;");
+                    addCSSClass(boardSlots[x][y], "orangeBorder");
 
                     boardSlots[x][y].setOnAction((ActionEvent e) -> {
                         disableAllButtons();
-                        ((Node) e.getSource()).setStyle(((Node) e.getSource()).getStyle()+"-fx-border-color:lime;");
+                        //((Node) e.getSource()).setStyle(((Node) e.getSource()).getStyle()+"-fx-border-color:lime;");
+                        addCSSClass((Node)e.getSource(), "greenBorder");
                         movement.add(GridPane.getRowIndex(((Node) e.getSource())));
                         movement.add(GridPane.getColumnIndex(((Node) e.getSource())));
                         ((Node) e.getSource()).setDisable(true);
                         for(int z = 2 ; z < options.get(0).size() ; z=z+2) {
                             boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setDisable(false);
                             //boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setStyle(boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].getStyle()+"-fx-border-color: orange;");
+                            addCSSClass(boardSlots[options.get(0).get(z)][options.get(0).get(z+1)], "orangeBorder");
                             boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setOnAction((ActionEvent a) -> {
                                 if(movement.size()==2) {
-                                    ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
+                                    //((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
+                                    removeCSSBorders((Node) a.getSource());
+                                    addCSSClass((Node) a.getSource(), "greenBorder");
                                     movement.add(GridPane.getRowIndex(((Node) a.getSource())));
                                     movement.add(GridPane.getColumnIndex(((Node) a.getSource())));
                                 }
@@ -325,19 +333,25 @@ public class GameUI {
                     boardSlots[x][y].setDisable(false);
                     //TODO not working
                     //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-border-color: orange;");
+                    addCSSClass(boardSlots[x][y], "orangeBorder");
 
                     boardSlots[x][y].setOnAction((ActionEvent e) -> {
                         disableAllButtons();
-                        ((Node) e.getSource()).setStyle(((Node) e.getSource()).getStyle()+"-fx-border-color:lime;");
+                        //((Node) e.getSource()).setStyle(((Node) e.getSource()).getStyle()+"-fx-border-color:lime;");
+                        addCSSClass((Node)e.getSource(), "greenBorder");
+
                         movement.add(GridPane.getRowIndex(((Node) e.getSource())));
                         movement.add(GridPane.getColumnIndex(((Node) e.getSource())));
                         ((Node) e.getSource()).setDisable(true);
                         for(int z = 2 ; z < options.get(1).size() ; z=z+2) {
                             boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setDisable(false);
                             //boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setStyle(boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].getStyle()+"-fx-border-color: orange;");
+                            addCSSClass(boardSlots[options.get(1).get(z)][options.get(1).get(z+1)], "orangeBorder");
                             boardSlots[options.get(1).get(z)][options.get(1).get(z+1)].setOnAction((ActionEvent a) -> {
                                 if(movement.size()==2) {
-                                    ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
+                                    //((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
+                                    removeCSSBorders((Node) a.getSource());
+                                    addCSSClass((Node) a.getSource(), "greenBorder");
                                     movement.add(GridPane.getRowIndex(((Node) a.getSource())));
                                     movement.add(GridPane.getColumnIndex(((Node) a.getSource())));
                                 }
@@ -362,13 +376,14 @@ public class GameUI {
         confirmButton.setDisable(true);
         skipButton.setDisable(true);
         Platform.runLater(() -> {infoLabel.setText("Waiting for other player(s)");});
-        for (int x = 0; x < 5; x++) {
-            for (int y = 0; y < 5; y++) {
-                boardSlots[x][y].setDisable(true);
-                //boardSlots[x][y].getStyleClass().clear();
-                //boardSlots[x][y].setId("boardButton");
-            }
-        }
+//        for (int x = 0; x < 5; x++) {
+//            for (int y = 0; y < 5; y++) {
+//                boardSlots[x][y].setDisable(true);
+//                //boardSlots[x][y].getStyleClass().clear();
+//                //boardSlots[x][y].setId("boardButton");
+//            }
+//        }
+        disableAllButtons();
         //send
         ClientGUI.getInstance().sendPower(movement);
         movement.clear();
@@ -387,13 +402,17 @@ public class GameUI {
                     for(int z = 2 ; z < options.get(0).size() ; z=z+2) {
                         boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setDisable(false);
                         //boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setStyle(boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].getStyle()+"-fx-border-color: orange;");
+                        addCSSClass(boardSlots[options.get(0).get(z)][options.get(0).get(z+1)], "orangeBorder");
                         boardSlots[options.get(0).get(z)][options.get(0).get(z+1)].setOnAction((ActionEvent a) -> {
                             if (buildInfo.size() == 2) {
-                                ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
+                                //((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:lime;");
+                                addCSSClass((Node) a.getSource(), "greenBorder");
                                 buildInfo.add(GridPane.getRowIndex(((Node) a.getSource())));
                                 buildInfo.add(GridPane.getColumnIndex(((Node) a.getSource())));
                             } else if (buildInfo.size() == 4 && buildInfo.get(2) == GridPane.getRowIndex(((Node) a.getSource())) && buildInfo.get(3) == GridPane.getColumnIndex(((Node) a.getSource()))) {
-                                ((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:transparent;");
+                                //((Node) a.getSource()).setStyle(((Node) a.getSource()).getStyle()+"-fx-border-color:transparent;");
+                                removeCSSBorders((Node) a.getSource());
+                                addCSSClass((Node) a.getSource(), "orangeBorder");
                                 buildInfo.remove(3);
                                 buildInfo.remove(2);
                             }
@@ -417,12 +436,13 @@ public class GameUI {
         confirmButton.setDisable(true);
         skipButton.setDisable(true);
         Platform.runLater(() -> {infoLabel.setText("Waiting for other player(s)");});
-        for (int x = 0; x < 5; x++) {
-            for (int y = 0; y < 5; y++) {
-                boardSlots[x][y].setDisable(true);
-                //boardSlots[x][y].setId("boardButton");
-            }
-        }
+//        for (int x = 0; x < 5; x++) {
+//            for (int y = 0; y < 5; y++) {
+//                boardSlots[x][y].setDisable(true);
+//                //boardSlots[x][y].setId("boardButton");
+//            }
+//        }
+        disableAllButtons();
         //send
         ClientGUI.getInstance().sendPower(buildInfo);
         buildInfo.clear();
@@ -438,16 +458,23 @@ public class GameUI {
                 }
                 //boardSlots[x][y].setId("level" + tv[x][y].getBuildingLevel());
 
+                removeCSSBackground(boardSlots[x][y]);
+
                 if(tv[x][y].hasDome()) {
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #1338BE; -fx-border-color: transparent;");
+                    //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #1338BE;");
+                    addCSSClass(boardSlots[x][y], "dome");
                 } else if(tv[x][y].getBuildingLevel()==0) {
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #59bdE6; -fx-border-color: transparent;");
+                    //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #59bdE6;");
+                    addCSSClass(boardSlots[x][y], "level0");
                 } else if(tv[x][y].getBuildingLevel() == 1) {
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #FF6600; -fx-border-color: transparent;");
+                    //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #FF6600;");
+                    addCSSClass(boardSlots[x][y], "level1");
                 } else if(tv[x][y].getBuildingLevel() == 2) {
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #d9534f; -fx-border-color: transparent;");
+                    //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #d9534f;");
+                    addCSSClass(boardSlots[x][y], "level2");
                 } else if(tv[x][y].getBuildingLevel() == 3 && !tv[x][y].hasDome()) {
-                    boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #5cb85c; -fx-border-color: transparent;");
+                    //boardSlots[x][y].setStyle(boardSlots[x][y].getStyle()+"-fx-background-color: #5cb85c;");
+                    addCSSClass(boardSlots[x][y], "level3");
                 }
             }
         }
@@ -456,11 +483,7 @@ public class GameUI {
     public void makeSkippable() {
         skipButton.setDisable(false);
         skipButton.setOnAction((ActionEvent e) -> {
-            for (int a = 0; a < 5; a++) {
-                for (int b = 0; b < 5; b++) {
-                    boardSlots[a][b].setDisable(true);
-                }
-            }
+            disableAllButtons();
             skipButton.setDisable(true);
             confirmButton.setDisable(true);
             movement.clear();
@@ -475,8 +498,60 @@ public class GameUI {
         for (int a = 0; a < 5; a++) {
             for (int b = 0; b < 5; b++) {
                 boardSlots[a][b].setDisable(true);
+                removeCSSBorders(boardSlots[a][b]);
             }
         }
+    }
+
+    private void addCSSClass(Node node, String CSSClass) {
+        if (!node.getStyleClass().contains(CSSClass)) {
+            node.getStyleClass().add(CSSClass);
+        }
+    }
+
+    private void removeCSSClass(Node node, String CSSClass) {
+        int index = node.getStyleClass().indexOf(CSSClass);
+        if (index != -1) {
+            node.getStyleClass().remove(index);
+        }
+    }
+
+    private void removeCSSBorders(Node node) {
+        int index = node.getStyleClass().indexOf("greenBorder");
+        if (index != -1) {
+            node.getStyleClass().remove(index);
+        }
+        index = node.getStyleClass().indexOf("orangeBorder");
+        if (index != -1) {
+            node.getStyleClass().remove(index);
+        }
+    }
+
+    private void removeCSSBackground(Node node) {
+        int index = node.getStyleClass().indexOf("dome");
+        if (index != -1) {
+            node.getStyleClass().remove(index);
+        }
+        index = node.getStyleClass().indexOf("level0");
+        if (index != -1) {
+            node.getStyleClass().remove(index);
+        }
+        index = node.getStyleClass().indexOf("level1");
+        if (index != -1) {
+            node.getStyleClass().remove(index);
+        }
+        index = node.getStyleClass().indexOf("level2");
+        if (index != -1) {
+            node.getStyleClass().remove(index);
+        }
+        index = node.getStyleClass().indexOf("level3");
+        if (index != -1) {
+            node.getStyleClass().remove(index);
+        }
+    }
+
+    private void clearCSSClass(Node node) {
+        node.getStyleClass().clear();
     }
 
     public void youWin() {
