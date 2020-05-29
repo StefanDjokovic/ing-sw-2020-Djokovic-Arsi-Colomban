@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
+import it.polimi.ingsw.messages.LobbyView;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerPlayerGod;
@@ -216,4 +217,6 @@ public class ClientGUI extends ClientView {
     public void waitingOpponent() {
 
     }
+
+    public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies) { }
 }

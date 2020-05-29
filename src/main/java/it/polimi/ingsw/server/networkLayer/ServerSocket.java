@@ -5,7 +5,7 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerKillPlayer;
-import it.polimi.ingsw.messages.answers.AnswerPlayerName;
+import it.polimi.ingsw.messages.answers.AnswerLobbyAndName;
 import it.polimi.ingsw.messages.request.*;
 
 import java.io.IOException;
@@ -77,6 +77,19 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         }).start();
     }
 
+    public AnswerLobbyAndName readFromSocketPlayerLobbyAndName() {
+        try {
+            System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
+            Object temp = inputStream.readObject();
+            return (AnswerLobbyAndName) temp;
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
+            closeServerSocket();
+            updateObservers(new AnswerKillPlayer(playerInitial));
+        }
+        return null;
+    }
+
 
     public void readFromSocket() {
         try {
@@ -120,35 +133,61 @@ public class ServerSocket extends Observable implements Runnable, Observer {
 
     public void sendGameInformation(RequestGameInformation gameInfo) {
         System.out.println("Sending game information");
-        asyncSend(gameInfo);
+        send(gameInfo);
     }
 
     @Override
     public void run() {
         try {
-            System.out.println("Running ServerSocket");
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            System.out.println("Asking for player's name...");
-            asyncSend(new RequestPlayerName("."));
-            AnswerPlayerName playerName = (AnswerPlayerName) inputStream.readObject();
-            System.out.println("Activating asyncRead");
-            while (!server.lobby(this, playerName.getString())) {
-                asyncSend(new RequestPlayerName("."));
-                playerName = (AnswerPlayerName) inputStream.readObject();
-                System.out.println("Activating asyncRead");
-                asyncReadFromSocket();
+            boolean unSelected = true;
+            while (unSelected) {
+                send(server.getRequestAvailableLobbies());
+                System.out.println("READ FROM SOCKET PLAYER NAME");
+                AnswerLobbyAndName lobbyAndName = readFromSocketPlayerLobbyAndName();
+                System.out.println("COMPLETED READ FROM SOCKET PLAYER NAME");
+                int lobbyNumber = lobbyAndName.getLobbyNumber();
+                String playerName = lobbyAndName.getName();
+                System.out.println("I have gotten: lobby " + lobbyNumber + " and name " + playerName);
+                unSelected = !server.isAvailable(lobbyNumber, playerName, this, lobbyAndName.getNPlayers());
+                System.out.println("/nIs socket run completed?");
             }
-            System.out.println("\n\nServer.lobby finished\n\n");
-            asyncReadFromSocket();
-            System.out.println("\nNow would go here: server.lobby\n");
-        }  catch(Exception e){
+            System.out.println("/nIs socket run completed? (2n print)");
+
+        } catch (IOException e) {
             e.printStackTrace();
-            //close();
-        } finally {
-           //close();
         }
+        System.out.println("Starting asyncRead");
+        asyncReadFromSocket();
     }
+
+//    @Override
+//    public void run() {
+//        try {
+//            System.out.println("Running ServerSocket");
+//            inputStream = new ObjectInputStream(socket.getInputStream());
+//            outputStream = new ObjectOutputStream(socket.getOutputStream());
+//            System.out.println("Asking for player's name...");
+//            asyncSend(new RequestPlayerName("."));
+//            AnswerPlayerName playerName = (AnswerPlayerName) inputStream.readObject();
+//            System.out.println("Activating asyncRead");
+//            while (!server.lobby(this, playerName.getString())) {
+//                asyncSend(new RequestPlayerName("."));
+//                playerName = (AnswerPlayerName) inputStream.readObject();
+//                System.out.println("Activating asyncRead");
+//                asyncReadFromSocket();
+//            }
+//            System.out.println("\n\nServer.lobby finished\n\n");
+//            asyncReadFromSocket();
+//            System.out.println("\nNow would go here: server.lobby\n");
+//        }  catch(Exception e){
+//            e.printStackTrace();
+//            //close();
+//        } finally {
+//           //close();
+//        }
+//    }
 
     @Override
     public void update(Request request) {

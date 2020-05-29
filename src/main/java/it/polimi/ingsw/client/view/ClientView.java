@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.messages.LobbyView;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.server.model.BoardView;
 
@@ -18,4 +19,5 @@ public abstract class ClientView extends Observable implements Observer {
     public abstract void waitingOpponent();
     public abstract void setPlayerInit(char init);
     public abstract void displayBoard();
+    public abstract void lobbyAndNameSelection(ArrayList<LobbyView> lobbies);
 }

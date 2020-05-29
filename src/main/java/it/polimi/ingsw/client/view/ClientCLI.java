@@ -4,6 +4,7 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.client.networkLayer.Client;
 import it.polimi.ingsw.messages.Answer;
+import it.polimi.ingsw.messages.LobbyView;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.*;
@@ -100,6 +101,66 @@ public class ClientCLI extends ClientView {
         System.out.println("Please, input Player's name: ");
         String playerName = scanner.nextLine();
         updateObservers(new AnswerPlayerName(playerName));
+    }
+
+    public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies) {
+        displayLobbies(lobbies);
+        System.out.println("Select Lobby number");
+        int lobbyNumber = -1;
+        int nPlayers = -1;
+        boolean unselected = true;
+        while (unselected) {
+            lobbyNumber = getValidInt();
+            boolean existentLobby = false;
+            boolean available = true;
+            if (lobbies != null) {
+                for (LobbyView l : lobbies) {
+                    if (l.getLobbyNumber() == lobbyNumber) {
+                        if (l.getNPlayers() == l.getPlayersName().size()) {
+                            System.out.println("Unavailable lobby, please try again");
+                            available = false;
+                        }
+                        existentLobby = true;
+                        break;
+                    }
+                }
+            }
+            if (!existentLobby) {
+                while (nPlayers != 2 && nPlayers != 3) {
+                    System.out.println("Please, select if you want to create a 2 or 3 player lobby");
+                    nPlayers = getValidInt();
+                }
+                unselected = false;
+            }
+            else if (available) {
+                unselected = false;
+            }
+        }
+
+        System.out.println("Please, input Player's name: ");
+        scanner = new Scanner(System.in);       // enter is considered as new character, woopsie
+        String playerName = scanner.nextLine();
+        System.out.println("Name selected: " + playerName);
+        updateObservers(new AnswerLobbyAndName(lobbyNumber, playerName, nPlayers));
+    }
+
+    public void displayLobbies(ArrayList<LobbyView> lobbies) {
+        if (lobbies == null) {
+            System.out.println("No Available lobbies. Please create your own by inserting a new lobby number");
+        }
+        else {
+            System.out.println("Here are all the lobbies!");
+            for (LobbyView l: lobbies) {
+                System.out.println("--------------------------------------------------------");
+                System.out.println("Lobby number: " + l.getLobbyNumber());
+                System.out.println("Number of Players: " + l.getNPlayers());
+                System.out.println("Players in the lobby: ");
+                for (String pName: l.getPlayersName()) {
+                    System.out.println(pName);
+                }
+                System.out.println("--------------------------------------------------------");
+            }
+        }
     }
 
     // Simple method that accepts only a god that comes from the options given from the server

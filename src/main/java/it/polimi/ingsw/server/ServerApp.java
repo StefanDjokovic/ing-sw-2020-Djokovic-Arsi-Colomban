@@ -8,28 +8,17 @@ public class ServerApp {
 
     public static void main( String[] args )
     {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Pick The number of Players: 2 or 3");
-        int nPlayers = -1;
-
-        // Only 2 and 3 players game are accepted
-        while (nPlayers != 2 && nPlayers != 3) {
-            while (!scanner.hasNextInt()) {
-                System.out.println("Pick 2 or 3");
-                scanner.next();
-            }
-            nPlayers = scanner.nextInt();
-        }
-        System.out.println("You picked " + nPlayers + ", connect the clients");
 
         // Starting Server
         Server server;
         try {
-            server = new Server(nPlayers);
+            System.out.println("Server is now running");
+            server = new Server();
             server.run();
         } catch (IOException e) {
             System.err.println("Impossible to initialize the server: " + e.getMessage() + "!");
         }
+        System.out.println("Server is now off");
     }
 
 }
