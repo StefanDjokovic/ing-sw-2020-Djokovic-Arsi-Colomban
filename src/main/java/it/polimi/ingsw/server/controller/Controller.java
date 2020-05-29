@@ -36,6 +36,7 @@ public class Controller implements Observer {
     // Setting the God picked by the client
     public void setPlayerGod(String godName, char initial) {
         game.setPlayerGod(godName, initial);
+        gameContinue();
     }
 
     // Method called by ServerSocket when a Player is disconnected, and thus gets deleted from the game
@@ -46,8 +47,28 @@ public class Controller implements Observer {
     // First asks for the gods, than workers, and then starts the game
     public void startGame() {
         game.initGods();
-        game.initWorker();
-        game.gameStart();
+//        System.out.println("\nController calls initWorker\n");
+//        game.initWorker();
+//        System.out.println("\nController calls game Start\n");
+//        game.gameStart();
+//        System.out.println("\nController gameStart is ended\n");
+    }
+
+    public void gameContinue() {
+        if (game.nPlayersWithGod() != game.nPlayers())
+            game.initGods();
+        else
+            game.initWorker();
+    }
+
+    public void gameContinue2() {
+        if (game.missingWorkers()) {
+            game.initWorker();
+        }
+        else {
+            game.setOtherGodLogic();
+            game.asyncGameStart();
+        }
     }
 
     // Sets the worker in the right position
@@ -59,17 +80,20 @@ public class Controller implements Observer {
         } catch (NonExistingTileException e) {
             System.out.println("Sth wrong");
         }
+        gameContinue2();
     }
 
     // Executes the movement routine
     public void executeMoveOrBuild(int posXFrom, int posYFrom, int posXTo, int posYTo) {
         System.out.println("Controller is executing Move");
         game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
+        game.asyncGameStart();
     }
 
     // Executes the pass routine
     public void executePass() {
         System.out.println("Controller has received a pass");
         game.gameReceiveOptions();
+        game.asyncGameStart();
     }
 }

@@ -13,18 +13,23 @@ public class ClientApp {
     public static void main(String[] args){
 
         System.out.println("Please select game mode:\n1) GUI\n2) CLI");
-        Scanner s = new Scanner(System.in);
-        String gm;
-        //int gameMode;
         Client client;
+
+        Scanner s = new Scanner(System.in);
+        int gameMode;
         while (true) {
-            gm = s.nextLine();
-            if (gm.equals("1")) {
-                //gameMode = 1;
+            while (!s.hasNextInt()) {
+                System.out.println("Must be a valid int");
+                s.next();
+            }
+            gameMode = s.nextInt();
+
+            if (gameMode == 1) {
+                // GUI is initialized
                 client = new Client("127.0.0.1", 4568, new ClientGUI());
                 break;
-            } else if (gm.equals("2")) {
-                //gameMode = 2;
+            } else if (gameMode == 2) {
+                // CLI is initialized
                 client = new Client("127.0.0.1", 4568, new ClientCLI());
                 break;
             } else {
@@ -36,9 +41,6 @@ public class ClientApp {
             System.out.println("ERROR INCOMPLETE INITIALIZATION");
         }
 
-        //ClientCLI clientCLI_old = new ClientCLI();
-        //view.printSelectableBoard(null);    //TODO move this method inside view constructor
-        //Client client = new Client("127.0.0.1", 4568, clientCLI_old); // TODO: will fix later, let the user input ip address and port
         try {
             client.run();
         } catch (IOException e) {

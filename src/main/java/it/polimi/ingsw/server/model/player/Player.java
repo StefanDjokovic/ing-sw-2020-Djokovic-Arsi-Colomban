@@ -98,6 +98,10 @@ public class Player {
         return getGodLogic().godLogicReceiveOptions();
     }
 
+    public int nWorkers() {
+        return workers.size();
+    }
+
     public int playerReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         return getGodLogic().godLogicReceiveOptions(board, posXFrom, posYFrom, posXTo, posYTo);
     }

@@ -47,17 +47,21 @@ public class Server {
         }
     }
 
-    public synchronized void lobby(ServerSocket connection, String name) {
-        Game game;
-        waitingConnection.put(name, connection);
+    public synchronized boolean lobby(ServerSocket connection, String name) {
+        if (!waitingConnection.containsKey(name))
+            waitingConnection.put(name, connection);
+        else
+            return false;
         // Will go trough only when all the ServerSocket have given all the necessary information
         if (waitingConnection.size() == nPlayers) {
+            System.out.println("Joining Lobby");
+            Game game;
             ArrayList<String> keys = new ArrayList<>(waitingConnection.keySet());
             ServerSocket c1 = waitingConnection.get(keys.get(0));
             String name1 = keys.get(0);
             ServerSocket c2 = waitingConnection.get(keys.get(1));
             String name2 = keys.get(1);
-            ServerSocket c3 = null;
+            ServerSocket c3 = null; // initialized in the later if 3 players are selected
 
             // Initializing initial model structures
             game = new Game();
@@ -103,24 +107,25 @@ public class Server {
             c2.addObserver(controller);
 
             // Starting the game (first asks for gods, than worker placement, and then starts with the turn structure
+            System.out.println("\n\n\nClontroller.startGame()\n\n\n");
             controller.startGame();
-
-            c1.close();
-            c2.close();
-            if (c3 != null)
-                c3.close();
+            System.out.println("\n\n\n\n\nClontroller CLOSED\n\n\n\n\n");
+//            c1.close();
+//            c2.close();
+//            if (c3 != null)
+//                c3.close();
         }
+        return true;
     }
 
     // The server tries to get the nPlayers amount set from the command line
     public void run() {
-        int i = 0;
-        while (i < nPlayers) {
+        while (true) {
             try {
                 Socket clientSocket = serverSocket.accept(); // The server accepts a connection
                 ServerSocket connection = new ServerSocket(clientSocket, this);
                 executor.submit(connection); // Creates new thread
-                i += 1;
+                System.out.println("Accepted new client");
             } catch (IOException e){
                 System.err.println("This" + e.getMessage());
             }

@@ -22,17 +22,30 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     private boolean isActiveFlag = true;
     private char playerInitial;
 
-    // TODO: fix initials for the Socket, so that it can understand to whom it shall send the message
 
     public ServerSocket(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
     }
 
+    public void asyncSend(Request request) {
+        new Thread(() -> {
+            System.out.println("Async send is being called");
+            try {
+                //outputStream.reset();
+                System.out.print("Message before sending: ");
+                request.printMessage();
+                outputStream.writeObject(request);
+                outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
 
     public void send(Request request) {
         try {
-            System.out.println("write socket in SocketConnection");
             outputStream.reset();
             System.out.print("Message before sending: ");
             request.printMessage();
@@ -45,21 +58,38 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         }
     }
 
+    public void asyncReadFromSocket() {
+        new Thread(() -> {
+            System.out.println("Async read");
+            try {
+                while (true) {
+                    System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
+                    Object temp = inputStream.readObject();
+                    Answer answer = (Answer) temp;
+                    answer.setInitial(playerInitial);   // TODO: useless? to check
+                    updateObservers(answer);
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
+                closeServerSocket();
+                updateObservers(new AnswerKillPlayer(playerInitial));
+            }
+        }).start();
+    }
 
-    public Answer readFromSocket() {
+
+    public void readFromSocket() {
         try {
             System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
             Object temp = inputStream.readObject();
             Answer answer = (Answer) temp;
-            answer.setInitial(playerInitial);
-            System.out.println("AAAAAAAAAAAAAAAAAAAA\n");
+            answer.setInitial(playerInitial);   // TODO: useless? to check
             updateObservers(answer);
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
             closeServerSocket();
             updateObservers(new AnswerKillPlayer(playerInitial));
         }
-        return null;
     }
 
 
@@ -90,7 +120,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
 
     public void sendGameInformation(RequestGameInformation gameInfo) {
         System.out.println("Sending game information");
-        send(gameInfo);
+        asyncSend(gameInfo);
     }
 
     @Override
@@ -100,12 +130,18 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Asking for player's name...");
-            send(new RequestPlayerName("."));
+            asyncSend(new RequestPlayerName("."));
             AnswerPlayerName playerName = (AnswerPlayerName) inputStream.readObject();
-
-            System.out.println("\nNow would go here\n");
-            server.lobby(this, playerName.getString());
-
+            System.out.println("Activating asyncRead");
+            while (!server.lobby(this, playerName.getString())) {
+                asyncSend(new RequestPlayerName("."));
+                playerName = (AnswerPlayerName) inputStream.readObject();
+                System.out.println("Activating asyncRead");
+                asyncReadFromSocket();
+            }
+            System.out.println("\n\nServer.lobby finished\n\n");
+            asyncReadFromSocket();
+            System.out.println("\nNow would go here: server.lobby\n");
         }  catch(Exception e){
             e.printStackTrace();
             //close();
@@ -121,10 +157,9 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                 request.printMessage();
                 System.out.println("Request sent to " + request.getInitial());
                 send(request);
-                if (!request.isAsync()) {
-                    readFromSocket();
-                }
-                System.out.println("Terminating update ServerSocket " + playerInitial);
+//                if (!request.isAsync()) {
+//                    asyncReadFromSocket();
+//                }
             }
             else {
                 send(new RequestWaitOpponentMove());

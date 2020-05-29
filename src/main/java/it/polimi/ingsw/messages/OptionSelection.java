@@ -30,7 +30,6 @@ public class OptionSelection implements Serializable {
                 }
             }
         }
-
     }
 
     @Override

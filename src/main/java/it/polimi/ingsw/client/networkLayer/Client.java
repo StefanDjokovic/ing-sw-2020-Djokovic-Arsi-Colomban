@@ -41,10 +41,11 @@ public class Client implements Observer {
             public void run() {
                 try {
                     while(noWinners) {
-                        //System.out.println("Am I at least reading it?");
+                        System.out.println("Am I at waiting for an object?");
                         Object request = inputStream.readObject();
-                        //System.out.println("YES! reading!");
+                        System.out.println("YES! reading!" + " " + request);
                         Request r = (Request)request ;
+                        System.out.println("message: " + r.getMessage());
                         r.accept(clientView);
                         if (r.getMessage().equals("END"))
                             noWinners = false;
@@ -80,7 +81,7 @@ public class Client implements Observer {
     }
 */
     public synchronized void socketWrite(Answer answer) throws IOException {
-        //outputStream.reset();
+        outputStream.reset();
         //System.out.println("Am I writing it at least?");
         outputStream.writeObject(answer);
         //System.out.println("Am I writing it at least 2?");

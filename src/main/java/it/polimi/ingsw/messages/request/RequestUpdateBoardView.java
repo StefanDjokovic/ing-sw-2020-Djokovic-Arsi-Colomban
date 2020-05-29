@@ -11,11 +11,13 @@ public class RequestUpdateBoardView extends Request {
         this.initial = initial;
         this.boardView = boardView;
         this.isAsync = true;
+        this.message = "Im requesting you to update the Board view";
     }
 
     @Override
     public void accept(ClientView clientView) {
         printMessage();
         clientView.updateBoardView(boardView);
+        clientView.displayBoard();
     }
 }

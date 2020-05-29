@@ -21,7 +21,7 @@ public class RequestGameInformation extends Request {
         this.playerInit2 = playerInit2;
         this.n_players = 2;
         this.isAsync = true;
-
+        this.message = "This message contains game information";
     }
 
     public RequestGameInformation(String playerName1, String playerName2,
