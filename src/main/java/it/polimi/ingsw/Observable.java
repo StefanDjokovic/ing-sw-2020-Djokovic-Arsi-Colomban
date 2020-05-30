@@ -35,4 +35,6 @@ public class Observable {
             o.update(answer);
     }
 
+    public int getObserversSize() { return observers.size(); }
+
 }

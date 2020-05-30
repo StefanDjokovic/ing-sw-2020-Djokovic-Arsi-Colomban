@@ -6,14 +6,9 @@ import it.polimi.ingsw.server.controller.Controller;
 public class AnswerLobbyAndName extends Answer {
 
     int lobbyNumber;
-    int nPlayers = -1;
+    int nPlayers;
     String name;
 
-    public AnswerLobbyAndName(int lobbyNumber, String name) {
-        this.lobbyNumber = lobbyNumber;
-        this.name = name;
-        message = "Answer Lobby number and Player's name";
-    }
 
     public AnswerLobbyAndName(int lobbyNumber, String name, int nPlayers) {
         this.lobbyNumber = lobbyNumber;

@@ -19,5 +19,5 @@ public abstract class ClientView extends Observable implements Observer {
     public abstract void waitingOpponent();
     public abstract void setPlayerInit(char init);
     public abstract void displayBoard();
-    public abstract void lobbyAndNameSelection(ArrayList<LobbyView> lobbies);
+    public abstract void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error);
 }

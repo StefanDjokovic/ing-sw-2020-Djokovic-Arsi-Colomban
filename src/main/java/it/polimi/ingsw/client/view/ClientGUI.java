@@ -218,5 +218,6 @@ public class ClientGUI extends ClientView {
 
     }
 
-    public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies) { }
+    // TODO: new GUI METHOD TO IMPLEMENT
+    public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) { }
 }

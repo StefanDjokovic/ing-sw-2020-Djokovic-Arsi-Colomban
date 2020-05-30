@@ -9,15 +9,20 @@ import java.util.ArrayList;
 public class RequestServerInformation extends Request {
 
     ArrayList<LobbyView> lobbies;
+    int error;
 
     // Note: lobbies can be null
-    public RequestServerInformation(ArrayList<LobbyView> lobbies) {
+    public RequestServerInformation(ArrayList<LobbyView> lobbies, int error) {
         this.lobbies = lobbies;
-        this.message = "This request contains Game Lobby Info";
+        this.error = error;
+        if (error == 0)
+            this.message = "This request contains Game Lobby info";
+        else
+            this.message = "This request contains Game Lobby Info, resent because of some issue";
     }
 
     @Override
     public void accept(ClientView clientView) {
-        clientView.lobbyAndNameSelection(lobbies);
+        clientView.lobbyAndNameSelection(lobbies, error);
     }
 }

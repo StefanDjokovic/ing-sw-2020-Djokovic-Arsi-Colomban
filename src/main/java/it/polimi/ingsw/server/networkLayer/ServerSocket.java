@@ -21,6 +21,8 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     private ObjectOutputStream outputStream;
     private boolean isActiveFlag = true;
     private char playerInitial;
+    private Lobby playingLobby;
+    private String playerName;
 
 
     public ServerSocket(Socket socket, Server server) {
@@ -72,7 +74,12 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
                 closeServerSocket();
-                updateObservers(new AnswerKillPlayer(playerInitial));
+                // If there are observers it means the game has started; otherwise just take away this user from the lobby
+                if (getObserversSize() != 0)
+                    updateObservers(new AnswerKillPlayer(playerInitial));
+                else {
+                    playingLobby.deletePlayer(playerName);
+                }
             }
         }).start();
     }
@@ -90,41 +97,10 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         return null;
     }
 
-
-    public void readFromSocket() {
-        try {
-            System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
-            Object temp = inputStream.readObject();
-            Answer answer = (Answer) temp;
-            answer.setInitial(playerInitial);   // TODO: useless? to check
-            updateObservers(answer);
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
-            closeServerSocket();
-            updateObservers(new AnswerKillPlayer(playerInitial));
-        }
-    }
-
-
-    public synchronized void closeConnection() {
-        try {
-            socket.close();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-        isActiveFlag = false;
-    }
-
     public void closeServerSocket() {
         isActiveFlag = false;
     }
 
-    public void close() {
-        closeConnection();
-        System.out.println("De-registering client...");
-        server.deregisterConnection(this);
-        System.out.println("Done!");
-    }
 
 
     public void setPlayerInitial(char playerInitial) {
@@ -141,20 +117,20 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         try {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            boolean unSelected = true;
-            while (unSelected) {
-                send(server.getRequestAvailableLobbies());
-                System.out.println("READ FROM SOCKET PLAYER NAME");
+            Lobby unSelected = null;
+            int n = 0;
+            while (unSelected == null) {
+                send(server.getRequestServerInformation(n));
                 AnswerLobbyAndName lobbyAndName = readFromSocketPlayerLobbyAndName();
-                System.out.println("COMPLETED READ FROM SOCKET PLAYER NAME");
                 int lobbyNumber = lobbyAndName.getLobbyNumber();
-                String playerName = lobbyAndName.getName();
+                playerName = lobbyAndName.getName();
                 System.out.println("I have gotten: lobby " + lobbyNumber + " and name " + playerName);
-                unSelected = !server.isAvailable(lobbyNumber, playerName, this, lobbyAndName.getNPlayers());
-                System.out.println("/nIs socket run completed?");
+                unSelected = server.isAvailable(lobbyNumber, playerName, this, lobbyAndName.getNPlayers());
+                n = 1;
             }
-            System.out.println("/nIs socket run completed? (2n print)");
-
+            playingLobby = unSelected;
+            System.out.println("Joined the lobby!");
+            send(new RequestWaitOpponentMove());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,32 +138,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         asyncReadFromSocket();
     }
 
-//    @Override
-//    public void run() {
-//        try {
-//            System.out.println("Running ServerSocket");
-//            inputStream = new ObjectInputStream(socket.getInputStream());
-//            outputStream = new ObjectOutputStream(socket.getOutputStream());
-//            System.out.println("Asking for player's name...");
-//            asyncSend(new RequestPlayerName("."));
-//            AnswerPlayerName playerName = (AnswerPlayerName) inputStream.readObject();
-//            System.out.println("Activating asyncRead");
-//            while (!server.lobby(this, playerName.getString())) {
-//                asyncSend(new RequestPlayerName("."));
-//                playerName = (AnswerPlayerName) inputStream.readObject();
-//                System.out.println("Activating asyncRead");
-//                asyncReadFromSocket();
-//            }
-//            System.out.println("\n\nServer.lobby finished\n\n");
-//            asyncReadFromSocket();
-//            System.out.println("\nNow would go here: server.lobby\n");
-//        }  catch(Exception e){
-//            e.printStackTrace();
-//            //close();
-//        } finally {
-//           //close();
-//        }
-//    }
 
     @Override
     public void update(Request request) {
@@ -196,9 +146,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                 request.printMessage();
                 System.out.println("Request sent to " + request.getInitial());
                 send(request);
-//                if (!request.isAsync()) {
-//                    asyncReadFromSocket();
-//                }
             }
             else {
                 send(new RequestWaitOpponentMove());

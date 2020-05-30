@@ -112,17 +112,16 @@ public class Game extends Observable{
         gameEnd();
     }
 
+
     public void asyncGameStart() {
-        if (players != null && players.size() != 1 && status != 2)
+        if (players.size() > 1 && status != 2)
             players.get(currPlayer).executeTurn(this);
         else {
-            if (players != null) {
-                if (players.size() == 1)
-                    updateObservers(new RequestGameEnd(players.get(0).getInitial()));
-                else {
-                    updateObservers(new RequestUpdateBoardView(new BoardView(board), '*'));
-                    updateObservers(new RequestGameEnd(players.get(currPlayer).getInitial()));  // TODO: check if correct
-                }
+            if (players.size() == 1)
+                updateObservers(new RequestGameEnd(players.get(0).getInitial()));
+            else if (players.size() > 1){
+                updateObservers(new RequestUpdateBoardView(new BoardView(board), '*'));
+                updateObservers(new RequestGameEnd(players.get(currPlayer).getInitial()));  // TODO: check if correct
             }
             gameEnd();
         }

@@ -16,11 +16,8 @@ public class Controller implements Observer {
 
     @Override
     public void update(Answer answer) {
-        System.out.println("Controller received answer");
         answer.printMessage();
-        System.out.println("Yes. Look.");
         answer.act(this);
-        System.out.println("Controller has completed its duties");
     }
 
     @Override
@@ -33,35 +30,26 @@ public class Controller implements Observer {
         return game.initPlayer(name);
     }
 
+
+    // First asks for the gods, than workers, and then starts the game
+    public void initGods() {
+        game.initGods();
+    }
+
     // Setting the God picked by the client
     public void setPlayerGod(String godName, char initial) {
         game.setPlayerGod(godName, initial);
-        gameContinue();
+        initGodsOrContinue();
     }
 
-    // Method called by ServerSocket when a Player is disconnected, and thus gets deleted from the game
-    public void killPlayer(char initial) {
-        game.deletePlayer(game.getPlayerFromInitial(initial));
-    }
-
-    // First asks for the gods, than workers, and then starts the game
-    public void startGame() {
-        game.initGods();
-//        System.out.println("\nController calls initWorker\n");
-//        game.initWorker();
-//        System.out.println("\nController calls game Start\n");
-//        game.gameStart();
-//        System.out.println("\nController gameStart is ended\n");
-    }
-
-    public void gameContinue() {
+    public void initGodsOrContinue() {
         if (game.nPlayersWithGod() != game.nPlayers())
             game.initGods();
         else
             game.initWorker();
     }
 
-    public void gameContinue2() {
+    public void initWorkerOrContinue() {
         if (game.missingWorkers()) {
             game.initWorker();
         }
@@ -70,6 +58,25 @@ public class Controller implements Observer {
             game.asyncGameStart();
         }
     }
+
+    // Method called by ServerSocket when a Player is disconnected, and thus gets deleted from the game
+    public void killPlayer(char initial) {
+        game.deletePlayer(game.getPlayerFromInitial(initial));
+        gameContinueOnKillPlayer();
+    }
+
+    public void gameContinueOnKillPlayer() {
+        if (game.nPlayersWithGod() != game.nPlayers()) {
+            game.initGods();
+        }
+        else if (game.missingWorkers()) {
+            game.initWorker();
+        }
+        else {
+            game.asyncGameStart();
+        }
+    }
+
 
     // Sets the worker in the right position
     public void setWorker(int x, int y, char initial) {
@@ -80,7 +87,7 @@ public class Controller implements Observer {
         } catch (NonExistingTileException e) {
             System.out.println("Sth wrong");
         }
-        gameContinue2();
+        initWorkerOrContinue();
     }
 
     // Executes the movement routine

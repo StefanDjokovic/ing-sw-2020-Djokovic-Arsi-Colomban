@@ -9,7 +9,6 @@ public class Lobby {
     int lobbyNumber;
     final int nPlayers;
     private Map<String, ServerSocket> waitingConnection = new HashMap<>();
-    boolean available = true;
 
     public Lobby(int lobbyNumber, int nPlayers, String playerName, ServerSocket playerSocket) {
         this.lobbyNumber = lobbyNumber;
@@ -36,5 +35,9 @@ public class Lobby {
     }
 
     public int getNPlayers() { return nPlayers; }
+
+    public void deletePlayer(String playerName) {
+        waitingConnection.remove(playerName);
+    }
 
 }

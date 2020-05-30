@@ -103,7 +103,10 @@ public class ClientCLI extends ClientView {
         updateObservers(new AnswerPlayerName(playerName));
     }
 
-    public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies) {
+    public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
+        if (error != 0) {
+            System.out.println("\nSomething went wrong with the previous selection. Please try again\n");
+        }
         displayLobbies(lobbies);
         System.out.println("Select Lobby number");
         int lobbyNumber = -1;
@@ -158,8 +161,8 @@ public class ClientCLI extends ClientView {
                 for (String pName: l.getPlayersName()) {
                     System.out.println(pName);
                 }
-                System.out.println("--------------------------------------------------------");
             }
+            System.out.println("--------------------------------------------------------");
         }
     }
 
