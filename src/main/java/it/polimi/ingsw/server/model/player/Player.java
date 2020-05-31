@@ -76,7 +76,7 @@ public class Player {
     }
 
     /**
-     * Returns quantity of workers possessed by the player.
+     * Returns number of workers associated to the player.
      * @return Number of workers.
      */
     public ArrayList<Worker> getWorkers() {
@@ -89,19 +89,40 @@ public class Player {
      */
     public void setInitial(char initial) { this.initial = initial; }
 
+    /**
+     * Starts executing the turn routine
+     * @param game model's main object, that initializes everything else
+     */
     public void executeTurn(Game game) {
         System.out.println(godLogic);
         godLogic.executeTurn(game);
     }
 
+    /**
+     * Executes the turn step when the player decides to pass the turn step
+     * @return 1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
+     */
     public int playerReceiveOptions() {
         return getGodLogic().godLogicReceiveOptions();
     }
 
+    /**
+     * Executes the power and notifies the player if the move wins the game
+     * @return 2 if the power usage wins the game, 1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
+     */
     public int playerReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         return getGodLogic().godLogicReceiveOptions(board, posXFrom, posYFrom, posXTo, posYTo);
     }
 
+    //TODO: Complete the param part of the JAVADOC
+    /**
+     * Builds the object that contains all the options for a turn step, given the parameters
+     * @param upDiff
+     * @param downDiff
+     * @param canIntoOpp
+     * @param limitations
+     * @return OptionSelection instance with all the player's options for that turn step
+     */
     public OptionSelection getOptionsPlayer(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
         OptionSelection opt = new OptionSelection();
         for (Worker w: workers) {
@@ -111,6 +132,9 @@ public class Player {
         return opt;
     }
 
+    /**
+     * Deletes all the workers
+     */
     public void delete() {
         for (Worker w: workers) {
             w.delete();
