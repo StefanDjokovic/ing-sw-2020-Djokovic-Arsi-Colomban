@@ -11,24 +11,49 @@ public abstract class GodPower {
     private GodLogic godLogic;
     private boolean canPass;
 
+    /**
+     * Constructor
+     * @param godLogic
+     * @param canPass true if the power can be skipped, false otherwise
+     */
     public GodPower(GodLogic godLogic, boolean canPass) {
         this.godLogic = godLogic;
         this.canPass = canPass;
     }
 
-    // Activates the power on the selected tiles
+    /**
+     * Abstract power execution method
+     * @param board variable that contains the state of the board
+     * @param posXFrom x coordinate of the worker that is going to use the power
+     * @param posYFrom y coordinate of the worker that is going to use the power
+     * @param posXTo x coordinate of the tile targeted by the power
+     * @param posYTo y coordinate of the tile targeted by the power
+     * @return defined by the implementations of this abstract class
+     */
     public abstract int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo);
 
-    // Gets the options the player has
+    /**
+     * Getter method for optionSelection
+     * @param logger
+     * @return class that contains the player's options for this power's turn step
+     */
     public abstract OptionSelection getOptions(Logger logger);
 
-    // Returns the GodLogic that calls this GodPower
+    /**
+     * Getter method for godLogic variable
+     * @return the godLogic that called the power
+     */
     public GodLogic getGodLogic() {
         return godLogic;
     }
 
-    // The base win condition is that it wins when moves from a 2 lev building to a 3
-    // Returns 2 if the condition is met (so a win), else 0
+    /**
+     * The basic win condition (that can be overruled by specific god powers) is moving from a
+     * lvl 2 building to a lvl 3 building
+     * @param from starting tile
+     * @param to starting tile
+     * @return 2 if the condition is met (win), 0 if it isn't
+     */
     protected int checkWinCondition(Tile from, Tile to) {
         if (from.getBuildingLevel() == 2 && to.getBuildingLevel() == 3)
             return 2;
@@ -36,7 +61,10 @@ public abstract class GodPower {
             return 0;
     }
 
-    // Some GodPowers can be skipped
+    /**
+     * Getter method for canPass variable
+     * @return true if the power can be skipped, false if it can't
+     */
     public boolean getCanPass() {
         return canPass;
     }
