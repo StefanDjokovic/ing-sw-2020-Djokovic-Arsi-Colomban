@@ -203,10 +203,7 @@ public class ClientGUI extends ClientView {
     }
 
     public void displayBoard() {
-//        System.out.println("ciao");
-//        if(game != null && bv != null) {
-//            game.updateBoard(bv.getBoardView());
-//        }
+        //not used but can't remove
     }
 
     public void setPlayerInit(char init) {
@@ -214,6 +211,6 @@ public class ClientGUI extends ClientView {
     }
 
     public void waitingOpponent() {
-
+        //can remove?
     }
 }
