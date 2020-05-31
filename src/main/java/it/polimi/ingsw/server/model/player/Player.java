@@ -45,6 +45,8 @@ public class Player {
     /**
      * Sets the god logic of the player.
      * @param godLogic String containing the name of the god logic to implement.
+     * @param logger
+     * @param board
      * @return Reference to the god logic class implemented.
      */
     public GodLogic setGodLogic(String godLogic, Logger logger, Board board) {
@@ -108,6 +110,11 @@ public class Player {
 
     /**
      * Executes the power and notifies the player if the move wins the game
+     * @param board variable that contains the state of the board
+     * @param posXFrom x coordinate of the worker that is going to use the power
+     * @param posYFrom y coordinate of the worker that is going to use the power
+     * @param posXTo x coordinate of the tile targeted by the power
+     * @param posYTo y coordinate of the tile targeted by the power
      * @return 2 if the power usage wins the game, 1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
      */
     public int playerReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
