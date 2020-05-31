@@ -49,10 +49,23 @@ public class Worker {
      */
     public int getPosY() { return posTile.getY(); }
 
+    //TODO: Complete the param part of the JAVADOC
+    /**
+     * Builds the object that contains all the options for a turn step, given the parameters
+     * @param upDiff
+     * @param downDiff
+     * @param canIntoOpp
+     * @param limitations
+     * @return OptionSelection instance with all the player's options for that turn step
+     */
     public OptionSelection getOptionsWorker(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
         return posTile.getOptions(upDiff, downDiff, canIntoOpp, limitations);
     }
 
+    /**
+     * Moves the worker from its current tile to the destination tile
+     * @param dest destination tile
+     */
     public void changePosition(Tile dest) {
         if (posTile.getWorker() == this)
             this.posTile.deleteWorkerAndOwner();
@@ -66,6 +79,9 @@ public class Worker {
      */
     public Tile getPosTile() { return this.posTile; }
 
+    /**
+     * Deletes worker and removes the reference from the tile where the worker is placed
+     */
     public void delete() {
         posTile.deleteWorkerAndOwner();
     }
