@@ -89,16 +89,39 @@ public class GodLogic {
         }
     }
 
+    /**
+     * Getter method for player attribute
+     * @return the object's player attribute
+     */
     public Player getPlayer() { return this.player; }
+
+    /**
+     * Getter method for godLociName attribute
+     * @return the object's godLogicName attribute
+     */
     public String getGodLogicName() {
         return godLogicName;
     }
+
+    /**
+     * Setter method for player attribute
+     * @param canPass flag, if true the move can be skipped, if false it can't be skipped
+     */
     public void setPass(boolean canPass) {
         this.canPass = canPass;
     }
+
+    /**
+     * Setter method for player attribute
+     * @param otherGodLogic TODO
+     */
     public void setOtherGodLogic(ArrayList<GodLogic> otherGodLogic) { this.otherGodLogic = otherGodLogic; }
 
-    // Executes the turn routine
+    /**
+     * Executes the turn routine, creating all the messages that the model will have to send to the view to update
+     * the view's board, to request the power coordinates.
+     * @param game model's main object, that initializes everything else
+     */
     public void executeTurn(Game game) {
         OptionSelection opt = turn.get(currStep).getOptions(logger);
         if (opt != null) {
@@ -121,7 +144,16 @@ public class GodLogic {
             game.gameReceiveOptions();
     }
 
-    // Executes the turn routine and it either increases the currStep or resets it when it is completed
+    /**
+     * Executes the power from "clean" options, notifying the caller at the end
+     * of the execution if the power usage wins the game
+     * @param board variable that contains the state of the board
+     * @param posXFrom x coordinate of the worker that is going to use the power
+     * @param posYFrom y coordinate of the worker that is going to use the power
+     * @param posXTo x coordinate of the tile targeted by the power
+     * @param posYTo y coordinate of the tile targeted by the power
+     * @return 2 if the power usage wins the game,  1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
+     */
     public int godLogicReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         int status = turn.get(currStep).power(board, posXFrom, posYFrom, posXTo, posYTo);
         if (status == 2)
@@ -134,7 +166,10 @@ public class GodLogic {
         return 0;
     }
 
-    // godLogicReceiveOptions for passes
+    /**
+     * Executes one step of the turn when the player passes
+     * @return 1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
+     */
     public int godLogicReceiveOptions() {
         currStep++;
         if (currStep % turn.size() == 0) {
@@ -144,7 +179,10 @@ public class GodLogic {
         return 0;
     }
 
-    // Debuffes opponents when a particular power is used
+    /**
+     * Debuffs opponents when a particular power is used
+     * @param upDiffDebuff "magnitude" of the debuff
+     */
     public void debuffOpponents(int upDiffDebuff) {
         System.out.println("OTHERGODLOGIC SIZE : " + otherGodLogic.size());
         for (GodLogic g: otherGodLogic) {
@@ -153,6 +191,16 @@ public class GodLogic {
         }
     }
 
+    //TODO: Complete the param part of the JAVADOC
+    /**
+     * Builds the object that contains all the options for a turn step, given the parameters
+     * @param upDiff
+     * @param downDiff
+     * @param canIntoOpp
+     * @param limitations
+     * @param canPass true if the player can pass the turn step, false if they can't
+     * @return OptionSelection instance with all the player's options for that turn step
+     */
     // Gets the possible player's options by calling the player with the parameters set by the power
     public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations, boolean canPass) {
         this.canPass = canPass;
@@ -164,7 +212,12 @@ public class GodLogic {
         }
     }
 
-    // Gets the building level of a tile
+    /**
+     * Gets the building level on a specified tile
+     * @param posX x coordinate of the tile
+     * @param posY y coordinate of the tile
+     * @return building level of the tile
+     */
     public int getBuildingLevel(int posX, int posY) {
         try {
             return board.getTile(posX, posY).getBuildingLevel();
@@ -174,7 +227,12 @@ public class GodLogic {
         return -99;
     }
 
-    // Asks if there is an opponent's worker in that tile
+    /**
+     * Says if there's a worker on a specific tile
+     * @param posX x coordinate of the tile
+     * @param posY y coordinate of the tile
+     * @return true if there's a worker on the tile, false if there isn't one
+     */
     public boolean hasOpposingOpponentWorker(int posX, int posY) {
         try {
             if (board.getTile(posX, posY).hasWorker()) {
@@ -186,7 +244,14 @@ public class GodLogic {
         return false;
     }
 
-    // Asks if the tile behind an adjacent worker is free (so that it exists, that is is free from Domes or other workers)
+    /**
+     * Says if the tile directly behind the destination tile is free
+     * @param XFrom x coordinate of the starting tile
+     * @param YFrom y coordinate of the starting tile
+     * @param XTo x coordinate of the destination tile
+     * @param YTo y coordinate of the destination tile
+     * @return true if the tile is free, false if it isn't
+     */
     public boolean isBehindFree(int XFrom, int YFrom, int XTo, int YTo) {
         int dx = XTo - XFrom;
         int dy = YTo - YFrom;
@@ -196,13 +261,16 @@ public class GodLogic {
                     return true;
             } catch (NonExistingTileException e) {
                 e.printStackTrace();
-                System.out.println("Er det mulig?!?");
             }
         }
         return false;
     }
 
-    // Returns true or false if the player has options to play
+    /**
+     * Indicates whether a player has options for his turn or not
+     * @param opt list of the player's workers and the possible destinations for their powerslist of the player's workers and the possible destinations for their powers
+     * @return true if the player has playble options, false if not
+     */
     private boolean hasOptions(OptionSelection opt) {
         for (ArrayList<Integer> o: opt.getValues()) {
             if (o.size() > 2)
