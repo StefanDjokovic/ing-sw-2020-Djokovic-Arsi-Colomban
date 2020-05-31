@@ -13,6 +13,7 @@ import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -85,14 +86,6 @@ public class ClientGUI extends ClientView {
     public ArrayList<String> getGods() {
         return this.selectedGods;
     }
-/*
-    public void setBoardSlots(Button[][] bs) {
-        this.boardSlots = bs;
-    }
-
-    public Button[][] getBoardSlots() {
-        return this.boardSlots;
-    }*/
 
     public void updateBoardView(BoardView bv) {
         this.bv=bv;
@@ -108,6 +101,8 @@ public class ClientGUI extends ClientView {
         Platform.runLater(() -> {
             login = new LoginUI();
             ss.setScene(login.getScene());
+            ss.setTitle("Login phase");
+            ss.getIcons().add(new Image(CoreGUI.class.getResourceAsStream("iconS.png")));
         });
     }
 
@@ -123,6 +118,7 @@ public class ClientGUI extends ClientView {
         Platform.runLater(() -> {
             selection = new GodSelectionUI();
             ss.setScene(selection.getScene());
+            ss.setTitle("God selection phase");
             selection.startGodSelection(options);
         });
     }
@@ -133,33 +129,21 @@ public class ClientGUI extends ClientView {
         updateObservers(new AnswerPlayerGod(gods.get(0), this.playerInit));
     }
 
-    //private int called = 0;
-
-    //TODO COMPLETE THE FUNCTION
     public void getWorkerPlacement(int[][] workers, char initial) {
 
         Stage ss = CoreGUI.getStage();
         Platform.runLater(() -> {
             game = new GameUI();
             ss.setScene(game.getScene());
+            ss.setTitle("Santorini");
             game.updateBoard(bv.getBoardView());
             game.placeWorkers(workers);
         });
     }
 
-    //private ArrayList<String> selectedTiles;
 
     public void sendWorkerPlacement(ArrayList<String> tiles) {
-//        GameUI.getConfirmButton().setDisable(true);
-//        Button[][] bs = GameUI.getBoardSlots();
-//        for (int a = 0; a < 5; a++) {
-//            for (int b = 0; b < 5; b++) {
-//                bs[a][b].setDisable(true);
-//            }
-//        }
-        //System.out.println(tiles.get(0));
-        //System.out.println(Integer.valueOf(tiles.get(0).charAt(0) - 48)+" "+Integer.valueOf(tiles.get(0).charAt(2) - 48));
-        updateObservers(new AnswerWorkersPosition(Integer.valueOf(tiles.get(0).charAt(0) - 48), Integer.valueOf(tiles.get(0).charAt(2) - 48), playerInit));
+        updateObservers(new AnswerWorkersPosition(tiles.get(0).charAt(0) - 48, tiles.get(0).charAt(2) - 48, playerInit));
     }
 
     public void getSelectedWorker(OptionSelection opt, boolean canPass) {
@@ -174,13 +158,8 @@ public class ClientGUI extends ClientView {
     }
 
     public void sendPower(ArrayList<Integer> pow) {
-        //send the movement
-        //System.out.println(Integer.valueOf(mov.get(0).charAt(0) - 48)+Integer.valueOf(mov.get(0).charAt(2) - 48)+Integer.valueOf(mov.get(1).charAt(0) - 48)+Integer.valueOf(mov.get(1).charAt(2) - 48));
-        //Answer answer = new AnswerPowerCoordinates(Integer.valueOf(mov.get(0).charAt(0) - 48), Integer.valueOf(mov.get(0).charAt(2) - 48), Integer.valueOf(mov.get(1).charAt(0) - 48), Integer.valueOf(mov.get(1).charAt(2) - 48));
 
-        //System.out.println("ci sono!");
-
-        System.out.println(pow.get(0)+" "+ pow.get(1)+" "+ pow.get(2)+" "+ pow.get(3));
+        //System.out.println(pow.get(0)+" "+ pow.get(1)+" "+ pow.get(2)+" "+ pow.get(3));
         Answer answer = new AnswerPowerCoordinates(pow.get(0), pow.get(1), pow.get(2), pow.get(3));
 
         updateObservers(answer);
