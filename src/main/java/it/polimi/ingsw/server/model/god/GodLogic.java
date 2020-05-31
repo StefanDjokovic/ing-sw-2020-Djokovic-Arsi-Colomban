@@ -191,17 +191,16 @@ public class GodLogic {
         }
     }
 
-    //TODO: Complete the param part of the JAVADOC
+
     /**
-     * Builds the object that contains all the options for a turn step, given the parameters
+     * TODO
      * @param upDiff
      * @param downDiff
      * @param canIntoOpp
      * @param limitations
-     * @param canPass true if the player can pass the turn step, false if they can't
-     * @return OptionSelection instance with all the player's options for that turn step
+     * @param canPass
+     * @return
      */
-    // Gets the possible player's options by calling the player with the parameters set by the power
     public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations, boolean canPass) {
         this.canPass = canPass;
         if (!hasDebuff || upDiff > 4)
