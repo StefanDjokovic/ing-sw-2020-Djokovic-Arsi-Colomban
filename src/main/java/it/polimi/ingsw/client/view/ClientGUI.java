@@ -6,10 +6,7 @@ import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.LobbyView;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.messages.answers.AnswerPlayerGod;
-import it.polimi.ingsw.messages.answers.AnswerPlayerName;
-import it.polimi.ingsw.messages.answers.AnswerPowerCoordinates;
-import it.polimi.ingsw.messages.answers.AnswerWorkersPosition;
+import it.polimi.ingsw.messages.answers.*;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
 import javafx.application.Platform;
@@ -34,6 +31,10 @@ public class ClientGUI extends ClientView {
     private LoginUI login;
     private GodSelectionUI selection;
     private GameUI game;
+    private LobbyUI lobby;
+    private boolean joining;
+    private int chosenLobby;
+    private int chosenNumPlayers;
 
     public ClientGUI() {
         instance = this;
@@ -100,17 +101,22 @@ public class ClientGUI extends ClientView {
     public void getPlayerInfo() {
         Stage ss = CoreGUI.getStage();
         Platform.runLater(() -> {
-            login = new LoginUI();
+            login = new LoginUI(joining);
             ss.setScene(login.getScene());
             ss.setTitle("Login phase");
-            ss.getIcons().add(new Image(CoreGUI.class.getResourceAsStream("iconS.png")));
+            ss.setResizable(true);
         });
     }
 
     // gui specific method
-    public void sendPlayerInfo(String name) {
+    public void sendPlayerInfo(String name, int playerNum) {
         this.playerName = name;
-        updateObservers(new AnswerPlayerName(name));
+        //updateObservers(new AnswerPlayerName(name));
+        if(joining) {
+            updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, -1));
+        } else {
+            updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, playerNum));
+        }
     }
 
     public void getPlayerGod(char initial, ArrayList<String> options) {
@@ -195,5 +201,26 @@ public class ClientGUI extends ClientView {
     }
 
     // TODO: new GUI METHOD TO IMPLEMENT
-    public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) { }
+    public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
+        if (error != 0) {
+            System.out.println("lobby error!");
+            return;
+        }
+
+        Stage ss = CoreGUI.getStage();
+        Platform.runLater(() -> {
+            lobby = new LobbyUI();
+            ss.setScene(lobby.getScene());
+            ss.setResizable(true);
+            lobby.refresh(lobbies);
+        });
+    }
+
+    public void sendLobbySelection(int number, boolean isJoining, int plNum) {
+        joining = isJoining;
+        chosenLobby = number;
+        chosenNumPlayers = plNum;
+
+        getPlayerInfo();
+    }
 }

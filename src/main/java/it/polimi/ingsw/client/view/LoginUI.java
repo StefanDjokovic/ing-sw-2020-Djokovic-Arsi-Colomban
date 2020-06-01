@@ -32,7 +32,7 @@ public class LoginUI {
 
     private ChoiceBox cb;
 
-    public LoginUI() {
+    public LoginUI(boolean isJoining) {
         GridPane root = new GridPane();
         root.setHgap(8);
         root.setVgap(8);
@@ -73,11 +73,8 @@ public class LoginUI {
         bt2.setText("Play");
         bt2.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt2.setOnAction((ActionEvent event) -> {
-            if(!txtf.getCharacters().toString().equals("") && !cb.getSelectionModel().isEmpty()) {
-                //sendName(txtf.getCharacters().toString());
-                //System.out.println("Read: "+txtf.getCharacters().toString());
-                sendName();
-                System.out.println("players size match: "+ cb.getSelectionModel().getSelectedItem().toString());
+            if((!txtf.getCharacters().toString().equals("") && isJoining) || (!txtf.getCharacters().toString().equals("") && !cb.getSelectionModel().isEmpty())) {
+                sendName(isJoining);
             }
         });
 
@@ -103,8 +100,10 @@ public class LoginUI {
         p1.setPrefHeight(25);
         root.add(p1, 0, 3, 2, 1);
         root.add(txtf, 0, 4, 2, 1);
-        root.add(ask, 0, 5);
-        root.add(cb, 1, 5);
+        if(!isJoining) {
+            root.add(ask, 0, 5);
+            root.add(cb, 1, 5);
+        }
         root.add(bt2, 0, 7, 2, 1);
         Pane p = new Pane();
         p.setPrefHeight(75);
@@ -118,7 +117,7 @@ public class LoginUI {
         //root.setSpacing(25);
     }
 
-    private void sendName() {
+    private void sendName(boolean mode) {
         //disable
         bt.setDisable(true);
         bt2.setDisable(true);
@@ -126,7 +125,11 @@ public class LoginUI {
         cb.setDisable(true);
         info.setText("Waiting for other player(s)");
         //send
-        ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString());
+        if(!mode) {
+            ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString(), Integer.parseInt(cb.getSelectionModel().getSelectedItem().toString()));
+        } else if(mode) {
+            ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString(), -1);
+        }
     }
 
     public Scene getScene() {

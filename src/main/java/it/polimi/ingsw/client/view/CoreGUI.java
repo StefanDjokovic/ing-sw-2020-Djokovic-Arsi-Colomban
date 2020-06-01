@@ -4,7 +4,10 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -26,6 +29,19 @@ public class CoreGUI extends Application {
         synchronized (CoreGUI.class) {
             thisStage = primaryStage;
             thisGUI = this;
+
+            thisStage.getIcons().add(new Image(("graphic_resources/resourcesGUI/iconS.png")));
+
+            GridPane g = new GridPane();
+            Scene s = new Scene(g, 400, 400);
+            ImageView i = new ImageView();
+            g.add(i, 0, 0);
+            thisStage.setResizable(false);
+            i.setImage(new Image("graphic_resources/resourcesGUI/loading.png"));
+            i.fitHeightProperty().bind(g.heightProperty());
+            i.fitWidthProperty().bind(g.widthProperty());
+            thisStage.setScene(s);
+
             primaryStage.show();
             CoreGUI.class.notifyAll();
         }
@@ -58,50 +74,4 @@ public class CoreGUI extends Application {
         }
         return thisGUI;
     }
-//
-//    ArrayList<String> placedWorkers = new ArrayList<>();
-//    //int placeCount=0;
-//
-//    public void placeWorkers(int[][] workers) {
-//        //placeCount++;
-//        //add filter to board
-//        Button[][] buttons = GameUI.getBoardSlots();
-//        Boolean f;
-//        for (int x = 0 ; x < 5 ; x++) {
-//            for (int y = 0 ; y < 5 ; y++) {
-//                f=false;
-//                for (int z = 0 ; z < workers.length ; z++) {
-//                    if(workers[z][0] == x && workers[z][1] == y) {
-//                        f=true;
-//                        break;
-//                    }
-//                }
-//                if(f==false) {
-//                    //put filter on button
-//                    buttons[x][y].setDisable(false);
-//                    buttons[x][y].setId("selectionType0");
-//                    buttons[x][y].setOnAction((ActionEvent event) -> {
-//                        String selTile = GridPane.getRowIndex(((Node) event.getSource())) + " " + GridPane.getColumnIndex(((Node) event.getSource()));
-//                        if (placedWorkers.contains(selTile)) {
-//                            placedWorkers.remove(selTile);
-//                            ((Node) event.getSource()).setId("selectionType0");
-//                        } else {
-//                            if (placedWorkers.size() < 2) {
-//                                placedWorkers.add(selTile);
-//                                ((Node) event.getSource()).setId("selectionType1");
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        }
-//
-//        GameUI.getConfirmButton().setText("Confirm");
-//        GameUI.getConfirmButton().setDisable(false);
-//        GameUI.getConfirmButton().setOnAction((ActionEvent event) -> {
-//            if(placedWorkers.size() == 2) {
-//                ClientGUI.getInstance().sendWorkerPlacement(placedWorkers);
-//            }
-//        });
-//    }
 }
