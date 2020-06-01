@@ -103,45 +103,49 @@ public class ClientCLI extends ClientView {
         updateObservers(new AnswerPlayerName(playerName));
     }
 
+    public boolean isExistentAndValidLobbyNumber(ArrayList<LobbyView> lobbies, int lobbyNumber) {
+        for (LobbyView l : lobbies) {
+            if (l.getLobbyNumber() == lobbyNumber) {
+                if (l.getNPlayers() == l.getPlayersName().size()) {
+                    System.out.println("Unavailable lobby, please try again");
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
         if (error != 0) {
             System.out.println("\nSomething went wrong with the previous selection. Please try again\n");
         }
         displayLobbies(lobbies);
-        System.out.println("Select Lobby number");
-        int lobbyNumber = -1;
-        int nPlayers = -1;
-        boolean unselected = true;
-        while (unselected) {
-            lobbyNumber = getValidInt();
-            boolean existentLobby = false;
-            boolean available = true;
-            if (lobbies != null) {
-                for (LobbyView l : lobbies) {
-                    if (l.getLobbyNumber() == lobbyNumber) {
-                        if (l.getNPlayers() == l.getPlayersName().size()) {
-                            System.out.println("Unavailable lobby, please try again");
-                            available = false;
-                        }
-                        existentLobby = true;
-                        break;
-                    }
-                }
-            }
-            if (!existentLobby) {
-                while (nPlayers != 2 && nPlayers != 3) {
-                    System.out.println("Please, select if you want to create a 2 or 3 player lobby");
-                    nPlayers = getValidInt();
-                }
-                unselected = false;
-            }
-            else if (available) {
-                unselected = false;
+        System.out.println("Choose:");
+        System.out.println("Select the lobby number to join a specific lobby");
+        System.out.println("Type 0 to refresh the lobbies");
+        System.out.println("Type -1 to create a new lobby");
+
+        int lobbyNumber = getValidInt();
+        int nPlayers = 0;
+        if (lobbyNumber == 0) {
+            updateObservers(new AnswerLobbyAndName(0, null, nPlayers));
+            return;
+        }
+        else if (lobbyNumber == -1) {
+            while (nPlayers != 2 && nPlayers != 3) {
+                System.out.println("Please, select if you want to create a 2 or 3 player lobby");
+                nPlayers = getValidInt();
             }
         }
-
+        else {
+            while (!isExistentAndValidLobbyNumber(lobbies, lobbyNumber)) {
+                System.out.println("Please, select an available lobby number");
+                lobbyNumber = getValidInt();
+            }
+        }
         System.out.println("Please, input Player's name: ");
-        scanner = new Scanner(System.in);       // enter is considered as new character, woopsie
+        scanner = new Scanner(System.in);
         String playerName = scanner.nextLine();
         System.out.println("Name selected: " + playerName);
         updateObservers(new AnswerLobbyAndName(lobbyNumber, playerName, nPlayers));

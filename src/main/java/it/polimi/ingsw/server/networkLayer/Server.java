@@ -60,7 +60,7 @@ public class Server {
         }
         else {
             // there is already a lobby with that number, check if the playerName is unique
-            if (!lobbies.get(lobbyNumber).isFull() && lobbies.get(lobbyNumber).isAvailable(playerName) && nPlayers == -1) {
+            if (!lobbies.get(lobbyNumber).isFull() && lobbies.get(lobbyNumber).isAvailable(playerName)) {
                 lobbies.get(lobbyNumber).addPlayer(playerName, playerSocket);
                 if (lobbies.get(lobbyNumber).isFull()) {
                     System.out.println("Starting lobbyMultiple");
