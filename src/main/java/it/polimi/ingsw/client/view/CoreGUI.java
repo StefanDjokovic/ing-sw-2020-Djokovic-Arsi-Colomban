@@ -74,4 +74,9 @@ public class CoreGUI extends Application {
         }
         return thisGUI;
     }
+
+    @Override
+    public void stop(){
+        System.exit(0);
+    }
 }
