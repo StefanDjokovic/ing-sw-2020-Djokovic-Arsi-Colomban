@@ -124,8 +124,9 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                 AnswerLobbyAndName lobbyAndName = readFromSocketPlayerLobbyAndName();
                 int lobbyNumber = lobbyAndName.getLobbyNumber();
                 playerName = lobbyAndName.getName();
-                System.out.println("I have gotten: lobby " + lobbyNumber + " and name " + playerName);
-                unSelected = server.isAvailable(lobbyNumber, playerName, this, lobbyAndName.getNPlayers());
+                // lobbyNumber 0 is the lobby number for "refresh" options
+                if (lobbyNumber != 0)
+                    unSelected = server.isAvailable(lobbyNumber, playerName, this, lobbyAndName.getNPlayers());
                 n = 1;
             }
             playingLobby = unSelected;

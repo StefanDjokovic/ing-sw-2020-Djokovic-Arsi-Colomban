@@ -22,13 +22,12 @@ public class Server {
     public static final int PORT = 4568;
     private java.net.ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(64);
-    private Map<String, ServerSocket> waitingConnection = new HashMap<>();
     private static Map<Integer, Lobby> lobbies = new HashMap<>();
+    public static int newAvailableLobbyNumber = 1;
 
     public Server() throws IOException    {
         this.serverSocket = new java.net.ServerSocket(PORT);
     }
-
 
     public synchronized RequestServerInformation getRequestServerInformation(int n) {
         if (lobbies.size() != 0) {
@@ -43,12 +42,19 @@ public class Server {
             return new RequestServerInformation(null, n);
     }
 
+    public synchronized int getNewAvailableLobbyNumber() {
+        int lobbyNumb = newAvailableLobbyNumber;
+        newAvailableLobbyNumber++;
+        return lobbyNumb;
+    }
+
     public synchronized Lobby isAvailable(int lobbyNumber, String playerName, ServerSocket playerSocket, int nPlayers) {
         System.out.println("Joining in is available");
-        if (lobbies.get(lobbyNumber) == null) {
+        if (lobbyNumber == -1 || lobbies.get(lobbyNumber) == null) {
             // it is available, automatic insertion
-            Lobby newLobby = new Lobby(lobbyNumber, nPlayers, playerName, playerSocket);
-            lobbies.put(lobbyNumber, newLobby);
+            int lobbyNumb = getNewAvailableLobbyNumber();
+            Lobby newLobby = new Lobby(lobbyNumb, nPlayers, playerName, playerSocket);
+            lobbies.put(lobbyNumb, newLobby);
             System.out.println("LOBBY SUCCESSFULLY CREATED");
             return newLobby;
         }
