@@ -51,9 +51,13 @@ public class LobbyUI {
         fp = new FlowPane(Orientation.HORIZONTAL);
         fp.setPadding(new Insets(25));
         fp.getStylesheets().add("style.css");
+        fp.setHgap(8);
+        fp.setVgap(8);
         ScrollPane sp = new ScrollPane();
         sp.setContent(fp);
         sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setFitToWidth(true);
+        sp.setFitToHeight(true);
 
         Label title = new Label("Lobbies");
         title.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
