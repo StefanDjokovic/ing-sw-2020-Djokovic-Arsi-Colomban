@@ -20,13 +20,19 @@ public class Game extends Observable{
     private Board board;
     private Logger logger;
 
+    /**
+     * Constructor
+     */
     public Game() {
         players = new ArrayList<>();
         board = new Board();
         logger = new Logger();
     }
 
-    // For testing purposes
+    /**
+     * Getter method for board attribute, for testing purposes
+     * @return the object's board attribute
+     */
     public Board getBoard() {
         return board;
     }
@@ -59,7 +65,9 @@ public class Game extends Observable{
 //        }
     }
 
-    // Sending sequentially Requests for the workers placement
+    /**
+     * Initializes workers after sending requests for the workers' placement
+     */
     public void initWorker() {
         System.out.println("Init worker");
         printPlayersDescription();
@@ -86,6 +94,10 @@ public class Game extends Observable{
 
     }
 
+    /**
+     * Tells the caller if all the necessary workers are on the board
+     * @return true if there are missing workers, false if there aren't
+     */
     public boolean missingWorkers() {
         for (Player p: players) {
             if (p.getWorkersSize() != 2)
@@ -95,7 +107,9 @@ public class Game extends Observable{
         return false;
     }
 
-    // Method that starts the whole game logic
+    /**
+     * Starts the whole game logic, by initializing the turn routine and terminating the game if there are no players
+     */
     private int currPlayer = 0;
     public void gameStart() {
         while (players != null  && players.size() != 1 && status != 2) {    // status == 2 when someone has won
@@ -127,8 +141,15 @@ public class Game extends Observable{
         }
     }
 
-    // Pushes the option to player and sets the new currPlayer if it changes
     public int status = -1;
+    /**
+     * Pushes the options to the player and executes a turn step from the starting tile to the destination tile.
+     * Sets new currPlayer if the player's turn is finished
+     * @param posXFrom x coordinate of the starting tile
+     * @param posYFrom y coordinate of the starting tile
+     * @param posXTo x coordinate of the destination tile
+     * @param posYTo y coordinate of the destination tile
+     */
     public void gameReceiveOptions(int posXFrom, int posYFrom, int posXTo, int posYTo) {
         logger.addNewLog(posXFrom, posYFrom, posXTo, posYTo, players.get(currPlayer).getInitial());
         status = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);
@@ -137,7 +158,9 @@ public class Game extends Observable{
         }
     }
 
-    // gameReceiveOptions for passes
+    /**
+     * Pushes the options to the player and executes a turn step when the player passes
+     */
     public void gameReceiveOptions() {
         logger.addNewLog(players.get(currPlayer).getInitial());
         int status = players.get(currPlayer).playerReceiveOptions();
@@ -146,12 +169,18 @@ public class Game extends Observable{
         }
     }
 
-    // Method that prints "End of the game" in the server console, kinda useless
+    /**
+     * Prints "End of the game!" on the server's console, not really useful
+     */
     private void gameEnd() {
         System.out.println("End of the game!");
     }
 
-    // Gives a unique initial to each player, A B or C depending on the order
+    /**
+     * Assigns a unique initial to a new player based on the order of arrival
+     * @param newPlayerName new player's name
+     * @return player's initial (A, B or C)
+     */
     public char initPlayer(String newPlayerName) {
         Player newPlayer = new Player(newPlayerName, '*');
 
@@ -170,13 +199,20 @@ public class Game extends Observable{
 
     }
 
-    // Sets the God picked by the player
+    /**
+     * Sets the god card picked by the player
+     * @param godName god's name select by the player
+     * @param initial player's initial
+     */
     public void setPlayerGod(String godName, char initial) {
         getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard());
         opt.remove(godName);
     }
 
-    // Set the otherGodLogic fields for the player
+    /**
+     * Sets the otherGodlLogic field for all the players,
+     * that cointains the other players' god cards informations
+     */
     public void setOtherGodLogic() {
         ArrayList<GodLogic> otherGodLogic;
         for (Player p: players) {
@@ -191,7 +227,10 @@ public class Game extends Observable{
         }
     }
 
-    // Deletes the noob that got eliminated
+    /**
+     * Deletes a player after they get eliminated
+     * @param p player that needs to be deleted
+     */
     public void deletePlayer(Player p) {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i) == p) {
@@ -203,12 +242,22 @@ public class Game extends Observable{
             currPlayer = currPlayer % players.size();
     }
 
-    // Sets the worker in the right spot
+    /**
+     * Initializes a worker in the selected tile
+     * @param x x coordinate of the selected tile
+     * @param y y coordinate of the selected tile
+     * @param initial player's initial
+     * @throws NonExistingTileException the selected tile doesn't exist
+     */
     public void setWorker(int x, int y, char initial) throws NonExistingTileException {
         getPlayerFromInitial(initial).addWorker(getBoard().getTile(x, y));
     }
 
-    // Gets the player that is associated to the right initial
+    /**
+     * Gets the player associated to the selected initial
+     * @param initial selected initial
+     * @return player associated to the initial
+     */
     public Player getPlayerFromInitial(char initial) {
         for (Player p : players) {
             if (p.getInitial() == initial)
@@ -217,7 +266,10 @@ public class Game extends Observable{
         return null;
     }
 
-    // Return a handy structure with the position of all the workers in the game
+    /**
+     * Gets all the workers that are on the board
+     * @return a matrix with the position of all the workers
+     */
     public int[][] getAllWorkersAsMatrix() {
 
         int nWorkers = 0;
@@ -240,10 +292,18 @@ public class Game extends Observable{
         return returnMatrix;
     }
 
+    /**
+     * Gets the number of players
+     * @return number of players
+     */
     public int nPlayers() {
         return players.size();
     }
 
+    /**
+     * Gets the number of players with a god card associated to them
+     * @return number of players with a god card associated to them
+     */
     public int nPlayersWithGod() {
         int count = 0;
         for (Player p: players) {
@@ -253,7 +313,11 @@ public class Game extends Observable{
         return count;
     }
 
-    // Gets most of the useful information from the game
+    /**
+     * Prints on the server's terminal player's names with their initials,
+     * whether they have or don't have an associated god card
+     * and the number of workers each player has.
+     */
     public void printPlayersDescription() {
         for (Player p : players) {
             if (p.getWorkersSize() == 2) {
