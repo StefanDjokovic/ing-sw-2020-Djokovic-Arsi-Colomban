@@ -76,6 +76,10 @@ public class ClientCLI extends ClientView {
         }*/
     }
 
+    /**
+     * Gets called when one of the observed classes sends an update,
+     * the view acts accordingly to the content of the received Request message
+     */
     @Override
     public void update(Request request) {
         request.printMessage();
@@ -86,16 +90,27 @@ public class ClientCLI extends ClientView {
         System.out.println("clientCLI should not receive answers");
     }
 
+    /**
+     * Sets the player's initial
+     * @param init players initial
+     */
     // sets players initial as decided by the model
     public void setPlayerInit(char init) {
         this.playerInit = init;
     }
 
+    /**
+     * Updates boardView, that contains the state of the board
+     * @param boardView new state of the board, used to render it on the CLI
+     */
     // TODO: should be like this!!!
     public void updateBoardView(BoardView boardView) {
         this.boardView = boardView.getBoardView();
     }
 
+    /**
+     * Asks the user for player's name and updates observers with an Answer containg the name
+     */
     // TODO: not like this!
     public void getPlayerInfo() {
         System.out.println("Please, input Player's name: ");
@@ -103,6 +118,12 @@ public class ClientCLI extends ClientView {
         updateObservers(new AnswerPlayerName(playerName));
     }
 
+    /**
+     * Tells if the selected lobby is a valid lobby that exists on the server
+     * @param lobbies list of all lobbies present on the server
+     * @param lobbyNumber number of the selected lobby
+     * @return true if the lobby is valid and exists, false otherwise
+     */
     public boolean isExistentAndValidLobbyNumber(ArrayList<LobbyView> lobbies, int lobbyNumber) {
         for (LobbyView l : lobbies) {
             if (l.getLobbyNumber() == lobbyNumber) {
@@ -116,6 +137,12 @@ public class ClientCLI extends ClientView {
         return false;
     }
 
+    /**
+     * Lets the user select a lobby from the existent ones,
+     * or lets the user create a new one, letting them specify if it'll be a 2 or 3 players lobby
+     * @param lobbies list of all lobbies present on the server
+     * @param error 0 if there was an error with the previous selection, int != 0 otherwise
+     */
     public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
         if (error != 0) {
             System.out.println("\nSomething went wrong with the previous selection. Please try again\n");
@@ -151,6 +178,10 @@ public class ClientCLI extends ClientView {
         updateObservers(new AnswerLobbyAndName(lobbyNumber, playerName, nPlayers));
     }
 
+    /**
+     * Displays all the lobbies that are on the server
+     * @param lobbies list of all lobbies present on the server
+     */
     public void displayLobbies(ArrayList<LobbyView> lobbies) {
         if (lobbies == null) {
             System.out.println("No Available lobbies. Please create your own by inserting a new lobby number");
@@ -170,6 +201,11 @@ public class ClientCLI extends ClientView {
         }
     }
 
+    /**
+     * Asks the user to pick a god among the unused god cards
+     * @param initial player's initial
+     * @param options list of all the possible god cards
+     */
     // Simple method that accepts only a god that comes from the options given from the server
     public void getPlayerGod(char initial, ArrayList<String> options) {
         System.out.println("Select " + initial + "'s God: ");
@@ -200,12 +236,19 @@ public class ClientCLI extends ClientView {
         return this.selectedGods;
     }*/
 
-    // Displays waiting for opponents' move message
+    /**
+     * Displays "Waiting opponent move" on the cli
+     */
     public void waitingOpponent() {
         System.out.println("Waiting opponent move");
     }
 
-    // Let's the player choose where to place the worker from the available positions
+    /**
+     * Lets the user place the workers, showing them only the unoccupied tiles on the board.
+     * Updates obsevers with an Answer message containing the position of the worker.
+     * @param workers matrix with the positions of all the already placed workers
+     * @param initial player's initial
+     */
     public void getWorkerPlacement(int[][] workers, char initial) {
         boolean unselected = true;
 
@@ -232,7 +275,14 @@ public class ClientCLI extends ClientView {
         updateObservers(new AnswerWorkersPosition(posX, posY, initial));
     }
 
-    // Asks the selection of a valid worker
+    /**
+     * Asks the player to select one of their active workers
+     * @param x1 x coordinate of the player's first worker
+     * @param y1 y coordinate of the player's first worker
+     * @param x2 x coordinate of the player's second worker
+     * @param y2 y coordinate of the player's second worker
+     * @return
+     */
     private int getWorkerSelection(int x1, int y1, int x2, int y2) {
         System.out.println("Now you should select a Worker");
         System.out.println("Options: " + x1 + " " + y1 + " or " + x2 + " " + y2);
@@ -253,7 +303,14 @@ public class ClientCLI extends ClientView {
             return 1;
     }
 
-    // Asks for the destination of the worker selected; posXOtherWorker and posYOtherWorker == -1 if not existan
+    /**
+     * Aks the player to select the destination tile of the power they're using with the selected worker,
+     * or to select their other worker to switch to that one for this turn step
+     * @param opt list of all the valid destination tiles
+     * @param posXOtherWorker x coordinate of the other player's other worker, -1 if the other worker is not on the board
+     * @param posYOtherWorker y coordinate of the other player's other worker, -1 if the other worker is not on the board
+     * @return
+     */
     private int getDestSelection(ArrayList<Integer> opt, int posXOtherWorker, int posYOtherWorker) {
         System.out.println("Select position or your other Worker");
         System.out.println(opt);
@@ -280,6 +337,11 @@ public class ClientCLI extends ClientView {
         return -1;
     }
 
+    /**
+     * Checks if the user's input is an int, if not it displays an error message and keeps asking
+     * for the user's input until they input an integer
+     * @return the next int the player put in the stdin
+     */
     // Checks if the input number is an int, else displays a message
     private int getValidInt() {
         while (!scanner.hasNextInt()) {
@@ -289,7 +351,10 @@ public class ClientCLI extends ClientView {
         return scanner.nextInt();
     }
 
-    // Displays pass question and reads the input; returns true if pass, else false
+    /**
+     * Asks the player if the want to pass the turn, they have to write "pass" on stdin to do so
+     * @return true if the player decided to pass, false if they didn't
+     */
     private boolean askIfPass() {
         System.out.println("Please, type 'pass' if you want to skip to the next move, otherwise type 'go'");
         String selected = null;
@@ -304,7 +369,12 @@ public class ClientCLI extends ClientView {
         return selected.equals("pass");
     }
 
-    // Method called at the beginning of the selection phase
+    /**
+     * Called at the beginning of the selection phase, it calls other methods that asks the player to
+     * make a selection to complete the turn step
+     * @param opt list of all possible selections
+     * @param canPass true if the turn step can be passed, false if it can't
+     */
     public void getSelectedWorker(OptionSelection opt, boolean canPass) {
         if (opt.getValues().size() == 2) {
             getWorkerSelection(opt, canPass);
@@ -314,7 +384,13 @@ public class ClientCLI extends ClientView {
         }
     }
 
-    // Selection method when there is only one selectable worker
+
+    /**
+     * Asks the player to select a worker and choose the power "destination".
+     * Gets called when there's only one selectable worker.
+     * @param opt all the possible power destination options and the worker's position
+     * @param canPass true if the turn step can be passed, false if it can't
+     */
     public void getWorkerSelectionOneOption(OptionSelection opt, boolean canPass) {
         System.out.println("Displaying options: ");
         System.out.println(opt);
@@ -334,7 +410,12 @@ public class ClientCLI extends ClientView {
         updateObservers(answer);
     }
 
-    // Selection phase when there are multiple selectable workers
+    /**
+     * Asks the player to select a worker and choose the power "destination".
+     * Gets called when there are two selectable workers.
+     * @param opt all the possible power destination options and the worker's position
+     * @param canPass true if the turn step can be passed, false if it can't
+     */
     public void getWorkerSelection(OptionSelection opt, boolean canPass) {
         if (canPass) {
             generateSelectableWorkers(opt);
@@ -364,7 +445,13 @@ public class ClientCLI extends ClientView {
         updateObservers(answer);
     }
 
-    // Displays the workers that can be selected
+    /**
+     * Displays the workers that can be selected
+     * @param X1 x coordinate of the first worker
+     * @param Y1 y coordinate of the first worker
+     * @param X2 x coordinate of the second worker
+     * @param Y2 y coordinate of the second worker
+     */
     private void displayActiveWorkers(int X1, int Y1, int X2, int Y2) {
 
         boolean[][] selectable = new boolean[5][5];
@@ -377,7 +464,7 @@ public class ClientCLI extends ClientView {
 
         printSelectableBoard(selectable);
     }
-
+    
     // Sets to true all the selectable cells considering opt and the other worker position
     private void generateSelectableWorkers(ArrayList<Integer> opt, int posXOtherWorker, int posYOtherWorker) {
 
