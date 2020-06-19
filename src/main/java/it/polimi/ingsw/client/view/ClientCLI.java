@@ -464,7 +464,13 @@ public class ClientCLI extends ClientView {
 
         printSelectableBoard(selectable);
     }
-    
+
+    /**
+     * Makes all the selectable cells (opt and the other worker's coordinates) clickable by the player
+     * @param opt list of all the player's options
+     * @param posXOtherWorker x coordinate of the player's other worker
+     * @param posYOtherWorker y coordinate of the player's other worker
+     */
     // Sets to true all the selectable cells considering opt and the other worker position
     private void generateSelectableWorkers(ArrayList<Integer> opt, int posXOtherWorker, int posYOtherWorker) {
 
@@ -484,7 +490,10 @@ public class ClientCLI extends ClientView {
         printSelectableBoard(selectable);
     }
 
-    // Same as above, but generates the selectable workers
+    /**
+     * Makes the worker's tiles clickable by the player
+     * @param opt list of all the player's options
+     */
     private void generateSelectableWorkers(OptionSelection opt) {
 
         boolean[][] selectable = new boolean[5][5];
@@ -499,6 +508,10 @@ public class ClientCLI extends ClientView {
         printSelectableBoard(selectable);
     }
 
+    /**
+     * Displays on the console the end game message, telling the player if the won or lost
+     * @param winnerInit initial of the winning player
+     */
     // Displays end game message
     public void displayGameEnd(char winnerInit) {
         if (winnerInit == playerInit) {
@@ -509,7 +522,10 @@ public class ClientCLI extends ClientView {
         }
     }
 
-    // Displays the board with the possible selectable tiles
+    /**
+     * Displays the board, outlining all the selectable tiles
+     * @param selectable matrix wiht all the selectable tiles
+     */
     public void printSelectableBoard(boolean[][] selectable) {
 
         if (selectable == null) {
@@ -568,7 +584,9 @@ public class ClientCLI extends ClientView {
         System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
     }
 
-    // Display a board with the current boardView state and without selection
+    /**
+     * Displays the board's current state
+     */
     public void displayBoard() {
 
         String ANSI_WHITE = "\u001B[37m";
