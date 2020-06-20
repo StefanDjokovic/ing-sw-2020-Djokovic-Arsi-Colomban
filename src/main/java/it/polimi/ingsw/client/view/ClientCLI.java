@@ -47,33 +47,6 @@ public class ClientCLI extends ClientView {
         scanner = new Scanner(System.in);
         instance = this;
         this.printSelectableBoard(null);
-
-        /*//select game mode
-        System.out.println("Please select game mode:\n1) GUI\n2) CLI");
-        Scanner s = new Scanner(System.in);
-        String gm;
-        while (true) {
-            gm = s.nextLine();
-            if (gm.equals("1")) {
-                gameMode=1;
-                //starts GUI thread
-                ThreadGUI tg = new ThreadGUI();
-                tg.start();
-
-//                Stage ss = clientGUI.getStage();
-//                Platform.runLater(() -> {
-//                    LoginUI l = new LoginUI();
-//                    ss.setScene(l.getScene());
-//                });
-                break;
-            } else if (gm.equals("2")) {
-                gameMode = 2;
-                this.printSelectableBoard(null);
-                break;
-            } else {
-                System.out.println("Wrong game mode selected.");
-            }
-        }*/
     }
 
     /**
