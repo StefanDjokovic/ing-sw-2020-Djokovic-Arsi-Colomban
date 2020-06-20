@@ -34,7 +34,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         this.socket = socket;
         this.server = server;
     }
-    
+
     /**
      * Sends a Request object to the client synchronously
      * @param request
