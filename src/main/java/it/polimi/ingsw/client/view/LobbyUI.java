@@ -78,7 +78,7 @@ public class LobbyUI {
         add.setId("buttonR");
         add.setPrefSize(50, 50);
         add.setOnAction((ActionEvent e) -> {
-            ClientGUI.getInstance().sendLobbySelection(999, false, -1);
+            ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
         });
         GridPane.setHalignment(add, HPos.RIGHT);
 
