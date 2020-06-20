@@ -25,6 +25,11 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     private String playerName;
 
 
+    /**
+     * Constructor
+     * @param socket socket the object refers to
+     * @param server already intialized server
+     */
     public ServerSocket(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
@@ -46,6 +51,10 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     }
 
 
+    /**
+     * Sends a Request object to the client synchronously
+     * @param request
+     */
     public void send(Request request) {
         try {
             outputStream.reset();
@@ -60,6 +69,10 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         }
     }
 
+    /**
+     * Async read from the socket's objectInputStream, updates the object's observers every time
+     * an answer arrives.
+     */
     public void asyncReadFromSocket() {
         new Thread(() -> {
             System.out.println("Async read");
@@ -84,6 +97,12 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         }).start();
     }
 
+    /**
+     * Asks the client for lobby number, player name and number of players,
+     * if it catches an  IOException or a ClassNotFound exception it will consider the client dead,
+     * it will close the socket and delete the player by updating the object's observers with a AnswerKillPlayer object
+     * @return answer object with the lobby identifier, player's name and number of players in the lobby
+     */
     public AnswerLobbyAndName readFromSocketPlayerLobbyAndName() {
         try {
             System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
@@ -97,21 +116,35 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         return null;
     }
 
+    /**
+     * Closes the ServerSocket by setting the isActive flag to false
+     */
     public void closeServerSocket() {
         isActiveFlag = false;
     }
 
 
-
+    /**
+     * Sets player's initial
+     * @param playerInitial player's initial
+     */
     public void setPlayerInitial(char playerInitial) {
         this.playerInitial = playerInitial;
     }
 
+    /**
+     * Sends game information to the client
+     * @param gameInfo object that contains all the names and initials of the players in the game
+     */
     public void sendGameInformation(RequestGameInformation gameInfo) {
         System.out.println("Sending game information");
         send(gameInfo);
     }
 
+    /**
+     * Runs the thread, asking the client to select a lobby and then waiting for the opponent's move by sending
+     * a RequestWaitOpponent message to the client
+     */
     @Override
     public void run() {
         try {
@@ -139,7 +172,10 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         asyncReadFromSocket();
     }
 
-
+    /**
+     * Called after receiving an update from one of the observed objects, it sends the requests to the client
+     * @param request message sent by an observed object and sent to the client
+     */
     @Override
     public void update(Request request) {
         if (isActiveFlag) {
@@ -154,7 +190,10 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         }
     }
 
-
+    /**
+     * Prints an error message, no Answer class objects should be sent to the client
+     * @param answer message sent by an observed object
+     */
     @Override
     public void update(Answer answer) {
         System.out.println("clientCLI shouldn't receive answers");
