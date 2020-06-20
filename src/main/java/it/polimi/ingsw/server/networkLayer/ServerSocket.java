@@ -34,23 +34,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         this.socket = socket;
         this.server = server;
     }
-
-    public void asyncSend(Request request) {
-        new Thread(() -> {
-            System.out.println("Async send is being called");
-            try {
-                //outputStream.reset();
-                System.out.print("Message before sending: ");
-                request.printMessage();
-                outputStream.writeObject(request);
-                outputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-
+    
     /**
      * Sends a Request object to the client synchronously
      * @param request
