@@ -25,9 +25,14 @@ public class Server {
     private static Map<Integer, Lobby> lobbies = new HashMap<>();
     public static int newAvailableLobbyNumber = 1;
 
+    /**
+     * Constructor method, creates the server on the specified port
+     * @throws IOException
+     */
     public Server() throws IOException    {
         this.serverSocket = new java.net.ServerSocket(PORT);
     }
+
 
     public synchronized RequestServerInformation getRequestServerInformation(int n) {
         if (lobbies.size() != 0) {
@@ -42,12 +47,24 @@ public class Server {
             return new RequestServerInformation(null, n);
     }
 
+    /**
+     * Gets the index of the first available lobby
+     * @return the index of the first available lobby
+     */
     public synchronized int getNewAvailableLobbyNumber() {
         int lobbyNumb = newAvailableLobbyNumber;
         newAvailableLobbyNumber++;
         return lobbyNumb;
     }
 
+    /**
+     *
+     * @param lobbyNumber lobby's identifier
+     * @param playerName player's name
+     * @param playerSocket player's client connection
+     * @param nPlayers number of players the lobby can accept
+     * @return
+     */
     public synchronized Lobby isAvailable(int lobbyNumber, String playerName, ServerSocket playerSocket, int nPlayers) {
         System.out.println("Joining in is available");
         if (lobbyNumber == -1 || lobbies.get(lobbyNumber) == null) {
@@ -72,7 +89,11 @@ public class Server {
         return null;
     }
 
-
+    /**
+     * Initializes the specified lobby, initializing all the components of the game (Game, Controller, and a "virtual view" for each player)
+     * and then starts the game, asking first for the players' gods and then starting the turn routine
+     * @param lobby lobby that needs to be initialized (it has reached its specified number of players)
+     */
     public synchronized void startLobbyMultiple(Lobby lobby) {
     // Will go trough only when all the ServerSocket have given all the necessary information
         int nPlayers = lobby.getNPlayers();
@@ -130,7 +151,9 @@ public class Server {
 
     }
 
-    // The server tries to get the nPlayers amount set from the command line
+    /**
+     * The server tries to get nPlayers (set by command line) client connections
+     */
     public void run() {
         while (true) {
             try {
