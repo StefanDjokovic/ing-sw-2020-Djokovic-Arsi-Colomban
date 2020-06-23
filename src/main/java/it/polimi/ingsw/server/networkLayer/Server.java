@@ -19,7 +19,6 @@ import java.util.concurrent.Executors;
 public class Server {
 
 
-    public static final int PORT = 4568;
     private java.net.ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(64);
     private static Map<Integer, Lobby> lobbies = new HashMap<>();
@@ -27,10 +26,11 @@ public class Server {
 
     /**
      * Constructor method, creates the server on the specified port
+     * @param port port where the server needs to be initialized
      * @throws IOException
      */
-    public Server() throws IOException    {
-        this.serverSocket = new java.net.ServerSocket(PORT);
+    public Server(int port) throws IOException    {
+        this.serverSocket = new java.net.ServerSocket(port);
     }
 
 

@@ -12,10 +12,22 @@ public class ClientApp {
 
     public static void main(String[] args){
 
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("Please input server IP (input 'localhost' if you want to connect to a server hosted on this network)");
+        String ip = s.nextLine();
+        if(ip.equals("localhost"))
+            ip = "127.0.0.1";
+        System.out.println("Please input server port");
+        int port = s.nextInt();
+        while (port <= 1024) {
+            System.out.println("Must not be a reserved port");
+            port = s.nextInt();
+        }
+
         System.out.println("Please select game mode:\n1) GUI\n2) CLI");
         Client client;
 
-        Scanner s = new Scanner(System.in);
         int gameMode;
         while (true) {
             while (!s.hasNextInt()) {
@@ -24,13 +36,15 @@ public class ClientApp {
             }
             gameMode = s.nextInt();
 
+            System.out.println("Connecting to server at IP address " + ip);
+            System.out.println("on port " + port);
             if (gameMode == 1) {
                 // GUI is initialized
-                client = new Client("127.0.0.1", 4568, new ClientGUI());
+                client = new Client(ip, port, new ClientGUI());
                 break;
             } else if (gameMode == 2) {
                 // CLI is initialized
-                client = new Client("127.0.0.1", 4568, new ClientCLI());
+                client = new Client(ip, port, new ClientCLI());
                 break;
             } else {
                 System.out.println("Wrong game mode selected, please select again.");

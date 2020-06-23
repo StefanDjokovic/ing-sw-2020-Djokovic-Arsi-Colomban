@@ -15,9 +15,16 @@ public class ServerApp {
 
         // Starting Server
         Server server;
+        Scanner s = new Scanner(System.in);
+        System.out.println("Please input the desired port for the server");
+        int port = s.nextInt();
+        while (port <= 1024) {
+            System.out.println("Must not be a reserved port");
+            port = s.nextInt();
+        }
         try {
-            System.out.println("Server is now running");
-            server = new Server();
+            System.out.println("Initializing the server on port " + port);
+            server = new Server(port);
             server.run();
         } catch (IOException e) {
             System.err.println("Impossible to initialize the server: " + e.getMessage() + "!");
