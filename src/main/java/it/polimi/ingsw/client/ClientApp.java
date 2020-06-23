@@ -10,6 +10,11 @@ import java.util.Scanner;
 
 public class ClientApp {
 
+    /**
+     * Main method of the client, asks the user for the server's ip and port and asks the client if they want to
+     * use GUI or CLI
+     * @param args command line arguments
+     */
     public static void main(String[] args){
 
         Scanner s = new Scanner(System.in);
