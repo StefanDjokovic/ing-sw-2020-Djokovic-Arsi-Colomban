@@ -23,11 +23,22 @@ public class ClientApp {
         String ip = s.nextLine();
         if(ip.equals("localhost"))
             ip = "127.0.0.1";
-        System.out.println("Please input server port");
-        int port = s.nextInt();
-        while (port <= 1024) {
-            System.out.println("Must not be a reserved port");
+        System.out.println("Input 'default' to use the game's default port, 'custom' if the server you want to connect to uses a different port");
+        String command = s.next();
+        int port;
+        while(!command.equals("default") && !command.equals("custom")) {
+            System.out.println("ERROR! Input either 'default' or 'custom'");
+            command = s.next();
+        }
+        if(command.equals("default")) {
+            port = 4567;
+        } else {
+            System.out.println("Please input server port");
             port = s.nextInt();
+            while (port <= 1024) {
+                System.out.println("Must not be a reserved port");
+                port = s.nextInt();
+            }
         }
 
         System.out.println("Please select game mode:\n1) GUI\n2) CLI");
