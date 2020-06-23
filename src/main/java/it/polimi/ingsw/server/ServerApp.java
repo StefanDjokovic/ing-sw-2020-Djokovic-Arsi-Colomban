@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ServerApp {
 
     /**
-     * Starts the server, creating it and running it
+     * Starts the server, asking the user for the port, creating it and running it
      * @param args command line arguments
      */
     public static void main( String[] args )
