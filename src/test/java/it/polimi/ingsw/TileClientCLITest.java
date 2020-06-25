@@ -10,5 +10,7 @@ public class TileClientCLITest {
         assertEquals('t', tv.getInitWorker());
         assertEquals(0, tv.getBuildingLevel());
         assertFalse(tv.hasDome());
+
+        assertEquals(true, tv.hasWorker());
     }
 }
