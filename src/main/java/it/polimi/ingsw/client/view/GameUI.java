@@ -598,30 +598,30 @@ public class GameUI {
     }
 
     /**
-     * Removes all properties from given node
-     * @param node Node to remove property from
+     * Removes all properties from given node.
+     * @param node Node to remove property from.
      */
     private void clearCSSClass(Node node) {
         node.getStyleClass().clear();
     }
 
     /**
-     * Display win message
+     * Display win message.
      */
     public void youWin() {
         Platform.runLater(() -> {infoLabel.setText("Congrats, you won!");});
     }
 
     /**
-     * Display lose message
+     * Display lose message.
      */
     public void youLose() {
         Platform.runLater(() -> {infoLabel.setText("I'm sorry but you lost :(");});
     }
 
     /**
-     * Returns reference to game scene, used to apply the scene to main stage
-     * @return
+     * Returns reference to game scene, used to apply the scene to main stage.
+     * @return Reference to game scene.
      */
     public Scene getScene() {
         return this.gameScene;

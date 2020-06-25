@@ -128,10 +128,10 @@ public class Player {
     //TODO: Complete the param part of the JAVADOC
     /**
      * Builds the object that contains all the options for a turn step, given the parameters
-     * @param upDiff
-     * @param downDiff
-     * @param canIntoOpp
-     * @param limitations
+     * @param upDiff Max levels the worker can climb up (aka level difference from start to destination tile)
+     * @param downDiff Max levels the worker can go down (aka level difference from start to destination tile)
+     * @param canIntoOpp True if the worker is allowed to go in a tile occupied by a worker of other players
+     * @param limitations List of tiles the worker can't move to
      * @return OptionSelection instance with all the player's options for that turn step
      */
     public OptionSelection getOptionsPlayer(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {

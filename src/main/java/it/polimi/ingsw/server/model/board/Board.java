@@ -14,7 +14,7 @@ public class Board {
      */
     public Board() {
         initTiles ();
-        System.out.println("initialized");
+        //System.out.println("initialized");
     }
 
     /**

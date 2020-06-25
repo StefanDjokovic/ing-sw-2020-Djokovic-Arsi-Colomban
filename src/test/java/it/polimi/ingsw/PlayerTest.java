@@ -5,7 +5,11 @@ import it.polimi.ingsw.server.model.board.NonExistingTileException;
 import it.polimi.ingsw.server.model.board.Tile;
 import it.polimi.ingsw.server.model.logger.Logger;
 import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.player.Worker;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class PlayerTest {
@@ -47,6 +51,59 @@ public class PlayerTest {
             assertEquals(2, p.getWorkersSize());
             p.delete();
             assertEquals(0, p.getWorkers().stream().map(x -> x.getPosTile().getWorker()==null ? 0 : 1).reduce(0, Integer::sum), 0);
+        } catch (NonExistingTileException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void nWorkersTest() {
+        Board b = new Board();
+        Player p = new Player("test", 't');
+
+        assertEquals(0, p.nWorkers());
+
+        try {
+            b.getTile(1, 1).setWorker(new Worker(p, b.getTile(1, 1)));
+            p.addWorker(b.getTile(1, 1));
+        } catch (NonExistingTileException e) {
+            fail();
+        }
+
+        assertEquals(1, p.nWorkers());
+    }
+
+    @Test
+    public void getPlayerOptionsTest() {
+        Board b = new Board();
+        Tile t;
+        Player p = new Player("test", 't');
+
+        try {
+            b.getTile(1, 1).setWorker(new Worker(p, b.getTile(1, 1)));
+            p.addWorker(b.getTile(1, 1));
+            ArrayList<ArrayList<Integer>> l = new ArrayList<>();
+            ArrayList<Integer> list = new ArrayList<>();
+            l.add(list);
+            list.add(1);
+            list.add(1);
+            list.add(0);
+            list.add(0);
+            list.add(1);
+            list.add(0);
+            list.add(2);
+            list.add(0);
+            list.add(2);
+            list.add(1);
+            list.add(2);
+            list.add(2);
+            list.add(1);
+            list.add(2);
+            list.add(0);
+            list.add(2);
+            list.add(0);
+            list.add(1);
+            assertEquals(l, p.getOptionsPlayer(1, 99, false, null).getValues());
         } catch (NonExistingTileException e) {
             fail();
         }
