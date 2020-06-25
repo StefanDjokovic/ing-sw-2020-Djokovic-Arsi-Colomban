@@ -24,6 +24,10 @@ public class CoreGUI extends Application {
 
     private static CoreGUI thisGUI;
 
+    /**
+     * Starts the GUI, creating the reference to the stage of the JavaFX class.
+     * @param primaryStage Reference to the stage used by other classes to change scene.
+     */
     @Override
     public void start(Stage primaryStage) {
         synchronized (CoreGUI.class) {
@@ -47,6 +51,10 @@ public class CoreGUI extends Application {
         }
     }
 
+    /**
+     * Static method, return reference to the stage of the JavaFX class.
+     * @return Reference to the stage of the JavaFX class.
+     */
     public static Stage getStage() {
         synchronized (CoreGUI.class) {
             try {
@@ -61,6 +69,10 @@ public class CoreGUI extends Application {
         return thisStage;
     }
 
+    /**
+     * Returns reference to the JavaFX class.
+     * @return Reference to the JavaFX class.
+     */
     public static CoreGUI getInstance() {
         synchronized (CoreGUI.class) {
             try {
@@ -75,6 +87,9 @@ public class CoreGUI extends Application {
         return thisGUI;
     }
 
+    /**
+     * Stops the process correctly.
+     */
     @Override
     public void stop(){
         System.exit(0);

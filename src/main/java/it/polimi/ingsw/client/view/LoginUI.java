@@ -32,6 +32,10 @@ public class LoginUI {
 
     private ChoiceBox cb;
 
+    /**
+     * Creates the scene for the login page.
+     * @param isJoining True if the player is joining an already existing lobby (can't choose number of players), false if the player is creating a new lobby (can choose number of players).
+     */
     public LoginUI(boolean isJoining) {
         GridPane root = new GridPane();
         root.setHgap(8);
@@ -111,12 +115,14 @@ public class LoginUI {
         root.add(bt, 0, 9, 2, 1);
         root.add(info, 0, 10, 2, 1);
 
-        //HBox root2 = new HBox();
         root.setPadding(new Insets(25));
         root.setAlignment(Pos.CENTER);
-        //root.setSpacing(25);
     }
 
+    /**
+     * Calls the function in ClientGUI.class to send information about name and number of players to the server
+     * @param mode True if the player is joining an already existing lobby (can't choose number of players), false if the player is creating a new lobby (can choose number of players).
+     */
     private void sendName(boolean mode) {
         //disable
         bt.setDisable(true);
@@ -124,6 +130,7 @@ public class LoginUI {
         txtf.setDisable(true);
         cb.setDisable(true);
         info.setText("Waiting for other player(s)");
+
         //send
         if(!mode) {
             ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString(), Integer.parseInt(cb.getSelectionModel().getSelectedItem().toString()));
@@ -132,6 +139,10 @@ public class LoginUI {
         }
     }
 
+    /**
+     * Returns reference of the login scene, used to change the scene of the main stage.
+     * @return Reference of the login scene.
+     */
     public Scene getScene() {
         return this.loginScene;
     }

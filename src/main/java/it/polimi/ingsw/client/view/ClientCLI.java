@@ -40,8 +40,6 @@ public class ClientCLI extends ClientView {
     private char playerInit;
     private ArrayList<String> selectedGods;
 
-    // TODO: NOT LIKE THIS
-    // adapted
     public ClientCLI() {
         boardView = new BoardView().getBoardView();
         scanner = new Scanner(System.in);

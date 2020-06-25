@@ -34,6 +34,9 @@ public class GodSelectionUI {
 
     private Button b;
 
+    /**
+     * Creates the scene for the god selection scene.
+     */
     public GodSelectionUI() {
         godButtons = createGodButtons();
         godButtons.stream().forEach(x -> x.setDisable(true));
@@ -97,6 +100,10 @@ public class GodSelectionUI {
         root.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Creates one card for every implemented god.
+     * @return List of god cards (selectable).
+     */
     private ArrayList<ToggleButton> createGodButtons() {
         ArrayList<ToggleButton> buttons = new ArrayList<>();
         selectedGods = new ArrayList<>();
@@ -159,6 +166,10 @@ public class GodSelectionUI {
         return buttons;
     }
 
+    /**
+     * Starts the scene using only the cards allowed by the server
+     * @param options List of gods the player can choose from
+     */
     public void startGodSelection(ArrayList<String> options) {
         godButtons.stream().forEach(x -> {
             if (options.contains(x.getId())) {
@@ -169,6 +180,10 @@ public class GodSelectionUI {
         b.setDisable(false);
     }
 
+    /**
+     * Calls the function in ClientGUI.class to send information about the selected god.
+     * @param gods List containing a list of selected gods.
+     */
     public void sendGods(ArrayList<String> gods) {
         //disable
         b.setDisable(true);
@@ -178,6 +193,10 @@ public class GodSelectionUI {
         ClientGUI.getInstance().sendGods(gods);
     }
 
+    /**
+     * Returns reference to the god selection scene, used the change scene of the main stage.
+     * @return Reference to the god selection scene.
+     */
     public Scene getScene() {
         return this.godSelectionScene;
     }

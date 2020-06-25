@@ -26,6 +26,9 @@ public class LobbyUI {
     //private Lobby lobbyList;
     private ArrayList<Button> buttons = new ArrayList<>();
 
+    /**
+     * Creates the scene for the lobby scene.
+     */
     public LobbyUI(){
         GridPane root = new GridPane();
         root.getStylesheets().add("style.css");
@@ -96,6 +99,10 @@ public class LobbyUI {
         root.add(b, 0, 2, 3, 1);
     }
 
+    /**
+     * Recreates the list of the lobbies, basic refresh function.
+     * @param lobbies List of the lobbies received from the server.
+     */
     public void refresh(ArrayList<LobbyView> lobbies) {
         if(lobbies == null) {
             fp.getChildren().clear();
@@ -153,10 +160,15 @@ public class LobbyUI {
         }
     }
 
+    //???
     private void selectLobby() {
 
     }
 
+    /**
+     * Returns reference to scene, used to change the scene of the main stage.
+     * @return Reference to the lobby scene.
+     */
     public Scene getScene() {
         return this.lobbyScene;
     }

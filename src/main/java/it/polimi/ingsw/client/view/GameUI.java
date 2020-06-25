@@ -44,6 +44,9 @@ public class GameUI {
         return infoLabel;
     }
 
+    /**
+     * Creates the scene for the game scene.
+     */
     public GameUI() {
         initBoardSlots();
         //ClientGUI.getInstance().setBoardSlots(boardSlots);
@@ -200,6 +203,9 @@ public class GameUI {
         root.add(info, 1, 4);
     }
 
+    /**
+     * Initiates the information about the board.
+     */
     private void initBoardSlots() {
         boardSlots = new Button[5][5];
 
@@ -223,6 +229,10 @@ public class GameUI {
 
     private ArrayList<String> placedWorkers = new ArrayList<>();
 
+    /**
+     * Permits the player to choose where to place the workers (1 at a time)
+     * @param workers Coordinates of the workers of other players
+     */
     public void placeWorkers(int[][] workers) {
         placedWorkers.clear();
         Button[][] buttons = boardSlots;
@@ -269,6 +279,9 @@ public class GameUI {
         infoLabel.setText("Place your workers (2)");
     }
 
+    /**
+     * Calls the function in ClientGUI.class to send information about the coordinates of the worker placed
+     */
     private void sendWorkers() {
         //disable
         confirmButton.setDisable(true);
@@ -292,8 +305,11 @@ public class GameUI {
 
     private int selectedWorker;
 
+    /**
+     * Permits the player to choose which worker to move (or use power)
+     * @param opt Possible workers the player can choose (and possible tiles it can move to)
+     */
     public void selectWorker(OptionSelection opt) {
-
         currOpt = opt;
 
         ArrayList<ArrayList<Integer>> options = currOpt.getValues();
@@ -383,6 +399,9 @@ public class GameUI {
         Platform.runLater(() -> {infoLabel.setText("Choose the worker you want to move and where you want to move");});
     }
 
+    /**
+     * Calls the function in ClientGUI.class to send information about the selected worker
+     */
     private void sendMovement() {
         //disable
         confirmButton.setDisable(true);
@@ -396,6 +415,10 @@ public class GameUI {
 
     private ArrayList<Integer> buildInfo = new ArrayList<>();
 
+    /**
+     *  Permits the player to choose where to move the selected worker
+     * @param opt Possible workers the player can choose.
+     */
     public void selectWorkerOneOption(OptionSelection opt) {
         ArrayList<ArrayList<Integer>> options = opt.getValues();
         for (int x = 0; x < 5; x++) {
@@ -436,6 +459,9 @@ public class GameUI {
         Platform.runLater(() -> {infoLabel.setText("Choose where you want to build");});
     }
 
+    /**
+     * Calls the function in ClientGUI.class to send information about where to build
+     */
     private void sendBuildInfo() {
         //disable
         confirmButton.setDisable(true);
@@ -447,6 +473,10 @@ public class GameUI {
         buildInfo.clear();
     }
 
+    /**
+     * Updates information about the game board
+     * @param tv Matrix containing information about current state of the game
+     */
     public void updateBoard(TileView[][] tv) {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
@@ -473,6 +503,9 @@ public class GameUI {
         }
     }
 
+    /**
+     * Lets the player skip the current action
+     */
     public void makeSkippable() {
         skipButton.setDisable(false);
         skipButton.setOnAction((ActionEvent e) -> {
@@ -487,6 +520,9 @@ public class GameUI {
         });
     }
 
+    /**
+     * Disables all the buttons of the board
+     */
     private void disableAllButtons() {
         for (int a = 0; a < 5; a++) {
             for (int b = 0; b < 5; b++) {
@@ -496,12 +532,22 @@ public class GameUI {
         }
     }
 
+    /**
+     * Adds a css property to given node
+     * @param node Node to apply property to
+     * @param CSSClass Class containing the property
+     */
     private void addCSSClass(Node node, String CSSClass) {
         if (!node.getStyleClass().contains(CSSClass)) {
             node.getStyleClass().add(CSSClass);
         }
     }
 
+    /**
+     * Removes a css property from given node
+     * @param node Node to remove property from
+     * @param CSSClass Class containing the property
+     */
     private void removeCSSClass(Node node, String CSSClass) {
         int index = node.getStyleClass().indexOf(CSSClass);
         if (index != -1) {
@@ -509,6 +555,10 @@ public class GameUI {
         }
     }
 
+    /**
+     * Removes properties of the borders of given node
+     * @param node Node to remove property from
+     */
     private void removeCSSBorders(Node node) {
         int index = node.getStyleClass().indexOf("greenBorder");
         if (index != -1) {
@@ -520,6 +570,10 @@ public class GameUI {
         }
     }
 
+    /**
+     * Removes properties of the background of given node
+     * @param node Node to remove property from
+     */
     private void removeCSSBackground(Node node) {
         int index = node.getStyleClass().indexOf("dome");
         if (index != -1) {
@@ -543,18 +597,32 @@ public class GameUI {
         }
     }
 
+    /**
+     * Removes all properties from given node
+     * @param node Node to remove property from
+     */
     private void clearCSSClass(Node node) {
         node.getStyleClass().clear();
     }
 
+    /**
+     * Display win message
+     */
     public void youWin() {
         Platform.runLater(() -> {infoLabel.setText("Congrats, you won!");});
     }
 
+    /**
+     * Display lose message
+     */
     public void youLose() {
         Platform.runLater(() -> {infoLabel.setText("I'm sorry but you lost :(");});
     }
 
+    /**
+     * Returns reference to game scene, used to apply the scene to main stage
+     * @return
+     */
     public Scene getScene() {
         return this.gameScene;
     }
