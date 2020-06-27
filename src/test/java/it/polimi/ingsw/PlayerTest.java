@@ -108,4 +108,23 @@ public class PlayerTest {
             fail();
         }
     }
+
+    @Test
+    public void toStringTest() {
+        Board b = new Board();
+        Tile t;
+        Player p = new Player("test", 't');
+        p.setGodLogic("Artemis", null, b);
+        try {
+            b.getTile(1, 1).setWorker(new Worker(p, b.getTile(1, 1)));
+            p.addWorker(b.getTile(1, 1));
+            b.getTile(3, 3).setWorker(new Worker(p, b.getTile(3, 3)));
+            p.addWorker(b.getTile(3, 3));
+            String ris = new String("Name: test; Initial: t\nSelected God: Artemis\nWorker 1 at: 1 1\nWorker 2 at: 3 3");
+
+            assertEquals(ris, p.toString());
+        } catch (NonExistingTileException e) {
+            fail();
+        }
+    }
 }
