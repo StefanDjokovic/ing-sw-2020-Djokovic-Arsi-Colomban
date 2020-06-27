@@ -40,6 +40,10 @@ public class ClientGUI extends ClientView {
         tg.start();
     }
 
+    public char getPlayerInitial() {
+        return this.playerInit;
+    }
+
     /**
      * Gets called when one of the observed classes sends an update,
      * the view acts accordingly to the content of the received Request message
@@ -249,6 +253,13 @@ public class ClientGUI extends ClientView {
         } else {
             game.youLose();
         }
+    }
+
+    /**
+     * Displays final message in case of loss because of no option
+     */
+    public void displayGameEnd() {
+        game.youLose();
     }
 
     //needed but not used

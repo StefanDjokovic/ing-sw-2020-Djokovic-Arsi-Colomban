@@ -95,9 +95,8 @@ public class Player {
      * Starts executing the turn routine
      * @param game model's main object, that initializes everything else
      */
-    public void executeTurn(Game game) {
-        System.out.println(godLogic);
-        godLogic.executeTurn(game);
+    public int executeTurn(Game game) {
+        return godLogic.executeTurn(game);
     }
 
     /**
@@ -137,9 +136,8 @@ public class Player {
     public OptionSelection getOptionsPlayer(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
         OptionSelection opt = new OptionSelection();
         for (Worker w: workers) {
-            opt.fuseOptions(w.getOptionsWorker(upDiff, downDiff, canIntoOpp, limitations));
+            opt.addWorkerOptions(w.getOptionsWorker(upDiff, downDiff, canIntoOpp, limitations));
         }
-
         return opt;
     }
 

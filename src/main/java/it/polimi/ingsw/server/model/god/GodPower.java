@@ -34,7 +34,7 @@ public abstract class GodPower {
 
     /**
      * Getter method for optionSelection
-     * @param logger
+     * @param logger the logger of the game
      * @return class that contains the player's options for this power's turn step
      */
     public abstract OptionSelection getOptions(Logger logger);

@@ -22,7 +22,6 @@ public class AnswerPowerCoordinates extends Answer {
         message = "Answer move coordinates";
     }
 
-
     @Override
     public void act(Controller controller) {
         if (posXFrom == -1)

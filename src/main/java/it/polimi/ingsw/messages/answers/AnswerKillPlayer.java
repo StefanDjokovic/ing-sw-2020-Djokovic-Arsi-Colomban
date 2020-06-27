@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.controller.Controller;
 // ONLY sent by the ServerSocket to delete a player
 public class AnswerKillPlayer extends Answer {
 
-    char initial;
+    private char initial;
 
     public AnswerKillPlayer(char initial) {
         message = "This client was killed";

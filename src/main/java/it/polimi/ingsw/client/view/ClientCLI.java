@@ -47,6 +47,9 @@ public class ClientCLI extends ClientView {
         this.printSelectableBoard(null);
     }
 
+    public char getPlayerInitial() {
+        return this.playerInit;
+    }
     /**
      * Gets called when one of the observed classes sends an update,
      * the view acts accordingly to the content of the received Request message
@@ -62,10 +65,9 @@ public class ClientCLI extends ClientView {
     }
 
     /**
-     * Sets the player's initial
+     * Sets the player's initial as decided by the model
      * @param init players initial
      */
-    // sets players initial as decided by the model
     public void setPlayerInit(char init) {
         this.playerInit = init;
     }
@@ -80,7 +82,7 @@ public class ClientCLI extends ClientView {
     }
 
     /**
-     * Asks the user for player's name and updates observers with an Answer containg the name
+     * Asks the user for player's name and updates observers with an Answer containing the name
      */
     // TODO: not like this!
     public void getPlayerInfo() {
@@ -194,18 +196,6 @@ public class ClientCLI extends ClientView {
         System.out.println("You picked " + godSelected);
         updateObservers(new AnswerPlayerGod(godSelected, initial));
     }
-
-    /*// gui specific method
-    public void sendGods(ArrayList<String> gods) {
-        //TODO add possibility to send list of gods, not only 1 god
-        this.selectedGods = gods;
-        //updateObservers(new AnswerPlayerGod(gods, this.playerInit));
-    }
-
-    // gui specific method
-    public ArrayList<String> getGods() {
-        return this.selectedGods;
-    }*/
 
     /**
      * Displays "Waiting opponent move" on the cli
@@ -491,6 +481,10 @@ public class ClientCLI extends ClientView {
         else {
             System.out.println("You lost, NOOB!");
         }
+    }
+
+    public void displayGameEnd() {
+        System.out.println("You lost because you are stuck! LOL");
     }
 
     /**

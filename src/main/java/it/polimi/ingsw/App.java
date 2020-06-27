@@ -31,7 +31,7 @@ public class App {
             game.init();
 
             // Start the game
-            game.gameStart();
+            game.gameTurnExecution();
         }
 
         System.out.println("END");

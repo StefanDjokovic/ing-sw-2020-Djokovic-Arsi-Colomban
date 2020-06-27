@@ -27,8 +27,6 @@ public abstract class Request implements Serializable {
         return this.initial;
     }
 
-    public boolean isAsync() {return isAsync;}
-
     public String getMessage() {
         return message;
     }

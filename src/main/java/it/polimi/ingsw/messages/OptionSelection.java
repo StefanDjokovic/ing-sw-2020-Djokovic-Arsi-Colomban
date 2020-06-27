@@ -12,8 +12,8 @@ public class OptionSelection implements Serializable {
         values.add(positions);
     }
 
-    public void fuseOptions(OptionSelection opt) {
-        this.values.addAll(opt.values);
+    public void addWorkerOptions(ArrayList<Integer> optWorker) {
+        this.values.add(optWorker);
     }
 
     public ArrayList<ArrayList<Integer>> getValues() {
@@ -30,6 +30,17 @@ public class OptionSelection implements Serializable {
                 }
             }
         }
+    }
+
+    public OptionSelection singleOption(int x, int y) {
+        OptionSelection newOpt = new OptionSelection();
+        for (ArrayList<Integer> a: this.getValues()) {
+            if (a.get(0) == x && a.get(1) == y) {
+                newOpt.setOptions(a);
+                break;
+            }
+        }
+        return newOpt;
     }
 
     @Override

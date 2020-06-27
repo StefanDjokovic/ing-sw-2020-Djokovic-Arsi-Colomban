@@ -5,8 +5,8 @@ import it.polimi.ingsw.messages.Answer;
 
 public class AnswerPlayerGod extends Answer {
 
-    String godName;
-    char initial;
+    private String godName;
+    private char initial;
 
     public AnswerPlayerGod(String godName, char initial) {
         System.out.println("HERE IT IS!");
@@ -18,9 +18,5 @@ public class AnswerPlayerGod extends Answer {
     @Override
     public void act(Controller controller) {
         controller.setPlayerGod(godName, initial);
-    }
-
-    public String getGodName() {
-        return this.godName;
     }
 }

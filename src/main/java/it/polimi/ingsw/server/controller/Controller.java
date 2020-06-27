@@ -73,6 +73,23 @@ public class Controller implements Observer {
     }
 
     /**
+     * Initializes the worker on the tile picked by the player
+     * @param x x coordinate of the selected tile
+     * @param y y coordinate of the selected tile
+     * @param initial player's initial
+     */
+    public void setWorker(int x, int y, char initial) {
+        try {
+            System.out.println("Setting worker from controller: Initial: " + initial);
+            System.out.println("Positions at: " + x + " " + y);
+            game.setWorker(x, y, initial);
+        } catch (NonExistingTileException e) {
+            System.out.println("Sth wrong");
+        }
+        initWorkerOrContinue();
+    }
+
+    /**
      * If there are still players with uninitialized workers it initializes them,
      * otherwise it starts the game
      */
@@ -82,8 +99,30 @@ public class Controller implements Observer {
         }
         else {
             game.setOtherGodLogic();
-            game.asyncGameStart();
+            game.gameTurnExecution();
         }
+    }
+
+    /**
+     * Executes a turn step, using a power from a starting tile to a destination tile
+     * @param posXFrom x coordinate of the starting tile
+     * @param posYFrom y coordinate of the starting tile
+     * @param posXTo x coordinate of the destination tile
+     * @param posYTo y coordinate of the destination tile
+     */
+    public void executeMoveOrBuild(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        System.out.println("Controller is executing Move");
+        game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
+        game.gameTurnExecution();
+    }
+
+    /**
+     * Executes a turn step when the player passes
+     */
+    public void executePass() {
+        System.out.println("Controller has received a pass");
+        game.gameReceiveOptions();
+        game.gameTurnExecution();
     }
 
     /**
@@ -108,46 +147,7 @@ public class Controller implements Observer {
             game.initWorker();
         }
         else {
-            game.asyncGameStart();
+            game.gameTurnExecution();
         }
-    }
-
-    /**
-     * Initializes the worker on the tile picked by the player
-     * @param x x coordinate of the selected tile
-     * @param y y coordinate of the selected tile
-     * @param initial player's initial
-     */
-    public void setWorker(int x, int y, char initial) {
-        try {
-            System.out.println("Setting worker from controller: Initial: " + initial);
-            System.out.println("Positions at: " + x + " " + y);
-            game.setWorker(x, y, initial);
-        } catch (NonExistingTileException e) {
-            System.out.println("Sth wrong");
-        }
-        initWorkerOrContinue();
-    }
-
-    /**
-     * Executes a turn step, using a power from a starting tile to a destination tile
-     * @param posXFrom x coordinate of the starting tile
-     * @param posYFrom y coordinate of the starting tile
-     * @param posXTo x coordinate of the destination tile
-     * @param posYTo y coordinate of the destination tile
-     */
-    public void executeMoveOrBuild(int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        System.out.println("Controller is executing Move");
-        game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
-        game.asyncGameStart();
-    }
-
-    /**
-     * Executes a turn step when the player passes
-     */
-    public void executePass() {
-        System.out.println("Controller has received a pass");
-        game.gameReceiveOptions();
-        game.asyncGameStart();
     }
 }

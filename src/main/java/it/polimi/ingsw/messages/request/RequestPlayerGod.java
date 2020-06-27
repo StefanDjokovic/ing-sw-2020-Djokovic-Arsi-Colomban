@@ -2,13 +2,12 @@ package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.client.view.ClientCLI;
 
 import java.util.ArrayList;
 
 public class RequestPlayerGod extends Request {
 
-    ArrayList<String> options;
+    private ArrayList<String> options;
 
     public RequestPlayerGod(char initial, ArrayList<String> options) {
         System.out.println("GIMME PLAYER GOD");

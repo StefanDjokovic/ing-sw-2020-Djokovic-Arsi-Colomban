@@ -38,7 +38,6 @@ public class Server {
         if (lobbies.size() != 0) {
             ArrayList<LobbyView> lobbyViews = new ArrayList<>();
             for (Lobby l : lobbies.values()) {
-                LobbyView q = new LobbyView(l.lobbyNumber, l.nPlayers, l.getPlayersName());
                 lobbyViews.add(new LobbyView(l.lobbyNumber, l.nPlayers, l.getPlayersName()));
             }
             return new RequestServerInformation(lobbyViews, n);
@@ -72,7 +71,7 @@ public class Server {
             int lobbyNumb = getNewAvailableLobbyNumber();
             Lobby newLobby = new Lobby(lobbyNumb, nPlayers, playerName, playerSocket);
             lobbies.put(lobbyNumb, newLobby);
-            System.out.println("LOBBY SUCCESSFULLY CREATED");
+            System.out.println("LOBBY " + lobbyNumb + " SUCCESSFULLY CREATED");
             return newLobby;
         }
         else {
@@ -80,8 +79,8 @@ public class Server {
             if (!lobbies.get(lobbyNumber).isFull() && lobbies.get(lobbyNumber).isAvailable(playerName)) {
                 lobbies.get(lobbyNumber).addPlayer(playerName, playerSocket);
                 if (lobbies.get(lobbyNumber).isFull()) {
-                    System.out.println("Starting lobbyMultiple");
-                    startLobbyMultiple(lobbies.get(lobbyNumber));
+                    System.out.println("Starting the Lobby " + lobbyNumber);
+                    startLobbyGame(lobbies.get(lobbyNumber));
                 }
                 return lobbies.get(lobbyNumber);
             }
@@ -94,7 +93,7 @@ public class Server {
      * and then starts the game, asking first for the players' gods and then starting the turn routine
      * @param lobby lobby that needs to be initialized (it has reached its specified number of players)
      */
-    public synchronized void startLobbyMultiple(Lobby lobby) {
+    public synchronized void startLobbyGame(Lobby lobby) {
     // Will go trough only when all the ServerSocket have given all the necessary information
         int nPlayers = lobby.getNPlayers();
         System.out.println("Joining Lobby");
@@ -145,14 +144,12 @@ public class Server {
         c2.addObserver(controller);
 
         // Starting the game (first asks for gods, than worker placement, and then starts with the turn structure
-        System.out.println("\n\n\nClontroller.startGame()\n\n\n");
         controller.initGods();
-        System.out.println("\n\n\n\n\nClontroller CLOSED\n\n\n\n\n");
 
     }
 
     /**
-     * The server tries to get nPlayers (set by command line) client connections
+     * The server stays active for new player connections client connections
      */
     public void run() {
         while (true) {

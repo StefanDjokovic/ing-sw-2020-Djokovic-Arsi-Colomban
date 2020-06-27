@@ -78,12 +78,13 @@ public class Client implements Observer {
 
     @Override
     public void update(Request request) {
-        System.out.println("Error: client should send Requests");
+        System.out.println("Error: client should not send Requests");
     }
 
     @Override
     public void update(Answer answer) {
         try {
+            answer.printMessage();
             this.socketWrite(answer);
         } catch (IOException e) {
             System.out.println("Server appears to be down, closing the connection");

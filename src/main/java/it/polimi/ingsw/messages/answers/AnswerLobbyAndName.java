@@ -3,11 +3,12 @@ package it.polimi.ingsw.messages.answers;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.server.controller.Controller;
 
+// Used only by Server to organize the lobby
 public class AnswerLobbyAndName extends Answer {
 
-    int lobbyNumber;
-    int nPlayers;
-    String name;
+    private int lobbyNumber;
+    private int nPlayers;
+    private String name;
 
 
     public AnswerLobbyAndName(int lobbyNumber, String name, int nPlayers) {
@@ -29,6 +30,6 @@ public class AnswerLobbyAndName extends Answer {
 
     @Override
     public void act(Controller controller) {
-        System.out.println("With this method it should not be activated");
+        System.out.println("This Answer should not go into Controller");
     }
 }

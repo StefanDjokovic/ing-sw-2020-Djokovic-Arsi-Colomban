@@ -6,13 +6,12 @@ import it.polimi.ingsw.messages.Answer;
 
 public class AnswerPlayerName extends Answer {
 
-    String string;
+    private String string;
 
     public AnswerPlayerName(String string) {
         message = "Answer Player's name";
         this.string = string;
     }
-
 
     @Override
     public void act(Controller controller) {
