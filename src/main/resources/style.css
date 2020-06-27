@@ -222,6 +222,8 @@
     -fx-background-color: white;
     -fx-border-color:transparent;
     -fx-border-width: 3 3 3 3;
+    -fx-background-image: url('graphic_resources/resourcesGUI/refresh.png');
+    -fx-background-size: 100% 100%;
 }
 
 #buttonR:hover{
@@ -229,6 +231,8 @@
     -fx-background-color: white;
     -fx-border-color: lime;
     -fx-border-width: 3 3 3 3;
+    -fx-background-image: url('graphic_resources/resourcesGUI/refresh.png');
+    -fx-background-size: 100% 100%;
 }
 
 #buttonE, #buttonE:disabled {
@@ -242,5 +246,19 @@
     -fx-background-radius:3;
     -fx-background-color: white;
     -fx-border-color: lime;
+    -fx-border-width: 2 2 2 2;
+}
+
+#buttonAdd:hover{
+    -fx-background-radius:3;
+    -fx-background-color: white;
+    -fx-border-color: lime;
+    -fx-border-width: 3 3 3 3;
+}
+
+#buttonAdd, #buttonAdd:disabled {
+    -fx-background-radius:3;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
     -fx-border-width: 2 2 2 2;
 }

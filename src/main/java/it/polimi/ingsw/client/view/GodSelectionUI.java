@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GodSelectionUI {
 
@@ -108,36 +109,58 @@ public class GodSelectionUI {
         ArrayList<ToggleButton> buttons = new ArrayList<>();
         selectedGods = new ArrayList<>();
 
-        ToggleButton b = new ToggleButton();
-        b.setId("Apollo");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Artemis");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Athena");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Atlas");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Demeter");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Hephaestus");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Hermes");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Minotaur");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Pan");
-        buttons.add(b);
-        b = new ToggleButton();
-        b.setId("Prometheus");
-        buttons.add(b);
+        //ToggleButton b;
+        ArrayList<String> gods = new ArrayList<>(Arrays.asList("Apollo", "Artemis", "Athena", "Atlas", "Demeter", "Hephaestus", "Hermes", "Minotaur", "Pan", "Prometheus", "Aphrodite", "Ares", "Bia", "Chaos", "Charon", "Chronus", "Circe", "Dionysus", "Eros", "Hera", "Hestia", "Hypnus", "Limus", "Medusa", "Morpheus", "Persephone", "Poseidon", "Selene", "Triton", "Zeus"));
+        gods.stream().forEach(x -> {
+            ToggleButton b = new ToggleButton();
+            b.setId(x);
+            buttons.add(b);
+        });
+
+//        b.setId("Apollo");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Artemis");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Athena");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Atlas");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Demeter");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Hephaestus");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Hermes");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Minotaur");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Pan");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Prometheus");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Zeus");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Ares");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Charon");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Hestia");
+//        buttons.add(b);
+//        b = new ToggleButton();
+//        b.setId("Poseidon");
+//        buttons.add(b);
 
         int playersNum = ClientGUI.getInstance().getPlayersNum();
 

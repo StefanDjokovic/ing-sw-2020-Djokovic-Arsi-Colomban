@@ -2,15 +2,13 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.messages.LobbyView;
 import javafx.event.ActionEvent;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.VPos;
+import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -66,19 +64,25 @@ public class LobbyUI {
         title.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
         GridPane.setHalignment(title, HPos.CENTER);
 
-        Button refresh = new Button("Refresh");
+        Button refresh = new Button();
         refresh.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
         refresh.setId("buttonR");
         refresh.setPrefSize(50, 50);
-        refresh.setBackground(new Background(new BackgroundImage(new Image("graphic_resources/resourcesGUI/refresh.png", refresh.getWidth(), refresh.getHeight(), false, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(refresh.getWidth(), refresh.getHeight(), true, true, true, false))));
+
+        //refresh.setBackground(new Background(new BackgroundImage(new Image("graphic_resources/resourcesGUI/refresh.png", refresh.getWidth(), refresh.getHeight(), false, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(refresh.getWidth(), refresh.getHeight(), true, true, true, false))));
+        BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/graphic_resources/resourcesGUI/refresh.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false));
+        Background background = new Background(backgroundImage);
+        refresh.setBackground(background);
+
         refresh.setOnAction((ActionEvent e) -> {
             System.out.println("Ask for resfresh");
+            ClientGUI.getInstance().sendLobbySelection(0, false, -1);
         });
         GridPane.setHalignment(refresh, HPos.RIGHT);
 
         Button add = new Button("+");
         add.setFont(Font.font("Futura", FontWeight.BOLD, 20));
-        add.setId("buttonR");
+        add.setId("buttonAdd");
         add.setPrefSize(50, 50);
         add.setOnAction((ActionEvent e) -> {
             ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
@@ -104,14 +108,15 @@ public class LobbyUI {
      * @param lobbies List of the lobbies received from the server.
      */
     public void refresh(ArrayList<LobbyView> lobbies) {
-        if(lobbies == null) {
+        fp.getChildren().clear();
+        if(lobbies != null) {
             fp.getChildren().clear();
-        } else {
             //for every lobby create the view
             for (int x = 0; x < lobbies.size(); x++) {
                 int currentX = x;
 
-                GridPane slot = new GridPane();
+                //GridPane slot = new GridPane();
+                VBox slot = new VBox();
                 slot.setId("slot");
                 slot.getStylesheets().add("style.css");
                 slot.setPrefSize(180, 190);
@@ -123,8 +128,9 @@ public class LobbyUI {
                 playerNum.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
                 GridPane.setHalignment(playerNum, HPos.CENTER);
 
-                Label others = new Label("Players: " + lobbies.get(x).getPlayersName().stream().reduce((a, b) -> a.toString() + ", " + b.toString()));
+                Label others = new Label("Players: " + lobbies.get(x).getPlayersName().stream().reduce((a, b) -> a.toString() + ", " + b.toString()).orElse(""));
                 others.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
+                others.setWrapText(true);
                 GridPane.setHalignment(others, HPos.CENTER);
                 others.setWrapText(true);
 
@@ -146,15 +152,18 @@ public class LobbyUI {
                 r2.setVgrow(Priority.NEVER);
                 RowConstraints r3 = new RowConstraints();
                 r3.setVgrow(Priority.ALWAYS);
-                slot.getRowConstraints().addAll(r1, r2, r3);
+                //slot.getRowConstraints().addAll(r1, r2, r3);
 
-                slot.add(num, 0, 0);
-                slot.add(playerNum, 0, 1);
-                slot.add(others, 0, 2);
-                slot.add(select, 0, 3);
+//                slot.add(num, 0, 0);
+//                slot.add(playerNum, 0, 1);
+//                slot.add(others, 0, 2);
+//                slot.add(select, 0, 3);
+                slot.getChildren().addAll(num, playerNum, others, select);
+                slot.setSpacing(16);
+                slot.setAlignment(Pos.CENTER);
                 slot.setPadding(new Insets(10));
-                slot.setHgap(10);
-                slot.setVgap(10);
+                //slot.setHgap(10);
+                //slot.setVgap(10);
                 fp.getChildren().add(slot);
             }
         }
