@@ -36,7 +36,7 @@ public class DoubleMove extends Move {
             System.out.println("\n\nI recognize that my worker is the last one I used sus\n\n");
             System.out.println(logger);
             System.out.println("\nEND LOG PRINT\n");
-            opt =  getGodLogic().getOptionsGodLogic(1, 99, false, limitations, true);
+            opt =  getGodLogic().getOptionsGodLogic(1, 0, false, limitations, true);
             int lastWorkerUsedX = logger.getLastLog().getAction(2);     // X position dest
             int lastWorkerUsedY = logger.getLastLog().getAction(3);     // Y position dest
             for (ArrayList<Integer> a: opt.getValues()) {
@@ -50,7 +50,7 @@ public class DoubleMove extends Move {
             System.out.println(opt);
         }
         else
-            opt =  getGodLogic().getOptionsGodLogic(1, 99, false, null, false);
+            opt =  getGodLogic().getOptionsGodLogic(1, 0, false, null, false);
         return opt;
     }
 }

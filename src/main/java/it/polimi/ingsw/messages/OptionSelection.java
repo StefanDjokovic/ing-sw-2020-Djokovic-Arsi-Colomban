@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages;
 
+import javax.swing.text.html.Option;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -41,6 +42,46 @@ public class OptionSelection implements Serializable {
             }
         }
         return newOpt;
+    }
+
+    public void addWorkerAsOption() {
+        values.get(0).add(values.get(0).get(0));
+        values.get(0).add(values.get(0).get(1));
+    }
+
+    public OptionSelection removeOptionsPerimeter() {
+        OptionSelection newOpt = new OptionSelection();
+        ArrayList<Integer> opt = new ArrayList<>();
+        System.out.println("Here is opt again");
+        System.out.println(this);
+        ArrayList<Integer> oldOpt = this.getValues().get(0);
+        opt.add(oldOpt.get(0));
+        opt.add(oldOpt.get(1));
+        for (int i = 2; i < oldOpt.size(); i += 2) {
+            if (!(oldOpt.get(i) == 0 || oldOpt.get(i) == 4 || oldOpt.get(i + 1) == 0 || oldOpt.get(i + 1) == 4)) {
+                opt.add(oldOpt.get(i));
+                opt.add(oldOpt.get(i + 1));
+            }
+        }
+        newOpt.addWorkerOptions(opt);
+
+        return newOpt;
+    }
+
+
+    /**
+     * Indicates whether a player has options for his turn or not
+     * @return true if the player has playable options, false if not
+     */
+    public boolean hasOptions() {
+        for (ArrayList<Integer> o: this.getValues()) {
+            if (o.size() > 2) {
+                System.out.println("These are the options");
+                System.out.println(o);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

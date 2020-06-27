@@ -118,7 +118,7 @@ public class ClientCLI extends ClientView {
      */
     public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
         if (error != 0) {
-            System.out.println("\nSomething went wrong with the previous selection. Please try again\n");
+            System.out.println("\nRefreshed, lobby was either full or you refreshed the page\n");
         }
         displayLobbies(lobbies);
         System.out.println("Choose:");
@@ -363,6 +363,11 @@ public class ClientCLI extends ClientView {
                 return;
             }
         }
+        if (!opt.hasOptions()) {
+            updateObservers(new AnswerKillPlayer(playerInit));
+            return;
+        }
+
         int w_select = getDestSelection(opt.getValues().get(0), -1, -1);
 
         Answer answer = new AnswerPowerCoordinates(
@@ -385,6 +390,10 @@ public class ClientCLI extends ClientView {
                 updateObservers(answer);
                 return;
             }
+        }
+        if (!opt.hasOptions()) {
+            updateObservers(new AnswerKillPlayer(playerInit));
+            return;
         }
         int selected = getWorkerSelection(opt.getValues().get(0).get(0), opt.getValues().get(0).get(1), opt.getValues().get(1).get(0), opt.getValues().get(1).get(1));
         int otherSelection = 0;

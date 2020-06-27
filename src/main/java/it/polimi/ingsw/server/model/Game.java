@@ -62,13 +62,18 @@ public class Game extends Observable{
             opt.put("Basic", 0);
             opt.put("Apollo", 1);
             opt.put("Artemis", 2);
-            opt.put("Atlas", 3);
-            opt.put("Pan", 4);
+            opt.put("Athena", 3);
+            opt.put("Atlas", 4);
             opt.put("Demeter", 5);
             opt.put("Hephaestus", 6);
-            opt.put("Minotaur", 7);
-            opt.put("Prometheus", 8);
-            opt.put("Athena", 9);
+            opt.put("Minotaur", 8);
+            opt.put("Pan", 9);
+            opt.put("Prometheus", 10);
+            opt.put("Ares", 12);
+            opt.put("Charon", 15);
+            opt.put("Hestia", 21);
+            opt.put("Poseidon", 27);
+            opt.put("Zeus", 30);
         }
 
         updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod()).getInitial(), new ArrayList<>(opt.keySet())));

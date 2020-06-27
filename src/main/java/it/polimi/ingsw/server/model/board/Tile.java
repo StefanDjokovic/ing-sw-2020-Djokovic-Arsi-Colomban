@@ -173,6 +173,20 @@ public class Tile {
     }
 
     /**
+     * Deletes 1 building level to the tile, returns true if the action was successful.
+     * @throws NotBuildableException Thrown if it was not possible to build on this tile.
+     * @return Reference to the tile used.
+     */
+    public Tile buildDown() throws NotBuildableException {
+        if (buildingLevel >= 1 && !this.hasDome()) {
+            buildingLevel--;
+            return this;
+        } else {
+            throw new NotBuildableException();
+        }
+    }
+
+    /**
      * Returns a list of the neighbors.
      * @return List with reference to all the 8 neighbors of this tile.
      */
@@ -285,7 +299,7 @@ public class Tile {
     upDiff is how many level of difference it can select upwards, downDiff is downwards, canIntoOpp if it's a special
     power for which it can select opponent cells
      */
-    public ArrayList<Integer> getOptions(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
+    public ArrayList<Integer> getOptions(int upDiff, int downMin, boolean canIntoOpp, ArrayList<Integer> limitations) {
 
         ArrayList<Tile> tiles = this.getNeighborsOptimized();
 
@@ -296,7 +310,7 @@ public class Tile {
 
         for (Tile t: tiles) {
             if (!t.hasWorker() || (canIntoOpp && (t.getWorker().getOwner().getInitial() != this.getWorker().getOwner().getInitial()))) {
-                if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
+                if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && t.getBuildingLevel() >= downMin && !t.hasDome()) {
                     if (limitations == null) {
                         cellOpt.add(t.getX());
                         cellOpt.add(t.getY());

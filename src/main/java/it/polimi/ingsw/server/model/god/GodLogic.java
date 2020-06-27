@@ -27,7 +27,7 @@ public class GodLogic {
     private boolean canPass = false;
     private Logger logger;
     private int upDiffDebuff = 0;
-    private int downDiffDebuff = 99;
+    private int downDiffDebuff = 0;
     private boolean hasDebuff = false;
     private ArrayList<GodLogic> otherGodLogic;
 
@@ -86,6 +86,26 @@ public class GodLogic {
                 turn.add(new MoveLimiter(this, false));
                 turn.add(new Build(this, false));
                 break;
+            case "Zeus":
+                turn.add(new Move(this, false));
+                turn.add(new BuildUnderneath(this, false));
+                break;
+            case "Ares":
+                turn.add(new Move(this, false));
+                turn.add(new Build(this, true));
+                turn.add(new Destroy(this, false));
+                break;
+            case "Hestia":
+                turn.add(new Move(this, false));
+                turn.add(new Build(this, false));
+                turn.add(new BuildLimited(this, true));
+                break;
+            case "Poseidon":
+                turn.add(new Move(this, false));
+                turn.add(new Build(this, false));
+                turn.add(new BuildMultipleWithCondition(this, true));
+                turn.add(new BuildMultipleWithCondition(this, true));
+                break;
         }
     }
 
@@ -97,7 +117,7 @@ public class GodLogic {
     public int executeTurn(Game game) {
         OptionSelection opt = turn.get(currStep).getOptions(logger);
         if (opt != null) {
-            if (hasOptions(opt)) {
+            if (opt.hasOptions() || turn.get(currStep).getCanPass()) {
                 this.optionSelection = opt;
                 RequestUpdateBoardView RequestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), '*');
                 game.updateObservers(RequestUpdateBoardView);
@@ -141,6 +161,9 @@ public class GodLogic {
         return 0;
     }
 
+    public int levelWorker(int x, int y) {
+        return player.getWorkerLevel(x, y);
+    }
     /**
      * Executes one step of the turn when the player passes
      * @return 1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
@@ -168,16 +191,16 @@ public class GodLogic {
 
     /**
      * @param upDiff how many levels it may move upwards
-     * @param downDiff how many levels it may move downwards
+     * @param downMin minimum level of downwards
      * @param canIntoOpp if it may move into an opponent
      * @param limitations if there are particular cell where it may not move
      * @param canPass if the power can be skipped
      * @return OptionSelection contains the cells in which the player may decide to move
      */
-    public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations, boolean canPass) {
+    public OptionSelection getOptionsGodLogic(int upDiff, int downMin, boolean canIntoOpp, ArrayList<Integer> limitations, boolean canPass) {
         this.canPass = canPass;
         if (!hasDebuff || upDiff > 4)   // upDiff > 4 means it's a build power, which is not affected by any debuff
-            return getPlayer().getOptionsPlayer(upDiff, downDiff, canIntoOpp, limitations);
+            return getPlayer().getOptionsPlayer(upDiff, downMin, canIntoOpp, limitations);
         else {
             return getPlayer().getOptionsPlayer(this.upDiffDebuff, this.downDiffDebuff, canIntoOpp, limitations);
         }
@@ -266,21 +289,4 @@ public class GodLogic {
      */
     public void setOtherGodLogic(ArrayList<GodLogic> otherGodLogic) { this.otherGodLogic = otherGodLogic; }
 
-
-    /**
-     * Indicates whether a player has options for his turn or not
-     * @param opt list of the player's workers and the possible destinations for their power's list of
-     *            the player's workers and the possible destinations for their powers
-     * @return true if the player has playable options, false if not
-     */
-    private boolean hasOptions(OptionSelection opt) {
-        for (ArrayList<Integer> o: opt.getValues()) {
-            if (o.size() > 2) {
-                System.out.println("These are the options");
-                System.out.println(o);
-                return true;
-            }
-        }
-        return false;
-    }
 }

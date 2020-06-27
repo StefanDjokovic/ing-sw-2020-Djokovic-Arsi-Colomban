@@ -53,13 +53,13 @@ public class Worker {
     /**
      * Builds the object that contains all the options for a turn step, given the parameters
      * @param upDiff
-     * @param downDiff
+     * @param downMin
      * @param canIntoOpp
      * @param limitations
      * @return OptionSelection instance with all the player's options for that turn step
      */
-    public ArrayList<Integer> getOptionsWorker(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
-        return posTile.getOptions(upDiff, downDiff, canIntoOpp, limitations);
+    public ArrayList<Integer> getOptionsWorker(int upDiff, int downMin, boolean canIntoOpp, ArrayList<Integer> limitations) {
+        return posTile.getOptions(upDiff, downMin, canIntoOpp, limitations);
     }
 
     /**
