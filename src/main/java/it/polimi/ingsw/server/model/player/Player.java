@@ -124,6 +124,15 @@ public class Player {
         return getGodLogic().godLogicReceiveOptions(board, posXFrom, posYFrom, posXTo, posYTo);
     }
 
+
+    public int getWorkerLevel(int x, int y) {
+        for (Worker w: workers) {
+            if (w.getPosX() == x && w.getPosY() == y)
+                return w.getPosTile().getBuildingLevel();
+        }
+        return -1;
+    }
+
     //TODO: Complete the param part of the JAVADOC
     /**
      * Builds the object that contains all the options for a turn step, given the parameters

@@ -100,6 +100,12 @@ public class GodLogic {
                 turn.add(new Build(this, false));
                 turn.add(new BuildLimited(this, true));
                 break;
+            case "Poseidon":
+                turn.add(new Move(this, false));
+                turn.add(new Build(this, false));
+                turn.add(new BuildMultipleWithCondition(this, true));
+                turn.add(new BuildMultipleWithCondition(this, true));
+                break;
         }
     }
 
@@ -155,6 +161,9 @@ public class GodLogic {
         return 0;
     }
 
+    public int levelWorker(int x, int y) {
+        return player.getWorkerLevel(x, y);
+    }
     /**
      * Executes one step of the turn when the player passes
      * @return 1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
