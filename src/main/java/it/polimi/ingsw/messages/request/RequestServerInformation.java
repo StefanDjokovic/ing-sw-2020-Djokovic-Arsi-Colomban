@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class RequestServerInformation extends Request {
 
-    ArrayList<LobbyView> lobbies;
-    int error;
+    private ArrayList<LobbyView> lobbies;
+    private int error;
 
     // Note: lobbies can be null
     public RequestServerInformation(ArrayList<LobbyView> lobbies, int error) {

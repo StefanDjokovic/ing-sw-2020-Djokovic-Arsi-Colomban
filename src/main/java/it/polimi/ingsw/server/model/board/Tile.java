@@ -285,53 +285,40 @@ public class Tile {
     upDiff is how many level of difference it can select upwards, downDiff is downwards, canIntoOpp if it's a special
     power for which it can select opponent cells
      */
-    public OptionSelection getOptions(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
-        OptionSelection opt = new OptionSelection();
+    public ArrayList<Integer> getOptions(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
 
         ArrayList<Tile> tiles = this.getNeighborsOptimized();
-        //System.out.println("Neighbours:");
-        //System.out.println(tiles);
+
 
         ArrayList<Integer> cellOpt = new ArrayList<>();
         cellOpt.add(this.getX());
         cellOpt.add(this.getY());
 
         for (Tile t: tiles) {
-            if (!t.hasWorker()) {     // if the tile does not have a worker or an opponent cell can be selected{
-                addOpt(upDiff, downDiff, limitations, cellOpt, t);
-
-            }
-            else if (canIntoOpp && (t.getWorker().getOwner().getInitial() != this.getWorker().getOwner().getInitial())) {
-                addOpt(upDiff, downDiff, limitations, cellOpt, t);
-
-            }
-        }
-
-        opt.setOptions(cellOpt);
-        return opt;
-    }
-
-    private void addOpt(int upDiff, int downDiff, ArrayList<Integer> limitations, ArrayList<Integer> cellOpt, Tile t) {
-        if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
-            if (limitations == null) {
-                cellOpt.add(t.getX());
-                cellOpt.add(t.getY());
-            }
-            else {
-                boolean appeared = false;
-                for (int i = 0; i < limitations.size(); i += 2) {
-                    if (limitations.get(i) == t.getX() && limitations.get(i + 1) == t.getY()) {
-                        appeared = true;
-                        break;
+            if (!t.hasWorker() || (canIntoOpp && (t.getWorker().getOwner().getInitial() != this.getWorker().getOwner().getInitial()))) {
+                if (t.getBuildingLevel() - this.getBuildingLevel() <= upDiff && this.getBuildingLevel() - t.getBuildingLevel() <= downDiff && !t.hasDome()) {
+                    if (limitations == null) {
+                        cellOpt.add(t.getX());
+                        cellOpt.add(t.getY());
+                    }
+                    else {
+                        boolean appeared = false;
+                        for (int i = 0; i < limitations.size(); i += 2) {
+                            if (limitations.get(i) == t.getX() && limitations.get(i + 1) == t.getY()) {
+                                appeared = true;
+                                break;
+                            }
+                        }
+                        if (!appeared) {
+                            cellOpt.add(t.getX());
+                            cellOpt.add(t.getY());
+                        }
                     }
                 }
-                if (!appeared) {
-                    cellOpt.add(t.getX());
-                    cellOpt.add(t.getY());
-                }
             }
-
         }
+
+        return cellOpt;
     }
 
     @Override

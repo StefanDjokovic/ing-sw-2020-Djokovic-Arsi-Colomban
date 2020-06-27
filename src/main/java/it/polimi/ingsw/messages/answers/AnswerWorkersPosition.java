@@ -5,9 +5,9 @@ import it.polimi.ingsw.messages.Answer;
 
 public class AnswerWorkersPosition extends Answer {
 
-    int x;
-    int y;
-    char initial;
+    private int x;
+    private int y;
+    private char initial;
 
     public AnswerWorkersPosition(int x, int y, char initial) {
         message = "Answer Worker Position: ";

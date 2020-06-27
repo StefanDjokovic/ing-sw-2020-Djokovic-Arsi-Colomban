@@ -38,7 +38,7 @@ public class GodLogic {
         this.logger = logger;
         this.board = board;
 
-        // TODO: pull this informations from JSON file
+        // TODO: pull this information from JSON file
         // Initializing Turn Schema
         switch (godLogicName) {
             case "Basic":
@@ -90,42 +90,13 @@ public class GodLogic {
     }
 
     /**
-     * Getter method for player attribute
-     * @return the object's player attribute
-     */
-    public Player getPlayer() { return this.player; }
-
-    /**
-     * Getter method for godLociName attribute
-     * @return the object's godLogicName attribute
-     */
-    public String getGodLogicName() {
-        return godLogicName;
-    }
-
-    /**
-     * Setter method for player attribute
-     * @param canPass flag, if true the move can be skipped, if false it can't be skipped
-     */
-    public void setPass(boolean canPass) {
-        this.canPass = canPass;
-    }
-
-    /**
-     * Setter method for player attribute
-     * @param otherGodLogic TODO
-     */
-    public void setOtherGodLogic(ArrayList<GodLogic> otherGodLogic) { this.otherGodLogic = otherGodLogic; }
-
-    /**
      * Executes the turn routine, creating all the messages that the model will have to send to the view to update
      * the view's board, to request the power coordinates.
      * @param game model's main object, that initializes everything else
      */
-    public void executeTurn(Game game) {
+    public int executeTurn(Game game) {
         OptionSelection opt = turn.get(currStep).getOptions(logger);
         if (opt != null) {
-            game.printPlayersDescription();
             if (hasOptions(opt)) {
                 this.optionSelection = opt;
                 RequestUpdateBoardView RequestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), '*');
@@ -133,16 +104,17 @@ public class GodLogic {
                 Request request = new RequestPowerCoordinates(opt, this.canPass, player.getInitial());
                 System.out.println("\u001B[101m" +  "Sending stuff" + "\u001B[0m");
                 game.updateObservers(request);
-//                RequestUpdateBoardView requestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), player.getInitial());
-//                game.updateObservers(new RequestDisplayBoard(player.getInitial(), requestUpdateBoardView));
             }
             else {
-                System.out.println("THIS BOY HAS LOST!");
-                game.deletePlayer(getPlayer());
+                System.out.println("THIS BOY HAS LOST! Initial: " + getPlayer().getInitial());
+                game.reportLossPlayer(getPlayer());
             }
         }
-        else
+        else {
             game.gameReceiveOptions();
+            return 1;
+        }
+        return 0;
     }
 
     /**
@@ -153,7 +125,8 @@ public class GodLogic {
      * @param posYFrom y coordinate of the worker that is going to use the power
      * @param posXTo x coordinate of the tile targeted by the power
      * @param posYTo y coordinate of the tile targeted by the power
-     * @return 2 if the power usage wins the game,  1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
+     * @return 2 if the power usage wins the game,  1 if the turn step was the last one of the routine,
+     *         0 if there are other steps afterwards
      */
     public int godLogicReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         int status = turn.get(currStep).power(board, posXFrom, posYFrom, posXTo, posYTo);
@@ -162,6 +135,7 @@ public class GodLogic {
         currStep++;
         if (currStep % turn.size() == 0) {
             currStep = 0;
+            this.hasDebuff = false; // resets the debuff state
             return 1;
         }
         return 0;
@@ -185,7 +159,6 @@ public class GodLogic {
      * @param upDiffDebuff "magnitude" of the debuff
      */
     public void debuffOpponents(int upDiffDebuff) {
-        System.out.println("OTHERGODLOGIC SIZE : " + otherGodLogic.size());
         for (GodLogic g: otherGodLogic) {
             g.upDiffDebuff = upDiffDebuff;
             g.hasDebuff = true;
@@ -194,20 +167,18 @@ public class GodLogic {
 
 
     /**
-     * TODO
-     * @param upDiff
-     * @param downDiff
-     * @param canIntoOpp
-     * @param limitations
-     * @param canPass
-     * @return
+     * @param upDiff how many levels it may move upwards
+     * @param downDiff how many levels it may move downwards
+     * @param canIntoOpp if it may move into an opponent
+     * @param limitations if there are particular cell where it may not move
+     * @param canPass if the power can be skipped
+     * @return OptionSelection contains the cells in which the player may decide to move
      */
     public OptionSelection getOptionsGodLogic(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations, boolean canPass) {
         this.canPass = canPass;
-        if (!hasDebuff || upDiff > 4)
+        if (!hasDebuff || upDiff > 4)   // upDiff > 4 means it's a build power, which is not affected by any debuff
             return getPlayer().getOptionsPlayer(upDiff, downDiff, canIntoOpp, limitations);
         else {
-            this.hasDebuff = false;
             return getPlayer().getOptionsPlayer(this.upDiffDebuff, this.downDiffDebuff, canIntoOpp, limitations);
         }
     }
@@ -267,14 +238,48 @@ public class GodLogic {
     }
 
     /**
+     * Getter method for player attribute
+     * @return the object's player attribute
+     */
+    public Player getPlayer() { return this.player; }
+
+    /**
+     * Getter method for godLociName attribute
+     * @return the object's godLogicName attribute
+     */
+    public String getGodLogicName() {
+        return godLogicName;
+    }
+
+    /**
+     * Setter method for player attribute
+     * @param canPass flag, if true the move can be skipped, if false it can't be skipped
+     */
+    public void setPass(boolean canPass) {
+        this.canPass = canPass;
+    }
+
+    /**
+     * Setter method for player attribute
+     * @param otherGodLogic contains the godLogic of the other opponents, so it may debuff them if particular powers
+     *                      are activated
+     */
+    public void setOtherGodLogic(ArrayList<GodLogic> otherGodLogic) { this.otherGodLogic = otherGodLogic; }
+
+
+    /**
      * Indicates whether a player has options for his turn or not
-     * @param opt list of the player's workers and the possible destinations for their powerslist of the player's workers and the possible destinations for their powers
-     * @return true if the player has playble options, false if not
+     * @param opt list of the player's workers and the possible destinations for their power's list of
+     *            the player's workers and the possible destinations for their powers
+     * @return true if the player has playable options, false if not
      */
     private boolean hasOptions(OptionSelection opt) {
         for (ArrayList<Integer> o: opt.getValues()) {
-            if (o.size() > 2)
+            if (o.size() > 2) {
+                System.out.println("These are the options");
+                System.out.println(o);
                 return true;
+            }
         }
         return false;
     }

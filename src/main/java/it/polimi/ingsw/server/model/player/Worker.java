@@ -58,7 +58,7 @@ public class Worker {
      * @param limitations
      * @return OptionSelection instance with all the player's options for that turn step
      */
-    public OptionSelection getOptionsWorker(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
+    public ArrayList<Integer> getOptionsWorker(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
         return posTile.getOptions(upDiff, downDiff, canIntoOpp, limitations);
     }
 

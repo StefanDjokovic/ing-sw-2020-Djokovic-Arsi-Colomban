@@ -2,11 +2,10 @@ package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.client.view.ClientCLI;
 
 public class RequestDisplayBoard extends Request {
 
-    private RequestUpdateBoardView requestUpdateBoardViewBoardView = null;
+    private RequestUpdateBoardView viewBoardView = null;
 
     public RequestDisplayBoard(char initial) {
         this.initial = initial;
@@ -15,7 +14,7 @@ public class RequestDisplayBoard extends Request {
     }
 
     public RequestDisplayBoard(char initial, RequestUpdateBoardView requestUpdateBoardView) {
-        this.requestUpdateBoardViewBoardView = requestUpdateBoardView;
+        this.viewBoardView = requestUpdateBoardView;
         this.initial = initial;
         message = "Board display";
         this.isAsync = true;
@@ -23,8 +22,8 @@ public class RequestDisplayBoard extends Request {
 
     @Override
     public void accept(ClientView clientView) {
-        if (requestUpdateBoardViewBoardView != null)
-            requestUpdateBoardViewBoardView.accept(clientView);
+        if (viewBoardView != null)
+            viewBoardView.accept(clientView);
         clientView.displayBoard();
     }
 }

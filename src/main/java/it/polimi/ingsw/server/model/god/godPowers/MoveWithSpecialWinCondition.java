@@ -20,6 +20,8 @@ public class MoveWithSpecialWinCondition extends Move {
             sourceWorker.changePosition(destTile);
             if (specialWinCondition(board.getTile(posXFrom, posYFrom).getBuildingLevel(), board.getTile(posXTo, posYTo).getBuildingLevel()))
                 return 2;
+            if (checkWinCondition(board.getTile(posXFrom, posYFrom), board.getTile(posXTo, posYTo)) == 2)
+                return 2;
             return 1;
         } catch (NonExistingTileException e) {
             System.out.println("You failed!");
