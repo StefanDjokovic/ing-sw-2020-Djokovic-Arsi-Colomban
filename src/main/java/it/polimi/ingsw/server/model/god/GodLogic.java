@@ -2,8 +2,6 @@ package it.polimi.ingsw.server.model.god;
 
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
-import it.polimi.ingsw.messages.request.RequestCriticalError;
-import it.polimi.ingsw.messages.request.RequestDisplayBoard;
 import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
 import it.polimi.ingsw.messages.request.RequestUpdateBoardView;
 import it.polimi.ingsw.server.model.BoardView;
@@ -79,7 +77,7 @@ public class GodLogic {
                 break;
             case "Prometheus":
                 turn.add(new Build(this, true));
-                turn.add(new MoveLimited(this, false));
+                turn.add(new MoveLimitedOnFirstBuild(this, false));
                 turn.add(new Build(this, false));
                 break;
             case "Athena":
@@ -105,6 +103,11 @@ public class GodLogic {
                 turn.add(new Build(this, false));
                 turn.add(new BuildMultipleWithCondition(this, true));
                 turn.add(new BuildMultipleWithCondition(this, true));
+                break;
+            case "Charon":
+                turn.add(new Teleport(this, true));
+                turn.add(new MoveLimitedOnFirstTeleport(this, false));
+                turn.add(new Build(this, false));
                 break;
         }
     }

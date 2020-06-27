@@ -7,8 +7,8 @@ import it.polimi.ingsw.server.model.god.GodLogic;
 
 import java.util.ArrayList;
 
-public class MoveLimited extends Move {
-    public MoveLimited(GodLogic godLogic, boolean canPass) {
+public class MoveLimitedOnFirstBuild extends Move {
+    public MoveLimitedOnFirstBuild(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }
 
