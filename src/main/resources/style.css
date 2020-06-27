@@ -121,12 +121,12 @@
     -fx-border-width: 2 2 2 2;
 }
 
-#Artemis, #Apollo, #Athena, #Atlas, #Demeter, #Haephestus, #Hermes, #Minotaur, #Pan, #Prometheus {
+#Artemis, #Apollo, #Athena, #Atlas, #Demeter, #Haephestus, #Hermes, #Minotaur, #Pan, #Prometheus, #Aphrodite, #Ares, #Bia, #Chaos, #Charon, #Chronus, #Circe, #Dionysus, #Eros, #Hera, #Hestia, #Hypnus, #Limus, #Medusa, #Morpheus, #Persephone, #Poseidon, #Selene, #Triton, #Zeus {
     -fx-border-color:transparent;
     -fx-border-width: 2 2 2 2;
 }
 
-#Artemis:selected, #Apollo:selected, #Athena:selected, #Atlas:selected, #Demeter:selected, #Hephaestus:selected, #Hermes:selected, #Minotaur:selected, #Pan:selected, #Prometheus:selected {
+#Artemis:selected, #Apollo:selected, #Athena:selected, #Atlas:selected, #Demeter:selected, #Hephaestus:selected, #Hermes:selected, #Minotaur:selected, #Pan:selected, #Prometheus:selected, #Aphrodite:selected, #Ares:selected, #Bia:selected, #Chaos:selected, #Charon:selected, #Chronus:selected, #Circe:selected, #Dionysus:selected, #Eros:selected, #Hera:selected, #Hestia:selected, #Hypnus:selected, #Limus:selected, #Medusa:selected, #Morpheus:selected, #Persephone:selected, #Poseidon:selected, #Selene:selected, #Triton:selected, #Zeus:selected {
     -fx-border-color:lime;
     -fx-border-width: 2 2 2 2;
 }
