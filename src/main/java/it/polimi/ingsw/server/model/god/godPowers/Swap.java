@@ -35,6 +35,6 @@ public class Swap extends Move {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        return getGodLogic().getOptionsGodLogic(1, 99, true, null, getCanPass());
+        return getGodLogic().getOptionsGodLogic(1, 0, true, null, getCanPass());
     }
 }

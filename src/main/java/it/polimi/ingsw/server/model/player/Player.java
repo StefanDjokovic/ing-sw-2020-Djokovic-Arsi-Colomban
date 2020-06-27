@@ -128,15 +128,15 @@ public class Player {
     /**
      * Builds the object that contains all the options for a turn step, given the parameters
      * @param upDiff Max levels the worker can climb up (aka level difference from start to destination tile)
-     * @param downDiff Max levels the worker can go down (aka level difference from start to destination tile)
+     * @param downMin Minimum height of the cell to be acceptable
      * @param canIntoOpp True if the worker is allowed to go in a tile occupied by a worker of other players
      * @param limitations List of tiles the worker can't move to
      * @return OptionSelection instance with all the player's options for that turn step
      */
-    public OptionSelection getOptionsPlayer(int upDiff, int downDiff, boolean canIntoOpp, ArrayList<Integer> limitations) {
+    public OptionSelection getOptionsPlayer(int upDiff, int downMin, boolean canIntoOpp, ArrayList<Integer> limitations) {
         OptionSelection opt = new OptionSelection();
         for (Worker w: workers) {
-            opt.addWorkerOptions(w.getOptionsWorker(upDiff, downDiff, canIntoOpp, limitations));
+            opt.addWorkerOptions(w.getOptionsWorker(upDiff, downMin, canIntoOpp, limitations));
         }
         return opt;
     }

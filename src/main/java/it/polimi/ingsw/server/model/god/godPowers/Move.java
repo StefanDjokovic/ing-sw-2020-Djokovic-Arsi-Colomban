@@ -13,7 +13,7 @@ import it.polimi.ingsw.server.model.player.Worker;
 public class Move extends GodPower {
 
     int moveUp = 1;
-    int moveDown = 99;
+    int moveDown = 0;
 
     public Move(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);

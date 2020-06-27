@@ -32,7 +32,7 @@ public class Build extends GodPower {
 
     @Override
     public OptionSelection getOptions(Logger logger) {
-        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 99, false, null, getCanPass());
+        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 0, false, null, getCanPass());
         // Build is used after a Move: you can only build with the character that has moved
         if (logger.getLastLog().getPlayerInit() == getGodLogic().getPlayer().getInitial()) {
             Log log;
@@ -49,7 +49,7 @@ public class Build extends GodPower {
             opt = opt.singleOption(lastWorkerUsedX, lastWorkerUsedY);
             System.out.println(opt);
         }
-
+        System.out.println("Am I in getOptions?");
         return opt;
     }
 

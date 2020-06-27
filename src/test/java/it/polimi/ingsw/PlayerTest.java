@@ -103,7 +103,7 @@ public class PlayerTest {
             list.add(2);
             list.add(0);
             list.add(1);
-            assertEquals(l, p.getOptionsPlayer(1, 99, false, null).getValues());
+            assertEquals(l, p.getOptionsPlayer(1, 0, false, null).getValues());
         } catch (NonExistingTileException e) {
             fail();
         }

@@ -19,7 +19,7 @@ public class BuildWithLimitation extends Build {
         ArrayList<Integer> limit = new ArrayList<>();
         limit.add(logger.getLastLog().getAction(2));
         limit.add(logger.getLastLog().getAction(3));
-        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 99, false, limit, getCanPass());
+        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 0, false, limit, getCanPass());
         if (logger.getLastLog().getPlayerInit() == getGodLogic().getPlayer().getInitial()) {
             Log log = logger.getLastLog();
             int lastWorkerUsedX = log.getAction(0);

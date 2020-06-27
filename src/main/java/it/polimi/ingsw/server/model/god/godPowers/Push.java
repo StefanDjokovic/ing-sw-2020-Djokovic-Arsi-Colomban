@@ -37,7 +37,7 @@ public class Push extends Move {
     @Override
     public OptionSelection getOptions(Logger logger) {
 
-        OptionSelection opt = getGodLogic().getOptionsGodLogic(1, 99, true, null, getCanPass());
+        OptionSelection opt = getGodLogic().getOptionsGodLogic(1, 0, true, null, getCanPass());
 
         for (ArrayList<Integer> comb: opt.getValues()) {
             for (int i = 2; i < comb.size(); i += 2) {
