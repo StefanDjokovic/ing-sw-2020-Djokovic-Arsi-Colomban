@@ -147,8 +147,9 @@ public class Controller implements Observer {
      * @param initial initial of the player that needs to be deleted
      */
     public void killPlayer(char initial) {
-        game.deletePlayer(game.getPlayerFromInitial(initial));
-        gameContinueOnKillPlayer();
+        boolean isCurrent = game.deletePlayer(game.getPlayerFromInitial(initial));
+        if (isCurrent)
+            gameContinueOnKillPlayer();
     }
 
     /**
