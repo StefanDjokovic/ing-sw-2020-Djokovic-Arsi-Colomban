@@ -35,6 +35,8 @@ public class GodSelectionUI {
 
     private Button b;
 
+    private int nGodPicks = 0;
+
     /**
      * Creates the scene for the god selection scene.
      */
@@ -162,7 +164,7 @@ public class GodSelectionUI {
 //        b.setId("Poseidon");
 //        buttons.add(b);
 
-        int playersNum = ClientGUI.getInstance().getPlayersNum();
+        //int playersNum = ClientGUI.getInstance().getPlayersNum();
 
         ToggleButton x;
         for(int a = 1 ; a <= buttons.size() ;  a++){
@@ -172,11 +174,11 @@ public class GodSelectionUI {
             x.setOnAction((ActionEvent event) -> {
                 if(selectedGods.contains(((Control) event.getSource()).getId())) {
                     selectedGods.remove(String.valueOf(((Control) event.getSource()).getId()));
-                    System.out.println("Remove: " + ((Control) event.getSource()).getId());
+                    //System.out.println("Remove: " + ((Control) event.getSource()).getId());
                 } else {
-                    if(selectedGods.size() < playersNum) {
+                    if(selectedGods.size() < nGodPicks) {
                         selectedGods.add(String.valueOf(((Control) event.getSource()).getId()));
-                        System.out.println("Add: " + ((Control) event.getSource()).getId());
+                        //System.out.println("Add: " + ((Control) event.getSource()).getId());
                     } else {
                         ((ToggleButton) event.getSource()).setSelected(false);
                     }
@@ -193,7 +195,7 @@ public class GodSelectionUI {
      * Starts the scene using only the cards allowed by the server
      * @param options List of gods the player can choose from
      */
-    public void startGodSelection(ArrayList<String> options) {
+    public void startGodSelection(ArrayList<String> options, int nPicks) {
         godButtons.stream().forEach(x -> {
             if (options.contains(x.getId())) {
                 x.setDisable(false);
@@ -201,6 +203,7 @@ public class GodSelectionUI {
             }
         });
         b.setDisable(false);
+        nGodPicks = nPicks;
     }
 
     /**
@@ -213,7 +216,11 @@ public class GodSelectionUI {
         godButtons.stream().forEach(x -> x.setDisable(true));
         info.setText("Waiting for other player(s)");
         //send
-        ClientGUI.getInstance().sendGods(gods);
+        if(nGodPicks == 1) {
+            ClientGUI.getInstance().sendGods(gods, false);
+        } else if (nGodPicks > 1) {
+            ClientGUI.getInstance().sendGods(gods, true);
+        }
     }
 
     /**

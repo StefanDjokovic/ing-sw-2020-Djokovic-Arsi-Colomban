@@ -137,6 +137,8 @@ public class ClientGUI extends ClientView {
             ss.setScene(login.getScene());
             ss.setTitle("Login phase");
             ss.setResizable(true);
+            ss.setMinHeight(400);
+            ss.setMinWidth(400);
         });
     }
 
@@ -167,7 +169,9 @@ public class ClientGUI extends ClientView {
             selection = new GodSelectionUI();
             ss.setScene(selection.getScene());
             ss.setTitle("God selection");
-            selection.startGodSelection(options);
+            ss.setMinHeight(300);
+            ss.setMinWidth(350);
+            selection.startGodSelection(options, nPicks);
         });
     }
 
@@ -175,9 +179,13 @@ public class ClientGUI extends ClientView {
      * Sends the information asked with "getPlayerGod(...)" to server. Called by GodSelectionUI.class.
      * @param gods List of gods selected by the player (can be 1 or more).
      */
-    public void sendGods(ArrayList<String> gods) {
+    public void sendGods(ArrayList<String> gods, boolean first) {
         this.selectedGods = gods;
-        updateObservers(new AnswerPlayerGod(gods.get(0), this.playerInit));
+        if (first) {
+            updateObservers(new AnswerPlayerGod(gods, this.playerInit));
+        } else {
+            updateObservers(new AnswerPlayerGod(gods.get(0), this.playerInit));
+        }
     }
 
     /**
@@ -192,6 +200,8 @@ public class ClientGUI extends ClientView {
             game = new GameUI();
             ss.setScene(game.getScene());
             ss.setTitle("Santorini");
+            ss.setMinHeight(670);
+            ss.setMinWidth(650);
             game.updateBoard(bv.getBoardView());
             game.placeWorkers(workers);
         });
@@ -294,6 +304,8 @@ public class ClientGUI extends ClientView {
                 lobby = new LobbyUI();
                 ss.setScene(lobby.getScene());
                 ss.setResizable(true);
+                ss.setMinHeight(300);
+                ss.setMinWidth(600);
                 lobby.refresh(lobbies);
             });
         } else {

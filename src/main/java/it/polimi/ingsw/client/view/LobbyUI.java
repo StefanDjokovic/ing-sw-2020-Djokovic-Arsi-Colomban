@@ -89,6 +89,24 @@ public class LobbyUI {
         });
         GridPane.setHalignment(add, HPos.RIGHT);
 
+        Button fast2 = new Button("Random 2P");
+        fast2.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
+        fast2.setId("buttonAdd");
+        fast2.setPrefSize(110, 50);
+        fast2.setOnAction((ActionEvent e) -> {
+            ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
+        });
+        GridPane.setHalignment(fast2, HPos.RIGHT);
+
+        Button fast3 = new Button("Random 3P");
+        fast3.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
+        fast3.setId("buttonAdd");
+        fast3.setPrefSize(110, 50);
+        fast3.setOnAction((ActionEvent e) -> {
+            ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
+        });
+        GridPane.setHalignment(fast3, HPos.RIGHT);
+
         Button b = new Button("Quit");
         b.setId("button");
         b.setOnAction((ActionEvent a) -> {
@@ -97,10 +115,12 @@ public class LobbyUI {
         GridPane.setHalignment(b, HPos.CENTER);
 
         root.add(title, 0, 0);
-        root.add(add, 1, 0);
-        root.add(refresh, 2, 0);
-        root.add(sp, 0, 1, 3, 1);
-        root.add(b, 0, 2, 3, 1);
+        root.add(fast2, 1, 0);
+        root.add(fast3, 2, 0);
+        root.add(add, 3, 0);
+        root.add(refresh, 4, 0);
+        root.add(sp, 0, 1, 5, 1);
+        root.add(b, 0, 2, 5, 1);
     }
 
     /**
