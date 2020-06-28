@@ -211,15 +211,17 @@ public class GodSelectionUI {
      * @param gods List containing a list of selected gods.
      */
     public void sendGods(ArrayList<String> gods) {
-        //disable
-        b.setDisable(true);
-        godButtons.stream().forEach(x -> x.setDisable(true));
-        info.setText("Waiting for other player(s)");
-        //send
-        if(nGodPicks == 1) {
-            ClientGUI.getInstance().sendGods(gods, false);
-        } else if (nGodPicks > 1) {
-            ClientGUI.getInstance().sendGods(gods, true);
+        if(gods.size() == nGodPicks) {
+            //disable
+            b.setDisable(true);
+            godButtons.stream().forEach(x -> x.setDisable(true));
+            info.setText("Waiting for other player(s)");
+            //send
+            if (nGodPicks == 1) {
+                ClientGUI.getInstance().sendGods(gods, false);
+            } else if (nGodPicks > 1) {
+                ClientGUI.getInstance().sendGods(gods, true);
+            }
         }
     }
 
