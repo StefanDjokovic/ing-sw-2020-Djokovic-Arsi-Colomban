@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-
 public class Server {
 
 
@@ -46,15 +44,6 @@ public class Server {
             return new RequestServerInformation(null, n);
     }
 
-    /**
-     * Gets the index of the first available lobby
-     * @return the index of the first available lobby
-     */
-    public synchronized int getNewAvailableLobbyNumber() {
-        int lobbyNumb = newAvailableLobbyNumber;
-        newAvailableLobbyNumber++;
-        return lobbyNumb;
-    }
 
     /**
      *
@@ -66,6 +55,27 @@ public class Server {
      */
     public synchronized Lobby isAvailable(int lobbyNumber, String playerName, ServerSocket playerSocket, int nPlayers) {
         System.out.println("Joining in is available");
+        if (lobbyNumber == -2 || lobbyNumber == -3) {
+            System.out.println("I'm entering the automatic selection of the lobby");
+            // Auto-selects an open 2 player or 3 player lobby, creates a new one if not available
+            for (Lobby l: lobbies.values()) {
+                if (!l.isFull() && l.getNPlayers() == -lobbyNumber && l.isAvailable(playerName)) {
+                    System.out.println("I have found an open lobby!");
+                    l.addPlayer(playerName, playerSocket);
+                    if (l.isFull()) {
+                        System.out.println("Starting the Lobby " + lobbyNumber);
+                        startLobbyGame(l);
+                    }
+                    return l;
+                }
+            }
+
+            int lobbyNumb = getNewAvailableLobbyNumber();
+            Lobby newLobby = new Lobby(lobbyNumb, -lobbyNumber, playerName, playerSocket);
+            lobbies.put(lobbyNumb, newLobby);
+            System.out.println("LOBBY " + lobbyNumb + " SUCCESSFULLY CREATED");
+            return newLobby;
+        }
         if (lobbyNumber == -1 || lobbies.get(lobbyNumber) == null) {
             // it is available, automatic insertion
             int lobbyNumb = getNewAvailableLobbyNumber();
@@ -86,6 +96,16 @@ public class Server {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets the index of the first available lobby
+     * @return the index of the first available lobby
+     */
+    public synchronized int getNewAvailableLobbyNumber() {
+        int lobbyNumb = newAvailableLobbyNumber;
+        newAvailableLobbyNumber++;
+        return lobbyNumb;
     }
 
     /**

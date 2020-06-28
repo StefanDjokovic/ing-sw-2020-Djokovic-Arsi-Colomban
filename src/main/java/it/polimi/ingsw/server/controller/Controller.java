@@ -6,6 +6,8 @@ import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.board.NonExistingTileException;
 
+import java.util.ArrayList;
+
 public class Controller implements Observer {
 
     private Game game;
@@ -53,6 +55,16 @@ public class Controller implements Observer {
 
     /**
      * Sets the god card picked by the player
+     * @param godNames list of the gods picked by the first player
+     * @param initial player's initial
+     */
+    public void setPlayerGod(ArrayList<String> godNames, char initial) {
+        game.setPlayerGods(godNames);
+        initGodsOrContinue();
+    }
+
+    /**
+     * Sets the god card picked by the player
      * @param godName name of the god picked by the player
      * @param initial player's initial
      */
@@ -61,12 +73,17 @@ public class Controller implements Observer {
         initGodsOrContinue();
     }
 
+
     /**
      * If there are still players with uninitialized gods it initializes them,
      * otherwise it initializes the workers
      */
     public void initGodsOrContinue() {
-        if (game.nPlayersWithGod() != game.nPlayers())
+        if (game.nPlayersWithGod() == game.nPlayers() - 1) {
+            game.initLastGod();
+            game.initWorker();
+        }
+        else if (game.nPlayersWithGod() != game.nPlayers())
             game.initGods();
         else
             game.initWorker();

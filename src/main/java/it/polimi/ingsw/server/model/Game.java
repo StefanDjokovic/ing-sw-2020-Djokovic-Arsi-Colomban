@@ -54,6 +54,7 @@ public class Game extends Observable{
     // TODO: initialise opt through JSON file
     // Sends to ServerSocket the Request for the God the users pick
     private HashMap<String, Integer> opt;
+    private ArrayList<String> optList;
     public void initGods() {
         System.out.println("Initializing Process: Asking for God's name");
 
@@ -76,7 +77,11 @@ public class Game extends Observable{
             opt.put("Zeus", 30);
         }
 
-        updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod()).getInitial(), new ArrayList<>(opt.keySet())));
+        if (optList == null)
+            updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod()).getInitial(), nPlayers(), true, new ArrayList<>(opt.keySet())));
+        else
+            updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod() + 1).getInitial(), 1, false, optList));
+
     }
 
     /**
@@ -117,7 +122,24 @@ public class Game extends Observable{
      */
     public void setPlayerGod(String godName, char initial) {
         getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard());
-        opt.remove(godName);
+        optList.remove(godName);
+    }
+
+    /**
+     * Sets the god card picked by the player
+     * @param godNames gods' name select by the player
+     */
+    public void setPlayerGods(ArrayList<String> godNames) {
+        optList = godNames;
+    }
+
+    public void initLastGod() {
+        for (Player p: players) {
+            if (p.getGodLogic() == null) {
+                p.setGodLogic(optList.get(0), logger, getBoard());
+                return;
+            }
+        }
     }
 
     /**

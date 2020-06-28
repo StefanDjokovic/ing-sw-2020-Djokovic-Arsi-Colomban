@@ -160,7 +160,7 @@ public class ClientGUI extends ClientView {
      * @param initial Character unique for the player using this client (assigned by server).
      * @param options List of gods that the player can select.
      */
-    public void getPlayerGod(char initial, ArrayList<String> options) {
+    public void getPlayerGod(char initial, ArrayList<String> options, int nPicks) {
         playerInit = initial;
         Stage ss = CoreGUI.getStage();
         Platform.runLater(() -> {

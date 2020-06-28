@@ -125,12 +125,16 @@ public class ClientCLI extends ClientView {
         System.out.println("Select the lobby number to join a specific lobby");
         System.out.println("Type 0 to refresh the lobbies");
         System.out.println("Type -1 to create a new lobby");
+        System.out.println("Type -2 or -3 if you want to automatically join a 2 or 3 player game");
 
         int lobbyNumber = getValidInt();
         int nPlayers = 0;
         if (lobbyNumber == 0) {
             updateObservers(new AnswerLobbyAndName(0, null, nPlayers));
             return;
+        }
+        else if (lobbyNumber == -2 || lobbyNumber == -3) {
+            System.out.println("You selected an automatic join to a " + (-lobbyNumber) + " players lobby");
         }
         else if (lobbyNumber == -1) {
             while (nPlayers != 2 && nPlayers != 3) {
@@ -180,21 +184,41 @@ public class ClientCLI extends ClientView {
      * @param options list of all the possible god cards
      */
     // Simple method that accepts only a god that comes from the options given from the server
-    public void getPlayerGod(char initial, ArrayList<String> options) {
+    public void getPlayerGod(char initial, ArrayList<String> options, int nPicks) {
         System.out.println("Select " + initial + "'s God: ");
         for (String opt : options) {
             System.out.print(opt + " ");
         }
-        String godSelected = null;
-        while (godSelected == null) {
-            String playerGod = scanner.next();
-            if (options.contains(playerGod)) {
-                godSelected = playerGod;
+        System.out.println();
+        if (nPicks == 1) {
+            String selectedGod = null;
+            while (selectedGod == null) {
+                String playerGod = scanner.next();
+                if (options.contains(playerGod)) {
+                    selectedGod = playerGod;
+                }
             }
+
+            System.out.println("You picked " + selectedGod);
+            updateObservers(new AnswerPlayerGod(selectedGod, initial));
+        }
+        else {
+            ArrayList<String> selectedGods = new ArrayList<>();
+            for (int i = 1; i <= nPicks; i++) {
+                System.out.println("Pick God number " + i);
+                String playerGod = scanner.next();
+                while (!options.contains(playerGod)) {
+                    System.out.println("Please, select a valid God");
+                    playerGod = scanner.next();
+                }
+                selectedGods.add(playerGod);
+                options.remove(playerGod);
+            }
+
+            System.out.println("You picked " + selectedGods);
+            updateObservers(new AnswerPlayerGod(selectedGods, initial));
         }
 
-        System.out.println("You picked " + godSelected);
-        updateObservers(new AnswerPlayerGod(godSelected, initial));
     }
 
     /**
