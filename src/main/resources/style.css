@@ -261,3 +261,12 @@
     -fx-border-color: transparent;
     -fx-border-width: 2 2 2 2;
 }
+
+#loadingIV {
+    -fx-background-radius:3;
+    -fx-background-color: transparent;
+    -fx-border-color:transparent;
+    -fx-border-width: 3 3 3 3;
+    -fx-background-image: url('graphic_resources/resourcesGUI/loading.png');
+    -fx-background-size: 100% 100%;
+}

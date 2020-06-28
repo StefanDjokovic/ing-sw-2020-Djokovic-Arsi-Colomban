@@ -1,18 +1,11 @@
 package it.polimi.ingsw.client.view;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
 
 public class CoreGUI extends Application {
 
@@ -41,7 +34,7 @@ public class CoreGUI extends Application {
             ImageView i = new ImageView();
             g.add(i, 0, 0);
             thisStage.setResizable(false);
-            i.setImage(new Image("graphic_resources/resourcesGUI/loading.png"));
+            i.setImage(new Image("graphic_resources/resourcesGUI/loading_bg.png"));
             i.fitHeightProperty().bind(g.heightProperty());
             i.fitWidthProperty().bind(g.widthProperty());
             thisStage.setScene(s);
