@@ -94,7 +94,7 @@ public class LobbyUI {
         fast2.setId("buttonAdd");
         fast2.setPrefSize(110, 50);
         fast2.setOnAction((ActionEvent e) -> {
-            ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
+            ClientGUI.getInstance().sendLobbySelection(-2, false, -1);
         });
         GridPane.setHalignment(fast2, HPos.RIGHT);
 
@@ -103,7 +103,7 @@ public class LobbyUI {
         fast3.setId("buttonAdd");
         fast3.setPrefSize(110, 50);
         fast3.setOnAction((ActionEvent e) -> {
-            ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
+            ClientGUI.getInstance().sendLobbySelection(-3, false, -1);
         });
         GridPane.setHalignment(fast3, HPos.RIGHT);
 
