@@ -1,7 +1,3 @@
-# Rework-Socket-Todo:
-* Check if everything works when a player has to be deleted because stuck
-* Test a bit if 3 players mode works correctly
-
 # Prova Finale Ingegneria del Software 2020
 
 ## Gruppo AM04

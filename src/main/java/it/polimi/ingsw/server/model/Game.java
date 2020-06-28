@@ -181,17 +181,23 @@ public class Game extends Observable{
      * Deletes a player after they get eliminated
      * @param p player that needs to be deleted
      */
-    public void deletePlayer(Player p) {
+    public boolean deletePlayer(Player p) {
+        boolean isCurrent = false;
         for (int i = 0; i < players.size(); i++) {
+            if (currPlayer < players.size() && players.get(currPlayer) == p)
+                isCurrent = true;
             if (players.get(i) == p) {
                 players.get(i).delete();
                 players.remove(p);
+
+                if (players.size() != 0 && i < currPlayer)
+                    currPlayer = currPlayer - 1;
             }
         }
-        if (players.size() != 0)
-            currPlayer = currPlayer % players.size();
 
         System.out.println("Is the player actually deleted correctly?");
+
+        return isCurrent;
     }
 
     /**
