@@ -78,9 +78,9 @@ public class Game extends Observable{
         }
 
         if (optList == null)
-            updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod()).getInitial(), nPlayers(), true, new ArrayList<>(opt.keySet())));
+            updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod()).getInitial(), nPlayers(), new ArrayList<>(opt.keySet())));
         else
-            updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod() + 1).getInitial(), 1, false, optList));
+            updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod() + 1).getInitial(), 1, optList));
 
     }
 
