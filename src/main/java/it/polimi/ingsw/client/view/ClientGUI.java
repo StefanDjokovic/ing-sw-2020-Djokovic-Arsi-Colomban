@@ -258,11 +258,21 @@ public class ClientGUI extends ClientView {
      * @param winnerInit Character of the player that won the match.
      */
     public void displayGameEnd(char winnerInit) {
+        boolean won;
+
         if(winnerInit == playerInit) {
-            game.youWin();
+            won = true;
         } else {
-            game.youLose();
+            won = false;
         }
+
+        Stage ss = CoreGUI.getStage();
+        Platform.runLater(() -> {
+            EndUI e = new EndUI(won);
+            CoreGUI.getStage().setScene(e.getScene());
+            ss.setMinHeight(500);
+            ss.setMinWidth(500);
+        });
     }
 
     /**
@@ -330,6 +340,7 @@ public class ClientGUI extends ClientView {
             updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, plNum));
         } else {
             getPlayerInfo();
+            isActive = false;
         }
     }
 }
