@@ -39,6 +39,8 @@ public class CoreGUI extends Application {
             i.fitWidthProperty().bind(g.widthProperty());
             thisStage.setScene(s);
 
+            //thisStage.setScene(new EndUI(true).getScene());
+
             primaryStage.show();
             CoreGUI.class.notifyAll();
         }
