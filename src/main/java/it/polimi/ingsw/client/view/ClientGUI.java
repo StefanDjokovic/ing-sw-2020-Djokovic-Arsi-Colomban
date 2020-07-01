@@ -258,12 +258,12 @@ public class ClientGUI extends ClientView {
      * @param winnerInit Character of the player that won the match.
      */
     public void displayGameEnd(char winnerInit) {
-        boolean won;
+        int won;
 
         if(winnerInit == playerInit) {
-            won = true;
+            won = 0;
         } else {
-            won = false;
+            won = 1;
         }
 
         Stage ss = CoreGUI.getStage();
@@ -316,6 +316,7 @@ public class ClientGUI extends ClientView {
                 ss.setResizable(true);
                 ss.setMinHeight(300);
                 ss.setMinWidth(600);
+                ss.setResizable(true);
                 lobby.refresh(lobbies);
             });
         } else {
@@ -342,5 +343,32 @@ public class ClientGUI extends ClientView {
             getPlayerInfo();
             isActive = false;
         }
+    }
+
+    /**
+     * Restarts the process of connection and login
+     */
+    public void replay() {
+        sendLobbySelection(-1, false, 0);
+    }
+
+    /**
+     * Connects the client to the server
+     */
+    public void connectToServer(String ip, String port) {
+
+    }
+
+    /**
+     * Notifies to the player that the connection to the server has been lost
+     */
+    public void displayLostConnection() {
+        Stage ss = CoreGUI.getStage();
+        Platform.runLater(() -> {
+            EndUI e = new EndUI(2);
+            ss.setScene(e.getScene());
+            ss.setMinHeight(500);
+            ss.setMinWidth(500);
+        });
     }
 }

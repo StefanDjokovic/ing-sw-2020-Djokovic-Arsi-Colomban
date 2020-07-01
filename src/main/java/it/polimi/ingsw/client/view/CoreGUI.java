@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class CoreGUI extends Application {
 
@@ -39,7 +40,11 @@ public class CoreGUI extends Application {
             i.fitWidthProperty().bind(g.widthProperty());
             thisStage.setScene(s);
 
-            //thisStage.setScene(new EndUI(true).getScene());
+//            thisStage.setScene(new EndUI(2).getScene());
+            thisStage.setMinHeight(500);
+            thisStage.setMinWidth(700);
+            thisStage.setScene(new LobbyUI().getScene());
+            thisStage.setResizable(true);
 
             primaryStage.show();
             CoreGUI.class.notifyAll();

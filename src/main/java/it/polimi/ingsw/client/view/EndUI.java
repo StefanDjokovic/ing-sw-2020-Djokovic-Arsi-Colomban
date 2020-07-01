@@ -17,19 +17,22 @@ public class EndUI {
     private Button bt2;
     private Button bt;
 
-    public EndUI(boolean hasWon) {
+    public EndUI(int mode) {
         GridPane root = new GridPane();
         root.getStylesheets().add("style.css");
         endScene = new Scene(root, 550, 600);
 
         root.setStyle("-fx-background-color: #CBE1EF");
 
-        Label l;
-        if(hasWon) {
-           l = new Label("Congratulations, you won!");
-        } else {
-            l = new Label("You lost...");
+        Label l = new Label();
+        if(mode == 0) {
+            l.setText("Congratulations, you won!");
+        } else if (mode == 1) {
+            l.setText("You lost...");
+        } else if (mode == 2){
+            l.setText("Lost connection to server...");
         }
+
         l.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
 
         Label ask = new Label("Do you want to play again?");
@@ -40,9 +43,9 @@ public class EndUI {
         bt2.setText("Play again");
         bt2.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt2.setOnAction((ActionEvent event) -> {
-            ClientGUI.getInstance().sendLobbySelection(-1, false, 0);
-            bt.setDisable(true);
-            bt2.setDisable(true);
+            ClientGUI.getInstance().replay();
+            //bt.setDisable(true);
+            //bt2.setDisable(true);
         });
 
         bt = new Button();

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +25,10 @@ public class LobbyUI {
     private FlowPane fp;
     //private Lobby lobbyList;
     private ArrayList<Button> buttons = new ArrayList<>();
+    private TextField txtfIP;
+    private TextField txtfPort;
+    private int status = 0;
+    private Label statusL;
 
     /**
      * Creates the scene for the lobby scene.
@@ -64,7 +69,7 @@ public class LobbyUI {
 
         Label title = new Label("Lobbies");
         title.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
-        GridPane.setHalignment(title, HPos.CENTER);
+        GridPane.setHalignment(title, HPos.LEFT);
 
         Button refresh = new Button();
         refresh.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
@@ -109,20 +114,54 @@ public class LobbyUI {
         });
         GridPane.setHalignment(fast3, HPos.RIGHT);
 
+        HBox menuUp = new HBox(8);
+        menuUp.getChildren().addAll(fast2, fast3, add, refresh);
+        menuUp.setAlignment(Pos.CENTER_RIGHT);
+
         Button b = new Button("Quit");
         b.setId("button");
         b.setOnAction((ActionEvent a) -> {
             System.exit(0);
         });
-        GridPane.setHalignment(b, HPos.CENTER);
+        GridPane.setHalignment(b, HPos.RIGHT);
+
+        Label ipT = new Label("IP");
+        Label portT = new Label("Port");
+        statusL = new Label("Status: not connected");
+        txtfIP = new TextField();
+        txtfPort = new TextField();
+        Button connect = new Button("Connect");
+        connect.setId("button");
+        connect.setOnAction((ActionEvent e) -> {
+            String sIP;
+            String iPort;
+
+            if(txtfIP.getCharacters().toString().equals("")) {
+                sIP = "localhost";
+            } else {
+                sIP = txtfIP.getCharacters().toString();
+            }
+            if(txtfPort.getCharacters().toString().equals("")) {
+                iPort = "default";
+            } else {
+                iPort = txtfPort.getCharacters().toString();
+            }
+
+            ClientGUI.getInstance().connectToServer(sIP, iPort);
+        });
+        HBox menuDown = new HBox(8);
+        menuDown.getChildren().addAll(ipT, txtfIP, portT, txtfPort, connect, statusL);
+        menuDown.setAlignment(Pos.CENTER_LEFT);
 
         root.add(title, 0, 0);
-        root.add(fast2, 1, 0);
-        root.add(fast3, 2, 0);
-        root.add(add, 3, 0);
-        root.add(refresh, 4, 0);
-        root.add(sp, 0, 1, 5, 1);
-        root.add(b, 0, 2, 5, 1);
+//        root.add(fast2, 1, 0);
+//        root.add(fast3, 2, 0);
+//        root.add(add, 3, 0);
+//        root.add(refresh, 4, 0);
+        root.add(menuUp, 0, 0, 2, 1);
+        root.add(sp, 0, 1, 2, 1);
+        root.add(menuDown, 0, 2, 2, 1);
+        root.add(b, 1, 2);
     }
 
     /**
@@ -202,5 +241,10 @@ public class LobbyUI {
      */
     public Scene getScene() {
         return this.lobbyScene;
+    }
+
+    public void displayConnection(String ip, String port) {
+        status = 1;
+        statusL.setText("Status: connected");
     }
 }
