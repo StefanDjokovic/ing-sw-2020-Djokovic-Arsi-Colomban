@@ -314,8 +314,8 @@ public class ClientGUI extends ClientView {
                 lobby = new LobbyUI();
                 ss.setScene(lobby.getScene());
                 ss.setResizable(true);
-                ss.setMinHeight(300);
-                ss.setMinWidth(600);
+                ss.setMinHeight(500);
+                ss.setMinWidth(700);
                 ss.setResizable(true);
                 lobby.refresh(lobbies);
             });
