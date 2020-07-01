@@ -40,7 +40,6 @@ public class CoreGUI extends Application {
             i.fitWidthProperty().bind(g.widthProperty());
             thisStage.setScene(s);
 
-//            thisStage.setScene(new EndUI(2).getScene());
             thisStage.setMinHeight(500);
             thisStage.setMinWidth(700);
             thisStage.setScene(new LobbyUI().getScene());

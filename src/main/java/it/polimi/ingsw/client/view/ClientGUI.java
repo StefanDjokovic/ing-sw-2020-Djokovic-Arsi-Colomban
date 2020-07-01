@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.client.networkLayer.Client;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.LobbyView;
 import it.polimi.ingsw.messages.OptionSelection;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ClientGUI extends ClientView {
@@ -352,11 +354,19 @@ public class ClientGUI extends ClientView {
         sendLobbySelection(-1, false, 0);
     }
 
+    Client client;
+
     /**
      * Connects the client to the server
      */
     public void connectToServer(String ip, String port) {
-
+        try {
+            client = new Client(ip, Integer.parseInt(port), this);
+            client.run();
+        } catch (NumberFormatException ignored) {
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**

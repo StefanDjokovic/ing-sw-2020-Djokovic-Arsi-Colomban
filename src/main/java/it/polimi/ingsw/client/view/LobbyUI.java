@@ -27,13 +27,14 @@ public class LobbyUI {
     private ArrayList<Button> buttons = new ArrayList<>();
     private TextField txtfIP;
     private TextField txtfPort;
-    private int status = 0;
+    private int status;
     private Label statusL;
 
     /**
      * Creates the scene for the lobby scene.
      */
     public LobbyUI(){
+        status = 1;
         GridPane root = new GridPane();
         root.getStylesheets().add("style.css");
         lobbyScene = new Scene(root, 550, 600);
@@ -140,21 +141,23 @@ public class LobbyUI {
         Button connect = new Button("Connect");
         connect.setId("button");
         connect.setOnAction((ActionEvent e) -> {
-            String sIP;
-            String iPort;
+            if(status == 0) {
+                String sIP;
+                String iPort;
 
-            if(txtfIP.getCharacters().toString().equals("")) {
-                sIP = "localhost";
-            } else {
-                sIP = txtfIP.getCharacters().toString();
-            }
-            if(txtfPort.getCharacters().toString().equals("")) {
-                iPort = "default";
-            } else {
-                iPort = txtfPort.getCharacters().toString();
-            }
+                if (txtfIP.getCharacters().toString().equals("")) {
+                    sIP = "localhost";
+                } else {
+                    sIP = txtfIP.getCharacters().toString();
+                }
+                if (txtfPort.getCharacters().toString().equals("")) {
+                    iPort = "default";
+                } else {
+                    iPort = txtfPort.getCharacters().toString();
+                }
 
-            ClientGUI.getInstance().connectToServer(sIP, iPort);
+                ClientGUI.getInstance().connectToServer(sIP, iPort);
+            }
         });
         HBox menuDown = new HBox(8);
         menuDown.getChildren().addAll(ipT, txtfIP, portT, txtfPort, connect, statusL);
