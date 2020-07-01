@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view;
 
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -11,33 +12,34 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 public class LoginUI {
 
     private final Scene loginScene;
-
     private TextField txtf;
-
     private Button bt;
-
     private Button bt2;
-
     private Label info;
-
     private ChoiceBox cb;
+    private ImageView iv;
+    private RotateTransition rotateTransition;
+    private GridPane root;
 
     /**
      * Creates the scene for the login page.
      * @param isJoining True if the player is joining an already existing lobby (can't choose number of players), false if the player is creating a new lobby (can choose number of players).
      */
     public LoginUI(boolean isJoining) {
-        GridPane root = new GridPane();
+        root = new GridPane();
         root.setHgap(8);
         root.setVgap(8);
         root.getStylesheets().add("style.css");
@@ -81,21 +83,35 @@ public class LoginUI {
                 sendName(isJoining);
             }
         });
+        GridPane.setHalignment(bt2, HPos.LEFT);
 
         info = new Label();
         info.setId("infoLabel");
         info.setWrapText(true);
         info.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
-        GridPane.setHalignment(info, HPos.CENTER);
+        GridPane.setHalignment(info, HPos.RIGHT);
+
+//        iv = new ImageView(new Image("graphic_resources/resourcesGUI/loading.png"));
+//        iv.setId("loadingIV");
+//        iv.setFitWidth(50);
+//        iv.setFitHeight(50);
+//        iv.setPreserveRatio(true);
+//        GridPane.setHalignment(iv, HPos.CENTER);
+//        rotateTransition = new RotateTransition();
+//        rotateTransition.setDuration(Duration.millis(1000));
+//        rotateTransition.setNode(iv);
+//        rotateTransition.setByAngle(360);
+//        rotateTransition.setCycleCount(1000);
+//        rotateTransition.setAutoReverse(false);
+//        rotateTransition.play();
 
         GridPane.setHalignment(lbl, HPos.CENTER);
         GridPane.setHalignment(lbl3, HPos.CENTER);
         GridPane.setHalignment(lbl2, HPos.CENTER);
-        GridPane.setHalignment(txtf, HPos.CENTER);
-        GridPane.setHalignment(bt2, HPos.CENTER);
-        GridPane.setHalignment(bt, HPos.CENTER);
-        GridPane.setHalignment(ask, HPos.CENTER);
-        GridPane.setHalignment(cb, HPos.CENTER);
+        GridPane.setHalignment(txtf, HPos.RIGHT);
+        GridPane.setHalignment(bt, HPos.RIGHT);
+        GridPane.setHalignment(ask, HPos.LEFT);
+        GridPane.setHalignment(cb, HPos.RIGHT);
 
         root.add(lbl, 0, 0, 2, 1);
         root.add(lbl3, 0, 1, 2, 1);
@@ -108,12 +124,12 @@ public class LoginUI {
             root.add(ask, 0, 5);
             root.add(cb, 1, 5);
         }
-        root.add(bt2, 0, 7, 2, 1);
+        root.add(bt2, 0, 7, 1, 1);
         Pane p = new Pane();
         p.setPrefHeight(75);
-        root.add(p, 0, 8, 2, 1);
-        root.add(bt, 0, 9, 2, 1);
-        root.add(info, 0, 10, 2, 1);
+        //root.add(p, 0, 8, 1, 1);
+        root.add(bt, 1, 7, 1, 1);
+        root.add(info, 1, 9);
 
         root.setPadding(new Insets(25));
         root.setAlignment(Pos.CENTER);
@@ -130,6 +146,20 @@ public class LoginUI {
         txtf.setDisable(true);
         cb.setDisable(true);
         info.setText("Waiting for other player(s)");
+        iv = new ImageView(new Image("graphic_resources/resourcesGUI/loading.png"));
+        iv.setId("loadingIV");
+        iv.setFitWidth(50);
+        iv.setFitHeight(50);
+        iv.setPreserveRatio(true);
+        root.add(iv, 0, 9, 2, 1);
+        GridPane.setHalignment(iv, HPos.CENTER);
+        rotateTransition = new RotateTransition();
+        rotateTransition.setDuration(Duration.millis(1000));
+        rotateTransition.setNode(iv);
+        rotateTransition.setByAngle(360);
+        rotateTransition.setCycleCount(1000);
+        rotateTransition.setAutoReverse(false);
+        rotateTransition.play();
 
         //send
         if(!mode) {

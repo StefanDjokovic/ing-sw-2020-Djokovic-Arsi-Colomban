@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -30,7 +31,8 @@ public class LobbyUI {
     public LobbyUI(){
         GridPane root = new GridPane();
         root.getStylesheets().add("style.css");
-        lobbyScene = new Scene(root, 550, 600, Color.rgb(94, 169, 190));
+        lobbyScene = new Scene(root, 550, 600);
+        root.setStyle("-fx-background-color: #CBE1EF");
         root.setPadding(new Insets(15));
         root.setHgap(15);
         root.setVgap(15);
@@ -70,9 +72,9 @@ public class LobbyUI {
         refresh.setPrefSize(50, 50);
 
         //refresh.setBackground(new Background(new BackgroundImage(new Image("graphic_resources/resourcesGUI/refresh.png", refresh.getWidth(), refresh.getHeight(), false, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(refresh.getWidth(), refresh.getHeight(), true, true, true, false))));
-        BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/graphic_resources/resourcesGUI/refresh.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false));
-        Background background = new Background(backgroundImage);
-        refresh.setBackground(background);
+        //BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/graphic_resources/resourcesGUI/refresh.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false));
+        //Background background = new Background(backgroundImage);
+        //refresh.setBackground(background);
 
         refresh.setOnAction((ActionEvent e) -> {
             System.out.println("Ask for resfresh");
@@ -94,7 +96,7 @@ public class LobbyUI {
         fast2.setId("buttonAdd");
         fast2.setPrefSize(110, 50);
         fast2.setOnAction((ActionEvent e) -> {
-            ClientGUI.getInstance().sendLobbySelection(-2, false, -1);
+            ClientGUI.getInstance().sendLobbySelection(-2, true, -1);
         });
         GridPane.setHalignment(fast2, HPos.RIGHT);
 
@@ -103,7 +105,7 @@ public class LobbyUI {
         fast3.setId("buttonAdd");
         fast3.setPrefSize(110, 50);
         fast3.setOnAction((ActionEvent e) -> {
-            ClientGUI.getInstance().sendLobbySelection(-3, false, -1);
+            ClientGUI.getInstance().sendLobbySelection(-3, true, -1);
         });
         GridPane.setHalignment(fast3, HPos.RIGHT);
 

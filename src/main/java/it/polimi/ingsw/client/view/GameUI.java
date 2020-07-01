@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -31,6 +32,7 @@ public class GameUI {
     private static Button confirmButton;
     private static Button skipButton;
     private static Label infoLabel;
+    private GridPane root;
 
     public static Button[][] getBoardSlots() {
         return boardSlots;
@@ -49,8 +51,7 @@ public class GameUI {
      */
     public GameUI() {
         initBoardSlots();
-        //ClientGUI.getInstance().setBoardSlots(boardSlots);
-        GridPane root = new GridPane();
+        root = new GridPane();
         GridPane grid = new GridPane();
         //grid.setPadding(new Insets(25));
         root.setPadding(new Insets(25));
@@ -609,14 +610,30 @@ public class GameUI {
      * Display win message.
      */
     public void youWin() {
-        Platform.runLater(() -> {infoLabel.setText("Congrats, you won!");});
+        Platform.runLater(() -> {
+            //infoLabel.setText("Congrats, you won!");
+            Label newL = new Label("Congrats, you won!");
+            newL.setPrefHeight(100);
+            newL.setPrefWidth(200);
+            newL.setId("slot");
+            root.add(newL, 0, 0, 2, 4);
+            root.setEffect(new GaussianBlur());
+        });
     }
 
     /**
      * Display lose message.
      */
     public void youLose() {
-        Platform.runLater(() -> {infoLabel.setText("I'm sorry but you lost :(");});
+        Platform.runLater(() -> {
+            //infoLabel.setText("I'm sorry but you lost :(");
+            Label newL = new Label("I'm sorry but you lost :(");
+            newL.setPrefHeight(100);
+            newL.setPrefWidth(200);
+            newL.setId("slot");
+            root.add(newL, 0, 0, 2, 4);
+            root.setEffect(new GaussianBlur());
+        });
     }
 
     /**
