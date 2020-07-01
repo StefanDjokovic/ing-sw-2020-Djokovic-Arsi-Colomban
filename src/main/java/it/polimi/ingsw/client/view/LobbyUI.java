@@ -82,8 +82,9 @@ public class LobbyUI {
         //refresh.setBackground(background);
 
         refresh.setOnAction((ActionEvent e) -> {
-            System.out.println("Ask for resfresh");
-            ClientGUI.getInstance().sendLobbySelection(0, false, -1);
+            if(status == 1) {
+                ClientGUI.getInstance().sendLobbySelection(0, false, -1);
+            }
         });
         GridPane.setHalignment(refresh, HPos.RIGHT);
 
@@ -92,7 +93,9 @@ public class LobbyUI {
         add.setId("buttonAdd");
         add.setPrefSize(50, 50);
         add.setOnAction((ActionEvent e) -> {
-            ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
+            if(status == 1) {
+                ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
+            }
         });
         GridPane.setHalignment(add, HPos.RIGHT);
 
@@ -101,7 +104,9 @@ public class LobbyUI {
         fast2.setId("buttonAdd");
         fast2.setPrefSize(110, 50);
         fast2.setOnAction((ActionEvent e) -> {
-            ClientGUI.getInstance().sendLobbySelection(-2, true, -1);
+            if(status == 1) {
+                ClientGUI.getInstance().sendLobbySelection(-2, true, -1);
+            }
         });
         GridPane.setHalignment(fast2, HPos.RIGHT);
 
@@ -110,7 +115,9 @@ public class LobbyUI {
         fast3.setId("buttonAdd");
         fast3.setPrefSize(110, 50);
         fast3.setOnAction((ActionEvent e) -> {
-            ClientGUI.getInstance().sendLobbySelection(-3, true, -1);
+            if(status == 1) {
+                ClientGUI.getInstance().sendLobbySelection(-3, true, -1);
+            }
         });
         GridPane.setHalignment(fast3, HPos.RIGHT);
 
@@ -201,7 +208,7 @@ public class LobbyUI {
                 GridPane.setHalignment(select, HPos.CENTER);
                 GridPane.setValignment(select, VPos.BOTTOM);
                 select.setOnAction((ActionEvent ev) -> {
-                    if(lobbies.get(currentX).getPlayersName().size() < lobbies.get(currentX).getNPlayers()) {
+                    if(status == 1 && lobbies.get(currentX).getPlayersName().size() < lobbies.get(currentX).getNPlayers()) {
                         ClientGUI.getInstance().sendLobbySelection(lobbies.get(currentX).getLobbyNumber(), true, lobbies.get(currentX).getNPlayers());
                     }
                 });
