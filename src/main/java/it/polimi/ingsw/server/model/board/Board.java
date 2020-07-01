@@ -6,7 +6,9 @@ package it.polimi.ingsw.server.model.board;
  */
 public class Board {
 
-    private Tile[][] board = new Tile[5][5];
+    private static final int BSIZE = 5;
+
+    private Tile[][] board = new Tile[BSIZE][BSIZE];
 
     /**
      * Constructor, initializes every tile.
@@ -14,7 +16,6 @@ public class Board {
      */
     public Board() {
         initTiles ();
-        //System.out.println("initialized");
     }
 
     /**
@@ -22,13 +23,13 @@ public class Board {
      *
      */
     private void initTiles() {
-        for (int x = 0 ; x < 5 ; x++) {
-            for (int y = 0 ; y < 5 ; y++) {
+        for (int x = 0; x < BSIZE; x++) {
+            for (int y = 0; y < BSIZE; y++) {
                 board[x][y] = new Tile(x , y ,this);
             }
         }
-        for (int x = 0 ; x < 5 ; x++) {
-            for (int y = 0 ; y < 5 ; y++) {
+        for (int x = 0; x < BSIZE; x++) {
+            for (int y = 0; y < BSIZE; y++) {
                 board[x][y].initNeighbors();
             }
         }

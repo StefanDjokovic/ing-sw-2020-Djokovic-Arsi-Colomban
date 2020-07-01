@@ -8,7 +8,7 @@ import it.polimi.ingsw.server.model.board.NonExistingTileException;
 
 import java.util.ArrayList;
 
-public class Controller implements Observer {
+public class Controller implements Observer, ControllerView {
 
     private Game game;
 

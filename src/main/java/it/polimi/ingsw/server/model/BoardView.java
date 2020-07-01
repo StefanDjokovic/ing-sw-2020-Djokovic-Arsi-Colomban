@@ -9,23 +9,25 @@ public class BoardView implements Serializable {
 
     private TileView[][] boardView;
 
-    public BoardView() {
-        this.boardView = new TileView[5][];
+    private static final int BSIZE = 5;
 
-        for (int i = 0; i < 5; i++) {
-            boardView[i] = new TileView[5];
-            for (int j = 0; j < 5; j++)
+    public BoardView() {
+        this.boardView = new TileView[BSIZE][];
+
+        for (int i = 0; i < BSIZE; i++) {
+            boardView[i] = new TileView[BSIZE];
+            for (int j = 0; j < BSIZE; j++)
                 boardView[i][j] = new TileView(0, false, '?');
         }
     }
 
     public BoardView(Board board) {
-        this.boardView = new TileView[5][];
+        this.boardView = new TileView[BSIZE][];
 
         try {
-            for (int i = 0; i < 5; i++) {
-                boardView[i] = new TileView[5];
-                for (int j = 0; j < 5; j++) {
+            for (int i = 0; i < BSIZE; i++) {
+                boardView[i] = new TileView[BSIZE];
+                for (int j = 0; j < BSIZE; j++) {
                     boardView[i][j] = new TileView(board.getTile(i, j).getBuildingLevel(),
                             board.getTile(i, j).hasDome(), '?');
                     if (board.getTile(i, j).hasWorker())

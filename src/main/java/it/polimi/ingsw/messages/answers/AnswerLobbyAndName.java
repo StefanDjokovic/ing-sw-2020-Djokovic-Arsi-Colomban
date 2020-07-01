@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages.answers;
 
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.server.controller.Controller;
+import it.polimi.ingsw.server.controller.ControllerView;
 
 // Used only by Server to organize the lobby
 public class AnswerLobbyAndName extends Answer {
@@ -29,7 +30,7 @@ public class AnswerLobbyAndName extends Answer {
     }
 
     @Override
-    public void act(Controller controller) {
+    public void act(ControllerView controller) {
         System.out.println("This Answer should not go into Controller");
     }
 }

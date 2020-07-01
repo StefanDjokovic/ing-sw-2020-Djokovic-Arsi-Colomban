@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages.answers;
 
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.messages.Answer;
+import it.polimi.ingsw.server.controller.ControllerView;
 
 public class AnswerPowerCoordinates extends Answer {
 
@@ -23,7 +24,7 @@ public class AnswerPowerCoordinates extends Answer {
     }
 
     @Override
-    public void act(Controller controller) {
+    public void act(ControllerView controller) {
         if (posXFrom == -1)
             controller.executePass();
         else

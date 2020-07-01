@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages.answers;
 
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.messages.Answer;
+import it.polimi.ingsw.server.controller.ControllerView;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ public class AnswerPlayerGod extends Answer {
     public boolean isMultipleDecision() { return multipleDecision; }
 
     @Override
-    public void act(Controller controller) {
+    public void act(ControllerView controller) {
         if (multipleDecision)
             controller.setPlayerGod(godNamesList, initial);
         else

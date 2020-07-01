@@ -210,7 +210,6 @@
 }
 
 #slot {
-    #button {
     -fx-background-radius:3;
     -fx-background-color: #FFFFFF;
     -fx-border-color:transparent;
