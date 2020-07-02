@@ -104,6 +104,7 @@ public class LoginUI {
         info.setId("infoLabel");
         info.setWrapText(true);
         info.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+        info.setAlignment(Pos.BOTTOM_RIGHT);
         GridPane.setHalignment(info, HPos.RIGHT);
 
 //        iv = new ImageView(new Image("graphic_resources/resourcesGUI/loading.png"));

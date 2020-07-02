@@ -351,8 +351,6 @@ public class ClientGUI extends ClientView {
         chosenLobby = number;
         chosenNumPlayers = plNum;
 
-        this.setOtherPlayers(currLobbies.get(number).getPlayersName());
-
         if (number == 0) {
             updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, plNum));
         } else {
