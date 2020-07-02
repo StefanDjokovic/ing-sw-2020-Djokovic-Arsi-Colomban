@@ -98,7 +98,7 @@ public class GameUI {
 
         Button bt = new Button();
         bt.setId("buttonexit");
-        bt.setText("Esci");
+        bt.setText("Quit");
         bt.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt.setOnAction((ActionEvent event) -> {
             //Platform.exit();
@@ -121,7 +121,7 @@ public class GameUI {
         leftInfo.getChildren().add(lbl3);
 
         Label gods = new Label();
-        gods.setText("Gods: "+ ClientGUI.getInstance().getGods().stream().collect(Collectors.joining(", ")));
+        gods.setText("God: "+ ClientGUI.getInstance().getGods().stream().collect(Collectors.joining(", ")));
         gods.setWrapText(true);
         gods.setFont(Font.font("Futura", 12));
         leftInfo.getChildren().add(gods);
@@ -136,18 +136,25 @@ public class GameUI {
         leftInfo.getChildren().add(space);
 
         Label lbl5 = new Label();
-        lbl5.setText("OTHER PLAYERS");
+        lbl5.setText("PLAYERS");
         lbl5.setWrapText(true);
         lbl5.setFont(Font.font("Futura", 20));
         leftInfo.getChildren().add(lbl5);
 
-        if(ClientGUI.getInstance().getPlayers() != null) {
-            ClientGUI.getInstance().getPlayers().forEach(player -> {
-                Label l = new Label(player);
-                l.setFont(Font.font("Futura", 12));
-                leftInfo.getChildren().add(l);
-            });
+        Label l;
+        for (int i = 0 ; i < ClientGUI.getInstance().getPlayers().size() ; i++) {
+            l = new Label(ClientGUI.getInstance().getPlayers().get(i) + " (" + ClientGUI.getInstance().getOtherGods().get(i) + ")");
+            l.setFont(Font.font("Futura", 12));
+            leftInfo.getChildren().add(l);
         }
+
+//        if(ClientGUI.getInstance().getPlayers() != null) {
+//            ClientGUI.getInstance().getPlayers().forEach(player -> {
+//                Label l = new Label(player + );
+//                l.setFont(Font.font("Futura", 12));
+//                leftInfo.getChildren().add(l);
+//            });
+//        }
 
         Pane space2 = new Pane();
         space2.setPrefHeight(30);

@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ClientGUI extends ClientView {
@@ -20,9 +21,10 @@ public class ClientGUI extends ClientView {
     private static ClientGUI instance;
     private String playerName;
     private ArrayList<String> players;
+    private ArrayList<String> otherGods;
     private int playersNum = 1;
     private char playerInit;
-    private ArrayList<String> selectedGods;
+    private ArrayList<String> selectedGods = new ArrayList<>();
 
     private LoginUI login;
     private GodSelectionUI selection;
@@ -177,7 +179,7 @@ public class ClientGUI extends ClientView {
      * @param gods List of gods selected by the player (can be 1 or more).
      */
     public void sendGods(ArrayList<String> gods, boolean first) {
-        this.selectedGods = gods;
+        //this.selectedGods = gods;
         if (first) {
             updateObservers(new AnswerPlayerGod(gods, this.playerInit));
         } else {
@@ -293,11 +295,22 @@ public class ClientGUI extends ClientView {
     }
 
     public void setGameInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, int nPlayers) {
+        this.players = playersName;
+    }
+
+    public ArrayList<String> getOtherGods () {
+        return otherGods;
     }
 
     @Override
     public void setGodInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, ArrayList<String> godNames, int nPlayers) {
+        this.otherGods = godNames;
 
+        for (int i = 0 ; i < playersName.size() ; i++) {
+            if (playersName.get(i).equals(getName())) {
+                selectedGods.add(godNames.get(i));
+            }
+        }
     }
 
     //needed but not used
@@ -365,21 +378,6 @@ public class ClientGUI extends ClientView {
         //TODO reconnect!
         //sendLobbySelection(0, false, -1);
         lobbyAndNameSelection(null, 0);
-    }
-
-    Client client;
-
-    /**
-     * Connects the client to the server (unused)
-     */
-    public void connectToServer(String ip, String port) {
-        try {
-            client = new Client(ip, Integer.parseInt(port), this);
-            client.run();
-        } catch (NumberFormatException ignored) {
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
     }
 
     /**

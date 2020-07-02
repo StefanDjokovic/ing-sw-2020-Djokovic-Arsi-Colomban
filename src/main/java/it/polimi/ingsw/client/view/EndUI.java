@@ -20,7 +20,7 @@ public class EndUI {
     public EndUI(int mode) {
         GridPane root = new GridPane();
         root.getStylesheets().add("style.css");
-        endScene = new Scene(root, 550, 600);
+        endScene = new Scene(root, 500, 500);
 
         root.setStyle("-fx-background-color: #CBE1EF");
 
