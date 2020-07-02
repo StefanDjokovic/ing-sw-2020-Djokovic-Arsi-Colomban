@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public abstract class ClientView extends Observable implements Observer {
     public abstract void updateBoardView(BoardView boardView);
-    public abstract void getPlayerInfo();
     public abstract char getPlayerInitial();
     public abstract void getPlayerGod(char initial, ArrayList<String> options, int nPicks);
     public abstract void getWorkerPlacement(int[][] workers, char initial);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.client.view.ClientView;
+import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.LobbyView;
 import it.polimi.ingsw.messages.Request;
 

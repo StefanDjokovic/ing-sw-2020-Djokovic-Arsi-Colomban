@@ -1,8 +1,5 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.Observable;
-import it.polimi.ingsw.Observer;
-import it.polimi.ingsw.client.networkLayer.Client;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.LobbyView;
 import it.polimi.ingsw.messages.OptionSelection;
@@ -19,31 +16,12 @@ public class ClientCLI extends ClientView {
 
     private TileView[][] boardView;
 
-    private String ANSI_RESET = "\u001B[0m";
-    private String ANSI_WHITE_BACKGROUND = "\u001B[47m";
-    private String ANSI_BRIGHTBLACK_BACKGROUND = "\u001B[100m";
-    private String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
-    private String ANSI_GREEN_BACKGROUND = "\u001B[42m";
-    private String ANSI_BLACK = "\u001B[30m";
-    private String ANSI_BLUE_BACKGROUND = "\u001B[44m";
-    private String ANSI_BRIGHTRED_BACKGROUND = "\u001B[101m";
-
-    private String currColor = "";
-
     private Scanner scanner;
-
-    //private final int gameMode;
-    private static ClientCLI instance = null;
-    private String playerName;
-    private ArrayList<String> players;
-    private int playersNum;
     private char playerInit;
-    private ArrayList<String> selectedGods;
 
     public ClientCLI() {
         boardView = new BoardView().getBoardView();
         scanner = new Scanner(System.in);
-        instance = this;
         this.printSelectableBoard(null);
     }
 
@@ -92,15 +70,6 @@ public class ClientCLI extends ClientView {
      */
     public void updateBoardView(BoardView boardView) {
         this.boardView = boardView.getBoardView();
-    }
-
-    /**
-     * Asks the user for player's name and updates observers with an Answer containing the name
-     */
-    public void getPlayerInfo() {
-        System.out.println("Please, input Player's name: ");
-        String playerName = scanner.nextLine();  // TODO: restrict to the first n characters
-        updateObservers(new AnswerPlayerName(playerName));
     }
 
     /**
@@ -163,6 +132,8 @@ public class ClientCLI extends ClientView {
         System.out.println("Please, input Player's name: ");
         scanner = new Scanner(System.in);
         String playerName = scanner.nextLine();
+        if (playerName.length() > 10)
+            playerName = playerName.substring(0, 10);
         System.out.println("Name selected: " + playerName);
         updateObservers(new AnswerLobbyAndName(lobbyNumber, playerName, nPlayers));
     }
@@ -197,6 +168,7 @@ public class ClientCLI extends ClientView {
      */
     // Simple method that accepts only a god that comes from the options given from the server
     public void getPlayerGod(char initial, ArrayList<String> options, int nPicks) {
+        this.playerInit = initial;
         System.out.println("Select " + initial + "'s God: ");
         for (String opt : options) {
             System.out.print(opt + " ");
@@ -269,7 +241,7 @@ public class ClientCLI extends ClientView {
             }
         }
         System.out.println("Sending answerWorkerPosition");
-        updateObservers(new AnswerWorkersPosition(posX, posY, initial));
+        updateObservers(new AnswerWorkersPlacement(posX, posY, initial));
     }
 
     /**
@@ -404,6 +376,7 @@ public class ClientCLI extends ClientView {
             return;
         }
 
+        System.out.println(opt);
         int w_select = getDestSelection(opt.getValues().get(0), -1, -1);
 
         Answer answer = new AnswerPowerCoordinates(
@@ -532,6 +505,17 @@ public class ClientCLI extends ClientView {
         System.out.println("You lost because you are stuck! LOL");
     }
 
+
+    private String ANSI_RESET = "\u001B[0m";
+    private String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+    private String ANSI_BRIGHTBLACK_BACKGROUND = "\u001B[100m";
+    private String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    private String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+    private String ANSI_BLACK = "\u001B[30m";
+    private String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+    private String ANSI_BRIGHTRED_BACKGROUND = "\u001B[101m";
+
+    private String currColor = "";
     /**
      * Displays the board, outlining all the selectable tiles
      * @param selectable matrix wiht all the selectable tiles

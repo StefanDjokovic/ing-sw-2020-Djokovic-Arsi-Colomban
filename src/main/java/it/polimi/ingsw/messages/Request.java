@@ -17,6 +17,10 @@ public abstract class Request implements Serializable {
         message = "Nananananana batman!";
     }
 
+    public boolean isAsync() {
+        return isAsync;
+    }
+
     public void printMessage() {
         System.out.println(message);
     }
@@ -29,5 +33,10 @@ public abstract class Request implements Serializable {
 
     public String getMessage() {
         return message;
+    }
+
+    public boolean isValidAnswer(Answer answer) {
+        System.out.println("Request and Async Requests should not use this function");
+        return false;
     }
 }

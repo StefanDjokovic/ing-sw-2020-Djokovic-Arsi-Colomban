@@ -1,7 +1,9 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.client.view.ClientView;
+import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.answers.AnswerWorkersPlacement;
 
 public class RequestWorkerPlacement extends Request {
 
@@ -14,7 +16,23 @@ public class RequestWorkerPlacement extends Request {
         this.message = "Need worker position";
     }
 
-
+    @Override
+    public boolean isValidAnswer(Answer answer) {
+        try {
+            AnswerWorkersPlacement answerWorkersPlacement = (AnswerWorkersPlacement) answer;
+            if (workers != null) {
+                for (int[] w: workers) {
+                    if (w[0] == answerWorkersPlacement.getX() && w[1] == answerWorkersPlacement.getY())
+                        return false;
+                }
+            }
+            return true;
+        }
+        catch (java.lang.ClassCastException e) {
+            System.out.println("Not the expected Answer type! Will block");
+        }
+        return false;
+    }
 
     @Override
     public void accept(ClientView clientView) {

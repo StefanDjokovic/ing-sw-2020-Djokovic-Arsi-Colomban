@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.Observable;
-import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.client.networkLayer.Client;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.LobbyView;
@@ -11,8 +9,6 @@ import it.polimi.ingsw.messages.answers.*;
 import it.polimi.ingsw.server.model.BoardView;
 import it.polimi.ingsw.server.model.TileView;
 import javafx.application.Platform;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -151,7 +147,6 @@ public class ClientGUI extends ClientView {
      */
     public void sendPlayerInfo(String name, int playerNum) {
         this.playerName = name;
-        //updateObservers(new AnswerPlayerName(name));
         if(joining) {
             updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, -1));
         } else {
@@ -215,7 +210,7 @@ public class ClientGUI extends ClientView {
      * @param tiles List containing the coordinates of the selected tile (position of the worker).
      */
     public void sendWorkerPlacement(ArrayList<String> tiles) {
-        updateObservers(new AnswerWorkersPosition(tiles.get(0).charAt(0) - 48, tiles.get(0).charAt(2) - 48, playerInit));
+        updateObservers(new AnswerWorkersPlacement(tiles.get(0).charAt(0) - 48, tiles.get(0).charAt(2) - 48, playerInit));
     }
 
     /**

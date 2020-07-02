@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.controller;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.answers.AnswerKillPlayer;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.board.NonExistingTileException;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 public class Controller implements Observer, ControllerView {
 
     private Game game;
+    private Request waitingAnswer;
 
     /**
      * Constructor
@@ -27,13 +29,27 @@ public class Controller implements Observer, ControllerView {
      */
     @Override
     public void update(Answer answer) {
+        // We check with the last request sent if it's valid
         answer.printMessage();
-        answer.act(this);
+        if (waitingAnswer.isValidAnswer(answer) || waitingAnswer == null || answer instanceof AnswerKillPlayer) {
+            // We can now act
+            System.out.println("wu hu!");
+            answer.act(this);
+        }
+        else {
+            System.out.println("Invalid Answer!");
+            // TODO: decide what to do in case the answer is wrong, for now it's just hanging
+        }
+
+
     }
 
     @Override
     public void update(Request request) {
-        System.out.println("Controller should not receive Requests");
+        // We keep the last request sent to check with the answer
+        if (!request.isAsync()) {
+            waitingAnswer = request;
+        }
     }
 
     /**

@@ -23,6 +23,22 @@ public class AnswerPowerCoordinates extends Answer {
         message = "Answer move coordinates";
     }
 
+    public int getPosXFrom() {
+        return posXFrom;
+    }
+
+    public int getPosYFrom() {
+        return posYFrom;
+    }
+
+    public int getPosXTo() {
+        return posXTo;
+    }
+
+    public int getPosYTo() {
+        return posYTo;
+    }
+
     @Override
     public void act(ControllerView controller) {
         if (posXFrom == -1)

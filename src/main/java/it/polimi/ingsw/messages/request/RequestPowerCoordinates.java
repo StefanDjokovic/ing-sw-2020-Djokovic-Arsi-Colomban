@@ -1,8 +1,10 @@
 package it.polimi.ingsw.messages.request;
 
 import it.polimi.ingsw.client.view.ClientView;
+import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
+import it.polimi.ingsw.messages.answers.AnswerPowerCoordinates;
 
 public class RequestPowerCoordinates extends Request {
 
@@ -40,6 +42,21 @@ public class RequestPowerCoordinates extends Request {
             message = "Where do you want to go?";
         this.initial = initial;
         this.requestUpdateBoardViewBoardView = requestUpdateBoardView;
+    }
+
+    @Override
+    public boolean isValidAnswer(Answer answer) {
+        try {
+            AnswerPowerCoordinates ans = (AnswerPowerCoordinates) answer;
+            if (this.canPass && ans.getPosXFrom() == -1)
+                return true;
+            if (this.opt.isValid(ans.getPosXFrom(), ans.getPosYFrom(), ans.getPosXTo(), ans.getPosYTo()))
+                return true;
+        }
+        catch (java.lang.ClassCastException e) {
+            System.out.println("Not the expected Answer type! Will block");
+        }
+        return false;
     }
 
     @Override

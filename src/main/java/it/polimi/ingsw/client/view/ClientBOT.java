@@ -23,14 +23,6 @@ public class ClientBOT extends ClientView {
         this.boardView = boardView.getBoardView();
     }
 
-    @Override
-    public void getPlayerInfo() {
-        Random r = new Random();
-        char c = (char)(r.nextInt(26) + 'A');
-        updateObservers(new AnswerPlayerName((Character.toString(c))));
-
-    }
-
     public void displayLostConnection() {}
 
     @Override
@@ -40,6 +32,7 @@ public class ClientBOT extends ClientView {
 
     @Override
     public void getPlayerGod(char initial, ArrayList<String> options, int nPicks) {
+        this.playerInit = initial;
         Random r = new Random();
         if (nPicks != 1) {
             ArrayList<String> selectedGods = new ArrayList<>();
@@ -71,12 +64,13 @@ public class ClientBOT extends ClientView {
             for (int[] worker : workers) {
                 if (worker[0] == x && worker[1] == y) {
                     present = true;
+                    break;
                 }
             }
         }
 
         System.out.println("Worker placed on " + x + " , " + y);
-        updateObservers(new AnswerWorkersPosition(x, y, initial));
+        updateObservers(new AnswerWorkersPlacement(x, y, initial));
 
 
     }
@@ -98,6 +92,7 @@ public class ClientBOT extends ClientView {
         }
 
         generateSelectableWorkers(opt);
+        System.out.println(opt);
         if (opt.getValues().size() == 2) {
             getWorkerSelection(opt, canPass);
         }
