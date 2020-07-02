@@ -87,6 +87,7 @@ public class LoginUI {
         ask.setTextAlignment(TextAlignment.LEFT);
 
         cb = new ChoiceBox(FXCollections.observableArrayList("2", "3"));
+        cb.setStyle("-fx-font: 12 Futura;");
 
         bt2 = new Button();
         bt2.setId("button");

@@ -27,17 +27,14 @@ public class LobbyUI {
     private ArrayList<Button> buttons = new ArrayList<>();
     private TextField txtfIP;
     private TextField txtfPort;
-    private int status;
-    private Label statusL;
 
     /**
      * Creates the scene for the lobby scene.
      */
     public LobbyUI(){
-        status = 1;
         GridPane root = new GridPane();
         root.getStylesheets().add("style.css");
-        lobbyScene = new Scene(root, 550, 600);
+        lobbyScene = new Scene(root, 500, 700);
         root.setStyle("-fx-background-color: #CBE1EF");
         root.setPadding(new Insets(15));
         root.setHgap(15);
@@ -83,9 +80,7 @@ public class LobbyUI {
         //refresh.setBackground(background);
 
         refresh.setOnAction((ActionEvent e) -> {
-            if(status == 1) {
-                ClientGUI.getInstance().sendLobbySelection(0, false, -1);
-            }
+            ClientGUI.getInstance().sendLobbySelection(0, false, -1);
         });
         GridPane.setHalignment(refresh, HPos.RIGHT);
 
@@ -94,9 +89,7 @@ public class LobbyUI {
         add.setId("buttonAdd");
         add.setPrefSize(50, 50);
         add.setOnAction((ActionEvent e) -> {
-            if(status == 1) {
-                ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
-            }
+            ClientGUI.getInstance().sendLobbySelection(-1, false, -1);
         });
         GridPane.setHalignment(add, HPos.RIGHT);
 
@@ -105,9 +98,7 @@ public class LobbyUI {
         fast2.setId("buttonAdd");
         fast2.setPrefSize(110, 50);
         fast2.setOnAction((ActionEvent e) -> {
-            if(status == 1) {
-                ClientGUI.getInstance().sendLobbySelection(-2, true, -1);
-            }
+            ClientGUI.getInstance().sendLobbySelection(-2, true, -1);
         });
         GridPane.setHalignment(fast2, HPos.RIGHT);
 
@@ -116,9 +107,7 @@ public class LobbyUI {
         fast3.setId("buttonAdd");
         fast3.setPrefSize(110, 50);
         fast3.setOnAction((ActionEvent e) -> {
-            if(status == 1) {
-                ClientGUI.getInstance().sendLobbySelection(-3, true, -1);
-            }
+            ClientGUI.getInstance().sendLobbySelection(-3, true, -1);
         });
         GridPane.setHalignment(fast3, HPos.RIGHT);
 
@@ -133,35 +122,35 @@ public class LobbyUI {
         });
         GridPane.setHalignment(b, HPos.RIGHT);
 
-        Label ipT = new Label("IP");
-        Label portT = new Label("Port");
-        statusL = new Label("Status: not connected");
-        txtfIP = new TextField();
-        txtfPort = new TextField();
-        Button connect = new Button("Connect");
-        connect.setId("button");
-        connect.setOnAction((ActionEvent e) -> {
-            if(status == 0) {
-                String sIP;
-                String iPort;
-
-                if (txtfIP.getCharacters().toString().equals("")) {
-                    sIP = "localhost";
-                } else {
-                    sIP = txtfIP.getCharacters().toString();
-                }
-                if (txtfPort.getCharacters().toString().equals("")) {
-                    iPort = "default";
-                } else {
-                    iPort = txtfPort.getCharacters().toString();
-                }
-
-                ClientGUI.getInstance().connectToServer(sIP, iPort);
-            }
-        });
-        HBox menuDown = new HBox(8);
-        menuDown.getChildren().addAll(ipT, txtfIP, portT, txtfPort, connect, statusL);
-        menuDown.setAlignment(Pos.CENTER_LEFT);
+//        Label ipT = new Label("IP");
+//        Label portT = new Label("Port");
+//        statusL = new Label("Status: not connected");
+//        txtfIP = new TextField();
+//        txtfPort = new TextField();
+//        Button connect = new Button("Connect");
+//        connect.setId("button");
+//        connect.setOnAction((ActionEvent e) -> {
+//            if(status == 0) {
+//                String sIP;
+//                String iPort;
+//
+//                if (txtfIP.getCharacters().toString().equals("")) {
+//                    sIP = "localhost";
+//                } else {
+//                    sIP = txtfIP.getCharacters().toString();
+//                }
+//                if (txtfPort.getCharacters().toString().equals("")) {
+//                    iPort = "default";
+//                } else {
+//                    iPort = txtfPort.getCharacters().toString();
+//                }
+//
+//                ClientGUI.getInstance().connectToServer(sIP, iPort);
+//            }
+//        });
+//        HBox menuDown = new HBox(8);
+//        menuDown.getChildren().addAll(ipT, txtfIP, portT, txtfPort, connect, statusL);
+//        menuDown.setAlignment(Pos.CENTER_LEFT);
 
         root.add(title, 0, 0);
 //        root.add(fast2, 1, 0);
@@ -211,7 +200,7 @@ public class LobbyUI {
                 GridPane.setHalignment(select, HPos.CENTER);
                 GridPane.setValignment(select, VPos.BOTTOM);
                 select.setOnAction((ActionEvent ev) -> {
-                    if(status == 1 && lobbies.get(currentX).getPlayersName().size() < lobbies.get(currentX).getNPlayers()) {
+                    if(lobbies.get(currentX).getPlayersName().size() < lobbies.get(currentX).getNPlayers()) {
                         ClientGUI.getInstance().sendLobbySelection(lobbies.get(currentX).getLobbyNumber(), true, lobbies.get(currentX).getNPlayers());
                     }
                 });
@@ -251,10 +240,5 @@ public class LobbyUI {
      */
     public Scene getScene() {
         return this.lobbyScene;
-    }
-
-    public void displayConnection(String ip, String port) {
-        status = 1;
-        statusL.setText("Status: connected");
     }
 }

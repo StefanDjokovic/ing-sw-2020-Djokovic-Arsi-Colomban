@@ -363,7 +363,7 @@ public class ClientGUI extends ClientView {
     }
 
     /**
-     * Restarts the process of connection and login
+     * Restarts the process of connection and login (unused)
      */
     public void replay() {
         //TODO reconnect!
@@ -374,7 +374,7 @@ public class ClientGUI extends ClientView {
     Client client;
 
     /**
-     * Connects the client to the server
+     * Connects the client to the server (unused)
      */
     public void connectToServer(String ip, String port) {
         try {

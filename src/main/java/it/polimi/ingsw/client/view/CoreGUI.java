@@ -40,10 +40,10 @@ public class CoreGUI extends Application {
             i.fitWidthProperty().bind(g.widthProperty());
             thisStage.setScene(s);
 
-            thisStage.setMinHeight(500);
-            thisStage.setMinWidth(700);
-            thisStage.setScene(new EndUI(1).getScene());
-            //thisStage.setResizable(true);
+//            thisStage.setMinHeight(500);
+//            thisStage.setMinWidth(700);
+//            thisStage.setScene(new EndUI(1).getScene());
+//            thisStage.setResizable(true);
 
             primaryStage.show();
             CoreGUI.class.notifyAll();
