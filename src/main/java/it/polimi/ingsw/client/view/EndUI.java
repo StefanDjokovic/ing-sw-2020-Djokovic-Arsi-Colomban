@@ -58,12 +58,12 @@ public class EndUI {
 
         root.add(l, 0, 0, 2, 1);
         root.add(ask, 0, 1, 2, 1);
-        root.add(bt2, 0, 2, 1, 1);
+        //root.add(bt2, 0, 2, 1, 1);
         root.add(bt, 1, 2, 1, 1);
 
         GridPane.setHalignment(l, HPos.CENTER);
         GridPane.setHalignment(ask, HPos.CENTER);
-        GridPane.setHalignment(bt, HPos.RIGHT);
+        GridPane.setHalignment(bt, HPos.CENTER);
         GridPane.setHalignment(bt2, HPos.LEFT);
 
 

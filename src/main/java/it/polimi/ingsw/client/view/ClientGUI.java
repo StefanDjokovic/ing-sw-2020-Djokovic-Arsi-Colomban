@@ -281,7 +281,13 @@ public class ClientGUI extends ClientView {
      * Displays final message in case of loss because of no option
      */
     public void displayGameEnd() {
-        game.youLose();
+        Stage ss = CoreGUI.getStage();
+        Platform.runLater(() -> {
+            EndUI e = new EndUI(1);
+            CoreGUI.getStage().setScene(e.getScene());
+            ss.setMinHeight(500);
+            ss.setMinWidth(500);
+        });
     }
 
     //needed but not used
@@ -310,7 +316,7 @@ public class ClientGUI extends ClientView {
      */
     public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
         if (error != 0 && error != 2) {
-            System.out.println("lobby error: "+ error);
+            System.out.println("Lobby error: "+ error);
             //return;
         }
 
@@ -356,7 +362,9 @@ public class ClientGUI extends ClientView {
      * Restarts the process of connection and login
      */
     public void replay() {
-        sendLobbySelection(-1, false, 0);
+        //TODO reconnect!
+        //sendLobbySelection(0, false, -1);
+        lobbyAndNameSelection(null, 0);
     }
 
     Client client;

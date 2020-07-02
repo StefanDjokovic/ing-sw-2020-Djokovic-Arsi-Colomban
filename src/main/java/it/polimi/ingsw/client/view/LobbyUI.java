@@ -170,7 +170,7 @@ public class LobbyUI {
 //        root.add(refresh, 4, 0);
         root.add(menuUp, 0, 0, 2, 1);
         root.add(sp, 0, 1, 2, 1);
-        root.add(menuDown, 0, 2, 2, 1);
+        //root.add(menuDown, 0, 2, 2, 1);
         root.add(b, 1, 2);
     }
 

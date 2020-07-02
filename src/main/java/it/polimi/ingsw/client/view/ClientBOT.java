@@ -31,7 +31,7 @@ public class ClientBOT extends ClientView {
 
     }
 
-
+    public void displayLostConnection() {}
 
     @Override
     public char getPlayerInitial() {

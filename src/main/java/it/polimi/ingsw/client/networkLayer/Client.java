@@ -77,7 +77,7 @@ public class Client implements Observer {
             outputStream.close();
             socket.close();
             System.out.println("DISCONNECTED FROM SERVER");
-            ClientGUI.getInstance().displayLostConnection();
+            clientView.displayLostConnection();
         }
     }
 

@@ -94,7 +94,7 @@ public class GameUI {
             System.out.println("not yet implemented");
         });
         GridPane.setHalignment(regole, HPos.LEFT);
-        root.add(regole, 0, 3);
+        //root.add(regole, 0, 3);
 
         Button bt = new Button();
         bt.setId("buttonexit");
@@ -610,30 +610,30 @@ public class GameUI {
      * Display win message.
      */
     public void youWin() {
-        Platform.runLater(() -> {
-            //infoLabel.setText("Congrats, you won!");
-            Label newL = new Label("Congrats, you won!");
-            newL.setPrefHeight(100);
-            newL.setPrefWidth(200);
-            newL.setId("slot");
-            root.add(newL, 0, 0, 2, 4);
-            root.setEffect(new GaussianBlur());
-        });
+//        Platform.runLater(() -> {
+//            //infoLabel.setText("Congrats, you won!");
+//            Label newL = new Label("Congrats, you won!");
+//            newL.setPrefHeight(100);
+//            newL.setPrefWidth(200);
+//            newL.setId("slot");
+//            root.add(newL, 0, 0, 2, 4);
+//            root.setEffect(new GaussianBlur());
+//        });
     }
 
     /**
      * Display lose message.
      */
     public void youLose() {
-        Platform.runLater(() -> {
-            //infoLabel.setText("I'm sorry but you lost :(");
-            Label newL = new Label("I'm sorry but you lost :(");
-            newL.setPrefHeight(100);
-            newL.setPrefWidth(200);
-            newL.setId("slot");
-            root.add(newL, 0, 0, 2, 4);
-            root.setEffect(new GaussianBlur());
-        });
+//        Platform.runLater(() -> {
+//            //infoLabel.setText("I'm sorry but you lost :(");
+//            Label newL = new Label("I'm sorry but you lost :(");
+//            newL.setPrefHeight(100);
+//            newL.setPrefWidth(200);
+//            newL.setId("slot");
+//            root.add(newL, 0, 0, 2, 4);
+//            root.setEffect(new GaussianBlur());
+//        });
     }
 
     /**

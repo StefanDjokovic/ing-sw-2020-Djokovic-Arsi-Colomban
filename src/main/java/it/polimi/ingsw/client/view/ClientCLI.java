@@ -636,4 +636,11 @@ public class ClientCLI extends ClientView {
         }
         System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
     }
+
+    /**
+     * Empty, needed by GUI
+     */
+    public void displayLostConnection() {
+
+    }
 }

@@ -23,4 +23,5 @@ public abstract class ClientView extends Observable implements Observer {
     public abstract void setGodInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, ArrayList<String> godNames, int nPlayers);
     public abstract void displayBoard();
     public abstract void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error);
+    public abstract void displayLostConnection();
 }
