@@ -311,6 +311,7 @@ public class ClientGUI extends ClientView {
     }
 
     boolean isActive = false;
+    ArrayList<LobbyView> currLobbies;
 
     /**
      * Server type function, sends information about current active matches. In the GUI it starts the scene containing the lobby selection page(LobbyUI).
@@ -318,6 +319,7 @@ public class ClientGUI extends ClientView {
      * @param error Status flag, used to notify that there is no match available.
      */
     public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
+        currLobbies = lobbies;
         if (error != 0 && error != 2) {
             System.out.println("Lobby error: "+ error);
             //return;
@@ -353,6 +355,8 @@ public class ClientGUI extends ClientView {
         joining = isJoining;
         chosenLobby = number;
         chosenNumPlayers = plNum;
+
+        this.setOtherPlayers(currLobbies.get(number).getPlayersName());
 
         if (number == 0) {
             updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, plNum));
