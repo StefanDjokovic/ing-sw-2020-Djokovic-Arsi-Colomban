@@ -287,7 +287,12 @@ public class ClientGUI extends ClientView {
     }
 
     //needed but not used
-    public void setPlayerInit(char init) {
+    public void setGameInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, int nPlayers) {
+    }
+
+    @Override
+    public void setGodInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, ArrayList<String> godNames, int nPlayers) {
+
     }
 
     //needed but not used

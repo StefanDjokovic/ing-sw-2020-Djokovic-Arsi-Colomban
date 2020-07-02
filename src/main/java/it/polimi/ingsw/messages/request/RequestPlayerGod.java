@@ -9,7 +9,6 @@ public class RequestPlayerGod extends Request {
 
     private ArrayList<String> options;
     private int nPicks;
-    private boolean multipleDecision;
 
     public RequestPlayerGod(char initial, int nPicks, ArrayList<String> options) {
         message = "What God shall you pick?";
@@ -17,8 +16,6 @@ public class RequestPlayerGod extends Request {
         this.nPicks = nPicks;
         this.options = options;
     }
-
-    public int getNPicks() { return this.nPicks; }
 
 
     public char getInitial() { return this.initial; }

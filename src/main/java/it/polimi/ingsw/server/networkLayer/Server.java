@@ -51,7 +51,7 @@ public class Server {
      * @param playerName player's name
      * @param playerSocket player's client connection
      * @param nPlayers number of players the lobby can accept
-     * @return
+     * @return created Lobby
      */
     public synchronized Lobby isAvailable(int lobbyNumber, String playerName, ServerSocket playerSocket, int nPlayers) {
         System.out.println("Joining in is available");
@@ -63,7 +63,8 @@ public class Server {
                     System.out.println("I have found an open lobby!");
                     l.addPlayer(playerName, playerSocket);
                     if (l.isFull()) {
-                        System.out.println("Starting the Lobby " + lobbyNumber);
+                        System.out.println("Starting the Lobby " + l.lobbyNumber);
+                        lobbies.remove(l.lobbyNumber);
                         startLobbyGame(l);
                     }
                     return l;
@@ -87,12 +88,14 @@ public class Server {
         else {
             // there is already a lobby with that number, check if the playerName is unique
             if (!lobbies.get(lobbyNumber).isFull() && lobbies.get(lobbyNumber).isAvailable(playerName)) {
-                lobbies.get(lobbyNumber).addPlayer(playerName, playerSocket);
-                if (lobbies.get(lobbyNumber).isFull()) {
+                Lobby l = lobbies.get(lobbyNumber);
+                l.addPlayer(playerName, playerSocket);
+                if (l.isFull()) {
                     System.out.println("Starting the Lobby " + lobbyNumber);
-                    startLobbyGame(lobbies.get(lobbyNumber));
+                    lobbies.remove(lobbyNumber);
+                    startLobbyGame(l);
                 }
-                return lobbies.get(lobbyNumber);
+                return l;
             }
         }
         return null;

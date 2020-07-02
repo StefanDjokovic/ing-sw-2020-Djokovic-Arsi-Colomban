@@ -14,7 +14,7 @@ public abstract class Request implements Serializable {
     public boolean internal = false;
 
     public Request() {
-        message = "This message should be set by subclasses";
+        message = "Nananananana batman!";
     }
 
     public void printMessage() {

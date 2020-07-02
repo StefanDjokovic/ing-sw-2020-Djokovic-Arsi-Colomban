@@ -66,17 +66,30 @@ public class ClientCLI extends ClientView {
 
     /**
      * Sets the player's initial as decided by the model
-     * @param init players initial
+     * @param
      */
-    public void setPlayerInit(char init) {
-        this.playerInit = init;
+    @Override
+    public void setGameInformation(ArrayList<String> playersName,
+                                   ArrayList<Character> playersInitial, int nPlayers) {
+        System.out.println("Game composed of:");
+        for (int i = 0; i < nPlayers; i++) {
+            System.out.println(playersInitial.get(i) + " : " + playersName.get(i));
+        }
+    }
+
+    @Override
+    public void setGodInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, ArrayList<String> godNames, int nPlayers) {
+        System.out.println("Information about who picked which god:");
+        for (int i = 0; i < nPlayers; i++) {
+            System.out.println(playersInitial.get(i) + " : " + godNames.get(i));
+        }
+        System.out.println();
     }
 
     /**
      * Updates boardView, that contains the state of the board
      * @param boardView new state of the board, used to render it on the CLI
      */
-    // TODO: should be like this!!!
     public void updateBoardView(BoardView boardView) {
         this.boardView = boardView.getBoardView();
     }
@@ -84,10 +97,9 @@ public class ClientCLI extends ClientView {
     /**
      * Asks the user for player's name and updates observers with an Answer containing the name
      */
-    // TODO: not like this!
     public void getPlayerInfo() {
         System.out.println("Please, input Player's name: ");
-        String playerName = scanner.nextLine();
+        String playerName = scanner.nextLine();  // TODO: restrict to the first n characters
         updateObservers(new AnswerPlayerName(playerName));
     }
 

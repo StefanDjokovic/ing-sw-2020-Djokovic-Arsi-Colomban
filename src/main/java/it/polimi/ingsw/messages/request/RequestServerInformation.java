@@ -11,7 +11,7 @@ public class RequestServerInformation extends Request {
     private ArrayList<LobbyView> lobbies;
     private int error;
 
-    // Note: lobbies can be null
+    // Note: if there is no lobby lobbies is null
     public RequestServerInformation(ArrayList<LobbyView> lobbies, int error) {
         this.lobbies = lobbies;
         this.error = error;

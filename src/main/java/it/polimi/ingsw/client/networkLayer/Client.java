@@ -56,7 +56,10 @@ public class Client implements Observer {
 
     public void run() throws IOException {
         clientView.addObserver(this);
+        connect();
+    }
 
+    public void connect() throws IOException {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
         outputStream = new ObjectOutputStream(socket.getOutputStream());

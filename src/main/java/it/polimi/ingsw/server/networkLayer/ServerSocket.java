@@ -42,11 +42,8 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     public void send(Request request) {
         try {
             outputStream.reset();
-            System.out.print("Message before sending: ");
-            request.printMessage();
             outputStream.writeObject(request);
             outputStream.flush();
-            System.out.println("flushed ServerSocket");
         } catch (IOException e) {
             System.out.println("IO Exception on send, you are dumb");
             System.err.println(e.getMessage());
@@ -59,13 +56,11 @@ public class ServerSocket extends Observable implements Runnable, Observer {
      */
     public void asyncReadFromSocket() {
         new Thread(() -> {
-            System.out.println("Async read");
             try {
                 while (true) {
-                    System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
                     Object temp = inputStream.readObject();
                     Answer answer = (Answer) temp;
-                    answer.setInitial(playerInitial);   // TODO: useless? to check
+                    answer.setInitial(playerInitial);
                     updateObservers(answer);
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -89,7 +84,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
      */
     public AnswerLobbyAndName readFromSocketPlayerLobbyAndName() {
         try {
-            System.out.println("Me, ServerSocket " + playerInitial + " received the answer");
             Object temp = inputStream.readObject();
             return (AnswerLobbyAndName) temp;
         } catch (IOException | ClassNotFoundException e) {
@@ -164,8 +158,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     public void update(Request request) {
         if (isActiveFlag) {
             if (this.playerInitial == request.getInitial() || request.getInitial() == '*') {
-                request.printMessage();
-                System.out.println("Request sent to " + request.getInitial());
                 send(request);
             }
             else {

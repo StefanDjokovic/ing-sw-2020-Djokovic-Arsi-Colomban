@@ -44,8 +44,6 @@ public class Game extends Observable{
             newPlayer.setInitial('C');
 
         players.add(newPlayer);
-        System.out.println("\nIM ASSIGNING" + newPlayerName + " THIS INITIAL: " + newPlayer.getInitial() + "\n");
-        printPlayersDescription();
 
         return newPlayer.getInitial();
 
@@ -56,7 +54,6 @@ public class Game extends Observable{
     private HashMap<String, Integer> opt;
     private ArrayList<String> optList;
     public void initGods() {
-        System.out.println("Initializing Process: Asking for God's name");
 
         if (opt == null) {
             opt = new HashMap<>();
@@ -88,8 +85,6 @@ public class Game extends Observable{
      * Initializes workers after sending requests for the workers' placement
      */
     public void initWorker() {
-        System.out.println("Init worker");
-        printPlayersDescription();
         updateObservers(new RequestUpdateBoardView(new BoardView(board), '*'));
 
         if (players.get(0).getWorkersSize() != 2)
@@ -137,6 +132,16 @@ public class Game extends Observable{
         for (Player p: players) {
             if (p.getGodLogic() == null) {
                 p.setGodLogic(optList.get(0), logger, getBoard());
+                printPlayersDescription();
+
+                if (nPlayers() == 2)
+                    updateObservers(new RequestGameInformation(players.get(0).getName(), players.get(1).getName(),
+                            players.get(0).getInitial(), players.get(1).getInitial(), players.get(0).getGodLogic().getGodLogicName(),
+                            players.get(1).getGodLogic().getGodLogicName()));
+                if (nPlayers() == 3)
+                    updateObservers(new RequestGameInformation(players.get(0).getName(), players.get(1).getName(), players.get(2).getName(),
+                            players.get(0).getInitial(), players.get(1).getInitial(), players.get(2).getInitial(), players.get(0).getGodLogic().getGodLogicName(),
+                            players.get(1).getGodLogic().getGodLogicName(), players.get(2).getGodLogic().getGodLogicName()));
                 return;
             }
         }
@@ -190,12 +195,10 @@ public class Game extends Observable{
                 players.get(i).delete();
                 players.remove(p);
 
-                if (players.size() != 0 && i < currPlayer)
-                    currPlayer = currPlayer - 1;
+                if (players.size() != 0 && currPlayer == players.size())
+                    currPlayer = 0;
             }
         }
-
-        System.out.println("Is the player actually deleted correctly?");
 
         return isCurrent;
     }

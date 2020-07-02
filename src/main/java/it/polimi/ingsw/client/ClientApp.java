@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.networkLayer.Client;
+import it.polimi.ingsw.client.view.ClientBOT;
 import it.polimi.ingsw.client.view.ClientCLI;
 import it.polimi.ingsw.client.view.ClientGUI;
 import it.polimi.ingsw.client.view.ClientView;
@@ -62,7 +63,12 @@ public class ClientApp {
                 // CLI is initialized
                 client = new Client(ip, port, new ClientCLI());
                 break;
-            } else {
+            } else if (gameMode == 3) {
+                System.out.println("Secret mode activated!");
+                client = new Client(ip, port, new ClientBOT());
+                break;
+            }
+            else {
                 System.out.println("Wrong game mode selected, please select again.");
             }
         }
