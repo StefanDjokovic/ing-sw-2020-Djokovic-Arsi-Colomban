@@ -102,7 +102,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>it.polimi.ingsw.client.ClientApp</mainClass>
+              <mainClass>it.polimi.ingsw.server.ServerApp</mainClass>
             </manifest>
           </archive>
         </configuration>
