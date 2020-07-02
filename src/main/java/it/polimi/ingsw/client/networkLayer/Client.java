@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.networkLayer;
 
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.client.view.ClientGUI;
 import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
@@ -76,6 +77,7 @@ public class Client implements Observer {
             outputStream.close();
             socket.close();
             System.out.println("DISCONNECTED FROM SERVER");
+            ClientGUI.getInstance().displayLostConnection();
         }
     }
 

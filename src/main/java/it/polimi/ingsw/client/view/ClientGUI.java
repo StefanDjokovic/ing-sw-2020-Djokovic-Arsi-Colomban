@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.client.networkLayer.Client;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.LobbyView;
 import it.polimi.ingsw.messages.OptionSelection;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ClientGUI extends ClientView {
@@ -258,12 +260,12 @@ public class ClientGUI extends ClientView {
      * @param winnerInit Character of the player that won the match.
      */
     public void displayGameEnd(char winnerInit) {
-        boolean won;
+        int won;
 
         if(winnerInit == playerInit) {
-            won = true;
+            won = 0;
         } else {
-            won = false;
+            won = 1;
         }
 
         Stage ss = CoreGUI.getStage();
@@ -319,8 +321,9 @@ public class ClientGUI extends ClientView {
                 lobby = new LobbyUI();
                 ss.setScene(lobby.getScene());
                 ss.setResizable(true);
-                ss.setMinHeight(300);
-                ss.setMinWidth(600);
+                ss.setMinHeight(500);
+                ss.setMinWidth(700);
+                ss.setResizable(true);
                 lobby.refresh(lobbies);
             });
         } else {
@@ -347,5 +350,40 @@ public class ClientGUI extends ClientView {
             getPlayerInfo();
             isActive = false;
         }
+    }
+
+    /**
+     * Restarts the process of connection and login
+     */
+    public void replay() {
+        sendLobbySelection(-1, false, 0);
+    }
+
+    Client client;
+
+    /**
+     * Connects the client to the server
+     */
+    public void connectToServer(String ip, String port) {
+        try {
+            client = new Client(ip, Integer.parseInt(port), this);
+            client.run();
+        } catch (NumberFormatException ignored) {
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Notifies to the player that the connection to the server has been lost
+     */
+    public void displayLostConnection() {
+        Stage ss = CoreGUI.getStage();
+        Platform.runLater(() -> {
+            EndUI e = new EndUI(2);
+            ss.setScene(e.getScene());
+            ss.setMinHeight(500);
+            ss.setMinWidth(500);
+        });
     }
 }

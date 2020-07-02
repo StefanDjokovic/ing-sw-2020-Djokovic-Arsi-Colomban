@@ -14,8 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -43,6 +42,21 @@ public class LoginUI {
         root.setHgap(8);
         root.setVgap(8);
         root.getStylesheets().add("style.css");
+
+        ColumnConstraints c = new ColumnConstraints();
+        c.setHgrow(Priority.ALWAYS);
+        root.getColumnConstraints().add(c);
+        RowConstraints r1 = new RowConstraints();
+        r1.setVgrow(Priority.ALWAYS);
+        RowConstraints r2 = new RowConstraints();
+        r2.setVgrow(Priority.ALWAYS);
+        RowConstraints r3 = new RowConstraints();
+        r3.setVgrow(Priority.ALWAYS);
+        RowConstraints r4 = new RowConstraints();
+        r4.setVgrow(Priority.ALWAYS);
+        RowConstraints r5 = new RowConstraints();
+        r5.setVgrow(Priority.ALWAYS);
+        root.getRowConstraints().addAll(r1, r2, r3, r4, r5);
 
         loginScene = new Scene(root, 400, 350);
         root.setStyle("-fx-background-color: #CBE1EF");
@@ -152,7 +166,7 @@ public class LoginUI {
         iv.setFitHeight(50);
         iv.setPreserveRatio(true);
         root.add(iv, 0, 9, 2, 1);
-        GridPane.setHalignment(iv, HPos.CENTER);
+        GridPane.setHalignment(iv, HPos.LEFT);
         rotateTransition = new RotateTransition();
         rotateTransition.setDuration(Duration.millis(1000));
         rotateTransition.setNode(iv);
