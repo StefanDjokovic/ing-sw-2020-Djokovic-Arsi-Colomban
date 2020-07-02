@@ -35,7 +35,7 @@ public class EndUI {
 
         l.setFont(Font.font("Futura", FontWeight.NORMAL, 35));
 
-        Label ask = new Label("Do you want to play again?");
+        Label ask = new Label("Close and restart to play again");
         ask.setFont(Font.font("Futura", FontWeight.NORMAL, 20));
 
         bt2 = new Button();

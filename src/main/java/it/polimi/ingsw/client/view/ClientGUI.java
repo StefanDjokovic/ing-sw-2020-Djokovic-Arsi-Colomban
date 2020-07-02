@@ -202,10 +202,11 @@ public class ClientGUI extends ClientView {
             game = new GameUI();
             ss.setScene(game.getScene());
             ss.setTitle("Santorini");
-            ss.setMinHeight(670);
+            ss.setMinHeight(600);
             ss.setMinWidth(650);
             game.updateBoard(bv.getBoardView());
             game.placeWorkers(workers);
+            ss.setResizable(false);
         });
     }
 
@@ -274,6 +275,7 @@ public class ClientGUI extends ClientView {
             CoreGUI.getStage().setScene(e.getScene());
             ss.setMinHeight(500);
             ss.setMinWidth(500);
+            ss.setTitle("End");
         });
     }
 
@@ -287,6 +289,7 @@ public class ClientGUI extends ClientView {
             CoreGUI.getStage().setScene(e.getScene());
             ss.setMinHeight(500);
             ss.setMinWidth(500);
+            ss.setTitle("End");
         });
     }
 
@@ -330,6 +333,7 @@ public class ClientGUI extends ClientView {
                 ss.setMinHeight(500);
                 ss.setMinWidth(700);
                 ss.setResizable(true);
+                ss.setTitle("Lobby selection");
                 lobby.refresh(lobbies);
             });
         } else {
