@@ -160,20 +160,21 @@ public class LoginUI {
         txtf.setDisable(true);
         cb.setDisable(true);
         info.setText("Waiting for other player(s)");
-        iv = new ImageView(new Image("graphic_resources/resourcesGUI/loading.png"));
-        iv.setId("loadingIV");
-        iv.setFitWidth(50);
-        iv.setFitHeight(50);
-        iv.setPreserveRatio(true);
-        root.add(iv, 0, 9, 2, 1);
-        GridPane.setHalignment(iv, HPos.LEFT);
-        rotateTransition = new RotateTransition();
-        rotateTransition.setDuration(Duration.millis(1000));
-        rotateTransition.setNode(iv);
-        rotateTransition.setByAngle(360);
-        rotateTransition.setCycleCount(1000);
-        rotateTransition.setAutoReverse(false);
-        rotateTransition.play();
+
+//        iv = new ImageView(new Image("graphic_resources/resourcesGUI/loading.png"));
+//        iv.setId("loadingIV");
+//        iv.setFitWidth(50);
+//        iv.setFitHeight(50);
+//        iv.setPreserveRatio(true);
+//        root.add(iv, 0, 9, 2, 1);
+//        GridPane.setHalignment(iv, HPos.LEFT);
+//        rotateTransition = new RotateTransition();
+//        rotateTransition.setDuration(Duration.millis(1000));
+//        rotateTransition.setNode(iv);
+//        rotateTransition.setByAngle(360);
+//        rotateTransition.setCycleCount(1000);
+//        rotateTransition.setAutoReverse(false);
+//        rotateTransition.play();
 
         //send
         if(!mode) {
