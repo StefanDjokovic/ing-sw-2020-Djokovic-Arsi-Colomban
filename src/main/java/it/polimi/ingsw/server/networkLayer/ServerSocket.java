@@ -128,24 +128,30 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         try {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            Lobby unSelected = null;
-            int n = 0;
-            while (unSelected == null) {
-                send(server.getRequestServerInformation(n));
-                AnswerLobbyAndName lobbyAndName = readFromSocketPlayerLobbyAndName();
-                int lobbyNumber = lobbyAndName.getLobbyNumber();
-                playerName = lobbyAndName.getName();
-                // lobbyNumber 0 is the lobby number for "refresh" options
-                if (lobbyNumber != 0)
-                    unSelected = server.isAvailable(lobbyNumber, playerName, this, lobbyAndName.getNPlayers());
-                n = 1;
-            }
-            playingLobby = unSelected;
-            System.out.println("Joined the lobby!");
-            send(new RequestWaitOpponentMove());
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
+
+        Lobby unSelected = null;
+        int n = 0;
+        while (unSelected == null) {
+            send(server.getRequestServerInformation(n));
+            AnswerLobbyAndName lobbyAndName = readFromSocketPlayerLobbyAndName();
+            int lobbyNumber = lobbyAndName.getLobbyNumber();
+            playerName = lobbyAndName.getName();
+            // lobbyNumber 0 is the lobby number for "refresh" options
+            if (lobbyNumber != 0) {
+                unSelected = server.isAvailable(lobbyNumber, playerName, this, lobbyAndName.getNPlayers());
+                n = 1;
+            }
+            else
+                n = 0;
+        }
+        playingLobby = unSelected;
+        System.out.println("Joined the lobby!");
+        send(new RequestWaitOpponentMove());
+
         System.out.println("Starting asyncRead");
         asyncReadFromSocket();
     }
