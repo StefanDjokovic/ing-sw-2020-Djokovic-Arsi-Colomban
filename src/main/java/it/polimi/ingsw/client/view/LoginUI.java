@@ -58,7 +58,7 @@ public class LoginUI {
         r5.setVgrow(Priority.ALWAYS);
         root.getRowConstraints().addAll(r1, r2, r3, r4, r5);
 
-        loginScene = new Scene(root, 400, 350);
+        loginScene = new Scene(root, 420, 420);
         root.setStyle("-fx-background-color: #CBE1EF");
 
         Label lbl = new Label("Santorini");
@@ -163,26 +163,16 @@ public class LoginUI {
         cb.setDisable(true);
         info.setText("Waiting for other player(s)");
 
-//        iv = new ImageView(new Image("graphic_resources/resourcesGUI/loading.png"));
-//        iv.setId("loadingIV");
-//        iv.setFitWidth(50);
-//        iv.setFitHeight(50);
-//        iv.setPreserveRatio(true);
-//        root.add(iv, 0, 9, 2, 1);
-//        GridPane.setHalignment(iv, HPos.LEFT);
-//        rotateTransition = new RotateTransition();
-//        rotateTransition.setDuration(Duration.millis(1000));
-//        rotateTransition.setNode(iv);
-//        rotateTransition.setByAngle(360);
-//        rotateTransition.setCycleCount(1000);
-//        rotateTransition.setAutoReverse(false);
-//        rotateTransition.play();
+        String name = txtf.getCharacters().toString();
+        if (name.length() > 10) {
+            name = name.substring(0, 9);
+        }
 
         //send
         if(!mode) {
-            ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString(), Integer.parseInt(cb.getSelectionModel().getSelectedItem().toString()));
+            ClientGUI.getInstance().sendPlayerInfo(name, Integer.parseInt(cb.getSelectionModel().getSelectedItem().toString()));
         } else if(mode) {
-            ClientGUI.getInstance().sendPlayerInfo(txtf.getCharacters().toString(), -1);
+            ClientGUI.getInstance().sendPlayerInfo(name, -1);
         }
     }
 

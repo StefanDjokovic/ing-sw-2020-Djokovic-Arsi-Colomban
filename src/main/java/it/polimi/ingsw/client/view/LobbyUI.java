@@ -117,6 +117,7 @@ public class LobbyUI {
 
         Button b = new Button("Quit");
         b.setId("button");
+        b.setFont(Font.font("Futura", FontWeight.NORMAL, 12));
         b.setOnAction((ActionEvent a) -> {
             System.exit(0);
         });
@@ -227,11 +228,6 @@ public class LobbyUI {
                 fp.getChildren().add(slot);
             }
         }
-    }
-
-    //???
-    private void selectLobby() {
-
     }
 
     /**

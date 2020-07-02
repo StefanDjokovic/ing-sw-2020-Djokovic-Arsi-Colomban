@@ -31,6 +31,8 @@ public class EndUI {
             l.setText("You lost...");
         } else if (mode == 2){
             l.setText("Lost connection to server...");
+        } else if (mode == 3) {
+            l.setText("Can't reach server...");
         }
 
         l.setFont(Font.font("Futura", FontWeight.NORMAL, 35));

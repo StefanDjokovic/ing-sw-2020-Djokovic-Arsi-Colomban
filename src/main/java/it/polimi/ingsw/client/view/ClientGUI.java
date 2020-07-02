@@ -135,8 +135,8 @@ public class ClientGUI extends ClientView {
             ss.setScene(login.getScene());
             ss.setTitle("Login phase");
             ss.setResizable(true);
-            ss.setMinHeight(400);
-            ss.setMinWidth(400);
+            ss.setMinHeight(420);
+            ss.setMinWidth(420);
         });
     }
 
@@ -292,7 +292,6 @@ public class ClientGUI extends ClientView {
     public void displayBoard() {
     }
 
-    //needed but not used
     public void setGameInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, int nPlayers) {
     }
 
@@ -328,7 +327,7 @@ public class ClientGUI extends ClientView {
                 ss.setScene(lobby.getScene());
                 ss.setResizable(true);
                 ss.setMinHeight(500);
-                ss.setMinWidth(700);
+                ss.setMinWidth(600);
                 ss.setResizable(true);
                 ss.setTitle("Lobby selection");
                 lobby.refresh(lobbies);
