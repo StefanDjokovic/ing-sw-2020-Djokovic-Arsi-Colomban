@@ -12,6 +12,7 @@ public class RequestKillPlayer extends Request {
         this.initial = loserInitial;
         this.loserInitial = loserInitial;
         this.message = "F";
+        this.isAsync = true;
     }
 
     @Override

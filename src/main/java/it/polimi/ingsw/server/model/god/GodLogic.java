@@ -20,7 +20,6 @@ public class GodLogic {
     private Player player;
     private ArrayList<GodPower> turn = new ArrayList<>();
     private int currStep = 0;
-    OptionSelection optionSelection;
     private Board board;
     private boolean canPass = false;
     private Logger logger;
@@ -121,7 +120,7 @@ public class GodLogic {
         OptionSelection opt = turn.get(currStep).getOptions(logger);
         if (opt != null) {
             if (opt.hasOptions() || turn.get(currStep).getCanPass()) {
-                this.optionSelection = opt;
+                opt.compressUselessOptions();
                 RequestUpdateBoardView RequestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), '*');
                 game.updateObservers(RequestUpdateBoardView);
                 Request request = new RequestPowerCoordinates(opt, this.canPass, player.getInitial());

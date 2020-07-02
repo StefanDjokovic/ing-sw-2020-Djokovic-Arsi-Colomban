@@ -163,6 +163,7 @@ public class Server {
         // Set controller as Observer of view, set view as Observer of game
         game.addObserver(c1);
         game.addObserver(c2);
+        game.addObserver(controller);
         c1.addObserver(controller);
         c2.addObserver(controller);
 

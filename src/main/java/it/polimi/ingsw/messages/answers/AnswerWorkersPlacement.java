@@ -4,18 +4,21 @@ import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.server.controller.ControllerView;
 
-public class AnswerWorkersPosition extends Answer {
+public class AnswerWorkersPlacement extends Answer {
 
     private int x;
     private int y;
     private char initial;
 
-    public AnswerWorkersPosition(int x, int y, char initial) {
+    public AnswerWorkersPlacement(int x, int y, char initial) {
         message = "Answer Worker Position: ";
         this.x = x;
         this.y = y;
         this.initial = initial;
     }
+
+    public int getX() { return x; }
+    public int getY() { return y; }
 
     @Override
     public void act(ControllerView controller) {

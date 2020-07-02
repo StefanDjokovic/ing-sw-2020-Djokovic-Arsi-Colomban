@@ -27,6 +27,8 @@ public class AnswerPlayerGod extends Answer {
         this.initial = initial;
     }
 
+    public String getGodName() { return godName; }
+
     public ArrayList<String> getGodNamesList() { return godNamesList; }
 
     public boolean isMultipleDecision() { return multipleDecision; }

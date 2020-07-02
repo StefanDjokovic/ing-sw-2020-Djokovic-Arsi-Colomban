@@ -68,6 +68,20 @@ public class OptionSelection implements Serializable {
         return newOpt;
     }
 
+    public boolean isValid(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        for (ArrayList<Integer> opt: values) {
+            if (opt.get(0) == posXFrom && opt.get(1) == posYFrom) {
+                for (int i = 2; i < opt.size(); i += 2) {
+                    if (opt.get(i) == posXTo && opt.get(i+1) == posYTo) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * Indicates whether a player has options for his turn or not
@@ -76,12 +90,23 @@ public class OptionSelection implements Serializable {
     public boolean hasOptions() {
         for (ArrayList<Integer> o: this.getValues()) {
             if (o.size() > 2) {
-                System.out.println("These are the options");
-                System.out.println(o);
                 return true;
             }
         }
         return false;
+    }
+
+    public void compressUselessOptions() {
+        if (this.getValues().get(0).size() <= 2) {
+            this.getValues().remove(0);
+            if (this.getValues().size() > 0 && this.getValues().get(0).size() <= 2)
+                this.getValues().remove(0);
+        }
+        else {
+            if (this.getValues().size() > 1 && this.getValues().get(1).size() <= 2)
+                this.getValues().remove(1);
+        }
+
     }
 
     @Override
