@@ -23,21 +23,35 @@
 | Server |                | Client |
 +--------+                +--------+        
      |                         |
-     |RequestPlayerName        |
+     |RequestGameInformation   |
      |------------------------>|
      |                         |
      |                         | /---------------------\
-     |                         |-|user picks a username|
+     |                         |-|user gets lobby info | 
+     |                         | |   displayed on CLI  |
+     |                         | |        or GUI       |
      |                         | |---------------------|
-     |         AnswerPlayerName|
+     |       AnswerLobbyAndName|
      |<------------------------|
      |                         |
      |                         |
+     |RequestWaitOpponentMove  |
+     |------------------------>|
+     |                         |
+     |                         | /---------------------\
+     |                         |-|user gets a waiting  | 
+     |                         | |   message until the |
+     |                         | |other players connect|
+     |                         | |---------------------|                       |   
      |RequestPlayerGod         |
      |------------------------>|
      |                         |
      |                         | /---------------------\
-     |                         |-|   user picks a god  |
+     |                         |-|  if user is the 1st |
+     |                         | | player, they pick n |
+     |                         | |  gods (n=lobby size)|
+     |                         | | else they pick a god|
+     |                         | |    from the list    |
      |                         | |---------------------|
      |          AnswerPlayerGod|
      |<------------------------|
