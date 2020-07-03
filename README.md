@@ -24,3 +24,8 @@
 [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#)
 [![GREEN](https://placehold.it/15/44bb44/44bb44)](#)
 -->
+
+## Usage
+
+Use the JAR found in deliverables corresponding to the operating system you are using (Server is unique for all, Client depends on your OS). 
+Note: to use the client CLI correctly on Windows you have to use Windows Terminal
