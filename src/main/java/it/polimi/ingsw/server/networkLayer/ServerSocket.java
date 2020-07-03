@@ -100,6 +100,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
 
             }
             closeServerSocket();
+            System.out.println("ahah ping goes brrr");
             updateObservers(new AnswerKillPlayer(playerInitial));
 
         }).start();
