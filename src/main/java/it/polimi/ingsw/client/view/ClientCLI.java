@@ -181,6 +181,8 @@ public class ClientCLI extends ClientView {
                 if (options.contains(playerGod)) {
                     selectedGod = playerGod;
                 }
+                else
+                    System.out.println("Please, pick one of the God above");
             }
 
             System.out.println("You picked " + selectedGod);
