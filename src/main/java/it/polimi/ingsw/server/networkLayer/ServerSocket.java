@@ -161,12 +161,14 @@ public class ServerSocket extends Observable implements Runnable, Observer {
      */
     @Override
     public void run() {
-        try {
-            inputStream = new ObjectInputStream(socket.getInputStream());
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+        if (isActiveFlag) {
+            try {
+                inputStream = new ObjectInputStream(socket.getInputStream());
+                outputStream = new ObjectOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
         }
 
         Lobby unSelected = null;
