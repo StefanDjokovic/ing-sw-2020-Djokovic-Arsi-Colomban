@@ -9,6 +9,11 @@ import java.util.ArrayList;
 
 public class BuildWithLimitation extends Build {
 
+    /**
+     * Constructor
+     * @param godLogic player's god
+     * @param canPass  true if the power can be skipped, false otherwise
+     */
     public BuildWithLimitation(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }

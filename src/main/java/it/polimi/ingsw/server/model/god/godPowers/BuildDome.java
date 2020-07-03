@@ -9,10 +9,24 @@ import it.polimi.ingsw.server.model.board.Board;
 
 public class BuildDome extends Build {
 
+    /**
+     * Constructor
+     * @param godLogic player's god
+     * @param canPass  true if the power can be skipped, false otherwise
+     */
     public BuildDome(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }
 
+    /**
+     * Builds a dome on the targeted tile
+     * @param board variable that contains the state of the board
+     * @param posXFrom x coordinate of the worker that is going to use the power
+     * @param posYFrom y coordinate of the worker that is going to use the power
+     * @param posXTo x coordinate of the tile targeted by the power
+     * @param posYTo y coordinate of the tile targeted by the power
+     * @return
+     */
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         try {
             board.getTile(posXTo, posYTo).setDome(true);

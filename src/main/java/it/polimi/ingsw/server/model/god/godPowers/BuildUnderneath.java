@@ -9,6 +9,11 @@ import it.polimi.ingsw.server.model.logger.Logger;
 
 public class BuildUnderneath extends Build {
 
+    /**
+     * Constructor
+     * @param godLogic player's god
+     * @param canPass  true if the power can be skipped, false otherwise
+     */
     public BuildUnderneath(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }

@@ -11,10 +11,24 @@ public class DoubleMove extends Move {
 
     private ArrayList<Integer> limitations;
 
+    /**
+     * Constructor
+     * @param godLogic player's god
+     * @param canPass  true if the power can be skipped, false otherwise
+     */
     public DoubleMove(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }
 
+    /**
+     * Moves the worker from starting tile to destination tile, and then allows it to move again
+     * @param board variable that contains the state of the board
+     * @param posXFrom x coordinate of the worker that is going to use the power
+     * @param posYFrom y coordinate of the worker that is going to use the power
+     * @param posXTo x coordinate of the tile targeted by the power
+     * @param posYTo y coordinate of the tile targeted by the power
+     * @return
+     */
     @Override
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         if (limitations == null) {
