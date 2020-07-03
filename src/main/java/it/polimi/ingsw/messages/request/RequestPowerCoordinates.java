@@ -8,6 +8,8 @@ import it.polimi.ingsw.messages.answers.AnswerPowerCoordinates;
 
 public class RequestPowerCoordinates extends Request {
 
+    private static final long serialVersionUID = 6529685098267757614L;
+
     private OptionSelection opt;
     private Boolean canPass;
     private RequestUpdateBoardView requestUpdateBoardViewBoardView = null;
@@ -42,6 +44,11 @@ public class RequestPowerCoordinates extends Request {
             message = "Where do you want to go?";
         this.initial = initial;
         this.requestUpdateBoardViewBoardView = requestUpdateBoardView;
+    }
+
+    @Override
+    public void printMessage() {
+        System.out.println(opt);
     }
 
     @Override

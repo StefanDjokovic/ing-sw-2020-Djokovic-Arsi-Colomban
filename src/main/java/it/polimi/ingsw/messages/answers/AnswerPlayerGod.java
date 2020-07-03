@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class AnswerPlayerGod extends Answer {
 
+    private static final long serialVersionUID = 6529685098267757602L;
+
     private String godName;
     private char initial;
     private boolean multipleDecision;

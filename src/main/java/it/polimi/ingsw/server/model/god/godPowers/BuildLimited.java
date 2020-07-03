@@ -18,16 +18,9 @@ public class BuildLimited extends Build {
         int lastWorkerUsedY = log.getAction(1);
 
         OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 0, false, null, getCanPass());
-        System.out.println("Here is opt without singleOption:");
-        System.out.println(opt);
         opt = opt.singleOption(lastWorkerUsedX, lastWorkerUsedY);
 
-        System.out.println("Here is opt:");
-        System.out.println(opt);
         opt = opt.removeOptionsPerimeter();
-
-        System.out.println("Here is opt reduced:");
-        System.out.println(opt);
 
         return opt;
     }

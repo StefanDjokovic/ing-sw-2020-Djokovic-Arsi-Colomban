@@ -7,6 +7,8 @@ import it.polimi.ingsw.server.controller.ControllerView;
 // ONLY sent by the ServerSocket to delete a player
 public class AnswerKillPlayer extends Answer {
 
+    private static final long serialVersionUID = 6529685098267757600L;
+
     private char initial;
 
     public AnswerKillPlayer(char initial) {

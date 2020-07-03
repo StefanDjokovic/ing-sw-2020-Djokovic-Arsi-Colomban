@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.model.BoardView;
 
 public class RequestUpdateBoardView extends Request {
 
+    private static final long serialVersionUID = 6529685098267757616L;
+
     public RequestUpdateBoardView(BoardView boardView, char initial) {
         this.initial = initial;
         this.boardView = boardView;
@@ -15,7 +17,6 @@ public class RequestUpdateBoardView extends Request {
 
     @Override
     public void accept(ClientView clientView) {
-        printMessage();
         clientView.updateBoardView(boardView);
         clientView.displayBoard();
     }

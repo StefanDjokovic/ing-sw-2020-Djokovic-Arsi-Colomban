@@ -127,7 +127,7 @@ public class Server {
         ServerSocket c1 = waitingConnection.get(keys.get(0));
         String name2 = keys.get(1);
         ServerSocket c2 = waitingConnection.get(keys.get(1));
-        ServerSocket c3; // set later if 3 players are selected
+        ServerSocket c3 = null; // set later if 3 players are selected
 
         // Initializing initial model structures
         game = new Game();
@@ -154,16 +154,18 @@ public class Server {
             c2.sendGameInformation(new RequestGameInformation(name2, name3, name1, player2Init, player3Init, player1Init));
             c3.sendGameInformation(new RequestGameInformation(name3, name1, name2, player3Init, player1Init, player2Init));
 
-            game.addObserver(c3);
             c3.addObserver(controller);
 
         }
         System.out.println();
 
         // Set controller as Observer of view, set view as Observer of game
+        game.addObserver(controller);
         game.addObserver(c1);
         game.addObserver(c2);
-        game.addObserver(controller);
+        if (nPlayers == 3)
+            game.addObserver(c3);
+
         c1.addObserver(controller);
         c2.addObserver(controller);
 

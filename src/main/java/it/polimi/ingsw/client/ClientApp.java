@@ -20,12 +20,22 @@ public class ClientApp {
 
         Scanner s = new Scanner(System.in);
 
-        System.out.println("Please input server IP (input 'localhost' if you want to connect to a server hosted on this network)");
-        String ip = s.nextLine();
-        if(ip.equals("localhost"))
+        System.out.println("Please input localhost for the default server IP address or type 'custom' for a different IP");
+        String command = s.nextLine();
+        while(!command.equals("localhost") && !command.equals("custom")) {
+            System.out.println("ERROR! Input either 'localhost' or 'custom'");
+            command = s.nextLine();
+        }
+        String ip;
+        if(command.equals("localhost"))
             ip = "127.0.0.1";
+        else {
+            // no check on the ip address
+            System.out.println("Please input IP address");
+            ip = s.nextLine();
+        }
         System.out.println("Input 'default' to use the game's default port, 'custom' if the server you want to connect to uses a different port");
-        String command = s.next();
+        command = s.next();
         int port;
         while(!command.equals("default") && !command.equals("custom")) {
             System.out.println("ERROR! Input either 'default' or 'custom'");
@@ -77,10 +87,8 @@ public class ClientApp {
             System.out.println("ERROR INCOMPLETE INITIALIZATION");
         }
 
-        try {
-            client.run();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+        client.run();
+
+
     }
 }

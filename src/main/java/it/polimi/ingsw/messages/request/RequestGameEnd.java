@@ -5,6 +5,8 @@ import it.polimi.ingsw.messages.Request;
 
 public class RequestGameEnd extends Request {
 
+    private static final long serialVersionUID = 6529685098267757610L;
+
     private char winnerInitial;
 
     public RequestGameEnd(char winnerInitial) {

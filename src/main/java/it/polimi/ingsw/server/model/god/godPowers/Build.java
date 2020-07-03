@@ -22,7 +22,6 @@ public class Build extends GodPower {
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         try {
             board.getTile(posXTo, posYTo).buildUp();
-            System.out.println("Should have built... right?");
         } catch (NonExistingTileException | NotBuildableException e) {
             System.out.println("You failed!");
         }
@@ -47,9 +46,7 @@ public class Build extends GodPower {
             int lastWorkerUsedY = log.getAction(3);
 
             opt = opt.singleOption(lastWorkerUsedX, lastWorkerUsedY);
-            System.out.println(opt);
         }
-        System.out.println("Am I in getOptions?");
         return opt;
     }
 

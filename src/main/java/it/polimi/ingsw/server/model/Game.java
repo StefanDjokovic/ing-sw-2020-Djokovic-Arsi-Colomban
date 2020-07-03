@@ -57,7 +57,6 @@ public class Game extends Observable{
 
         if (opt == null) {
             opt = new HashMap<>();
-            opt.put("Basic", 0);
             opt.put("Apollo", 1);
             opt.put("Artemis", 2);
             opt.put("Athena", 3);
@@ -184,19 +183,27 @@ public class Game extends Observable{
 
     /**
      * Deletes a player after they get eliminated
-     * @param p player that needs to be deleted
+     * @param initialKilled initial of player that needs to be deleted
      */
-    public boolean deletePlayer(Player p) {
+    public boolean deletePlayer(char initialKilled) {
         boolean isCurrent = false;
         for (int i = 0; i < players.size(); i++) {
-            if (currPlayer < players.size() && players.get(currPlayer) == p)
+            if (currPlayer < players.size() && players.get(currPlayer).getInitial() == initialKilled)
                 isCurrent = true;
-            if (players.get(i) == p) {
+            if (players.get(i).getInitial() == initialKilled) {
                 players.get(i).delete();
-                players.remove(p);
+                players.remove(i);
 
-                if (players.size() != 0 && currPlayer == players.size())
-                    currPlayer = 0;
+                if (isCurrent) {
+                    if (players.size() != 0 && currPlayer == players.size())
+                        currPlayer = 0;
+                }
+                else {
+                    if (i < currPlayer)
+                        currPlayer--;
+                }
+
+                break;
             }
         }
 
@@ -220,6 +227,7 @@ public class Game extends Observable{
      */
     // currPlayer keeps track of the player that is playing (it is the position in the ArrayList of players)
     private int currPlayer = 0;
+    private boolean gameEndDeclared = false;
     //status is 0 when the player has not finished his turn, 1 when the player finished his turn, 2 when the current player won
     private int status = -1;
     public void gameTurnExecution() {
@@ -230,14 +238,46 @@ public class Game extends Observable{
                 val = players.get(currPlayer).executeTurn(this);
         }
         else {
-            if (players.size() == 1)
-                updateObservers(new RequestGameEnd(players.get(0).getInitial()));
-            else if (players.size() > 1){
-                updateObservers(new RequestUpdateBoardView(new BoardView(board), '*'));
-                updateObservers(new RequestGameEnd(players.get(currPlayer).getInitial()));
+            if (players.size() == 1) {
+                if (!gameEndDeclared) {
+                    gameEndConditionOnOnePlayer();
+                    System.out.println("Won because just one player was left!");
+                    gameEndDeclared = true;
+                }
             }
-            gameEnd();
+            else if (players.size() > 1){
+                if (!gameEndDeclared) {
+                    updateObservers(new RequestUpdateBoardView(new BoardView(board), '*'));
+                    updateObservers(new RequestGameEnd(players.get(currPlayer).getInitial()));
+                    System.out.println("Game ended, won by " + players.get(currPlayer).getInitial());
+                    gameEndDeclared = true;
+                }
+            }
         }
+    }
+
+    public void gameContinueOnKill(boolean isCurrent) {
+        if (isCurrent)
+            gameTurnExecution();
+        else {
+            gameEndConditionOnOnePlayer();
+        }
+    }
+
+    /**
+     * Prints "End of the game!" on the server's console, not really useful
+     */
+    private boolean gameEndConditionOnOnePlayer() {
+        if (players.size() == 1) {
+            updateObservers(new RequestGameEnd(players.get(0).getInitial()));
+            if (!gameEndDeclared) {
+                gameEndConditionOnOnePlayer();
+                System.out.println("Won because just one player was left!");
+                gameEndDeclared = true;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -321,13 +361,6 @@ public class Game extends Observable{
      */
     public Board getBoard() {
         return board;
-    }
-
-    /**
-     * Prints "End of the game!" on the server's console, not really useful
-     */
-    private void gameEnd() {
-        System.out.println("End of the game!");
     }
 
     /**

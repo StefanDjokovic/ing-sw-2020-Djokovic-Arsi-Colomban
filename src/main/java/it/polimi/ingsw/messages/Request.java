@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 public abstract class Request implements Serializable {
 
+    private static final long serialVersionUID = 6529685098267757609L;
+
     protected String message;
     protected char initial = '*';
     protected BoardView boardView;

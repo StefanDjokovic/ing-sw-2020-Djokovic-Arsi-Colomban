@@ -6,6 +6,8 @@ import it.polimi.ingsw.messages.answers.AnswerKillPlayer;
 
 public class RequestKillPlayer extends Request {
 
+    private static final long serialVersionUID = 6529685098267757612L;
+
     private char loserInitial;
 
     public RequestKillPlayer(char loserInitial) {

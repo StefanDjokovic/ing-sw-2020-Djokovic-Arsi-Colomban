@@ -31,7 +31,6 @@ public class BuildWithLimitation extends Build {
                     break;
                 }
             }
-            System.out.println(opt);
         }
 
         return opt;

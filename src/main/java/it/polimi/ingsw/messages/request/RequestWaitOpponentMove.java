@@ -5,8 +5,14 @@ import it.polimi.ingsw.messages.Request;
 
 public class RequestWaitOpponentMove extends Request {
 
-    public RequestWaitOpponentMove() {
+    private static final long serialVersionUID = 6529685098267757617L;
+
+    // Note: opponentInitial is at '*' when there is no specified opponent that has to play
+    private char opponentInitial;
+
+    public RequestWaitOpponentMove(char opponentInitial) {
         this.message = "Waiting Opponents' move";
+        this.opponentInitial = opponentInitial;
         this.isAsync = true;
     }
 
@@ -14,7 +20,7 @@ public class RequestWaitOpponentMove extends Request {
 
     @Override
     public void accept(ClientView clientView) {
-        clientView.waitingOpponent();
+        clientView.waitingOpponent(opponentInitial);
     }
 
     public char getInitial() { return this.initial; }

@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 public abstract class Answer implements Serializable {
 
+    private static final long serialVersionUID = 6529685098267757619L;
+
     protected String message;
     public char initial = '*';
 
@@ -19,5 +21,7 @@ public abstract class Answer implements Serializable {
     public void setInitial(char initial) {
         this.initial = initial;
     }
+
+    public char getInitial() { return this.initial; }
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.controller;
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
@@ -30,14 +31,21 @@ public class Controller implements Observer, ControllerView {
     @Override
     public void update(Answer answer) {
         // We check with the last request sent if it's valid
-        answer.printMessage();
-        if (waitingAnswer.isValidAnswer(answer) || waitingAnswer == null || answer instanceof AnswerKillPlayer) {
+        if (waitingAnswer == null || answer instanceof AnswerKillPlayer ||
+                (waitingAnswer.isValidAnswer(answer) && waitingAnswer.getInitial() == answer.getInitial())) {
             // We can now act
-            System.out.println("wu hu!");
             answer.act(this);
         }
         else {
-            System.out.println("Invalid Answer!");
+            System.out.println("Invalid Answer received:");
+            if (waitingAnswer != null) {
+                waitingAnswer.printMessage();
+                answer.printMessage();
+            }
+            else {
+                System.out.println("Some weird stuff");
+            }
+
             // TODO: decide what to do in case the answer is wrong, for now it's just hanging
         }
 
@@ -144,7 +152,7 @@ public class Controller implements Observer, ControllerView {
      * @param posYTo y coordinate of the destination tile
      */
     public void executeMoveOrBuild(int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        System.out.println("Controller is executing Move");
+        System.out.println("Controller is executing the action");
         game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
         game.gameTurnExecution();
     }
@@ -163,9 +171,8 @@ public class Controller implements Observer, ControllerView {
      * @param initial initial of the player that needs to be deleted
      */
     public void killPlayer(char initial) {
-        boolean isCurrent = game.deletePlayer(game.getPlayerFromInitial(initial));
-        if (isCurrent)
-            gameContinueOnKillPlayer();
+        boolean isCurrent = game.deletePlayer(initial);
+        gameContinueOnKillPlayer(isCurrent);
     }
 
     /**
@@ -173,7 +180,7 @@ public class Controller implements Observer, ControllerView {
      * If there are still players with uninitialized workers, it initializes them.
      * Otherwise, it starts the game
      */
-    public void gameContinueOnKillPlayer() {
+    public void gameContinueOnKillPlayer(boolean isCurrent) {
         if (game.nPlayersWithGod() != game.nPlayers()) {
             game.initGods();
         }
@@ -181,7 +188,7 @@ public class Controller implements Observer, ControllerView {
             game.initWorker();
         }
         else {
-            game.gameTurnExecution();
+            game.gameContinueOnKill(isCurrent);
         }
     }
 }

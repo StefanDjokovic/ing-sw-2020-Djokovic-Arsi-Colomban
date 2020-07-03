@@ -6,12 +6,14 @@ import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerKillPlayer;
 import it.polimi.ingsw.messages.answers.AnswerLobbyAndName;
+import it.polimi.ingsw.messages.answers.AnswerPing;
 import it.polimi.ingsw.messages.request.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class ServerSocket extends Observable implements Runnable, Observer {
 
@@ -40,13 +42,15 @@ public class ServerSocket extends Observable implements Runnable, Observer {
      * @param request
      */
     public void send(Request request) {
-        try {
-            outputStream.reset();
-            outputStream.writeObject(request);
-            outputStream.flush();
-        } catch (IOException e) {
-            System.out.println("IO Exception on send, you are dumb");
-            System.err.println(e.getMessage());
+        if (isActiveFlag) {
+            try {
+                outputStream.reset();
+                outputStream.writeObject(request);
+                outputStream.flush();
+            } catch (IOException e) {
+                System.out.println("IO Exception on send, you are dumb");
+                System.err.println(e.getMessage());
+            }
         }
     }
 
@@ -57,14 +61,18 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     public void asyncReadFromSocket() {
         new Thread(() -> {
             try {
-                while (true) {
+                while (isActiveFlag) {
                     Object temp = inputStream.readObject();
                     Answer answer = (Answer) temp;
                     answer.setInitial(playerInitial);
-                    updateObservers(answer);
+                    if (temp instanceof AnswerPing) {
+                        pinged = true;
+                    }
+                    else
+                        updateObservers(answer);
                 }
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
+                System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete from the Game" + "\u001B[0m");
                 closeServerSocket();
                 // If there are observers it means the game has started; otherwise just take away this user from the lobby
                 if (getObserversSize() != 0)
@@ -77,6 +85,27 @@ public class ServerSocket extends Observable implements Runnable, Observer {
     }
 
     /**
+     * Every 5 seconds the socket sends a ping and expected an answer in the next 5 seconds, otherwise it kills the socket
+     * and corresponding player
+     */
+    private boolean pinged = true;
+    public void pingMech() {
+        new Thread(() -> {
+            while (isActiveFlag && pinged) {
+                pinged = false;
+                send(new RequestPing());
+                try {
+                    TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException ignored) { }
+
+            }
+            closeServerSocket();
+            updateObservers(new AnswerKillPlayer(playerInitial));
+
+        }).start();
+    }
+
+    /**
      * Asks the client for lobby number, player name and number of players,
      * if it catches an  IOException or a ClassNotFound exception it will consider the client dead,
      * it will close the socket and delete the player by updating the object's observers with a AnswerKillPlayer object
@@ -84,7 +113,13 @@ public class ServerSocket extends Observable implements Runnable, Observer {
      */
     public AnswerLobbyAndName readFromSocketPlayerLobbyAndName() {
         try {
-            Object temp = inputStream.readObject();
+            Object temp = null;
+            while (temp == null || temp instanceof AnswerPing) {
+                temp = inputStream.readObject();
+                if (temp instanceof AnswerPing) {
+                    pinged = true;
+                }
+            }
             return (AnswerLobbyAndName) temp;
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
@@ -150,9 +185,9 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         }
         playingLobby = unSelected;
         System.out.println("Joined the lobby!");
-        send(new RequestWaitOpponentMove());
+        send(new RequestWaitOpponentMove('*'));
 
-        System.out.println("Starting asyncRead");
+        pingMech();
         asyncReadFromSocket();
     }
 
@@ -167,7 +202,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                 send(request);
             }
             else {
-                send(new RequestWaitOpponentMove());
+                send(new RequestWaitOpponentMove(request.getInitial()));
             }
         }
     }
@@ -178,6 +213,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
      */
     @Override
     public void update(Answer answer) {
-        System.out.println("clientCLI shouldn't receive answers");
+        System.out.println("ServerSocket doesn't deal with Answers");
     }
 }

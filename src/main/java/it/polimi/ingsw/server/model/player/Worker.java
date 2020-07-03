@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model.player;
 
 
-import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.server.model.board.Tile;
 
 import java.util.ArrayList;

@@ -161,7 +161,7 @@ public class ClientBOT extends ClientView {
     }
 
     @Override
-    public void waitingOpponent() {
+    public void waitingOpponent(char opponentInitial) {
         System.out.println("Lul they are sending me waiting opponent messages, they don't know I'm fake");
     }
 
@@ -187,7 +187,9 @@ public class ClientBOT extends ClientView {
     public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
         Random r = new Random();
         String name = Character.toString((char)(r.nextInt(26) + 'A'));
-
+        name = name + (char)(r.nextInt(26) + 'A');
+        name = name + (char)(r.nextInt(26) + 'A');
+        name = name + (char)(r.nextInt(26) + 'A');
         updateObservers(new AnswerLobbyAndName(-3, name, 3));
     }
 
