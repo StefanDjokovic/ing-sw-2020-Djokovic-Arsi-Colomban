@@ -49,7 +49,7 @@ public class Client implements Observer {
                     if (r.getMessage().equals("END"))
                         noWinners = false;
                 }
-            } catch (IOException e) {
+            } catch (NullPointerException | IOException e) {
                 System.out.println("Wasn't able to send the message, the server appears to be down");
             } catch (ClassNotFoundException e) {
                 System.out.println("That message cannot be read");
@@ -132,11 +132,13 @@ public class Client implements Observer {
             System.out.println("Connection closed from the client side");
         } finally {
             try {
-                inputStream.close();
-                outputStream.close();
-                if (socket != null)
-                    socket.close();
-                clientView.displayLostConnection();
+                if (inputStream != null || outputStream != null) {
+                    inputStream.close();
+                    outputStream.close();
+                    if (socket != null)
+                        socket.close();
+                    clientView.displayLostConnection();
+                }
             } catch (IOException e) {
                 System.out.println("Closure didn't work that great");
             }
