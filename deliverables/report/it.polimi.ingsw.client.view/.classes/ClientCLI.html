@@ -1,0 +1,722 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientCLI</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.client.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientCLI (it.polimi.ingsw.client.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientCLI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 298)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.client.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.messages.Answer;
+<i>4</i>&nbsp;import it.polimi.ingsw.messages.LobbyView;
+<i>5</i>&nbsp;import it.polimi.ingsw.messages.OptionSelection;
+<i>6</i>&nbsp;import it.polimi.ingsw.messages.Request;
+<i>7</i>&nbsp;import it.polimi.ingsw.messages.answers.*;
+<i>8</i>&nbsp;import it.polimi.ingsw.server.model.BoardView;
+<i>9</i>&nbsp;import it.polimi.ingsw.server.model.TileView;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.util.ArrayList;
+<i>13</i>&nbsp;import java.util.Scanner;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public class ClientCLI extends ClientView {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    private TileView[][] boardView;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private Scanner scanner;
+<i>20</i>&nbsp;    private char playerInit;
+<i>21</i>&nbsp;
+<b class="nc"><i>22</i>&nbsp;    public ClientCLI() {</b>
+<b class="nc"><i>23</i>&nbsp;        boardView = new BoardView().getBoardView();</b>
+<b class="nc"><i>24</i>&nbsp;        scanner = new Scanner(System.in);</b>
+<b class="nc"><i>25</i>&nbsp;        this.printSelectableBoard(null);</b>
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    public char getPlayerInitial() {
+<b class="nc"><i>29</i>&nbsp;        return this.playerInit;</b>
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * Gets called when one of the observed classes sends an update,
+<i>33</i>&nbsp;     * the view acts accordingly to the content of the received Request message
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    @Override
+<i>36</i>&nbsp;    public void update(Request request) {
+<b class="nc"><i>37</i>&nbsp;        request.printMessage();</b>
+<b class="nc"><i>38</i>&nbsp;        request.accept(this);</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;    @Override
+<i>41</i>&nbsp;    public void update(Answer answer) {
+<b class="nc"><i>42</i>&nbsp;        System.out.println(&quot;clientCLI should not receive answers&quot;);</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * Sets the player&#39;s initial as decided by the model
+<i>47</i>&nbsp;     * @param
+<i>48</i>&nbsp;     */
+<i>49</i>&nbsp;    @Override
+<i>50</i>&nbsp;    public void setGameInformation(ArrayList&lt;String&gt; playersName,
+<i>51</i>&nbsp;                                   ArrayList&lt;Character&gt; playersInitial, int nPlayers) {
+<b class="nc"><i>52</i>&nbsp;        System.out.println(&quot;Game composed of:&quot;);</b>
+<b class="nc"><i>53</i>&nbsp;        for (int i = 0; i &lt; nPlayers; i++) {</b>
+<b class="nc"><i>54</i>&nbsp;            System.out.println(playersInitial.get(i) + &quot; : &quot; + playersName.get(i));</b>
+<i>55</i>&nbsp;        }
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    @Override
+<i>59</i>&nbsp;    public void setGodInformation(ArrayList&lt;String&gt; playersName, ArrayList&lt;Character&gt; playersInitial, ArrayList&lt;String&gt; godNames, int nPlayers) {
+<b class="nc"><i>60</i>&nbsp;        System.out.println(&quot;Information about who picked which god:&quot;);</b>
+<b class="nc"><i>61</i>&nbsp;        for (int i = 0; i &lt; nPlayers; i++) {</b>
+<b class="nc"><i>62</i>&nbsp;            System.out.println(playersInitial.get(i) + &quot; : &quot; + godNames.get(i));</b>
+<i>63</i>&nbsp;        }
+<b class="nc"><i>64</i>&nbsp;        System.out.println();</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /**
+<i>68</i>&nbsp;     * Updates boardView, that contains the state of the board
+<i>69</i>&nbsp;     * @param boardView new state of the board, used to render it on the CLI
+<i>70</i>&nbsp;     */
+<i>71</i>&nbsp;    public void updateBoardView(BoardView boardView) {
+<b class="nc"><i>72</i>&nbsp;        this.boardView = boardView.getBoardView();</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    /**
+<i>76</i>&nbsp;     * Tells if the selected lobby is a valid lobby that exists on the server
+<i>77</i>&nbsp;     * @param lobbies list of all lobbies present on the server
+<i>78</i>&nbsp;     * @param lobbyNumber number of the selected lobby
+<i>79</i>&nbsp;     * @return true if the lobby is valid and exists, false otherwise
+<i>80</i>&nbsp;     */
+<i>81</i>&nbsp;    public boolean isExistentAndValidLobbyNumber(ArrayList&lt;LobbyView&gt; lobbies, int lobbyNumber) {
+<b class="nc"><i>82</i>&nbsp;        for (LobbyView l : lobbies) {</b>
+<b class="nc"><i>83</i>&nbsp;            if (l.getLobbyNumber() == lobbyNumber) {</b>
+<b class="nc"><i>84</i>&nbsp;                if (l.getNPlayers() == l.getPlayersName().size()) {</b>
+<b class="nc"><i>85</i>&nbsp;                    System.out.println(&quot;Unavailable lobby, please try again&quot;);</b>
+<b class="nc"><i>86</i>&nbsp;                    return false;</b>
+<i>87</i>&nbsp;                }
+<b class="nc"><i>88</i>&nbsp;                return true;</b>
+<i>89</i>&nbsp;            }
+<b class="nc"><i>90</i>&nbsp;        }</b>
+<b class="nc"><i>91</i>&nbsp;        return false;</b>
+<i>92</i>&nbsp;    }
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;    /**
+<i>95</i>&nbsp;     * Lets the user select a lobby from the existent ones,
+<i>96</i>&nbsp;     * or lets the user create a new one, letting them specify if it&#39;ll be a 2 or 3 players lobby
+<i>97</i>&nbsp;     * @param lobbies list of all lobbies present on the server
+<i>98</i>&nbsp;     * @param error 0 if there was an error with the previous selection, int != 0 otherwise
+<i>99</i>&nbsp;     */
+<i>100</i>&nbsp;    public void lobbyAndNameSelection(ArrayList&lt;LobbyView&gt; lobbies, int error) {
+<b class="nc"><i>101</i>&nbsp;        if (error != 0) {</b>
+<b class="nc"><i>102</i>&nbsp;            System.out.println(&quot;\nRefreshed, lobby was either full or you refreshed the page\n&quot;);</b>
+<i>103</i>&nbsp;        }
+<b class="nc"><i>104</i>&nbsp;        displayLobbies(lobbies);</b>
+<b class="nc"><i>105</i>&nbsp;        System.out.println(&quot;Choose:&quot;);</b>
+<b class="nc"><i>106</i>&nbsp;        System.out.println(&quot;Select the lobby number to join a specific lobby&quot;);</b>
+<b class="nc"><i>107</i>&nbsp;        System.out.println(&quot;Type 0 to refresh the lobbies&quot;);</b>
+<b class="nc"><i>108</i>&nbsp;        System.out.println(&quot;Type -1 to create a new lobby&quot;);</b>
+<b class="nc"><i>109</i>&nbsp;        System.out.println(&quot;Type -2 or -3 if you want to automatically join a 2 or 3 player game&quot;);</b>
+<i>110</i>&nbsp;
+<b class="nc"><i>111</i>&nbsp;        int lobbyNumber = getValidInt();</b>
+<b class="nc"><i>112</i>&nbsp;        int nPlayers = 0;</b>
+<b class="nc"><i>113</i>&nbsp;        if (lobbyNumber == 0) {</b>
+<b class="nc"><i>114</i>&nbsp;            updateObservers(new AnswerLobbyAndName(0, null, nPlayers));</b>
+<i>115</i>&nbsp;            return;
+<i>116</i>&nbsp;        }
+<b class="nc"><i>117</i>&nbsp;        else if (lobbyNumber == -2 || lobbyNumber == -3) {</b>
+<b class="nc"><i>118</i>&nbsp;            System.out.println(&quot;You selected an automatic join to a &quot; + (-lobbyNumber) + &quot; players lobby&quot;);</b>
+<i>119</i>&nbsp;        }
+<b class="nc"><i>120</i>&nbsp;        else if (lobbyNumber == -1) {</b>
+<b class="nc"><i>121</i>&nbsp;            while (nPlayers != 2 &amp;&amp; nPlayers != 3) {</b>
+<b class="nc"><i>122</i>&nbsp;                System.out.println(&quot;Please, select if you want to create a 2 or 3 player lobby&quot;);</b>
+<b class="nc"><i>123</i>&nbsp;                nPlayers = getValidInt();</b>
+<i>124</i>&nbsp;            }
+<i>125</i>&nbsp;        }
+<i>126</i>&nbsp;        else {
+<b class="nc"><i>127</i>&nbsp;            while (!isExistentAndValidLobbyNumber(lobbies, lobbyNumber)) {</b>
+<b class="nc"><i>128</i>&nbsp;                System.out.println(&quot;Please, select an available lobby number&quot;);</b>
+<b class="nc"><i>129</i>&nbsp;                lobbyNumber = getValidInt();</b>
+<i>130</i>&nbsp;            }
+<i>131</i>&nbsp;        }
+<b class="nc"><i>132</i>&nbsp;        System.out.println(&quot;Please, input Player&#39;s name: &quot;);</b>
+<b class="nc"><i>133</i>&nbsp;        scanner = new Scanner(System.in);</b>
+<b class="nc"><i>134</i>&nbsp;        String playerName = scanner.nextLine();</b>
+<b class="nc"><i>135</i>&nbsp;        if (playerName.length() &gt; 10)</b>
+<b class="nc"><i>136</i>&nbsp;            playerName = playerName.substring(0, 10);</b>
+<b class="nc"><i>137</i>&nbsp;        System.out.println(&quot;Name selected: &quot; + playerName);</b>
+<b class="nc"><i>138</i>&nbsp;        updateObservers(new AnswerLobbyAndName(lobbyNumber, playerName, nPlayers));</b>
+<i>139</i>&nbsp;    }
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;    /**
+<i>142</i>&nbsp;     * Displays all the lobbies that are on the server
+<i>143</i>&nbsp;     * @param lobbies list of all lobbies present on the server
+<i>144</i>&nbsp;     */
+<i>145</i>&nbsp;    public void displayLobbies(ArrayList&lt;LobbyView&gt; lobbies) {
+<b class="nc"><i>146</i>&nbsp;        if (lobbies == null) {</b>
+<b class="nc"><i>147</i>&nbsp;            System.out.println(&quot;No Available lobbies. Please create your own by inserting a new lobby number&quot;);</b>
+<i>148</i>&nbsp;        }
+<i>149</i>&nbsp;        else {
+<b class="nc"><i>150</i>&nbsp;            System.out.println(&quot;Here are all the lobbies!&quot;);</b>
+<b class="nc"><i>151</i>&nbsp;            for (LobbyView l: lobbies) {</b>
+<b class="nc"><i>152</i>&nbsp;                System.out.println(&quot;--------------------------------------------------------&quot;);</b>
+<b class="nc"><i>153</i>&nbsp;                System.out.println(&quot;Lobby number: &quot; + l.getLobbyNumber());</b>
+<b class="nc"><i>154</i>&nbsp;                System.out.println(&quot;Number of Players: &quot; + l.getNPlayers());</b>
+<b class="nc"><i>155</i>&nbsp;                System.out.println(&quot;Players in the lobby: &quot;);</b>
+<b class="nc"><i>156</i>&nbsp;                for (String pName: l.getPlayersName()) {</b>
+<b class="nc"><i>157</i>&nbsp;                    System.out.println(pName);</b>
+<b class="nc"><i>158</i>&nbsp;                }</b>
+<b class="nc"><i>159</i>&nbsp;            }</b>
+<b class="nc"><i>160</i>&nbsp;            System.out.println(&quot;--------------------------------------------------------&quot;);</b>
+<i>161</i>&nbsp;        }
+<i>162</i>&nbsp;    }
+<i>163</i>&nbsp;
+<i>164</i>&nbsp;    /**
+<i>165</i>&nbsp;     * Asks the user to pick a god among the unused god cards
+<i>166</i>&nbsp;     * @param initial player&#39;s initial
+<i>167</i>&nbsp;     * @param options list of all the possible god cards
+<i>168</i>&nbsp;     */
+<i>169</i>&nbsp;    // Simple method that accepts only a god that comes from the options given from the server
+<i>170</i>&nbsp;    public void getPlayerGod(char initial, ArrayList&lt;String&gt; options, int nPicks) {
+<b class="nc"><i>171</i>&nbsp;        this.playerInit = initial;</b>
+<b class="nc"><i>172</i>&nbsp;        System.out.println(&quot;Select &quot; + initial + &quot;&#39;s God: &quot;);</b>
+<b class="nc"><i>173</i>&nbsp;        for (String opt : options) {</b>
+<b class="nc"><i>174</i>&nbsp;            System.out.print(opt + &quot; &quot;);</b>
+<b class="nc"><i>175</i>&nbsp;        }</b>
+<b class="nc"><i>176</i>&nbsp;        System.out.println();</b>
+<b class="nc"><i>177</i>&nbsp;        if (nPicks == 1) {</b>
+<b class="nc"><i>178</i>&nbsp;            String selectedGod = null;</b>
+<b class="nc"><i>179</i>&nbsp;            while (selectedGod == null) {</b>
+<b class="nc"><i>180</i>&nbsp;                String playerGod = scanner.next();</b>
+<b class="nc"><i>181</i>&nbsp;                if (options.contains(playerGod)) {</b>
+<b class="nc"><i>182</i>&nbsp;                    selectedGod = playerGod;</b>
+<i>183</i>&nbsp;                }
+<i>184</i>&nbsp;                else
+<b class="nc"><i>185</i>&nbsp;                    System.out.println(&quot;Please, pick one of the God above&quot;);</b>
+<b class="nc"><i>186</i>&nbsp;            }</b>
+<i>187</i>&nbsp;
+<b class="nc"><i>188</i>&nbsp;            System.out.println(&quot;You picked &quot; + selectedGod);</b>
+<b class="nc"><i>189</i>&nbsp;            updateObservers(new AnswerPlayerGod(selectedGod, initial));</b>
+<b class="nc"><i>190</i>&nbsp;        }</b>
+<i>191</i>&nbsp;        else {
+<b class="nc"><i>192</i>&nbsp;            ArrayList&lt;String&gt; selectedGods = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>193</i>&nbsp;            for (int i = 1; i &lt;= nPicks; i++) {</b>
+<b class="nc"><i>194</i>&nbsp;                System.out.println(&quot;Pick God number &quot; + i);</b>
+<b class="nc"><i>195</i>&nbsp;                String playerGod = scanner.next();</b>
+<b class="nc"><i>196</i>&nbsp;                while (!options.contains(playerGod)) {</b>
+<b class="nc"><i>197</i>&nbsp;                    System.out.println(&quot;Please, select a valid God&quot;);</b>
+<b class="nc"><i>198</i>&nbsp;                    playerGod = scanner.next();</b>
+<i>199</i>&nbsp;                }
+<b class="nc"><i>200</i>&nbsp;                selectedGods.add(playerGod);</b>
+<b class="nc"><i>201</i>&nbsp;                options.remove(playerGod);</b>
+<i>202</i>&nbsp;            }
+<i>203</i>&nbsp;
+<b class="nc"><i>204</i>&nbsp;            System.out.println(&quot;You picked &quot; + selectedGods);</b>
+<b class="nc"><i>205</i>&nbsp;            updateObservers(new AnswerPlayerGod(selectedGods, initial));</b>
+<i>206</i>&nbsp;        }
+<i>207</i>&nbsp;
+<i>208</i>&nbsp;    }
+<i>209</i>&nbsp;
+<i>210</i>&nbsp;    /**
+<i>211</i>&nbsp;     * Displays &quot;Waiting opponent move&quot; on the cli
+<i>212</i>&nbsp;     */
+<i>213</i>&nbsp;    public void waitingOpponent(char opponentInitial) {
+<b class="nc"><i>214</i>&nbsp;        synchronized (this) {</b>
+<b class="nc"><i>215</i>&nbsp;            if (opponentInitial != &#39;*&#39;)</b>
+<b class="nc"><i>216</i>&nbsp;                System.out.println(&quot;Waiting &quot; + opponentInitial + &quot;&#39;s move&quot;);</b>
+<i>217</i>&nbsp;            else
+<b class="nc"><i>218</i>&nbsp;                System.out.println(&quot;Waiting...&quot;);</b>
+<b class="nc"><i>219</i>&nbsp;        }</b>
+<i>220</i>&nbsp;    }
+<i>221</i>&nbsp;
+<i>222</i>&nbsp;    /**
+<i>223</i>&nbsp;     * Lets the user place the workers, showing them only the unoccupied tiles on the board.
+<i>224</i>&nbsp;     * Updates obsevers with an Answer message containing the position of the worker.
+<i>225</i>&nbsp;     * @param workers matrix with the positions of all the already placed workers
+<i>226</i>&nbsp;     * @param initial player&#39;s initial
+<i>227</i>&nbsp;     */
+<i>228</i>&nbsp;    public void getWorkerPlacement(int[][] workers, char initial) {
+<b class="nc"><i>229</i>&nbsp;        boolean unselected = true;</b>
+<i>230</i>&nbsp;
+<b class="nc"><i>231</i>&nbsp;        int posX = -1, posY = -1;</b>
+<b class="nc"><i>232</i>&nbsp;        synchronized (this) {</b>
+<b class="nc"><i>233</i>&nbsp;            while(unselected) {</b>
+<b class="nc"><i>234</i>&nbsp;                System.out.println(&quot;Select X and Y coordinates of your worker&quot;);</b>
+<b class="nc"><i>235</i>&nbsp;                posX = getValidInt();</b>
+<b class="nc"><i>236</i>&nbsp;                posY = getValidInt();</b>
+<i>237</i>&nbsp;
+<b class="nc"><i>238</i>&nbsp;                if (posX &gt;= 0 &amp;&amp; posX &lt; 5 &amp;&amp; posY &gt;= 0 &amp;&amp; posY &lt; 5) {</b>
+<b class="nc"><i>239</i>&nbsp;                    unselected = false;</b>
+<b class="nc"><i>240</i>&nbsp;                    if (workers != null) {</b>
+<b class="nc"><i>241</i>&nbsp;                        for (int[] worker : workers) {</b>
+<b class="nc"><i>242</i>&nbsp;                            if (posX == worker[0] &amp;&amp; posY == worker[1]) {</b>
+<b class="nc"><i>243</i>&nbsp;                                unselected = true;</b>
+<b class="nc"><i>244</i>&nbsp;                                break;</b>
+<i>245</i>&nbsp;                            }
+<i>246</i>&nbsp;                        }
+<i>247</i>&nbsp;                    }
+<i>248</i>&nbsp;                }
+<i>249</i>&nbsp;            }
+<b class="nc"><i>250</i>&nbsp;        }</b>
+<b class="nc"><i>251</i>&nbsp;        System.out.println(&quot;Sending answerWorkerPosition&quot;);</b>
+<b class="nc"><i>252</i>&nbsp;        updateObservers(new AnswerWorkersPlacement(posX, posY, initial));</b>
+<i>253</i>&nbsp;    }
+<i>254</i>&nbsp;
+<i>255</i>&nbsp;    /**
+<i>256</i>&nbsp;     * Asks the player to select one of their active workers
+<i>257</i>&nbsp;     * @param x1 x coordinate of the player&#39;s first worker
+<i>258</i>&nbsp;     * @param y1 y coordinate of the player&#39;s first worker
+<i>259</i>&nbsp;     * @param x2 x coordinate of the player&#39;s second worker
+<i>260</i>&nbsp;     * @param y2 y coordinate of the player&#39;s second worker
+<i>261</i>&nbsp;     * @return
+<i>262</i>&nbsp;     */
+<i>263</i>&nbsp;    private int getWorkerSelection(int x1, int y1, int x2, int y2) {
+<b class="nc"><i>264</i>&nbsp;        System.out.println(&quot;Now you should select a Worker&quot;);</b>
+<b class="nc"><i>265</i>&nbsp;        System.out.println(&quot;Options: &quot; + x1 + &quot; &quot; + y1 + &quot; or &quot; + x2 + &quot; &quot; + y2);</b>
+<b class="nc"><i>266</i>&nbsp;        displayActiveWorkers(x1, y1, x2, y2);</b>
+<b class="nc"><i>267</i>&nbsp;        int posX = -1, posY = -1;</b>
+<b class="nc"><i>268</i>&nbsp;        boolean unselected = true;</b>
+<b class="nc"><i>269</i>&nbsp;        while (unselected) {</b>
+<b class="nc"><i>270</i>&nbsp;            System.out.println(&quot;Please, select an available Worker&quot;);</b>
+<b class="nc"><i>271</i>&nbsp;            posX = getValidInt();</b>
+<b class="nc"><i>272</i>&nbsp;            posY = getValidInt();</b>
+<b class="nc"><i>273</i>&nbsp;            if (x1 == posX &amp;&amp; y1 == posY || x2 == posX &amp;&amp; y2 == posY) {</b>
+<b class="nc"><i>274</i>&nbsp;                unselected = false;</b>
+<i>275</i>&nbsp;            }
+<i>276</i>&nbsp;        }
+<b class="nc"><i>277</i>&nbsp;        if (posX == x1 &amp;&amp; posY == y1)</b>
+<b class="nc"><i>278</i>&nbsp;            return 0;</b>
+<i>279</i>&nbsp;        else
+<b class="nc"><i>280</i>&nbsp;            return 1;</b>
+<i>281</i>&nbsp;    }
+<i>282</i>&nbsp;
+<i>283</i>&nbsp;    /**
+<i>284</i>&nbsp;     * Aks the player to select the destination tile of the power they&#39;re using with the selected worker,
+<i>285</i>&nbsp;     * or to select their other worker to switch to that one for this turn step
+<i>286</i>&nbsp;     * @param opt list of all the valid destination tiles
+<i>287</i>&nbsp;     * @param posXOtherWorker x coordinate of the other player&#39;s other worker, -1 if the other worker is not on the board
+<i>288</i>&nbsp;     * @param posYOtherWorker y coordinate of the other player&#39;s other worker, -1 if the other worker is not on the board
+<i>289</i>&nbsp;     * @return
+<i>290</i>&nbsp;     */
+<i>291</i>&nbsp;    private int getDestSelection(ArrayList&lt;Integer&gt; opt, int posXOtherWorker, int posYOtherWorker) {
+<b class="nc"><i>292</i>&nbsp;        System.out.println(&quot;Select position or your other Worker&quot;);</b>
+<b class="nc"><i>293</i>&nbsp;        System.out.println(opt);</b>
+<b class="nc"><i>294</i>&nbsp;        generateSelectableWorkers(opt, posXOtherWorker, posYOtherWorker);</b>
+<i>295</i>&nbsp;
+<i>296</i>&nbsp;        int posX, posY;
+<b class="nc"><i>297</i>&nbsp;        boolean unselected = true;</b>
+<b class="nc"><i>298</i>&nbsp;        while (unselected) {</b>
+<b class="nc"><i>299</i>&nbsp;            System.out.println(&quot;Please, select an available Cell&quot;);</b>
+<b class="nc"><i>300</i>&nbsp;            posX = getValidInt();</b>
+<b class="nc"><i>301</i>&nbsp;            posY = getValidInt();</b>
+<b class="nc"><i>302</i>&nbsp;            unselected = true;</b>
+<b class="nc"><i>303</i>&nbsp;            if (posXOtherWorker != -1 &amp;&amp; posYOtherWorker != -1 &amp;&amp; posX == posXOtherWorker &amp;&amp; posY == posYOtherWorker)</b>
+<b class="nc"><i>304</i>&nbsp;                unselected = false;</b>
+<i>305</i>&nbsp;            else {
+<b class="nc"><i>306</i>&nbsp;                for (int i = 2; i &lt; opt.size(); i += 2) {                   // from 2 because 0 and 1 contain the worker pos</b>
+<b class="nc"><i>307</i>&nbsp;                    if (opt.get(i) == posX &amp;&amp; opt.get(i + 1) == posY) {</b>
+<b class="nc"><i>308</i>&nbsp;                        return i;</b>
+<i>309</i>&nbsp;                    }
+<i>310</i>&nbsp;                }
+<i>311</i>&nbsp;            }
+<i>312</i>&nbsp;        }
+<i>313</i>&nbsp;
+<b class="nc"><i>314</i>&nbsp;        return -1;</b>
+<i>315</i>&nbsp;    }
+<i>316</i>&nbsp;
+<i>317</i>&nbsp;    /**
+<i>318</i>&nbsp;     * Checks if the user&#39;s input is an int, if not it displays an error message and keeps asking
+<i>319</i>&nbsp;     * for the user&#39;s input until they input an integer
+<i>320</i>&nbsp;     * @return the next int the player put in the stdin
+<i>321</i>&nbsp;     */
+<i>322</i>&nbsp;    // Checks if the input number is an int, else displays a message
+<i>323</i>&nbsp;    private int getValidInt() {
+<b class="nc"><i>324</i>&nbsp;        while (!scanner.hasNextInt()) {</b>
+<b class="nc"><i>325</i>&nbsp;            System.out.println(&quot;Must be a valid int&quot;);</b>
+<b class="nc"><i>326</i>&nbsp;            scanner.next();</b>
+<i>327</i>&nbsp;        }
+<b class="nc"><i>328</i>&nbsp;        return scanner.nextInt();</b>
+<i>329</i>&nbsp;    }
+<i>330</i>&nbsp;
+<i>331</i>&nbsp;    /**
+<i>332</i>&nbsp;     * Asks the player if the want to pass the turn, they have to write &quot;pass&quot; on stdin to do so
+<i>333</i>&nbsp;     * @return true if the player decided to pass, false if they didn&#39;t
+<i>334</i>&nbsp;     */
+<i>335</i>&nbsp;    private boolean askIfPass() {
+<b class="nc"><i>336</i>&nbsp;        System.out.println(&quot;Please, type &#39;pass&#39; if you want to skip to the next move, otherwise type &#39;go&#39;&quot;);</b>
+<b class="nc"><i>337</i>&nbsp;        String selected = null;</b>
+<i>338</i>&nbsp;        String opt;
+<b class="nc"><i>339</i>&nbsp;        while (selected == null) {</b>
+<b class="nc"><i>340</i>&nbsp;            opt = scanner.next();</b>
+<b class="nc"><i>341</i>&nbsp;            if (opt.equals(&quot;pass&quot;))</b>
+<b class="nc"><i>342</i>&nbsp;                selected = &quot;pass&quot;;</b>
+<b class="nc"><i>343</i>&nbsp;            else if (opt.equals(&quot;go&quot;))</b>
+<b class="nc"><i>344</i>&nbsp;                selected = &quot;go&quot;;</b>
+<i>345</i>&nbsp;        }
+<b class="nc"><i>346</i>&nbsp;        return selected.equals(&quot;pass&quot;);</b>
+<i>347</i>&nbsp;    }
+<i>348</i>&nbsp;
+<i>349</i>&nbsp;    /**
+<i>350</i>&nbsp;     * Called at the beginning of the selection phase, it calls other methods that asks the player to
+<i>351</i>&nbsp;     * make a selection to complete the turn step
+<i>352</i>&nbsp;     * @param opt list of all possible selections
+<i>353</i>&nbsp;     * @param canPass true if the turn step can be passed, false if it can&#39;t
+<i>354</i>&nbsp;     */
+<i>355</i>&nbsp;    public void getSelectedWorker(OptionSelection opt, boolean canPass) {
+<b class="nc"><i>356</i>&nbsp;        if (opt.getValues().size() == 2) {</b>
+<b class="nc"><i>357</i>&nbsp;            getWorkerSelection(opt, canPass);</b>
+<i>358</i>&nbsp;        }
+<i>359</i>&nbsp;        else {
+<b class="nc"><i>360</i>&nbsp;            getWorkerSelectionOneOption(opt, canPass);</b>
+<i>361</i>&nbsp;        }
+<i>362</i>&nbsp;    }
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;
+<i>365</i>&nbsp;    /**
+<i>366</i>&nbsp;     * Asks the player to select a worker and choose the power &quot;destination&quot;.
+<i>367</i>&nbsp;     * Gets called when there&#39;s only one selectable worker.
+<i>368</i>&nbsp;     * @param opt all the possible power destination options and the worker&#39;s position
+<i>369</i>&nbsp;     * @param canPass true if the turn step can be passed, false if it can&#39;t
+<i>370</i>&nbsp;     */
+<i>371</i>&nbsp;    public void getWorkerSelectionOneOption(OptionSelection opt, boolean canPass) {
+<b class="nc"><i>372</i>&nbsp;        System.out.println(&quot;Displaying options: &quot;);</b>
+<b class="nc"><i>373</i>&nbsp;        System.out.println(opt);</b>
+<b class="nc"><i>374</i>&nbsp;        if (canPass) {</b>
+<b class="nc"><i>375</i>&nbsp;            generateSelectableWorkers(opt.getValues().get(0), -1, -1);</b>
+<b class="nc"><i>376</i>&nbsp;            if (askIfPass()) {</b>
+<b class="nc"><i>377</i>&nbsp;                Answer answer = new AnswerPowerCoordinates();</b>
+<b class="nc"><i>378</i>&nbsp;                updateObservers(answer);</b>
+<i>379</i>&nbsp;                return;
+<i>380</i>&nbsp;            }
+<i>381</i>&nbsp;        }
+<b class="nc"><i>382</i>&nbsp;        if (!opt.hasOptions()) {</b>
+<b class="nc"><i>383</i>&nbsp;            updateObservers(new AnswerKillPlayer(playerInit));</b>
+<i>384</i>&nbsp;            return;
+<i>385</i>&nbsp;        }
+<i>386</i>&nbsp;
+<b class="nc"><i>387</i>&nbsp;        System.out.println(opt);</b>
+<b class="nc"><i>388</i>&nbsp;        int w_select = getDestSelection(opt.getValues().get(0), -1, -1);</b>
+<i>389</i>&nbsp;
+<b class="nc"><i>390</i>&nbsp;        Answer answer = new AnswerPowerCoordinates(</b>
+<b class="nc"><i>391</i>&nbsp;                opt.getValues().get(0).get(0), opt.getValues().get(0).get(1),</b>
+<b class="nc"><i>392</i>&nbsp;                opt.getValues().get(0).get(w_select), opt.getValues().get(0).get(w_select + 1));</b>
+<b class="nc"><i>393</i>&nbsp;        updateObservers(answer);</b>
+<i>394</i>&nbsp;    }
+<i>395</i>&nbsp;
+<i>396</i>&nbsp;    /**
+<i>397</i>&nbsp;     * Asks the player to select a worker and choose the power &quot;destination&quot;.
+<i>398</i>&nbsp;     * Gets called when there are two selectable workers.
+<i>399</i>&nbsp;     * @param opt all the possible power destination options and the worker&#39;s position
+<i>400</i>&nbsp;     * @param canPass true if the turn step can be passed, false if it can&#39;t
+<i>401</i>&nbsp;     */
+<i>402</i>&nbsp;    public void getWorkerSelection(OptionSelection opt, boolean canPass) {
+<b class="nc"><i>403</i>&nbsp;        if (canPass) {</b>
+<b class="nc"><i>404</i>&nbsp;            generateSelectableWorkers(opt);</b>
+<b class="nc"><i>405</i>&nbsp;            if (askIfPass()) {</b>
+<b class="nc"><i>406</i>&nbsp;                Answer answer = new AnswerPowerCoordinates();</b>
+<b class="nc"><i>407</i>&nbsp;                updateObservers(answer);</b>
+<i>408</i>&nbsp;                return;
+<i>409</i>&nbsp;            }
+<i>410</i>&nbsp;        }
+<b class="nc"><i>411</i>&nbsp;        if (!opt.hasOptions()) {</b>
+<b class="nc"><i>412</i>&nbsp;            updateObservers(new AnswerKillPlayer(playerInit));</b>
+<i>413</i>&nbsp;            return;
+<i>414</i>&nbsp;        }
+<b class="nc"><i>415</i>&nbsp;        int selected = getWorkerSelection(opt.getValues().get(0).get(0), opt.getValues().get(0).get(1), opt.getValues().get(1).get(0), opt.getValues().get(1).get(1));</b>
+<b class="nc"><i>416</i>&nbsp;        int otherSelection = 0;</b>
+<b class="nc"><i>417</i>&nbsp;        if (selected == 0)</b>
+<b class="nc"><i>418</i>&nbsp;            otherSelection = 1;</b>
+<i>419</i>&nbsp;        int w_select;
+<i>420</i>&nbsp;        do {
+<b class="nc"><i>421</i>&nbsp;            w_select = getDestSelection(opt.getValues().get(selected), opt.getValues().get(otherSelection).get(0), opt.getValues().get(otherSelection).get(1));</b>
+<b class="nc"><i>422</i>&nbsp;            if (w_select == -1) {</b>
+<b class="nc"><i>423</i>&nbsp;                int temp = selected;</b>
+<b class="nc"><i>424</i>&nbsp;                selected = otherSelection;</b>
+<b class="nc"><i>425</i>&nbsp;                otherSelection = temp;</b>
+<i>426</i>&nbsp;            }
+<b class="nc"><i>427</i>&nbsp;        } while (w_select == -1);</b>
+<i>428</i>&nbsp;
+<b class="nc"><i>429</i>&nbsp;        Answer answer = new AnswerPowerCoordinates(</b>
+<b class="nc"><i>430</i>&nbsp;                opt.getValues().get(selected).get(0), opt.getValues().get(selected).get(1),</b>
+<b class="nc"><i>431</i>&nbsp;                opt.getValues().get(selected).get(w_select), opt.getValues().get(selected).get(w_select + 1));</b>
+<b class="nc"><i>432</i>&nbsp;        updateObservers(answer);</b>
+<i>433</i>&nbsp;    }
+<i>434</i>&nbsp;
+<i>435</i>&nbsp;    /**
+<i>436</i>&nbsp;     * Displays the workers that can be selected
+<i>437</i>&nbsp;     * @param X1 x coordinate of the first worker
+<i>438</i>&nbsp;     * @param Y1 y coordinate of the first worker
+<i>439</i>&nbsp;     * @param X2 x coordinate of the second worker
+<i>440</i>&nbsp;     * @param Y2 y coordinate of the second worker
+<i>441</i>&nbsp;     */
+<i>442</i>&nbsp;    private void displayActiveWorkers(int X1, int Y1, int X2, int Y2) {
+<i>443</i>&nbsp;
+<b class="nc"><i>444</i>&nbsp;        boolean[][] selectable = new boolean[5][5];</b>
+<b class="nc"><i>445</i>&nbsp;        for (int i = 0; i &lt; 5; i++)</b>
+<b class="nc"><i>446</i>&nbsp;            for (int j = 0; j &lt; 5; j++)</b>
+<b class="nc"><i>447</i>&nbsp;                selectable[i][j] = false;</b>
+<i>448</i>&nbsp;
+<b class="nc"><i>449</i>&nbsp;        selectable[X1][Y1] = true;</b>
+<b class="nc"><i>450</i>&nbsp;        selectable[X2][Y2] = true;</b>
+<i>451</i>&nbsp;
+<b class="nc"><i>452</i>&nbsp;        printSelectableBoard(selectable);</b>
+<i>453</i>&nbsp;    }
+<i>454</i>&nbsp;
+<i>455</i>&nbsp;    /**
+<i>456</i>&nbsp;     * Makes all the selectable cells (opt and the other worker&#39;s coordinates) clickable by the player
+<i>457</i>&nbsp;     * @param opt list of all the player&#39;s options
+<i>458</i>&nbsp;     * @param posXOtherWorker x coordinate of the player&#39;s other worker
+<i>459</i>&nbsp;     * @param posYOtherWorker y coordinate of the player&#39;s other worker
+<i>460</i>&nbsp;     */
+<i>461</i>&nbsp;    // Sets to true all the selectable cells considering opt and the other worker position
+<i>462</i>&nbsp;    private void generateSelectableWorkers(ArrayList&lt;Integer&gt; opt, int posXOtherWorker, int posYOtherWorker) {
+<i>463</i>&nbsp;
+<b class="nc"><i>464</i>&nbsp;        boolean[][] selectable = new boolean[5][5];</b>
+<b class="nc"><i>465</i>&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="nc"><i>466</i>&nbsp;            for (int j = 0; j &lt; 5; j++)</b>
+<b class="nc"><i>467</i>&nbsp;                selectable[i][j] = false;</b>
+<i>468</i>&nbsp;        }
+<i>469</i>&nbsp;
+<b class="nc"><i>470</i>&nbsp;        if (posXOtherWorker != -1 &amp;&amp; posYOtherWorker != -1)</b>
+<b class="nc"><i>471</i>&nbsp;            selectable[posXOtherWorker][posYOtherWorker] = true;</b>
+<i>472</i>&nbsp;
+<b class="nc"><i>473</i>&nbsp;        for (int i = 2; i &lt; opt.size(); i += 2) {</b>
+<b class="nc"><i>474</i>&nbsp;            selectable[opt.get(i)][opt.get(i + 1)] = true;</b>
+<i>475</i>&nbsp;        }
+<i>476</i>&nbsp;
+<b class="nc"><i>477</i>&nbsp;        printSelectableBoard(selectable);</b>
+<i>478</i>&nbsp;    }
+<i>479</i>&nbsp;
+<i>480</i>&nbsp;    /**
+<i>481</i>&nbsp;     * Makes the worker&#39;s tiles clickable by the player
+<i>482</i>&nbsp;     * @param opt list of all the player&#39;s options
+<i>483</i>&nbsp;     */
+<i>484</i>&nbsp;    private void generateSelectableWorkers(OptionSelection opt) {
+<i>485</i>&nbsp;
+<b class="nc"><i>486</i>&nbsp;        boolean[][] selectable = new boolean[5][5];</b>
+<b class="nc"><i>487</i>&nbsp;        for (int i = 0; i &lt; 5; i++)</b>
+<b class="nc"><i>488</i>&nbsp;            for (int j = 0; j &lt; 5; j++)</b>
+<b class="nc"><i>489</i>&nbsp;                selectable[i][j] = false;</b>
+<i>490</i>&nbsp;
+<b class="nc"><i>491</i>&nbsp;        for (int i = 0; i &lt; opt.getValues().size(); i++) {</b>
+<b class="nc"><i>492</i>&nbsp;            selectable[opt.getValues().get(i).get(0)][opt.getValues().get(i).get(1)] = true;</b>
+<i>493</i>&nbsp;        }
+<i>494</i>&nbsp;
+<b class="nc"><i>495</i>&nbsp;        printSelectableBoard(selectable);</b>
+<i>496</i>&nbsp;    }
+<i>497</i>&nbsp;
+<i>498</i>&nbsp;    /**
+<i>499</i>&nbsp;     * Displays on the console the end game message, telling the player if the won or lost
+<i>500</i>&nbsp;     * @param winnerInit initial of the winning player
+<i>501</i>&nbsp;     */
+<i>502</i>&nbsp;    // Displays end game message
+<i>503</i>&nbsp;    public void displayGameEnd(char winnerInit) {
+<b class="nc"><i>504</i>&nbsp;        if (winnerInit == playerInit) {</b>
+<b class="nc"><i>505</i>&nbsp;            System.out.println(&quot;YOU WON! GOOD JOB!&quot;);</b>
+<i>506</i>&nbsp;        }
+<i>507</i>&nbsp;        else {
+<b class="nc"><i>508</i>&nbsp;            System.out.println(&quot;You lost, NOOB!&quot;);</b>
+<i>509</i>&nbsp;        }
+<i>510</i>&nbsp;    }
+<i>511</i>&nbsp;
+<i>512</i>&nbsp;    public void displayGameEnd() {
+<b class="nc"><i>513</i>&nbsp;        System.out.println(&quot;You lost because you are stuck! LOL&quot;);</b>
+<i>514</i>&nbsp;    }
+<i>515</i>&nbsp;
+<i>516</i>&nbsp;
+<b class="nc"><i>517</i>&nbsp;    private String ANSI_RESET = &quot;\u001B[0m&quot;;</b>
+<b class="nc"><i>518</i>&nbsp;    private String ANSI_WHITE_BACKGROUND = &quot;\u001B[47m&quot;;</b>
+<b class="nc"><i>519</i>&nbsp;    private String ANSI_BRIGHTBLACK_BACKGROUND = &quot;\u001B[100m&quot;;</b>
+<b class="nc"><i>520</i>&nbsp;    private String ANSI_YELLOW_BACKGROUND = &quot;\u001B[43m&quot;;</b>
+<b class="nc"><i>521</i>&nbsp;    private String ANSI_GREEN_BACKGROUND = &quot;\u001B[42m&quot;;</b>
+<b class="nc"><i>522</i>&nbsp;    private String ANSI_BLACK = &quot;\u001B[30m&quot;;</b>
+<b class="nc"><i>523</i>&nbsp;    private String ANSI_BLUE_BACKGROUND = &quot;\u001B[44m&quot;;</b>
+<b class="nc"><i>524</i>&nbsp;    private String ANSI_BRIGHTRED_BACKGROUND = &quot;\u001B[101m&quot;;</b>
+<i>525</i>&nbsp;
+<b class="nc"><i>526</i>&nbsp;    private String currColor = &quot;&quot;;</b>
+<i>527</i>&nbsp;    /**
+<i>528</i>&nbsp;     * Displays the board, outlining all the selectable tiles
+<i>529</i>&nbsp;     * @param selectable matrix wiht all the selectable tiles
+<i>530</i>&nbsp;     */
+<i>531</i>&nbsp;    public void printSelectableBoard(boolean[][] selectable) {
+<b class="nc"><i>532</i>&nbsp;        synchronized (this) {</b>
+<b class="nc"><i>533</i>&nbsp;            if (selectable == null) {</b>
+<b class="nc"><i>534</i>&nbsp;                selectable = new boolean[5][];</b>
+<b class="nc"><i>535</i>&nbsp;                for (int i = 0; i &lt; 5; i++)</b>
+<b class="nc"><i>536</i>&nbsp;                    selectable[i] = new boolean[5];</b>
+<i>537</i>&nbsp;            }
+<i>538</i>&nbsp;
+<b class="nc"><i>539</i>&nbsp;            String ANSI_WHITE = &quot;\u001B[37m&quot;;</b>
+<i>540</i>&nbsp;
+<b class="nc"><i>541</i>&nbsp;            System.out.println();</b>
+<b class="nc"><i>542</i>&nbsp;            System.out.println(ANSI_WHITE + &quot;???????????????????????????????????????????????????&quot;);</b>
+<b class="nc"><i>543</i>&nbsp;            for (int i = 0; i &lt; 5; i++) {</b>
+<b class="nc"><i>544</i>&nbsp;                for (int k = 0; k &lt; 3; k++) {</b>
+<b class="nc"><i>545</i>&nbsp;                    for (int j = 0; j &lt; 5; j++) {</b>
+<b class="nc"><i>546</i>&nbsp;                        System.out.print(&quot;?&quot;);</b>
+<b class="nc"><i>547</i>&nbsp;                        if (boardView[i][j].getBuildingLevel() == 0 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>548</i>&nbsp;                            currColor = ANSI_GREEN_BACKGROUND;</b>
+<b class="nc"><i>549</i>&nbsp;                        else if (boardView[i][j].getBuildingLevel() == 1 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>550</i>&nbsp;                            currColor = ANSI_YELLOW_BACKGROUND;</b>
+<b class="nc"><i>551</i>&nbsp;                        else if (boardView[i][j].getBuildingLevel() == 2 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>552</i>&nbsp;                            currColor = ANSI_WHITE_BACKGROUND;</b>
+<b class="nc"><i>553</i>&nbsp;                        else if (boardView[i][j].getBuildingLevel() == 3 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>554</i>&nbsp;                            currColor = ANSI_BRIGHTBLACK_BACKGROUND;</b>
+<i>555</i>&nbsp;                        else
+<b class="nc"><i>556</i>&nbsp;                            currColor = ANSI_BLUE_BACKGROUND;</b>
+<i>557</i>&nbsp;
+<b class="nc"><i>558</i>&nbsp;                        if (k != 1) {</b>
+<b class="nc"><i>559</i>&nbsp;                            System.out.print(currColor + &quot;         &quot; + ANSI_RESET);</b>
+<i>560</i>&nbsp;                        }
+<b class="nc"><i>561</i>&nbsp;                        else if (selectable[i][j]) {</b>
+<b class="nc"><i>562</i>&nbsp;                            if (boardView[i][j].getInitWorker() != &#39;?&#39;)</b>
+<b class="nc"><i>563</i>&nbsp;                                System.out.print(currColor + &quot;   &quot; + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + &quot; &quot;</b>
+<b class="nc"><i>564</i>&nbsp;                                        + boardView[i][j].getInitWorker() + &quot; &quot; + currColor +</b>
+<i>565</i>&nbsp;                                        &quot;   &quot; + ANSI_RESET);
+<i>566</i>&nbsp;                            else
+<b class="nc"><i>567</i>&nbsp;                                System.out.print(currColor + &quot;   &quot; + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + &quot;   &quot; + currColor +</b>
+<i>568</i>&nbsp;                                        &quot;   &quot; + ANSI_RESET);
+<i>569</i>&nbsp;                        }
+<i>570</i>&nbsp;                        else {
+<b class="nc"><i>571</i>&nbsp;                            if (boardView[i][j].getInitWorker() != &#39;?&#39;)</b>
+<b class="nc"><i>572</i>&nbsp;                                System.out.print(currColor + &quot;    &quot; + ANSI_BLACK + boardView[i][j].getInitWorker() + &quot;    &quot; + ANSI_RESET);</b>
+<i>573</i>&nbsp;                            else
+<b class="nc"><i>574</i>&nbsp;                                System.out.print(currColor + &quot;         &quot; + ANSI_RESET);</b>
+<i>575</i>&nbsp;                        }
+<i>576</i>&nbsp;
+<i>577</i>&nbsp;                    }
+<b class="nc"><i>578</i>&nbsp;                    System.out.print(&quot;?&quot;);</b>
+<b class="nc"><i>579</i>&nbsp;                    System.out.println();</b>
+<i>580</i>&nbsp;                }
+<i>581</i>&nbsp;
+<b class="nc"><i>582</i>&nbsp;                if (i != 4)</b>
+<b class="nc"><i>583</i>&nbsp;                    System.out.println(&quot;???????????????????????????????????????????????????&quot;);</b>
+<i>584</i>&nbsp;
+<i>585</i>&nbsp;            }
+<b class="nc"><i>586</i>&nbsp;            System.out.println(&quot;???????????????????????????????????????????????????&quot;);</b>
+<b class="nc"><i>587</i>&nbsp;        }</b>
+<i>588</i>&nbsp;
+<i>589</i>&nbsp;    }
+<i>590</i>&nbsp;
+<i>591</i>&nbsp;    /**
+<i>592</i>&nbsp;     * Displays the board&#39;s current state
+<i>593</i>&nbsp;     */
+<i>594</i>&nbsp;    public void displayBoard() {
+<b class="nc"><i>595</i>&nbsp;        synchronized (this) {</b>
+<b class="nc"><i>596</i>&nbsp;            String ANSI_WHITE = &quot;\u001B[37m&quot;;</b>
+<i>597</i>&nbsp;
+<b class="nc"><i>598</i>&nbsp;            System.out.println();</b>
+<b class="nc"><i>599</i>&nbsp;            System.out.println(ANSI_WHITE + &quot;???????????????????????????????????????????????????&quot;);</b>
+<b class="nc"><i>600</i>&nbsp;            for (int i = 0; i &lt; 5; i++) {</b>
+<b class="nc"><i>601</i>&nbsp;                for (int k = 0; k &lt; 3; k++) {</b>
+<b class="nc"><i>602</i>&nbsp;                    for (int j = 0; j &lt; 5; j++) {</b>
+<b class="nc"><i>603</i>&nbsp;                        System.out.print(&quot;?&quot;);</b>
+<b class="nc"><i>604</i>&nbsp;                        if (boardView[i][j].getBuildingLevel() == 0 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>605</i>&nbsp;                            currColor = ANSI_GREEN_BACKGROUND;</b>
+<b class="nc"><i>606</i>&nbsp;                        else if (boardView[i][j].getBuildingLevel() == 1 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>607</i>&nbsp;                            currColor = ANSI_YELLOW_BACKGROUND;</b>
+<b class="nc"><i>608</i>&nbsp;                        else if (boardView[i][j].getBuildingLevel() == 2 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>609</i>&nbsp;                            currColor = ANSI_WHITE_BACKGROUND;</b>
+<b class="nc"><i>610</i>&nbsp;                        else if (boardView[i][j].getBuildingLevel() == 3 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>611</i>&nbsp;                            currColor = ANSI_BRIGHTBLACK_BACKGROUND;</b>
+<i>612</i>&nbsp;                        else
+<b class="nc"><i>613</i>&nbsp;                            currColor = ANSI_BLUE_BACKGROUND;</b>
+<i>614</i>&nbsp;
+<b class="nc"><i>615</i>&nbsp;                        if (k != 1) {</b>
+<b class="nc"><i>616</i>&nbsp;                            System.out.print(currColor + &quot;         &quot; + ANSI_RESET);</b>
+<i>617</i>&nbsp;                        }
+<i>618</i>&nbsp;                        else {
+<b class="nc"><i>619</i>&nbsp;                            if (boardView[i][j].getInitWorker() != &#39;?&#39;)</b>
+<b class="nc"><i>620</i>&nbsp;                                System.out.print(currColor + &quot;    &quot; + ANSI_BLACK + boardView[i][j].getInitWorker() + &quot;    &quot; + ANSI_RESET);</b>
+<i>621</i>&nbsp;                            else
+<b class="nc"><i>622</i>&nbsp;                                System.out.print(currColor + &quot;         &quot; + ANSI_RESET);</b>
+<i>623</i>&nbsp;                        }
+<i>624</i>&nbsp;                    }
+<b class="nc"><i>625</i>&nbsp;                    System.out.print(&quot;?&quot;);</b>
+<b class="nc"><i>626</i>&nbsp;                    System.out.println();</b>
+<i>627</i>&nbsp;                }
+<b class="nc"><i>628</i>&nbsp;                if (i != 4)</b>
+<b class="nc"><i>629</i>&nbsp;                    System.out.println(&quot;???????????????????????????????????????????????????&quot;);</b>
+<i>630</i>&nbsp;            }
+<b class="nc"><i>631</i>&nbsp;            System.out.println(&quot;???????????????????????????????????????????????????&quot;);</b>
+<b class="nc"><i>632</i>&nbsp;        }</b>
+<i>633</i>&nbsp;    }
+<i>634</i>&nbsp;
+<i>635</i>&nbsp;
+<i>636</i>&nbsp;    public void displayLostConnection() {
+<b class="nc"><i>637</i>&nbsp;        System.out.println(&quot;Disconnected from the server&quot;);</b>
+<i>638</i>&nbsp;    }
+<i>639</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

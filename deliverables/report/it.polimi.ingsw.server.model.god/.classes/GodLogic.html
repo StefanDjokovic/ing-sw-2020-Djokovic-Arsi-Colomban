@@ -1,0 +1,382 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodLogic</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.server.model.god</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodLogic (it.polimi.ingsw.server.model.god)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodLogic</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13,3%
+  </span>
+  <span class="absValue">
+    (2/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13,6%
+  </span>
+  <span class="absValue">
+    (18/ 132)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.server.model.god;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.messages.OptionSelection;
+<i>4</i>&nbsp;import it.polimi.ingsw.messages.Request;
+<i>5</i>&nbsp;import it.polimi.ingsw.messages.request.RequestPowerCoordinates;
+<i>6</i>&nbsp;import it.polimi.ingsw.messages.request.RequestUpdateBoardView;
+<i>7</i>&nbsp;import it.polimi.ingsw.server.model.BoardView;
+<i>8</i>&nbsp;import it.polimi.ingsw.server.model.Game;
+<i>9</i>&nbsp;import it.polimi.ingsw.server.model.logger.Logger;
+<i>10</i>&nbsp;import it.polimi.ingsw.server.model.board.NonExistingTileException;
+<i>11</i>&nbsp;import it.polimi.ingsw.server.model.god.godPowers.*;
+<i>12</i>&nbsp;import it.polimi.ingsw.server.model.player.Player;
+<i>13</i>&nbsp;import it.polimi.ingsw.server.model.board.Board;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;import java.util.ArrayList;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;public class GodLogic {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private String godLogicName;
+<i>20</i>&nbsp;    private Player player;
+<b class="fc"><i>21</i>&nbsp;    private ArrayList&lt;GodPower&gt; turn = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>22</i>&nbsp;    private int currStep = 0;</b>
+<i>23</i>&nbsp;    private Board board;
+<b class="fc"><i>24</i>&nbsp;    private boolean canPass = false;</b>
+<i>25</i>&nbsp;    private Logger logger;
+<b class="fc"><i>26</i>&nbsp;    private int upDiffDebuff = 0;</b>
+<b class="fc"><i>27</i>&nbsp;    private int downDiffDebuff = 0;</b>
+<b class="fc"><i>28</i>&nbsp;    private boolean hasDebuff = false;</b>
+<i>29</i>&nbsp;    private ArrayList&lt;GodLogic&gt; otherGodLogic;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;    public GodLogic(String godLogic, Player p, Logger logger, Board board) {</b>
+<b class="fc"><i>33</i>&nbsp;        godLogicName = godLogic;</b>
+<b class="fc"><i>34</i>&nbsp;        this.player = p;</b>
+<b class="fc"><i>35</i>&nbsp;        this.logger = logger;</b>
+<b class="fc"><i>36</i>&nbsp;        this.board = board;</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;        // Initializing Turn Schema
+<b class="fc"><i>39</i>&nbsp;        switch (godLogicName) {</b>
+<i>40</i>&nbsp;            case &quot;Apollo&quot;:
+<b class="nc"><i>41</i>&nbsp;                turn.add(new Swap(this, false));</b>
+<b class="nc"><i>42</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>43</i>&nbsp;                break;</b>
+<i>44</i>&nbsp;            case &quot;Artemis&quot;:
+<b class="fc"><i>45</i>&nbsp;                turn.add(new Move(this, false));</b>
+<b class="fc"><i>46</i>&nbsp;                turn.add(new DoubleMove(this, true));</b>
+<b class="fc"><i>47</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="fc"><i>48</i>&nbsp;                break;</b>
+<i>49</i>&nbsp;            case &quot;Atlas&quot;:
+<b class="nc"><i>50</i>&nbsp;                turn.add(new Move(this, false));</b>
+<b class="nc"><i>51</i>&nbsp;                turn.add(new Build(this, true));</b>
+<b class="nc"><i>52</i>&nbsp;                turn.add(new BuildDome(this, false));</b>
+<b class="nc"><i>53</i>&nbsp;                break;</b>
+<i>54</i>&nbsp;            case &quot;Pan&quot;:
+<b class="nc"><i>55</i>&nbsp;                turn.add(new MoveWithSpecialWinCondition(this, false));</b>
+<b class="nc"><i>56</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>57</i>&nbsp;                break;</b>
+<i>58</i>&nbsp;            case &quot;Demeter&quot;:
+<b class="nc"><i>59</i>&nbsp;                turn.add(new Move(this, false));</b>
+<b class="nc"><i>60</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>61</i>&nbsp;                turn.add(new BuildWithLimitation(this, true));</b>
+<b class="nc"><i>62</i>&nbsp;                break;</b>
+<i>63</i>&nbsp;            case &quot;Hephaestus&quot;:
+<b class="nc"><i>64</i>&nbsp;                turn.add(new Move(this, false));</b>
+<b class="nc"><i>65</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>66</i>&nbsp;                turn.add(new BuildOverOneTile(this, true));</b>
+<b class="nc"><i>67</i>&nbsp;                break;</b>
+<i>68</i>&nbsp;            case &quot;Minotaur&quot;:
+<b class="nc"><i>69</i>&nbsp;                turn.add(new Push(this, false));</b>
+<b class="nc"><i>70</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>71</i>&nbsp;                break;</b>
+<i>72</i>&nbsp;            case &quot;Prometheus&quot;:
+<b class="nc"><i>73</i>&nbsp;                turn.add(new Build(this, true));</b>
+<b class="nc"><i>74</i>&nbsp;                turn.add(new MoveLimitedOnFirstBuild(this, false));</b>
+<b class="nc"><i>75</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>76</i>&nbsp;                break;</b>
+<i>77</i>&nbsp;            case &quot;Athena&quot;:
+<b class="nc"><i>78</i>&nbsp;                turn.add(new MoveLimiter(this, false));</b>
+<b class="nc"><i>79</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>80</i>&nbsp;                break;</b>
+<i>81</i>&nbsp;            case &quot;Zeus&quot;:
+<b class="nc"><i>82</i>&nbsp;                turn.add(new Move(this, false));</b>
+<b class="nc"><i>83</i>&nbsp;                turn.add(new BuildUnderneath(this, false));</b>
+<b class="nc"><i>84</i>&nbsp;                break;</b>
+<i>85</i>&nbsp;            case &quot;Ares&quot;:
+<b class="nc"><i>86</i>&nbsp;                turn.add(new Move(this, false));</b>
+<b class="nc"><i>87</i>&nbsp;                turn.add(new Build(this, true));</b>
+<b class="nc"><i>88</i>&nbsp;                turn.add(new Destroy(this, false));</b>
+<b class="nc"><i>89</i>&nbsp;                break;</b>
+<i>90</i>&nbsp;            case &quot;Hestia&quot;:
+<b class="nc"><i>91</i>&nbsp;                turn.add(new Move(this, false));</b>
+<b class="nc"><i>92</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>93</i>&nbsp;                turn.add(new BuildLimited(this, true));</b>
+<b class="nc"><i>94</i>&nbsp;                break;</b>
+<i>95</i>&nbsp;            case &quot;Poseidon&quot;:
+<b class="nc"><i>96</i>&nbsp;                turn.add(new Move(this, false));</b>
+<b class="nc"><i>97</i>&nbsp;                turn.add(new Build(this, false));</b>
+<b class="nc"><i>98</i>&nbsp;                turn.add(new BuildMultipleWithCondition(this, true));</b>
+<b class="nc"><i>99</i>&nbsp;                turn.add(new BuildMultipleWithCondition(this, true));</b>
+<b class="nc"><i>100</i>&nbsp;                break;</b>
+<i>101</i>&nbsp;            case &quot;Charon&quot;:
+<b class="nc"><i>102</i>&nbsp;                turn.add(new Teleport(this, true));</b>
+<b class="nc"><i>103</i>&nbsp;                turn.add(new MoveLimitedOnFirstTeleport(this, false));</b>
+<b class="nc"><i>104</i>&nbsp;                turn.add(new Build(this, false));</b>
+<i>105</i>&nbsp;                break;
+<i>106</i>&nbsp;        }
+<b class="fc"><i>107</i>&nbsp;    }</b>
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    /**
+<i>110</i>&nbsp;     * Executes the turn routine, creating all the messages that the model will have to send to the view to update
+<i>111</i>&nbsp;     * the view&#39;s board, to request the power coordinates.
+<i>112</i>&nbsp;     * @param game model&#39;s main object, that initializes everything else
+<i>113</i>&nbsp;     */
+<i>114</i>&nbsp;    public int executeTurn(Game game) {
+<b class="nc"><i>115</i>&nbsp;        OptionSelection opt = turn.get(currStep).getOptions(logger);</b>
+<b class="nc"><i>116</i>&nbsp;        if (opt != null) {</b>
+<b class="nc"><i>117</i>&nbsp;            if (opt.hasOptions() || turn.get(currStep).getCanPass()) {</b>
+<b class="nc"><i>118</i>&nbsp;                opt.compressUselessOptions();</b>
+<b class="nc"><i>119</i>&nbsp;                System.out.println(opt);</b>
+<b class="nc"><i>120</i>&nbsp;                RequestUpdateBoardView RequestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), &#39;*&#39;);</b>
+<b class="nc"><i>121</i>&nbsp;                game.updateObservers(RequestUpdateBoardView);</b>
+<b class="nc"><i>122</i>&nbsp;                Request request = new RequestPowerCoordinates(opt, this.canPass, player.getInitial());</b>
+<b class="nc"><i>123</i>&nbsp;                System.out.println(&quot;\u001B[101m&quot; +  &quot;Sending stuff&quot; + &quot;\u001B[0m&quot;);</b>
+<b class="nc"><i>124</i>&nbsp;                game.updateObservers(request);</b>
+<b class="nc"><i>125</i>&nbsp;            }</b>
+<i>126</i>&nbsp;            else {
+<b class="nc"><i>127</i>&nbsp;                System.out.println(&quot;THIS BOY HAS LOST! Initial: &quot; + getPlayer().getInitial());</b>
+<b class="nc"><i>128</i>&nbsp;                game.reportLossPlayer(getPlayer());</b>
+<i>129</i>&nbsp;            }
+<i>130</i>&nbsp;        }
+<i>131</i>&nbsp;        else {
+<b class="nc"><i>132</i>&nbsp;            game.gameReceiveOptions();</b>
+<b class="nc"><i>133</i>&nbsp;            return 1;</b>
+<i>134</i>&nbsp;        }
+<b class="nc"><i>135</i>&nbsp;        return 0;</b>
+<i>136</i>&nbsp;    }
+<i>137</i>&nbsp;
+<i>138</i>&nbsp;    /**
+<i>139</i>&nbsp;     * Executes the power from &quot;clean&quot; options, notifying the caller at the end
+<i>140</i>&nbsp;     * of the execution if the power usage wins the game
+<i>141</i>&nbsp;     * @param board variable that contains the state of the board
+<i>142</i>&nbsp;     * @param posXFrom x coordinate of the worker that is going to use the power
+<i>143</i>&nbsp;     * @param posYFrom y coordinate of the worker that is going to use the power
+<i>144</i>&nbsp;     * @param posXTo x coordinate of the tile targeted by the power
+<i>145</i>&nbsp;     * @param posYTo y coordinate of the tile targeted by the power
+<i>146</i>&nbsp;     * @return 2 if the power usage wins the game,  1 if the turn step was the last one of the routine,
+<i>147</i>&nbsp;     *         0 if there are other steps afterwards
+<i>148</i>&nbsp;     */
+<i>149</i>&nbsp;    public int godLogicReceiveOptions(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
+<b class="nc"><i>150</i>&nbsp;        int status = turn.get(currStep).power(board, posXFrom, posYFrom, posXTo, posYTo);</b>
+<b class="nc"><i>151</i>&nbsp;        if (status == 2)</b>
+<b class="nc"><i>152</i>&nbsp;            return 2;</b>
+<b class="nc"><i>153</i>&nbsp;        currStep++;</b>
+<b class="nc"><i>154</i>&nbsp;        if (currStep % turn.size() == 0) {</b>
+<b class="nc"><i>155</i>&nbsp;            currStep = 0;</b>
+<b class="nc"><i>156</i>&nbsp;            this.hasDebuff = false; // resets the debuff state</b>
+<b class="nc"><i>157</i>&nbsp;            return 1;</b>
+<i>158</i>&nbsp;        }
+<b class="nc"><i>159</i>&nbsp;        return 0;</b>
+<i>160</i>&nbsp;    }
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;    public int levelWorker(int x, int y) {
+<b class="nc"><i>163</i>&nbsp;        return player.getWorkerLevel(x, y);</b>
+<i>164</i>&nbsp;    }
+<i>165</i>&nbsp;    /**
+<i>166</i>&nbsp;     * Executes one step of the turn when the player passes
+<i>167</i>&nbsp;     * @return 1 if the turn step was the last one of the routine, 0 if there are other steps afterwards
+<i>168</i>&nbsp;     */
+<i>169</i>&nbsp;    public int godLogicReceiveOptions() {
+<b class="nc"><i>170</i>&nbsp;        currStep++;</b>
+<b class="nc"><i>171</i>&nbsp;        if (currStep % turn.size() == 0) {</b>
+<b class="nc"><i>172</i>&nbsp;            currStep = 0;</b>
+<b class="nc"><i>173</i>&nbsp;            return 1;</b>
+<i>174</i>&nbsp;        }
+<b class="nc"><i>175</i>&nbsp;        return 0;</b>
+<i>176</i>&nbsp;    }
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;    /**
+<i>179</i>&nbsp;     * Debuffs opponents when a particular power is used
+<i>180</i>&nbsp;     * @param upDiffDebuff &quot;magnitude&quot; of the debuff
+<i>181</i>&nbsp;     */
+<i>182</i>&nbsp;    public void debuffOpponents(int upDiffDebuff) {
+<b class="nc"><i>183</i>&nbsp;        for (GodLogic g: otherGodLogic) {</b>
+<b class="nc"><i>184</i>&nbsp;            g.upDiffDebuff = upDiffDebuff;</b>
+<b class="nc"><i>185</i>&nbsp;            g.hasDebuff = true;</b>
+<b class="nc"><i>186</i>&nbsp;        }</b>
+<b class="nc"><i>187</i>&nbsp;    }</b>
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;    /**
+<i>191</i>&nbsp;     * @param upDiff how many levels it may move upwards
+<i>192</i>&nbsp;     * @param downMin minimum level of downwards
+<i>193</i>&nbsp;     * @param canIntoOpp if it may move into an opponent
+<i>194</i>&nbsp;     * @param limitations if there are particular cell where it may not move
+<i>195</i>&nbsp;     * @param canPass if the power can be skipped
+<i>196</i>&nbsp;     * @return OptionSelection contains the cells in which the player may decide to move
+<i>197</i>&nbsp;     */
+<i>198</i>&nbsp;    public OptionSelection getOptionsGodLogic(int upDiff, int downMin, boolean canIntoOpp, ArrayList&lt;Integer&gt; limitations, boolean canPass) {
+<b class="nc"><i>199</i>&nbsp;        this.canPass = canPass;</b>
+<b class="nc"><i>200</i>&nbsp;        if (!hasDebuff || upDiff &gt; 4)   // upDiff &gt; 4 means it&#39;s a build power, which is not affected by any debuff</b>
+<b class="nc"><i>201</i>&nbsp;            return getPlayer().getOptionsPlayer(upDiff, downMin, canIntoOpp, limitations);</b>
+<i>202</i>&nbsp;        else {
+<b class="nc"><i>203</i>&nbsp;            return getPlayer().getOptionsPlayer(this.upDiffDebuff, this.downDiffDebuff, canIntoOpp, limitations);</b>
+<i>204</i>&nbsp;        }
+<i>205</i>&nbsp;    }
+<i>206</i>&nbsp;
+<i>207</i>&nbsp;    public int getLevelTile(int x, int y) {
+<i>208</i>&nbsp;        try {
+<b class="nc"><i>209</i>&nbsp;            return board.getTile(x, y).getBuildingLevel();</b>
+<b class="nc"><i>210</i>&nbsp;        } catch (NonExistingTileException e) {</b>
+<b class="nc"><i>211</i>&nbsp;            System.out.println(&quot;This should really not happen&quot;);</b>
+<i>212</i>&nbsp;        }
+<b class="nc"><i>213</i>&nbsp;        return -1;</b>
+<i>214</i>&nbsp;    }
+<i>215</i>&nbsp;
+<i>216</i>&nbsp;    /**
+<i>217</i>&nbsp;     * Gets the building level on a specified tile
+<i>218</i>&nbsp;     * @param posX x coordinate of the tile
+<i>219</i>&nbsp;     * @param posY y coordinate of the tile
+<i>220</i>&nbsp;     * @return building level of the tile
+<i>221</i>&nbsp;     */
+<i>222</i>&nbsp;    public int getBuildingLevel(int posX, int posY) {
+<i>223</i>&nbsp;        try {
+<b class="nc"><i>224</i>&nbsp;            return board.getTile(posX, posY).getBuildingLevel();</b>
+<b class="nc"><i>225</i>&nbsp;        } catch (NonExistingTileException e) {</b>
+<b class="nc"><i>226</i>&nbsp;            System.out.println(&quot;You dummy dum&quot;);</b>
+<i>227</i>&nbsp;        }
+<b class="nc"><i>228</i>&nbsp;        return -99;</b>
+<i>229</i>&nbsp;    }
+<i>230</i>&nbsp;
+<i>231</i>&nbsp;    /**
+<i>232</i>&nbsp;     * Says if there&#39;s a worker on a specific tile
+<i>233</i>&nbsp;     * @param posX x coordinate of the tile
+<i>234</i>&nbsp;     * @param posY y coordinate of the tile
+<i>235</i>&nbsp;     * @return true if there&#39;s a worker on the tile, false if there isn&#39;t one
+<i>236</i>&nbsp;     */
+<i>237</i>&nbsp;    public boolean hasOpposingOpponentWorker(int posX, int posY) {
+<i>238</i>&nbsp;        try {
+<b class="nc"><i>239</i>&nbsp;            if (board.getTile(posX, posY).hasWorker()) {</b>
+<b class="nc"><i>240</i>&nbsp;                return board.getTile(posX, posY).getWorker().getOwner().getInitial() != getPlayer().getInitial();</b>
+<i>241</i>&nbsp;            }
+<b class="nc"><i>242</i>&nbsp;        } catch (NonExistingTileException e) {</b>
+<b class="nc"><i>243</i>&nbsp;            System.out.println(&quot;no no no no!&quot;);</b>
+<b class="nc"><i>244</i>&nbsp;        }</b>
+<b class="nc"><i>245</i>&nbsp;        return false;</b>
+<i>246</i>&nbsp;    }
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;    /**
+<i>249</i>&nbsp;     * Says if the tile directly behind the destination tile is free
+<i>250</i>&nbsp;     * @param XFrom x coordinate of the starting tile
+<i>251</i>&nbsp;     * @param YFrom y coordinate of the starting tile
+<i>252</i>&nbsp;     * @param XTo x coordinate of the destination tile
+<i>253</i>&nbsp;     * @param YTo y coordinate of the destination tile
+<i>254</i>&nbsp;     * @return true if the tile is free, false if it isn&#39;t
+<i>255</i>&nbsp;     */
+<i>256</i>&nbsp;    public boolean isBehindFree(int XFrom, int YFrom, int XTo, int YTo) {
+<b class="nc"><i>257</i>&nbsp;        int dx = XTo - XFrom;</b>
+<b class="nc"><i>258</i>&nbsp;        int dy = YTo - YFrom;</b>
+<b class="nc"><i>259</i>&nbsp;        if (XTo + dx &gt;= 0 &amp;&amp; XTo + dx &lt;= 4 &amp;&amp; YTo + dy &gt;= 0 &amp;&amp; YTo + dy &lt;= 4) {</b>
+<i>260</i>&nbsp;            try {
+<b class="nc"><i>261</i>&nbsp;                if (board.getTile(XTo + dx, YTo + dy).isWalkable())</b>
+<b class="nc"><i>262</i>&nbsp;                    return true;</b>
+<b class="nc"><i>263</i>&nbsp;            } catch (NonExistingTileException e) {</b>
+<b class="nc"><i>264</i>&nbsp;                e.printStackTrace();</b>
+<b class="nc"><i>265</i>&nbsp;            }</b>
+<i>266</i>&nbsp;        }
+<b class="nc"><i>267</i>&nbsp;        return false;</b>
+<i>268</i>&nbsp;    }
+<i>269</i>&nbsp;
+<i>270</i>&nbsp;    /**
+<i>271</i>&nbsp;     * Getter method for player attribute
+<i>272</i>&nbsp;     * @return the object&#39;s player attribute
+<i>273</i>&nbsp;     */
+<b class="nc"><i>274</i>&nbsp;    public Player getPlayer() { return this.player; }</b>
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;    /**
+<i>277</i>&nbsp;     * Getter method for godLociName attribute
+<i>278</i>&nbsp;     * @return the object&#39;s godLogicName attribute
+<i>279</i>&nbsp;     */
+<i>280</i>&nbsp;    public String getGodLogicName() {
+<b class="fc"><i>281</i>&nbsp;        return godLogicName;</b>
+<i>282</i>&nbsp;    }
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;    /**
+<i>285</i>&nbsp;     * Setter method for player attribute
+<i>286</i>&nbsp;     * @param canPass flag, if true the move can be skipped, if false it can&#39;t be skipped
+<i>287</i>&nbsp;     */
+<i>288</i>&nbsp;    public void setPass(boolean canPass) {
+<b class="nc"><i>289</i>&nbsp;        this.canPass = canPass;</b>
+<b class="nc"><i>290</i>&nbsp;    }</b>
+<i>291</i>&nbsp;
+<i>292</i>&nbsp;    /**
+<i>293</i>&nbsp;     * Setter method for player attribute
+<i>294</i>&nbsp;     * @param otherGodLogic contains the godLogic of the other opponents, so it may debuff them if particular powers
+<i>295</i>&nbsp;     *                      are activated
+<i>296</i>&nbsp;     */
+<b class="nc"><i>297</i>&nbsp;    public void setOtherGodLogic(ArrayList&lt;GodLogic&gt; otherGodLogic) { this.otherGodLogic = otherGodLogic; }</b>
+<i>298</i>&nbsp;
+<i>299</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

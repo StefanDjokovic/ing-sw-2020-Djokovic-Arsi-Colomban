@@ -1,0 +1,411 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientBOT</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.client.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientBOT (it.polimi.ingsw.client.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientBOT</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 162)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.client.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.messages.Answer;
+<i>4</i>&nbsp;import it.polimi.ingsw.messages.LobbyView;
+<i>5</i>&nbsp;import it.polimi.ingsw.messages.OptionSelection;
+<i>6</i>&nbsp;import it.polimi.ingsw.messages.Request;
+<i>7</i>&nbsp;import it.polimi.ingsw.messages.answers.*;
+<i>8</i>&nbsp;import it.polimi.ingsw.server.model.BoardView;
+<i>9</i>&nbsp;import it.polimi.ingsw.server.model.TileView;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.util.ArrayList;
+<i>12</i>&nbsp;import java.util.Random;
+<i>13</i>&nbsp;
+<b class="nc"><i>14</i>&nbsp;public class ClientBOT extends ClientView {</b>
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    private TileView[][] boardView;
+<i>17</i>&nbsp;    private char playerInit;
+<i>18</i>&nbsp;    private String botsname;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    @Override
+<i>22</i>&nbsp;    public void updateBoardView(BoardView boardView) {
+<b class="nc"><i>23</i>&nbsp;        this.boardView = boardView.getBoardView();</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public void displayLostConnection() {}
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Override
+<i>29</i>&nbsp;    public char getPlayerInitial() {
+<b class="nc"><i>30</i>&nbsp;        return this.playerInit;</b>
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    @Override
+<i>34</i>&nbsp;    public void getPlayerGod(char initial, ArrayList&lt;String&gt; options, int nPicks) {
+<b class="nc"><i>35</i>&nbsp;        this.playerInit = initial;</b>
+<b class="nc"><i>36</i>&nbsp;        Random r = new Random();</b>
+<b class="nc"><i>37</i>&nbsp;        if (nPicks != 1) {</b>
+<b class="nc"><i>38</i>&nbsp;            ArrayList&lt;String&gt; selectedGods = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>39</i>&nbsp;            for (int i = 0; i &lt; nPicks; i++) {</b>
+<b class="nc"><i>40</i>&nbsp;                int pick = r.nextInt(options.size());</b>
+<b class="nc"><i>41</i>&nbsp;                selectedGods.add(options.get(pick));</b>
+<b class="nc"><i>42</i>&nbsp;                options.remove(pick);</b>
+<i>43</i>&nbsp;            }
+<b class="nc"><i>44</i>&nbsp;            updateObservers(new AnswerPlayerGod(selectedGods, initial));</b>
+<b class="nc"><i>45</i>&nbsp;        }</b>
+<i>46</i>&nbsp;        else {
+<b class="nc"><i>47</i>&nbsp;            String selectedGod = options.get(r.nextInt(options.size()));</b>
+<b class="nc"><i>48</i>&nbsp;            updateObservers(new AnswerPlayerGod(selectedGod, initial));</b>
+<i>49</i>&nbsp;        }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    @Override
+<i>55</i>&nbsp;    public void getWorkerPlacement(int[][] workers, char initial) {
+<b class="nc"><i>56</i>&nbsp;        System.out.println(&quot;YOOOOOOOOO IM PLACING WORKERS M8! They still havent noticed that Im fake lulz&quot;);</b>
+<b class="nc"><i>57</i>&nbsp;        int x = getRandomInt(0, 5), y = getRandomInt(0, 5);</b>
+<b class="nc"><i>58</i>&nbsp;        boolean present = true;</b>
+<b class="nc"><i>59</i>&nbsp;        while (workers != null &amp;&amp; present) {</b>
+<b class="nc"><i>60</i>&nbsp;            present = false;</b>
+<b class="nc"><i>61</i>&nbsp;            x = getRandomInt(0, 5);</b>
+<b class="nc"><i>62</i>&nbsp;            y = getRandomInt(0, 5);</b>
+<i>63</i>&nbsp;
+<b class="nc"><i>64</i>&nbsp;            for (int[] worker : workers) {</b>
+<b class="nc"><i>65</i>&nbsp;                if (worker[0] == x &amp;&amp; worker[1] == y) {</b>
+<b class="nc"><i>66</i>&nbsp;                    present = true;</b>
+<b class="nc"><i>67</i>&nbsp;                    break;</b>
+<i>68</i>&nbsp;                }
+<i>69</i>&nbsp;            }
+<i>70</i>&nbsp;        }
+<i>71</i>&nbsp;
+<b class="nc"><i>72</i>&nbsp;        System.out.println(&quot;Worker placed on &quot; + x + &quot; , &quot; + y);</b>
+<b class="nc"><i>73</i>&nbsp;        updateObservers(new AnswerWorkersPlacement(x, y, initial));</b>
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    @Override
+<i>79</i>&nbsp;    public void getSelectedWorker(OptionSelection opt, boolean canPass) {
+<b class="nc"><i>80</i>&nbsp;        if (canPass) {</b>
+<b class="nc"><i>81</i>&nbsp;            if (askIfPass()) {</b>
+<b class="nc"><i>82</i>&nbsp;                System.out.println(&quot;I&#39;m passing&quot;);</b>
+<b class="nc"><i>83</i>&nbsp;                Answer answer = new AnswerPowerCoordinates();</b>
+<b class="nc"><i>84</i>&nbsp;                updateObservers(answer);</b>
+<i>85</i>&nbsp;                return;
+<i>86</i>&nbsp;            }
+<i>87</i>&nbsp;        }
+<b class="nc"><i>88</i>&nbsp;        if (!opt.hasOptions()) {</b>
+<b class="nc"><i>89</i>&nbsp;            System.out.println(&quot;Didn&#39;t pass when I could and now I&#39;m stuck, F&quot;);</b>
+<b class="nc"><i>90</i>&nbsp;            updateObservers(new AnswerKillPlayer(playerInit));</b>
+<i>91</i>&nbsp;            return;
+<i>92</i>&nbsp;        }
+<i>93</i>&nbsp;
+<b class="nc"><i>94</i>&nbsp;        generateSelectableWorkers(opt);</b>
+<b class="nc"><i>95</i>&nbsp;        System.out.println(opt);</b>
+<b class="nc"><i>96</i>&nbsp;        if (opt.getValues().size() == 2) {</b>
+<b class="nc"><i>97</i>&nbsp;            getWorkerSelection(opt, canPass);</b>
+<i>98</i>&nbsp;        }
+<i>99</i>&nbsp;        else {
+<b class="nc"><i>100</i>&nbsp;            getWorkerSelectionOneOption(opt, canPass);</b>
+<i>101</i>&nbsp;        }
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;    private boolean askIfPass() {
+<b class="nc"><i>105</i>&nbsp;        int pass = getRandomInt(0, 4);</b>
+<b class="nc"><i>106</i>&nbsp;        return pass % 3 == 0;</b>
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    private void generateSelectableWorkers(OptionSelection opt) {
+<i>110</i>&nbsp;
+<b class="nc"><i>111</i>&nbsp;        boolean[][] selectable = new boolean[5][5];</b>
+<b class="nc"><i>112</i>&nbsp;        for (int i = 0; i &lt; 5; i++)</b>
+<b class="nc"><i>113</i>&nbsp;            for (int j = 0; j &lt; 5; j++)</b>
+<b class="nc"><i>114</i>&nbsp;                selectable[i][j] = false;</b>
+<i>115</i>&nbsp;
+<b class="nc"><i>116</i>&nbsp;        for (int i = 0; i &lt; opt.getValues().size(); i++) {</b>
+<b class="nc"><i>117</i>&nbsp;            selectable[opt.getValues().get(i).get(0)][opt.getValues().get(i).get(1)] = true;</b>
+<i>118</i>&nbsp;        }
+<i>119</i>&nbsp;
+<b class="nc"><i>120</i>&nbsp;        printSelectableBoard(selectable);</b>
+<i>121</i>&nbsp;    }
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;    @Override
+<i>124</i>&nbsp;    public void getWorkerSelection(OptionSelection opt, boolean canPass) {
+<b class="nc"><i>125</i>&nbsp;        int selected = getRandomInt(0, 2);</b>
+<b class="nc"><i>126</i>&nbsp;        int w_select = (opt.getValues().get(selected).size() - 2) / 2;</b>
+<b class="nc"><i>127</i>&nbsp;        w_select = getRandomInt(1, w_select) * 2;</b>
+<b class="nc"><i>128</i>&nbsp;        System.out.println(&quot;I&#39;ve chosen &quot; + opt.getValues().get(selected).get(0) + &quot; , &quot; +</b>
+<b class="nc"><i>129</i>&nbsp;                opt.getValues().get(selected).get(1) + &quot; On tile &quot; +</b>
+<b class="nc"><i>130</i>&nbsp;                opt.getValues().get(selected).get(w_select) + &quot; , &quot; + opt.getValues().get(selected).get(w_select + 1));</b>
+<b class="nc"><i>131</i>&nbsp;        Answer answer = new AnswerPowerCoordinates(</b>
+<b class="nc"><i>132</i>&nbsp;                opt.getValues().get(selected).get(0), opt.getValues().get(selected).get(1),</b>
+<b class="nc"><i>133</i>&nbsp;                opt.getValues().get(selected).get(w_select), opt.getValues().get(selected).get(w_select + 1));</b>
+<b class="nc"><i>134</i>&nbsp;        updateObservers(answer);</b>
+<i>135</i>&nbsp;    }
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;    public void getWorkerSelectionOneOption(OptionSelection opt, boolean canPass) {
+<i>138</i>&nbsp;
+<b class="nc"><i>139</i>&nbsp;        int w_select = (opt.getValues().get(0).size() - 2) / 2;</b>
+<b class="nc"><i>140</i>&nbsp;        w_select = getRandomInt(1, w_select) * 2;</b>
+<i>141</i>&nbsp;
+<b class="nc"><i>142</i>&nbsp;        System.out.println(&quot;I&#39;ve chosen &quot; + opt.getValues().get(0).get(0) + &quot; , &quot; + opt.getValues().get(0).get(1) +</b>
+<i>143</i>&nbsp;                &quot; On tile &quot; +
+<b class="nc"><i>144</i>&nbsp;                opt.getValues().get(0).get(w_select) + &quot; , &quot; + opt.getValues().get(0).get(w_select + 1));</b>
+<b class="nc"><i>145</i>&nbsp;        Answer answer = new AnswerPowerCoordinates(</b>
+<b class="nc"><i>146</i>&nbsp;                opt.getValues().get(0).get(0), opt.getValues().get(0).get(1),</b>
+<b class="nc"><i>147</i>&nbsp;                opt.getValues().get(0).get(w_select), opt.getValues().get(0).get(w_select + 1));</b>
+<b class="nc"><i>148</i>&nbsp;        updateObservers(answer);</b>
+<i>149</i>&nbsp;    }
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;    @Override
+<i>152</i>&nbsp;    public void displayGameEnd(char winnerInit) {
+<b class="nc"><i>153</i>&nbsp;        if (winnerInit == getPlayerInitial())</b>
+<b class="nc"><i>154</i>&nbsp;            System.out.println(&quot;Im the best bot!&quot;);</b>
+<i>155</i>&nbsp;        else
+<b class="nc"><i>156</i>&nbsp;            System.out.println(&quot;IT&#39;S MY CREATORS&#39; FAULT IF I LOSE&quot;);</b>
+<i>157</i>&nbsp;    }
+<i>158</i>&nbsp;
+<i>159</i>&nbsp;    @Override
+<i>160</i>&nbsp;    public void displayGameEnd() {
+<i>161</i>&nbsp;    }
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;    @Override
+<i>164</i>&nbsp;    public void waitingOpponent(char opponentInitial) {
+<b class="nc"><i>165</i>&nbsp;        System.out.println(&quot;Lul they are sending me waiting opponent messages, they don&#39;t know I&#39;m fake&quot;);</b>
+<i>166</i>&nbsp;    }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;    @Override
+<i>169</i>&nbsp;    public void setGameInformation(ArrayList&lt;String&gt; playersName, ArrayList&lt;Character&gt; playersInitial, int nPlayers) {
+<b class="nc"><i>170</i>&nbsp;        System.out.println(&quot;Game composed of:&quot;);</b>
+<b class="nc"><i>171</i>&nbsp;        for (int i = 0; i &lt; nPlayers; i++) {</b>
+<b class="nc"><i>172</i>&nbsp;            System.out.println(playersInitial.get(i) + &quot; : &quot; + playersName.get(i));</b>
+<i>173</i>&nbsp;        }
+<i>174</i>&nbsp;    }
+<i>175</i>&nbsp;
+<i>176</i>&nbsp;    @Override
+<i>177</i>&nbsp;    public void setGodInformation(ArrayList&lt;String&gt; playersName, ArrayList&lt;Character&gt; playersInitial, ArrayList&lt;String&gt; godNames, int nPlayers) {
+<b class="nc"><i>178</i>&nbsp;        System.out.println(&quot;Information about who picked which god:&quot;);</b>
+<b class="nc"><i>179</i>&nbsp;        for (int i = 0; i &lt; nPlayers; i++) {</b>
+<b class="nc"><i>180</i>&nbsp;            System.out.println(playersInitial.get(i) + &quot; : &quot; + godNames.get(i));</b>
+<i>181</i>&nbsp;        }
+<b class="nc"><i>182</i>&nbsp;        System.out.println();</b>
+<i>183</i>&nbsp;    }
+<i>184</i>&nbsp;
+<i>185</i>&nbsp;
+<i>186</i>&nbsp;    @Override
+<i>187</i>&nbsp;    public void lobbyAndNameSelection(ArrayList&lt;LobbyView&gt; lobbies, int error) {
+<b class="nc"><i>188</i>&nbsp;        Random r = new Random();</b>
+<b class="nc"><i>189</i>&nbsp;        String name = Character.toString((char)(r.nextInt(26) + &#39;A&#39;));</b>
+<b class="nc"><i>190</i>&nbsp;        name = name + (char)(r.nextInt(26) + &#39;A&#39;);</b>
+<b class="nc"><i>191</i>&nbsp;        name = name + (char)(r.nextInt(26) + &#39;A&#39;);</b>
+<b class="nc"><i>192</i>&nbsp;        name = name + (char)(r.nextInt(26) + &#39;A&#39;);</b>
+<b class="nc"><i>193</i>&nbsp;        updateObservers(new AnswerLobbyAndName(-3, name, 3));</b>
+<i>194</i>&nbsp;    }
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;    @Override
+<i>197</i>&nbsp;    public void update(Request request) {
+<b class="nc"><i>198</i>&nbsp;        request.printMessage();</b>
+<b class="nc"><i>199</i>&nbsp;        request.accept(this);</b>
+<i>200</i>&nbsp;    }
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;    @Override
+<i>203</i>&nbsp;    public void update(Answer answer) {
+<b class="nc"><i>204</i>&nbsp;        System.out.println(&quot;clientBOT should not receive answers&quot;);</b>
+<i>205</i>&nbsp;    }
+<i>206</i>&nbsp;
+<i>207</i>&nbsp;    private int getRandomInt(int min, int max) {
+<b class="nc"><i>208</i>&nbsp;        Random randomGenerator = new Random();</b>
+<b class="nc"><i>209</i>&nbsp;        if (max != 0) {</b>
+<b class="nc"><i>210</i>&nbsp;            return randomGenerator.nextInt(max) + min;</b>
+<i>211</i>&nbsp;        }
+<i>212</i>&nbsp;        else
+<b class="nc"><i>213</i>&nbsp;            return 0;</b>
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;    }
+<i>216</i>&nbsp;
+<i>217</i>&nbsp;
+<i>218</i>&nbsp;
+<b class="nc"><i>219</i>&nbsp;    private String ANSI_RESET = &quot;\u001B[0m&quot;;</b>
+<b class="nc"><i>220</i>&nbsp;    private String ANSI_WHITE_BACKGROUND = &quot;\u001B[47m&quot;;</b>
+<b class="nc"><i>221</i>&nbsp;    private String ANSI_BRIGHTBLACK_BACKGROUND = &quot;\u001B[100m&quot;;</b>
+<b class="nc"><i>222</i>&nbsp;    private String ANSI_YELLOW_BACKGROUND = &quot;\u001B[43m&quot;;</b>
+<b class="nc"><i>223</i>&nbsp;    private String ANSI_GREEN_BACKGROUND = &quot;\u001B[42m&quot;;</b>
+<b class="nc"><i>224</i>&nbsp;    private String ANSI_BLACK = &quot;\u001B[30m&quot;;</b>
+<b class="nc"><i>225</i>&nbsp;    private String ANSI_BLUE_BACKGROUND = &quot;\u001B[44m&quot;;</b>
+<b class="nc"><i>226</i>&nbsp;    private String ANSI_BRIGHTRED_BACKGROUND = &quot;\u001B[101m&quot;;</b>
+<i>227</i>&nbsp;
+<b class="nc"><i>228</i>&nbsp;    private String currColor = &quot;&quot;;</b>
+<i>229</i>&nbsp;
+<i>230</i>&nbsp;    @Override
+<i>231</i>&nbsp;    public void displayBoard() {
+<i>232</i>&nbsp;
+<b class="nc"><i>233</i>&nbsp;        String ANSI_WHITE = &quot;\u001B[37m&quot;;</b>
+<i>234</i>&nbsp;
+<b class="nc"><i>235</i>&nbsp;        System.out.println();</b>
+<b class="nc"><i>236</i>&nbsp;        System.out.println(ANSI_WHITE + &quot;???????????????????????????????????????????????????&quot;);</b>
+<b class="nc"><i>237</i>&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="nc"><i>238</i>&nbsp;            for (int k = 0; k &lt; 3; k++) {</b>
+<b class="nc"><i>239</i>&nbsp;                for (int j = 0; j &lt; 5; j++) {</b>
+<b class="nc"><i>240</i>&nbsp;                    System.out.print(&quot;?&quot;);</b>
+<b class="nc"><i>241</i>&nbsp;                    if (boardView[i][j].getBuildingLevel() == 0 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>242</i>&nbsp;                        currColor = ANSI_GREEN_BACKGROUND;</b>
+<b class="nc"><i>243</i>&nbsp;                    else if (boardView[i][j].getBuildingLevel() == 1 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>244</i>&nbsp;                        currColor = ANSI_YELLOW_BACKGROUND;</b>
+<b class="nc"><i>245</i>&nbsp;                    else if (boardView[i][j].getBuildingLevel() == 2 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>246</i>&nbsp;                        currColor = ANSI_WHITE_BACKGROUND;</b>
+<b class="nc"><i>247</i>&nbsp;                    else if (boardView[i][j].getBuildingLevel() == 3 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>248</i>&nbsp;                        currColor = ANSI_BRIGHTBLACK_BACKGROUND;</b>
+<i>249</i>&nbsp;                    else
+<b class="nc"><i>250</i>&nbsp;                        currColor = ANSI_BLUE_BACKGROUND;</b>
+<i>251</i>&nbsp;
+<b class="nc"><i>252</i>&nbsp;                    if (k != 1) {</b>
+<b class="nc"><i>253</i>&nbsp;                        System.out.print(currColor + &quot;         &quot; + ANSI_RESET);</b>
+<i>254</i>&nbsp;                    }
+<i>255</i>&nbsp;                    else {
+<b class="nc"><i>256</i>&nbsp;                        if (boardView[i][j].getInitWorker() != &#39;?&#39;)</b>
+<b class="nc"><i>257</i>&nbsp;                            System.out.print(currColor + &quot;    &quot; + ANSI_BLACK + boardView[i][j].getInitWorker() + &quot;    &quot; + ANSI_RESET);</b>
+<i>258</i>&nbsp;                        else
+<b class="nc"><i>259</i>&nbsp;                            System.out.print(currColor + &quot;         &quot; + ANSI_RESET);</b>
+<i>260</i>&nbsp;                    }
+<i>261</i>&nbsp;                }
+<b class="nc"><i>262</i>&nbsp;                System.out.print(&quot;?&quot;);</b>
+<b class="nc"><i>263</i>&nbsp;                System.out.println();</b>
+<i>264</i>&nbsp;            }
+<b class="nc"><i>265</i>&nbsp;            if (i != 4)</b>
+<b class="nc"><i>266</i>&nbsp;                System.out.println(&quot;???????????????????????????????????????????????????&quot;);</b>
+<i>267</i>&nbsp;        }
+<b class="nc"><i>268</i>&nbsp;        System.out.println(&quot;???????????????????????????????????????????????????&quot;);</b>
+<i>269</i>&nbsp;    }
+<i>270</i>&nbsp;
+<i>271</i>&nbsp;    public void printSelectableBoard(boolean[][] selectable) {
+<i>272</i>&nbsp;
+<b class="nc"><i>273</i>&nbsp;        if (selectable == null) {</b>
+<b class="nc"><i>274</i>&nbsp;            selectable = new boolean[5][];</b>
+<b class="nc"><i>275</i>&nbsp;            for (int i = 0; i &lt; 5; i++)</b>
+<b class="nc"><i>276</i>&nbsp;                selectable[i] = new boolean[5];</b>
+<i>277</i>&nbsp;        }
+<i>278</i>&nbsp;
+<b class="nc"><i>279</i>&nbsp;        String ANSI_WHITE = &quot;\u001B[37m&quot;;</b>
+<i>280</i>&nbsp;
+<b class="nc"><i>281</i>&nbsp;        System.out.println();</b>
+<b class="nc"><i>282</i>&nbsp;        System.out.println(ANSI_WHITE + &quot;???????????????????????????????????????????????????&quot;);</b>
+<b class="nc"><i>283</i>&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="nc"><i>284</i>&nbsp;            for (int k = 0; k &lt; 3; k++) {</b>
+<b class="nc"><i>285</i>&nbsp;                for (int j = 0; j &lt; 5; j++) {</b>
+<b class="nc"><i>286</i>&nbsp;                    System.out.print(&quot;?&quot;);</b>
+<b class="nc"><i>287</i>&nbsp;                    if (boardView[i][j].getBuildingLevel() == 0 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>288</i>&nbsp;                        currColor = ANSI_GREEN_BACKGROUND;</b>
+<b class="nc"><i>289</i>&nbsp;                    else if (boardView[i][j].getBuildingLevel() == 1 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>290</i>&nbsp;                        currColor = ANSI_YELLOW_BACKGROUND;</b>
+<b class="nc"><i>291</i>&nbsp;                    else if (boardView[i][j].getBuildingLevel() == 2 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>292</i>&nbsp;                        currColor = ANSI_WHITE_BACKGROUND;</b>
+<b class="nc"><i>293</i>&nbsp;                    else if (boardView[i][j].getBuildingLevel() == 3 &amp;&amp; !boardView[i][j].hasDome())</b>
+<b class="nc"><i>294</i>&nbsp;                        currColor = ANSI_BRIGHTBLACK_BACKGROUND;</b>
+<i>295</i>&nbsp;                    else
+<b class="nc"><i>296</i>&nbsp;                        currColor = ANSI_BLUE_BACKGROUND;</b>
+<i>297</i>&nbsp;
+<b class="nc"><i>298</i>&nbsp;                    if (k != 1) {</b>
+<b class="nc"><i>299</i>&nbsp;                        System.out.print(currColor + &quot;         &quot; + ANSI_RESET);</b>
+<i>300</i>&nbsp;                    }
+<b class="nc"><i>301</i>&nbsp;                    else if (selectable[i][j]) {</b>
+<b class="nc"><i>302</i>&nbsp;                        if (boardView[i][j].getInitWorker() != &#39;?&#39;)</b>
+<b class="nc"><i>303</i>&nbsp;                            System.out.print(currColor + &quot;   &quot; + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + &quot; &quot;</b>
+<b class="nc"><i>304</i>&nbsp;                                    + boardView[i][j].getInitWorker() + &quot; &quot; + currColor +</b>
+<i>305</i>&nbsp;                                    &quot;   &quot; + ANSI_RESET);
+<i>306</i>&nbsp;                        else
+<b class="nc"><i>307</i>&nbsp;                            System.out.print(currColor + &quot;   &quot; + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + &quot;   &quot; + currColor +</b>
+<i>308</i>&nbsp;                                    &quot;   &quot; + ANSI_RESET);
+<i>309</i>&nbsp;                    }
+<i>310</i>&nbsp;                    else {
+<b class="nc"><i>311</i>&nbsp;                        if (boardView[i][j].getInitWorker() != &#39;?&#39;)</b>
+<b class="nc"><i>312</i>&nbsp;                            System.out.print(currColor + &quot;    &quot; + ANSI_BLACK + boardView[i][j].getInitWorker() + &quot;    &quot; + ANSI_RESET);</b>
+<i>313</i>&nbsp;                        else
+<b class="nc"><i>314</i>&nbsp;                            System.out.print(currColor + &quot;         &quot; + ANSI_RESET);</b>
+<i>315</i>&nbsp;                    }
+<i>316</i>&nbsp;
+<i>317</i>&nbsp;                }
+<b class="nc"><i>318</i>&nbsp;                System.out.print(&quot;?&quot;);</b>
+<b class="nc"><i>319</i>&nbsp;                System.out.println();</b>
+<i>320</i>&nbsp;            }
+<i>321</i>&nbsp;
+<b class="nc"><i>322</i>&nbsp;            if (i != 4)</b>
+<b class="nc"><i>323</i>&nbsp;                System.out.println(&quot;???????????????????????????????????????????????????&quot;);</b>
+<i>324</i>&nbsp;
+<i>325</i>&nbsp;        }
+<b class="nc"><i>326</i>&nbsp;        System.out.println(&quot;???????????????????????????????????????????????????&quot;);</b>
+<i>327</i>&nbsp;    }
+<i>328</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BuildUnderneath</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.server.model.god.godPowers</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BuildUnderneath (it.polimi.ingsw.server.model.god.godPowers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BuildUnderneath</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.server.model.god.godPowers;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.messages.OptionSelection;
+<i>4</i>&nbsp;import it.polimi.ingsw.server.model.board.Board;
+<i>5</i>&nbsp;import it.polimi.ingsw.server.model.board.NonExistingTileException;
+<i>6</i>&nbsp;import it.polimi.ingsw.server.model.board.NotBuildableException;
+<i>7</i>&nbsp;import it.polimi.ingsw.server.model.god.GodLogic;
+<i>8</i>&nbsp;import it.polimi.ingsw.server.model.logger.Logger;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public class BuildUnderneath extends Build {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    public BuildUnderneath(GodLogic godLogic, boolean canPass) {
+<b class="nc"><i>13</i>&nbsp;        super(godLogic, canPass);</b>
+<i>14</i>&nbsp;    }
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
+<i>17</i>&nbsp;        try {
+<b class="nc"><i>18</i>&nbsp;            board.getTile(posXTo, posYTo).buildUp();</b>
+<b class="nc"><i>19</i>&nbsp;        } catch (NonExistingTileException | NotBuildableException e) {</b>
+<b class="nc"><i>20</i>&nbsp;            System.out.println(&quot;You failed!&quot;);</b>
+<b class="nc"><i>21</i>&nbsp;        }</b>
+<b class="nc"><i>22</i>&nbsp;        return 0;</b>
+<i>23</i>&nbsp;    }
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @Override
+<i>26</i>&nbsp;    public OptionSelection getOptions(Logger logger) {
+<b class="nc"><i>27</i>&nbsp;        OptionSelection opt = super.getOptions(logger);</b>
+<b class="nc"><i>28</i>&nbsp;        if (getGodLogic().getLevelTile(opt.getValues().get(0).get(0), opt.getValues().get(0).get(1)) &lt; 3)</b>
+<b class="nc"><i>29</i>&nbsp;            opt.addWorkerAsOption();</b>
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;        return opt;</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

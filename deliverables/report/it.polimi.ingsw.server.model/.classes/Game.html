@@ -1,0 +1,470 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Game</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.server.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Game (it.polimi.ingsw.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Game</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 159)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.server.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Observable;
+<i>4</i>&nbsp;import it.polimi.ingsw.messages.request.*;
+<i>5</i>&nbsp;import it.polimi.ingsw.server.model.board.NonExistingTileException;
+<i>6</i>&nbsp;import it.polimi.ingsw.server.model.god.GodLogic;
+<i>7</i>&nbsp;import it.polimi.ingsw.server.model.logger.Logger;
+<i>8</i>&nbsp;import it.polimi.ingsw.server.model.player.Player;
+<i>9</i>&nbsp;import it.polimi.ingsw.server.model.board.Board;
+<i>10</i>&nbsp;import it.polimi.ingsw.server.model.player.Worker;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.util.ArrayList;
+<i>13</i>&nbsp;import java.util.HashMap;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;public class Game extends Observable{
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    private ArrayList&lt;Player&gt; players;
+<i>19</i>&nbsp;    private Board board;
+<i>20</i>&nbsp;    private Logger logger;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * Constructor
+<i>24</i>&nbsp;     */
+<b class="nc"><i>25</i>&nbsp;    public Game() {</b>
+<b class="nc"><i>26</i>&nbsp;        players = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>27</i>&nbsp;        board = new Board();</b>
+<b class="nc"><i>28</i>&nbsp;        logger = new Logger();</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * Assigns a unique initial to a new player based on the order of arrival
+<i>33</i>&nbsp;     * @param newPlayerName new player&#39;s name
+<i>34</i>&nbsp;     * @return player&#39;s initial (A, B or C)
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    public char initPlayer(String newPlayerName) {
+<b class="nc"><i>37</i>&nbsp;        Player newPlayer = new Player(newPlayerName, &#39;*&#39;);</b>
+<i>38</i>&nbsp;
+<b class="nc"><i>39</i>&nbsp;        if (players.size() == 0)</b>
+<b class="nc"><i>40</i>&nbsp;            newPlayer.setInitial(&#39;A&#39;);</b>
+<b class="nc"><i>41</i>&nbsp;        else if (players.size() == 1)</b>
+<b class="nc"><i>42</i>&nbsp;            newPlayer.setInitial(&#39;B&#39;);</b>
+<i>43</i>&nbsp;        else
+<b class="nc"><i>44</i>&nbsp;            newPlayer.setInitial(&#39;C&#39;);</b>
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;        players.add(newPlayer);</b>
+<i>47</i>&nbsp;
+<b class="nc"><i>48</i>&nbsp;        return newPlayer.getInitial();</b>
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    // TODO: initialise opt through JSON file
+<i>53</i>&nbsp;    // Sends to ServerSocket the Request for the God the users pick
+<i>54</i>&nbsp;    private HashMap&lt;String, Integer&gt; opt;
+<i>55</i>&nbsp;    private ArrayList&lt;String&gt; optList;
+<i>56</i>&nbsp;    public void initGods() {
+<i>57</i>&nbsp;
+<b class="nc"><i>58</i>&nbsp;        if (opt == null) {</b>
+<b class="nc"><i>59</i>&nbsp;            opt = new HashMap&lt;&gt;();</b>
+<b class="nc"><i>60</i>&nbsp;            opt.put(&quot;Apollo&quot;, 1);</b>
+<b class="nc"><i>61</i>&nbsp;            opt.put(&quot;Artemis&quot;, 2);</b>
+<b class="nc"><i>62</i>&nbsp;            opt.put(&quot;Athena&quot;, 3);</b>
+<b class="nc"><i>63</i>&nbsp;            opt.put(&quot;Atlas&quot;, 4);</b>
+<b class="nc"><i>64</i>&nbsp;            opt.put(&quot;Demeter&quot;, 5);</b>
+<b class="nc"><i>65</i>&nbsp;            opt.put(&quot;Hephaestus&quot;, 6);</b>
+<b class="nc"><i>66</i>&nbsp;            opt.put(&quot;Minotaur&quot;, 8);</b>
+<b class="nc"><i>67</i>&nbsp;            opt.put(&quot;Pan&quot;, 9);</b>
+<b class="nc"><i>68</i>&nbsp;            opt.put(&quot;Prometheus&quot;, 10);</b>
+<b class="nc"><i>69</i>&nbsp;            opt.put(&quot;Ares&quot;, 12);</b>
+<b class="nc"><i>70</i>&nbsp;            opt.put(&quot;Charon&quot;, 15);</b>
+<b class="nc"><i>71</i>&nbsp;            opt.put(&quot;Hestia&quot;, 21);</b>
+<b class="nc"><i>72</i>&nbsp;            opt.put(&quot;Poseidon&quot;, 27);</b>
+<b class="nc"><i>73</i>&nbsp;            opt.put(&quot;Zeus&quot;, 30);</b>
+<i>74</i>&nbsp;        }
+<i>75</i>&nbsp;
+<b class="nc"><i>76</i>&nbsp;        if (optList == null)</b>
+<b class="nc"><i>77</i>&nbsp;            updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod()).getInitial(), nPlayers(), new ArrayList&lt;&gt;(opt.keySet())));</b>
+<i>78</i>&nbsp;        else
+<b class="nc"><i>79</i>&nbsp;            updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod() + 1).getInitial(), 1, optList));</b>
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    /**
+<i>84</i>&nbsp;     * Initializes workers after sending requests for the workers&#39; placement
+<i>85</i>&nbsp;     */
+<i>86</i>&nbsp;    public void initWorker() {
+<b class="nc"><i>87</i>&nbsp;        updateObservers(new RequestUpdateBoardView(new BoardView(board), &#39;*&#39;));</b>
+<i>88</i>&nbsp;
+<b class="nc"><i>89</i>&nbsp;        if (players.get(0).getWorkersSize() != 2)</b>
+<b class="nc"><i>90</i>&nbsp;            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(0).getInitial()));</b>
+<b class="nc"><i>91</i>&nbsp;        else if (players.get(1).getWorkersSize() != 2)</b>
+<b class="nc"><i>92</i>&nbsp;            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(1).getInitial()));</b>
+<b class="nc"><i>93</i>&nbsp;        else if (players.size() == 3 &amp;&amp; players.get(2).getWorkersSize() != 2)</b>
+<b class="nc"><i>94</i>&nbsp;            updateObservers(new RequestWorkerPlacement(getAllWorkersAsMatrix(), players.get(2).getInitial()));</b>
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    }
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;    /**
+<i>99</i>&nbsp;     * Tells the caller if all the necessary workers are on the board
+<i>100</i>&nbsp;     * @return true if there are missing workers, false if there aren&#39;t
+<i>101</i>&nbsp;     */
+<i>102</i>&nbsp;    public boolean missingWorkers() {
+<b class="nc"><i>103</i>&nbsp;        for (Player p: players) {</b>
+<b class="nc"><i>104</i>&nbsp;            if (p.getWorkersSize() != 2)</b>
+<b class="nc"><i>105</i>&nbsp;                return true;</b>
+<b class="nc"><i>106</i>&nbsp;        }</b>
+<b class="nc"><i>107</i>&nbsp;        updateObservers(new RequestUpdateBoardView(new BoardView(board), &#39;*&#39;));</b>
+<b class="nc"><i>108</i>&nbsp;        return false;</b>
+<i>109</i>&nbsp;    }
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    /**
+<i>113</i>&nbsp;     * Sets the god card picked by the player
+<i>114</i>&nbsp;     * @param godName god&#39;s name select by the player
+<i>115</i>&nbsp;     * @param initial player&#39;s initial
+<i>116</i>&nbsp;     */
+<i>117</i>&nbsp;    public void setPlayerGod(String godName, char initial) {
+<b class="nc"><i>118</i>&nbsp;        getPlayerFromInitial(initial).setGodLogic(godName, logger, getBoard());</b>
+<b class="nc"><i>119</i>&nbsp;        optList.remove(godName);</b>
+<i>120</i>&nbsp;    }
+<i>121</i>&nbsp;
+<i>122</i>&nbsp;    /**
+<i>123</i>&nbsp;     * Sets the god card picked by the player
+<i>124</i>&nbsp;     * @param godNames gods&#39; name select by the player
+<i>125</i>&nbsp;     */
+<i>126</i>&nbsp;    public void setPlayerGods(ArrayList&lt;String&gt; godNames) {
+<b class="nc"><i>127</i>&nbsp;        optList = godNames;</b>
+<i>128</i>&nbsp;    }
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;    public void initLastGod() {
+<b class="nc"><i>131</i>&nbsp;        for (Player p: players) {</b>
+<b class="nc"><i>132</i>&nbsp;            if (p.getGodLogic() == null) {</b>
+<b class="nc"><i>133</i>&nbsp;                p.setGodLogic(optList.get(0), logger, getBoard());</b>
+<b class="nc"><i>134</i>&nbsp;                printPlayersDescription();</b>
+<i>135</i>&nbsp;
+<b class="nc"><i>136</i>&nbsp;                if (nPlayers() == 2)</b>
+<b class="nc"><i>137</i>&nbsp;                    updateObservers(new RequestGameInformation(players.get(0).getName(), players.get(1).getName(),</b>
+<b class="nc"><i>138</i>&nbsp;                            players.get(0).getInitial(), players.get(1).getInitial(), players.get(0).getGodLogic().getGodLogicName(),</b>
+<b class="nc"><i>139</i>&nbsp;                            players.get(1).getGodLogic().getGodLogicName()));</b>
+<b class="nc"><i>140</i>&nbsp;                if (nPlayers() == 3)</b>
+<b class="nc"><i>141</i>&nbsp;                    updateObservers(new RequestGameInformation(players.get(0).getName(), players.get(1).getName(), players.get(2).getName(),</b>
+<b class="nc"><i>142</i>&nbsp;                            players.get(0).getInitial(), players.get(1).getInitial(), players.get(2).getInitial(), players.get(0).getGodLogic().getGodLogicName(),</b>
+<b class="nc"><i>143</i>&nbsp;                            players.get(1).getGodLogic().getGodLogicName(), players.get(2).getGodLogic().getGodLogicName()));</b>
+<i>144</i>&nbsp;                return;
+<i>145</i>&nbsp;            }
+<b class="nc"><i>146</i>&nbsp;        }</b>
+<i>147</i>&nbsp;    }
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    /**
+<i>150</i>&nbsp;     * Gets the number of players with a god card associated to them
+<i>151</i>&nbsp;     * @return number of players with a god card associated to them
+<i>152</i>&nbsp;     */
+<i>153</i>&nbsp;    public int nPlayersWithGod() {
+<b class="nc"><i>154</i>&nbsp;        int count = 0;</b>
+<b class="nc"><i>155</i>&nbsp;        for (Player p: players) {</b>
+<b class="nc"><i>156</i>&nbsp;            if (p.getGodLogic() != null)</b>
+<b class="nc"><i>157</i>&nbsp;                count++;</b>
+<b class="nc"><i>158</i>&nbsp;        }</b>
+<b class="nc"><i>159</i>&nbsp;        return count;</b>
+<i>160</i>&nbsp;    }
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;    /**
+<i>163</i>&nbsp;     * Sets the otherGodLogic field for all the players,
+<i>164</i>&nbsp;     * that contains the other players&#39; god cards information
+<i>165</i>&nbsp;     */
+<i>166</i>&nbsp;    public void setOtherGodLogic() {
+<i>167</i>&nbsp;        ArrayList&lt;GodLogic&gt; otherGodLogic;
+<b class="nc"><i>168</i>&nbsp;        for (Player p: players) {</b>
+<b class="nc"><i>169</i>&nbsp;            otherGodLogic = new ArrayList&lt;&gt;();</b>
+<i>170</i>&nbsp;
+<b class="nc"><i>171</i>&nbsp;            for (Player q: players) {</b>
+<b class="nc"><i>172</i>&nbsp;                if (p.getInitial() != q.getInitial())</b>
+<b class="nc"><i>173</i>&nbsp;                    otherGodLogic.add(q.getGodLogic());</b>
+<b class="nc"><i>174</i>&nbsp;            }</b>
+<i>175</i>&nbsp;
+<b class="nc"><i>176</i>&nbsp;            p.getGodLogic().setOtherGodLogic(otherGodLogic);</b>
+<b class="nc"><i>177</i>&nbsp;        }</b>
+<i>178</i>&nbsp;    }
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;    public void reportLossPlayer(Player p) {
+<b class="nc"><i>181</i>&nbsp;        updateObservers(new RequestKillPlayer(p.getInitial()));</b>
+<i>182</i>&nbsp;    }
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;    /**
+<i>185</i>&nbsp;     * Deletes a player after they get eliminated
+<i>186</i>&nbsp;     * @param initialKilled initial of player that needs to be deleted
+<i>187</i>&nbsp;     */
+<i>188</i>&nbsp;    public boolean deletePlayer(char initialKilled) {
+<b class="nc"><i>189</i>&nbsp;        boolean isCurrent = false;</b>
+<b class="nc"><i>190</i>&nbsp;        for (int i = 0; i &lt; players.size(); i++) {</b>
+<b class="nc"><i>191</i>&nbsp;            if (currPlayer &lt; players.size() &amp;&amp; players.get(currPlayer).getInitial() == initialKilled)</b>
+<b class="nc"><i>192</i>&nbsp;                isCurrent = true;</b>
+<b class="nc"><i>193</i>&nbsp;            if (players.get(i).getInitial() == initialKilled) {</b>
+<b class="nc"><i>194</i>&nbsp;                players.get(i).delete();</b>
+<b class="nc"><i>195</i>&nbsp;                players.remove(i);</b>
+<i>196</i>&nbsp;
+<b class="nc"><i>197</i>&nbsp;                if (isCurrent) {</b>
+<b class="nc"><i>198</i>&nbsp;                    if (players.size() != 0 &amp;&amp; currPlayer == players.size())</b>
+<b class="nc"><i>199</i>&nbsp;                        currPlayer = 0;</b>
+<i>200</i>&nbsp;                }
+<i>201</i>&nbsp;                else {
+<b class="nc"><i>202</i>&nbsp;                    if (i &lt; currPlayer)</b>
+<b class="nc"><i>203</i>&nbsp;                        currPlayer--;</b>
+<i>204</i>&nbsp;                }
+<i>205</i>&nbsp;
+<i>206</i>&nbsp;                break;
+<i>207</i>&nbsp;            }
+<i>208</i>&nbsp;        }
+<i>209</i>&nbsp;
+<b class="nc"><i>210</i>&nbsp;        return isCurrent;</b>
+<i>211</i>&nbsp;    }
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;    /**
+<i>214</i>&nbsp;     * Initializes a worker in the selected tile
+<i>215</i>&nbsp;     * @param x x coordinate of the selected tile
+<i>216</i>&nbsp;     * @param y y coordinate of the selected tile
+<i>217</i>&nbsp;     * @param initial player&#39;s initial
+<i>218</i>&nbsp;     * @throws NonExistingTileException the selected tile doesn&#39;t exist
+<i>219</i>&nbsp;     */
+<i>220</i>&nbsp;    public void setWorker(int x, int y, char initial) throws NonExistingTileException {
+<b class="nc"><i>221</i>&nbsp;        getPlayerFromInitial(initial).addWorker(getBoard().getTile(x, y));</b>
+<i>222</i>&nbsp;    }
+<i>223</i>&nbsp;
+<i>224</i>&nbsp;
+<i>225</i>&nbsp;    /**
+<i>226</i>&nbsp;     * Starts the whole game logic, by initializing the turn routine and terminating the game if there are no players
+<i>227</i>&nbsp;     */
+<i>228</i>&nbsp;    // currPlayer keeps track of the player that is playing (it is the position in the ArrayList of players)
+<b class="nc"><i>229</i>&nbsp;    private int currPlayer = 0;</b>
+<b class="nc"><i>230</i>&nbsp;    private boolean gameEndDeclared = false;</b>
+<i>231</i>&nbsp;    //status is 0 when the player has not finished his turn, 1 when the player finished his turn, 2 when the current player won
+<b class="nc"><i>232</i>&nbsp;    private int status = -1;</b>
+<i>233</i>&nbsp;    public void gameTurnExecution() {
+<b class="nc"><i>234</i>&nbsp;        if (players.size() &gt; 1 &amp;&amp; status != 2) {</b>
+<b class="nc"><i>235</i>&nbsp;            int val = 1;</b>
+<i>236</i>&nbsp;            // Some turns may be model-internal: if val == 1 it means it was model-internal
+<b class="nc"><i>237</i>&nbsp;            while (val == 1)</b>
+<b class="nc"><i>238</i>&nbsp;                val = players.get(currPlayer).executeTurn(this);</b>
+<b class="nc"><i>239</i>&nbsp;        }</b>
+<i>240</i>&nbsp;        else {
+<b class="nc"><i>241</i>&nbsp;            if (players.size() == 1) {</b>
+<b class="nc"><i>242</i>&nbsp;                if (!gameEndDeclared) {</b>
+<b class="nc"><i>243</i>&nbsp;                    gameEndConditionOnOnePlayer();</b>
+<b class="nc"><i>244</i>&nbsp;                    System.out.println(&quot;Won because just one player was left!&quot;);</b>
+<b class="nc"><i>245</i>&nbsp;                    gameEndDeclared = true;</b>
+<i>246</i>&nbsp;                }
+<i>247</i>&nbsp;            }
+<b class="nc"><i>248</i>&nbsp;            else if (players.size() &gt; 1){</b>
+<b class="nc"><i>249</i>&nbsp;                if (!gameEndDeclared) {</b>
+<b class="nc"><i>250</i>&nbsp;                    updateObservers(new RequestUpdateBoardView(new BoardView(board), &#39;*&#39;));</b>
+<b class="nc"><i>251</i>&nbsp;                    updateObservers(new RequestGameEnd(players.get(currPlayer).getInitial()));</b>
+<b class="nc"><i>252</i>&nbsp;                    System.out.println(&quot;Game ended, won by &quot; + players.get(currPlayer).getInitial());</b>
+<b class="nc"><i>253</i>&nbsp;                    gameEndDeclared = true;</b>
+<i>254</i>&nbsp;                }
+<i>255</i>&nbsp;            }
+<i>256</i>&nbsp;        }
+<i>257</i>&nbsp;    }
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;    public void gameContinueOnKill(boolean isCurrent) {
+<b class="nc"><i>260</i>&nbsp;        if (isCurrent)</b>
+<b class="nc"><i>261</i>&nbsp;            gameTurnExecution();</b>
+<i>262</i>&nbsp;        else {
+<b class="nc"><i>263</i>&nbsp;            gameEndConditionOnOnePlayer();</b>
+<i>264</i>&nbsp;        }
+<i>265</i>&nbsp;    }
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;    /**
+<i>268</i>&nbsp;     * Prints &quot;End of the game!&quot; on the server&#39;s console, not really useful
+<i>269</i>&nbsp;     */
+<i>270</i>&nbsp;    private boolean gameEndConditionOnOnePlayer() {
+<b class="nc"><i>271</i>&nbsp;        if (players.size() == 1) {</b>
+<b class="nc"><i>272</i>&nbsp;            updateObservers(new RequestGameEnd(players.get(0).getInitial()));</b>
+<b class="nc"><i>273</i>&nbsp;            if (!gameEndDeclared) {</b>
+<b class="nc"><i>274</i>&nbsp;                gameEndConditionOnOnePlayer();</b>
+<b class="nc"><i>275</i>&nbsp;                System.out.println(&quot;Won because just one player was left!&quot;);</b>
+<b class="nc"><i>276</i>&nbsp;                gameEndDeclared = true;</b>
+<i>277</i>&nbsp;            }
+<b class="nc"><i>278</i>&nbsp;            return true;</b>
+<i>279</i>&nbsp;        }
+<b class="nc"><i>280</i>&nbsp;        return false;</b>
+<i>281</i>&nbsp;    }
+<i>282</i>&nbsp;
+<i>283</i>&nbsp;    /**
+<i>284</i>&nbsp;     * Pushes the options to the player and executes a turn step from the starting tile to the destination tile.
+<i>285</i>&nbsp;     * Sets new currPlayer if the player&#39;s turn is finished
+<i>286</i>&nbsp;     * @param posXFrom x coordinate of the starting tile
+<i>287</i>&nbsp;     * @param posYFrom y coordinate of the starting tile
+<i>288</i>&nbsp;     * @param posXTo x coordinate of the destination tile
+<i>289</i>&nbsp;     * @param posYTo y coordinate of the destination tile
+<i>290</i>&nbsp;     */
+<i>291</i>&nbsp;    public void gameReceiveOptions(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+<b class="nc"><i>292</i>&nbsp;        logger.addNewLog(posXFrom, posYFrom, posXTo, posYTo, players.get(currPlayer).getInitial());</b>
+<b class="nc"><i>293</i>&nbsp;        status = players.get(currPlayer).playerReceiveOptions(getBoard(), posXFrom, posYFrom, posXTo, posYTo);</b>
+<b class="nc"><i>294</i>&nbsp;        if (status == 1) {</b>
+<b class="nc"><i>295</i>&nbsp;            currPlayer = (currPlayer + 1) % players.size();</b>
+<i>296</i>&nbsp;        }
+<i>297</i>&nbsp;    }
+<i>298</i>&nbsp;
+<i>299</i>&nbsp;    /**
+<i>300</i>&nbsp;     * Pushes the options to the player and executes a turn step when the player passes
+<i>301</i>&nbsp;     */
+<i>302</i>&nbsp;    public void gameReceiveOptions() {
+<b class="nc"><i>303</i>&nbsp;        logger.addNewLog(players.get(currPlayer).getInitial());</b>
+<b class="nc"><i>304</i>&nbsp;        int status = players.get(currPlayer).playerReceiveOptions();</b>
+<b class="nc"><i>305</i>&nbsp;        if (status == 1) {</b>
+<b class="nc"><i>306</i>&nbsp;            currPlayer = (currPlayer + 1) % players.size();</b>
+<i>307</i>&nbsp;        }
+<i>308</i>&nbsp;    }
+<i>309</i>&nbsp;
+<i>310</i>&nbsp;    /**
+<i>311</i>&nbsp;     * Gets the player associated to the selected initial
+<i>312</i>&nbsp;     * @param initial selected initial
+<i>313</i>&nbsp;     * @return player associated to the initial
+<i>314</i>&nbsp;     */
+<i>315</i>&nbsp;    public Player getPlayerFromInitial(char initial) {
+<b class="nc"><i>316</i>&nbsp;        for (Player p : players) {</b>
+<b class="nc"><i>317</i>&nbsp;            if (p.getInitial() == initial)</b>
+<b class="nc"><i>318</i>&nbsp;                return p;</b>
+<b class="nc"><i>319</i>&nbsp;        }</b>
+<b class="nc"><i>320</i>&nbsp;        return null;</b>
+<i>321</i>&nbsp;    }
+<i>322</i>&nbsp;
+<i>323</i>&nbsp;    /**
+<i>324</i>&nbsp;     * Gets all the workers that are on the board
+<i>325</i>&nbsp;     * @return a matrix with the position of all the workers
+<i>326</i>&nbsp;     */
+<i>327</i>&nbsp;    public int[][] getAllWorkersAsMatrix() {
+<i>328</i>&nbsp;
+<b class="nc"><i>329</i>&nbsp;        int nWorkers = 0;</b>
+<b class="nc"><i>330</i>&nbsp;        for (Player p : players) {</b>
+<b class="nc"><i>331</i>&nbsp;            nWorkers += p.getWorkersSize();</b>
+<b class="nc"><i>332</i>&nbsp;        }</b>
+<b class="nc"><i>333</i>&nbsp;        if (nWorkers == 0)</b>
+<b class="nc"><i>334</i>&nbsp;            return null;</b>
+<i>335</i>&nbsp;
+<b class="nc"><i>336</i>&nbsp;        int[][] returnMatrix = new int[nWorkers][2];</b>
+<i>337</i>&nbsp;
+<b class="nc"><i>338</i>&nbsp;        nWorkers = 0;</b>
+<b class="nc"><i>339</i>&nbsp;        for (Player p : players) {</b>
+<b class="nc"><i>340</i>&nbsp;            for (Worker w : p.getWorkers()) {</b>
+<b class="nc"><i>341</i>&nbsp;                returnMatrix[nWorkers][0] = w.getPosX();</b>
+<b class="nc"><i>342</i>&nbsp;                returnMatrix[nWorkers][1] = w.getPosY();</b>
+<b class="nc"><i>343</i>&nbsp;                nWorkers++;</b>
+<b class="nc"><i>344</i>&nbsp;            }</b>
+<b class="nc"><i>345</i>&nbsp;        }</b>
+<b class="nc"><i>346</i>&nbsp;        return returnMatrix;</b>
+<i>347</i>&nbsp;    }
+<i>348</i>&nbsp;
+<i>349</i>&nbsp;    /**
+<i>350</i>&nbsp;     * Gets the number of players
+<i>351</i>&nbsp;     * @return number of players
+<i>352</i>&nbsp;     */
+<i>353</i>&nbsp;    public int nPlayers() {
+<b class="nc"><i>354</i>&nbsp;        return players.size();</b>
+<i>355</i>&nbsp;    }
+<i>356</i>&nbsp;
+<i>357</i>&nbsp;
+<i>358</i>&nbsp;    /**
+<i>359</i>&nbsp;     * Getter method for board attribute
+<i>360</i>&nbsp;     * @return the object&#39;s board attribute
+<i>361</i>&nbsp;     */
+<i>362</i>&nbsp;    public Board getBoard() {
+<b class="nc"><i>363</i>&nbsp;        return board;</b>
+<i>364</i>&nbsp;    }
+<i>365</i>&nbsp;
+<i>366</i>&nbsp;    /**
+<i>367</i>&nbsp;     * Prints on the server&#39;s terminal player&#39;s names with their initials,
+<i>368</i>&nbsp;     * whether they have or don&#39;t have an associated god card
+<i>369</i>&nbsp;     * and the number of workers each player has.
+<i>370</i>&nbsp;     */
+<i>371</i>&nbsp;    public void printPlayersDescription() {
+<b class="nc"><i>372</i>&nbsp;        for (Player p : players) {</b>
+<b class="nc"><i>373</i>&nbsp;            if (p.getWorkersSize() == 2) {</b>
+<b class="nc"><i>374</i>&nbsp;                System.out.println(p);</b>
+<i>375</i>&nbsp;            }
+<i>376</i>&nbsp;            else
+<b class="nc"><i>377</i>&nbsp;                System.out.println(&quot;Player: &quot; + p.getName() + &quot; Initial: &quot; + p.getInitial());</b>
+<b class="nc"><i>378</i>&nbsp;            if (p.getGodLogic() != null)</b>
+<b class="nc"><i>379</i>&nbsp;                System.out.println(&quot;Has god logic!&quot;);</b>
+<i>380</i>&nbsp;            else
+<b class="nc"><i>381</i>&nbsp;                System.out.println(&quot;It doesn&#39;t have a godLogic&quot;);</b>
+<b class="nc"><i>382</i>&nbsp;            System.out.println(&quot;Workers size: &quot; + p.getWorkersSize());</b>
+<i>383</i>&nbsp;
+<b class="nc"><i>384</i>&nbsp;        }</b>
+<i>385</i>&nbsp;    }
+<i>386</i>&nbsp;
+<i>387</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

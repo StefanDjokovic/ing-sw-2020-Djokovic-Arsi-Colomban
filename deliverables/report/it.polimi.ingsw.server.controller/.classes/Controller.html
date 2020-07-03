@@ -1,0 +1,277 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Controller</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.server.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Controller (it.polimi.ingsw.server.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Controller</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.server.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
+<i>4</i>&nbsp;import it.polimi.ingsw.Observer;
+<i>5</i>&nbsp;import it.polimi.ingsw.messages.Answer;
+<i>6</i>&nbsp;import it.polimi.ingsw.messages.Request;
+<i>7</i>&nbsp;import it.polimi.ingsw.messages.answers.AnswerKillPlayer;
+<i>8</i>&nbsp;import it.polimi.ingsw.server.model.Game;
+<i>9</i>&nbsp;import it.polimi.ingsw.server.model.board.NonExistingTileException;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.util.ArrayList;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;public class Controller implements Observer, ControllerView {
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    private Game game;
+<i>16</i>&nbsp;    private Request waitingAnswer;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * Constructor
+<i>20</i>&nbsp;     * @param game model&#39;s main object, that initializes everything else
+<i>21</i>&nbsp;     */
+<b class="nc"><i>22</i>&nbsp;    public Controller(Game game) {</b>
+<b class="nc"><i>23</i>&nbsp;        this.game = game;</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Gets called when of the Controller&#39;s observed objects (view) updates its observers,
+<i>28</i>&nbsp;     * it makes the controller act based on the message that the observee sent
+<i>29</i>&nbsp;     * @param answer message sent by observed object that tells the controller which method to call
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    @Override
+<i>32</i>&nbsp;    public void update(Answer answer) {
+<i>33</i>&nbsp;        // We check with the last request sent if it&#39;s valid
+<b class="nc"><i>34</i>&nbsp;        if (waitingAnswer == null || answer instanceof AnswerKillPlayer ||</b>
+<b class="nc"><i>35</i>&nbsp;                (waitingAnswer.isValidAnswer(answer) &amp;&amp; waitingAnswer.getInitial() == answer.getInitial())) {</b>
+<i>36</i>&nbsp;            // We can now act
+<b class="nc"><i>37</i>&nbsp;            answer.act(this);</b>
+<i>38</i>&nbsp;        }
+<i>39</i>&nbsp;        else {
+<b class="nc"><i>40</i>&nbsp;            System.out.println(&quot;Invalid Answer received:&quot;);</b>
+<b class="nc"><i>41</i>&nbsp;            if (waitingAnswer != null) {</b>
+<b class="nc"><i>42</i>&nbsp;                waitingAnswer.printMessage();</b>
+<b class="nc"><i>43</i>&nbsp;                answer.printMessage();</b>
+<i>44</i>&nbsp;            }
+<i>45</i>&nbsp;            else {
+<b class="nc"><i>46</i>&nbsp;                System.out.println(&quot;Some weird stuff&quot;);</b>
+<i>47</i>&nbsp;            }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;            // TODO: decide what to do in case the answer is wrong, for now it&#39;s just hanging
+<i>50</i>&nbsp;        }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    @Override
+<i>56</i>&nbsp;    public void update(Request request) {
+<i>57</i>&nbsp;        // We keep the last request sent to check with the answer
+<b class="nc"><i>58</i>&nbsp;        if (!request.isAsync()) {</b>
+<b class="nc"><i>59</i>&nbsp;            waitingAnswer = request;</b>
+<i>60</i>&nbsp;        }
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    /**
+<i>64</i>&nbsp;     * Initializes the player&#39;s name
+<i>65</i>&nbsp;     * @param name player&#39;s name
+<i>66</i>&nbsp;     * @return unique initial for the player (A, B or C)
+<i>67</i>&nbsp;     */
+<i>68</i>&nbsp;    public char initPlayer(String name) {
+<b class="nc"><i>69</i>&nbsp;        return game.initPlayer(name);</b>
+<i>70</i>&nbsp;    }
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    /**
+<i>74</i>&nbsp;     * Initializes the gods, that asks for the workers and then starts the game
+<i>75</i>&nbsp;     */
+<i>76</i>&nbsp;    public void initGods() {
+<b class="nc"><i>77</i>&nbsp;        game.initGods();</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    /**
+<i>81</i>&nbsp;     * Sets the god card picked by the player
+<i>82</i>&nbsp;     * @param godNames list of the gods picked by the first player
+<i>83</i>&nbsp;     * @param initial player&#39;s initial
+<i>84</i>&nbsp;     */
+<i>85</i>&nbsp;    public void setPlayerGod(ArrayList&lt;String&gt; godNames, char initial) {
+<b class="nc"><i>86</i>&nbsp;        game.setPlayerGods(godNames);</b>
+<b class="nc"><i>87</i>&nbsp;        initGodsOrContinue();</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    /**
+<i>91</i>&nbsp;     * Sets the god card picked by the player
+<i>92</i>&nbsp;     * @param godName name of the god picked by the player
+<i>93</i>&nbsp;     * @param initial player&#39;s initial
+<i>94</i>&nbsp;     */
+<i>95</i>&nbsp;    public void setPlayerGod(String godName, char initial) {
+<b class="nc"><i>96</i>&nbsp;        game.setPlayerGod(godName, initial);</b>
+<b class="nc"><i>97</i>&nbsp;        initGodsOrContinue();</b>
+<i>98</i>&nbsp;    }
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    /**
+<i>102</i>&nbsp;     * If there are still players with uninitialized gods it initializes them,
+<i>103</i>&nbsp;     * otherwise it initializes the workers
+<i>104</i>&nbsp;     */
+<i>105</i>&nbsp;    public void initGodsOrContinue() {
+<b class="nc"><i>106</i>&nbsp;        if (game.nPlayersWithGod() == game.nPlayers() - 1) {</b>
+<b class="nc"><i>107</i>&nbsp;            game.initLastGod();</b>
+<b class="nc"><i>108</i>&nbsp;            game.initWorker();</b>
+<i>109</i>&nbsp;        }
+<b class="nc"><i>110</i>&nbsp;        else if (game.nPlayersWithGod() != game.nPlayers())</b>
+<b class="nc"><i>111</i>&nbsp;            game.initGods();</b>
+<i>112</i>&nbsp;        else
+<b class="nc"><i>113</i>&nbsp;            game.initWorker();</b>
+<i>114</i>&nbsp;    }
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;    /**
+<i>117</i>&nbsp;     * Initializes the worker on the tile picked by the player
+<i>118</i>&nbsp;     * @param x x coordinate of the selected tile
+<i>119</i>&nbsp;     * @param y y coordinate of the selected tile
+<i>120</i>&nbsp;     * @param initial player&#39;s initial
+<i>121</i>&nbsp;     */
+<i>122</i>&nbsp;    public void setWorker(int x, int y, char initial) {
+<i>123</i>&nbsp;        try {
+<b class="nc"><i>124</i>&nbsp;            System.out.println(&quot;Setting worker from controller: Initial: &quot; + initial);</b>
+<b class="nc"><i>125</i>&nbsp;            System.out.println(&quot;Positions at: &quot; + x + &quot; &quot; + y);</b>
+<b class="nc"><i>126</i>&nbsp;            game.setWorker(x, y, initial);</b>
+<b class="nc"><i>127</i>&nbsp;        } catch (NonExistingTileException e) {</b>
+<b class="nc"><i>128</i>&nbsp;            System.out.println(&quot;Sth wrong&quot;);</b>
+<b class="nc"><i>129</i>&nbsp;        }</b>
+<b class="nc"><i>130</i>&nbsp;        initWorkerOrContinue();</b>
+<i>131</i>&nbsp;    }
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * If there are still players with uninitialized workers it initializes them,
+<i>135</i>&nbsp;     * otherwise it starts the game
+<i>136</i>&nbsp;     */
+<i>137</i>&nbsp;    public void initWorkerOrContinue() {
+<b class="nc"><i>138</i>&nbsp;        if (game.missingWorkers()) {</b>
+<b class="nc"><i>139</i>&nbsp;            game.initWorker();</b>
+<i>140</i>&nbsp;        }
+<i>141</i>&nbsp;        else {
+<b class="nc"><i>142</i>&nbsp;            game.setOtherGodLogic();</b>
+<b class="nc"><i>143</i>&nbsp;            game.gameTurnExecution();</b>
+<i>144</i>&nbsp;        }
+<i>145</i>&nbsp;    }
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    /**
+<i>148</i>&nbsp;     * Executes a turn step, using a power from a starting tile to a destination tile
+<i>149</i>&nbsp;     * @param posXFrom x coordinate of the starting tile
+<i>150</i>&nbsp;     * @param posYFrom y coordinate of the starting tile
+<i>151</i>&nbsp;     * @param posXTo x coordinate of the destination tile
+<i>152</i>&nbsp;     * @param posYTo y coordinate of the destination tile
+<i>153</i>&nbsp;     */
+<i>154</i>&nbsp;    public void executeMoveOrBuild(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+<b class="nc"><i>155</i>&nbsp;        System.out.println(&quot;Controller is executing the action&quot;);</b>
+<b class="nc"><i>156</i>&nbsp;        game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);</b>
+<b class="nc"><i>157</i>&nbsp;        game.gameTurnExecution();</b>
+<i>158</i>&nbsp;    }
+<i>159</i>&nbsp;
+<i>160</i>&nbsp;    /**
+<i>161</i>&nbsp;     * Executes a turn step when the player passes
+<i>162</i>&nbsp;     */
+<i>163</i>&nbsp;    public void executePass() {
+<b class="nc"><i>164</i>&nbsp;        System.out.println(&quot;Controller has received a pass&quot;);</b>
+<b class="nc"><i>165</i>&nbsp;        game.gameReceiveOptions();</b>
+<b class="nc"><i>166</i>&nbsp;        game.gameTurnExecution();</b>
+<i>167</i>&nbsp;    }
+<i>168</i>&nbsp;
+<i>169</i>&nbsp;    /**
+<i>170</i>&nbsp;     * Called by ServerSocket when a player disconnects, it deletes the player from the game
+<i>171</i>&nbsp;     * @param initial initial of the player that needs to be deleted
+<i>172</i>&nbsp;     */
+<i>173</i>&nbsp;    public void killPlayer(char initial) {
+<b class="nc"><i>174</i>&nbsp;        boolean isCurrent = game.deletePlayer(initial);</b>
+<b class="nc"><i>175</i>&nbsp;        gameContinueOnKillPlayer(isCurrent);</b>
+<i>176</i>&nbsp;    }
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;    /**
+<i>179</i>&nbsp;     * Called after a player is removed from the game. If there are still players with uninitialized gods, it initializes them.
+<i>180</i>&nbsp;     * If there are still players with uninitialized workers, it initializes them.
+<i>181</i>&nbsp;     * Otherwise, it starts the game
+<i>182</i>&nbsp;     */
+<i>183</i>&nbsp;    public void gameContinueOnKillPlayer(boolean isCurrent) {
+<b class="nc"><i>184</i>&nbsp;        if (game.nPlayersWithGod() != game.nPlayers()) {</b>
+<b class="nc"><i>185</i>&nbsp;            game.initGods();</b>
+<i>186</i>&nbsp;        }
+<b class="nc"><i>187</i>&nbsp;        else if (game.missingWorkers()) {</b>
+<b class="nc"><i>188</i>&nbsp;            game.initWorker();</b>
+<i>189</i>&nbsp;        }
+<i>190</i>&nbsp;        else {
+<b class="nc"><i>191</i>&nbsp;            game.gameContinueOnKill(isCurrent);</b>
+<i>192</i>&nbsp;        }
+<i>193</i>&nbsp;    }
+<i>194</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

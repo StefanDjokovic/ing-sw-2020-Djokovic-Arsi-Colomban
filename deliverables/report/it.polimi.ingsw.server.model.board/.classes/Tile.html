@@ -1,0 +1,421 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Tile</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.server.model.board</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Tile (it.polimi.ingsw.server.model.board)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Tile</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96%
+  </span>
+  <span class="absValue">
+    (24/ 25)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86,1%
+  </span>
+  <span class="absValue">
+    (87/ 101)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.server.model.board;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.messages.OptionSelection;
+<i>4</i>&nbsp;import it.polimi.ingsw.server.model.player.Worker;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.ArrayList;
+<i>7</i>&nbsp;import java.util.List;
+<i>8</i>&nbsp;import java.util.stream.Collectors;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;/**
+<i>12</i>&nbsp; * Class that represents a tile, the single slot of the board.
+<i>13</i>&nbsp; * It holds reference to the proprietary
+<i>14</i>&nbsp; * board and has various information stored.
+<i>15</i>&nbsp; *
+<i>16</i>&nbsp; */
+<i>17</i>&nbsp;public class Tile {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private int buildingLevel;
+<i>20</i>&nbsp;    private boolean dome;
+<i>21</i>&nbsp;    private Worker worker;
+<i>22</i>&nbsp;    private final int x;
+<i>23</i>&nbsp;    private final int y;
+<i>24</i>&nbsp;    private final Board currentBoard;
+<i>25</i>&nbsp;    private ArrayList&lt;Tile&gt; neighbors;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * Constructor.
+<i>29</i>&nbsp;     * @param a Row index of the board.
+<i>30</i>&nbsp;     * @param b Column position of the board.
+<i>31</i>&nbsp;     * @param currentBoard Reference to the board.
+<i>32</i>&nbsp;     */
+<b class="fc"><i>33</i>&nbsp;    public Tile(int a, int b, Board currentBoard) {</b>
+<b class="fc"><i>34</i>&nbsp;        this.buildingLevel = 0;</b>
+<b class="fc"><i>35</i>&nbsp;        this.dome = false;</b>
+<b class="fc"><i>36</i>&nbsp;        this.worker = null;</b>
+<b class="fc"><i>37</i>&nbsp;        x = a;</b>
+<b class="fc"><i>38</i>&nbsp;        y = b;</b>
+<b class="fc"><i>39</i>&nbsp;        this.currentBoard = currentBoard;</b>
+<b class="fc"><i>40</i>&nbsp;    }</b>
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    /**
+<i>43</i>&nbsp;     * Initializes every tile&#39;s neighbor
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    public void initNeighbors() {
+<b class="fc"><i>46</i>&nbsp;        this.neighbors = this.getNeighbors();</b>
+<b class="fc"><i>47</i>&nbsp;    }</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    /**
+<i>50</i>&nbsp;     * Set the new building level of the tile. Must be between 0 and 3.
+<i>51</i>&nbsp;     * @param buildingLevel Level to set the level of the building to.
+<i>52</i>&nbsp;     * @throws NotBuildableException The given value of building level was invalid.
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    public void setBuildingLevel(int buildingLevel) throws NotBuildableException {
+<b class="fc"><i>55</i>&nbsp;        if (buildingLevel &lt; 0 || buildingLevel &gt; 4){</b>
+<b class="fc"><i>56</i>&nbsp;            throw new NotBuildableException();</b>
+<i>57</i>&nbsp;        } else {
+<b class="fc"><i>58</i>&nbsp;            this.buildingLevel = buildingLevel;</b>
+<i>59</i>&nbsp;        }
+<b class="fc"><i>60</i>&nbsp;    }</b>
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    /**
+<i>63</i>&nbsp;     * Set whether there is the dome or not.
+<i>64</i>&nbsp;     * @param dome True if there is a dome, false if not.
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    public void setDome(boolean dome) {
+<b class="fc"><i>67</i>&nbsp;        this.dome = dome;</b>
+<b class="fc"><i>68</i>&nbsp;    }</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    /**
+<i>71</i>&nbsp;     * Sets the reference to the worker positioned in the tile.
+<i>72</i>&nbsp;     * @param worker Reference to the worker.
+<i>73</i>&nbsp;     */
+<i>74</i>&nbsp;    public void setWorker(Worker worker){
+<b class="fc"><i>75</i>&nbsp;        this.worker = worker;</b>
+<b class="fc"><i>76</i>&nbsp;    }</b>
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    /**
+<i>80</i>&nbsp;     * Return index value of x in the board.
+<i>81</i>&nbsp;     * @return Index value of x in the board.
+<i>82</i>&nbsp;     */
+<i>83</i>&nbsp;    public int getX() {
+<b class="fc"><i>84</i>&nbsp;        return x;</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    /**
+<i>88</i>&nbsp;     * Return index value of y in the board.
+<i>89</i>&nbsp;     * @return Index value of y in the board.
+<i>90</i>&nbsp;     */
+<i>91</i>&nbsp;    public int getY() {
+<b class="fc"><i>92</i>&nbsp;        return y;</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    /**
+<i>96</i>&nbsp;     * Returns reference to the worker positioned in the tile.
+<i>97</i>&nbsp;     * @return Reference to the worker (if present).
+<i>98</i>&nbsp;     */
+<b class="fc"><i>99</i>&nbsp;    public Worker getWorker() { return worker; }</b>
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;    /**
+<i>103</i>&nbsp;     * Returns the level of the building of the tile.
+<i>104</i>&nbsp;     * @return Level of the building of the tile.
+<i>105</i>&nbsp;     */
+<i>106</i>&nbsp;    public int getBuildingLevel(){
+<b class="fc"><i>107</i>&nbsp;        return buildingLevel;</b>
+<i>108</i>&nbsp;    }
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;    /**
+<i>111</i>&nbsp;     * Returns the board whom the tile belongs.
+<i>112</i>&nbsp;     * @return The board whom the tile belongs.
+<i>113</i>&nbsp;     */
+<i>114</i>&nbsp;    public Board getBoard(){
+<b class="fc"><i>115</i>&nbsp;        return currentBoard;</b>
+<i>116</i>&nbsp;    }
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;    /**
+<i>119</i>&nbsp;     * Sets the reference of the worker to NULL.
+<i>120</i>&nbsp;     */
+<i>121</i>&nbsp;    public void deleteWorkerAndOwner(){
+<b class="fc"><i>122</i>&nbsp;        this.worker=null;</b>
+<b class="fc"><i>123</i>&nbsp;    }</b>
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    /**
+<i>126</i>&nbsp;     * Returns true whether there is a worker on this tile.
+<i>127</i>&nbsp;     * @return True if there is a worker on this tile, false if not.
+<i>128</i>&nbsp;     */
+<i>129</i>&nbsp;    public boolean hasWorker() {
+<b class="fc"><i>130</i>&nbsp;        return worker != null;</b>
+<i>131</i>&nbsp;    }
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * Returns true if there is a dome on this tile.
+<i>135</i>&nbsp;     * @return True if there is a dome on this tile, false if not.
+<i>136</i>&nbsp;     */
+<i>137</i>&nbsp;    public boolean hasDome(){
+<b class="fc"><i>138</i>&nbsp;        return dome;</b>
+<i>139</i>&nbsp;    }
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;    /**
+<i>142</i>&nbsp;     * Returns true if the selected worker can move on this tile.
+<i>143</i>&nbsp;     * @return True if it&#39;s possible to move on this tile.
+<i>144</i>&nbsp;     */
+<i>145</i>&nbsp;    public boolean isWalkable() {
+<b class="fc"><i>146</i>&nbsp;        return !this.hasDome() &amp;&amp; !this.hasWorker();</b>
+<i>147</i>&nbsp;    }
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    /**
+<i>150</i>&nbsp;     * Returns true if the player can build in this tile.
+<i>151</i>&nbsp;     * @return True if the worker can build in this tile.
+<i>152</i>&nbsp;     */
+<i>153</i>&nbsp;    public boolean isBuildable() {
+<b class="fc"><i>154</i>&nbsp;        return !hasDome() &amp;&amp; !hasWorker() &amp;&amp; this.getBuildingLevel() &lt;= 3;</b>
+<i>155</i>&nbsp;    }
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;    /**
+<i>158</i>&nbsp;     * Adds 1 building level to the tile, returns true if the action was successful.
+<i>159</i>&nbsp;     * @throws NotBuildableException Thrown if it was not possible to build on this tile.
+<i>160</i>&nbsp;     * @return Reference to the tile used.
+<i>161</i>&nbsp;     */
+<i>162</i>&nbsp;    public Tile buildUp() throws NotBuildableException {
+<b class="fc"><i>163</i>&nbsp;        if (buildingLevel &gt;= 0 &amp;&amp; buildingLevel &lt; 3 &amp;&amp; !this.hasDome()) {</b>
+<b class="fc"><i>164</i>&nbsp;            buildingLevel++;</b>
+<b class="fc"><i>165</i>&nbsp;            return this;</b>
+<b class="fc"><i>166</i>&nbsp;        } else if (buildingLevel == 3 &amp;&amp; !this.hasDome()){</b>
+<i>167</i>&nbsp;            //buildingLevel++;
+<b class="fc"><i>168</i>&nbsp;            dome = true;</b>
+<b class="fc"><i>169</i>&nbsp;            return this;</b>
+<i>170</i>&nbsp;        } else {
+<b class="fc"><i>171</i>&nbsp;            throw new NotBuildableException();</b>
+<i>172</i>&nbsp;        }
+<i>173</i>&nbsp;    }
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;    /**
+<i>176</i>&nbsp;     * Deletes 1 building level to the tile, returns true if the action was successful.
+<i>177</i>&nbsp;     * @throws NotBuildableException Thrown if it was not possible to build on this tile.
+<i>178</i>&nbsp;     * @return Reference to the tile used.
+<i>179</i>&nbsp;     */
+<i>180</i>&nbsp;    public Tile buildDown() throws NotBuildableException {
+<b class="nc"><i>181</i>&nbsp;        if (buildingLevel &gt;= 1 &amp;&amp; !this.hasDome()) {</b>
+<b class="nc"><i>182</i>&nbsp;            buildingLevel--;</b>
+<b class="nc"><i>183</i>&nbsp;            return this;</b>
+<i>184</i>&nbsp;        } else {
+<b class="nc"><i>185</i>&nbsp;            throw new NotBuildableException();</b>
+<i>186</i>&nbsp;        }
+<i>187</i>&nbsp;    }
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;    /**
+<i>190</i>&nbsp;     * Returns a list of the neighbors.
+<i>191</i>&nbsp;     * @return List with reference to all the 8 neighbors of this tile.
+<i>192</i>&nbsp;     */
+<i>193</i>&nbsp;    public ArrayList&lt;Tile&gt; getNeighbors() {
+<b class="fc"><i>194</i>&nbsp;        ArrayList&lt;Tile&gt; retList = new ArrayList&lt;&gt;();</b>
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;        try {
+<b class="fc"><i>197</i>&nbsp;            if (y &gt; 0) {</b>
+<b class="fc"><i>198</i>&nbsp;                if (x &gt; 0) {</b>
+<b class="fc"><i>199</i>&nbsp;                    retList.add(currentBoard.getTile(x - 1, y - 1));</b>
+<i>200</i>&nbsp;                }
+<b class="fc"><i>201</i>&nbsp;                retList.add(currentBoard.getTile(x, y - 1));</b>
+<b class="fc"><i>202</i>&nbsp;                if (x &lt; 4) {</b>
+<b class="fc"><i>203</i>&nbsp;                    retList.add(currentBoard.getTile(x + 1, y - 1));</b>
+<i>204</i>&nbsp;                }
+<i>205</i>&nbsp;            }
+<b class="fc"><i>206</i>&nbsp;            if (x &lt; 4) {</b>
+<b class="fc"><i>207</i>&nbsp;                retList.add(currentBoard.getTile(x + 1, y));</b>
+<b class="fc"><i>208</i>&nbsp;                if (y &lt; 4)</b>
+<b class="fc"><i>209</i>&nbsp;                    retList.add(currentBoard.getTile(x + 1, y + 1));</b>
+<i>210</i>&nbsp;            }
+<b class="fc"><i>211</i>&nbsp;            if (y &lt; 4) {</b>
+<b class="fc"><i>212</i>&nbsp;                retList.add(currentBoard.getTile(x, y + 1));</b>
+<b class="fc"><i>213</i>&nbsp;                if (x &gt; 0)</b>
+<b class="fc"><i>214</i>&nbsp;                    retList.add(currentBoard.getTile(x - 1, y + 1));</b>
+<i>215</i>&nbsp;            }
+<b class="fc"><i>216</i>&nbsp;            if (x &gt; 0)</b>
+<b class="fc"><i>217</i>&nbsp;                retList.add(currentBoard.getTile(x - 1, y));</b>
+<i>218</i>&nbsp;
+<i>219</i>&nbsp;        }
+<b class="nc"><i>220</i>&nbsp;        catch (NonExistingTileException e) {</b>
+<b class="nc"><i>221</i>&nbsp;            System.out.println(&quot;Wait, what?! This should have not happened&quot;);</b>
+<b class="fc"><i>222</i>&nbsp;        }</b>
+<i>223</i>&nbsp;
+<i>224</i>&nbsp;
+<b class="fc"><i>225</i>&nbsp;        return retList;</b>
+<i>226</i>&nbsp;    }
+<i>227</i>&nbsp;
+<i>228</i>&nbsp;    public ArrayList&lt;Tile&gt; getNeighborsOptimized() {
+<b class="fc"><i>229</i>&nbsp;        return neighbors;</b>
+<i>230</i>&nbsp;    }
+<i>231</i>&nbsp;
+<i>232</i>&nbsp;    /**
+<i>233</i>&nbsp;     * Returns a list of only the neighbors where the worker can move to.
+<i>234</i>&nbsp;     * @return List of only the neighbors where the worker can move to.
+<i>235</i>&nbsp;     * @throws NoWalkableTilesException There are no tiles where the worker can move to.
+<i>236</i>&nbsp;     */
+<i>237</i>&nbsp;    public List&lt;Tile&gt; getWalkableNeighbors() throws NoWalkableTilesException {
+<b class="fc"><i>238</i>&nbsp;        List&lt;Tile&gt; Wlist=this.getNeighborsOptimized().stream().filter(x -&gt; x.isWalkable()).collect(Collectors.toList());</b>
+<b class="fc"><i>239</i>&nbsp;        if (!Wlist.isEmpty()) {</b>
+<b class="fc"><i>240</i>&nbsp;            return Wlist;</b>
+<i>241</i>&nbsp;        } else {
+<b class="fc"><i>242</i>&nbsp;            throw new NoWalkableTilesException();</b>
+<i>243</i>&nbsp;        }
+<i>244</i>&nbsp;    }
+<i>245</i>&nbsp;
+<i>246</i>&nbsp;    /**
+<i>247</i>&nbsp;     * Returns a list of only the neighbors where the worker can build on.
+<i>248</i>&nbsp;     * @return List of only the neighbors where the worker can build on.
+<i>249</i>&nbsp;     * @throws NoBuildableTilesException There are no tiles where the worker can build on.
+<i>250</i>&nbsp;     */
+<i>251</i>&nbsp;    public List&lt;Tile&gt; getBuildableNeighbors() throws NoBuildableTilesException {
+<b class="fc"><i>252</i>&nbsp;        List&lt;Tile&gt; Wlist=this.getNeighborsOptimized().stream().filter(x -&gt; x.isBuildable()).collect(Collectors.toList());</b>
+<b class="fc"><i>253</i>&nbsp;        if (!Wlist.isEmpty()) {</b>
+<b class="fc"><i>254</i>&nbsp;            return Wlist;</b>
+<i>255</i>&nbsp;        } else {
+<b class="fc"><i>256</i>&nbsp;            throw new NoBuildableTilesException();</b>
+<i>257</i>&nbsp;        }
+<i>258</i>&nbsp;    }
+<i>259</i>&nbsp;
+<i>260</i>&nbsp;    /**
+<i>261</i>&nbsp;     * Return true if it is possible to move from the first tile to the second, given the limits of the movement.
+<i>262</i>&nbsp;     * @param from Starting tile.
+<i>263</i>&nbsp;     * @param dest Arrive tile.
+<i>264</i>&nbsp;     * @param moveUpMax Limit of building level for &quot;up&quot; movement
+<i>265</i>&nbsp;     * @param moveDownMax Limit of building level for &quot;down&quot; movement
+<i>266</i>&nbsp;     * @return true if the worker can move, false otherwise
+<i>267</i>&nbsp;     */
+<i>268</i>&nbsp;    public boolean isMovableTo(Tile from, Tile dest, int moveUpMax, int moveDownMax) {
+<b class="fc"><i>269</i>&nbsp;        if (!dest.isWalkable())</b>
+<b class="fc"><i>270</i>&nbsp;            return false;</b>
+<b class="fc"><i>271</i>&nbsp;        return from.getBuildingLevel() + moveUpMax &gt;= dest.getBuildingLevel() &amp;&amp; from.getBuildingLevel() - moveDownMax &lt;= dest.getBuildingLevel();</b>
+<i>272</i>&nbsp;    }
+<i>273</i>&nbsp;
+<i>274</i>&nbsp;    /**
+<i>275</i>&nbsp;     * Returns a list of tiles where a worker can move to, starting from this tile.
+<i>276</i>&nbsp;     * @param moveUpMax Limit of building level for &quot;up&quot; movement
+<i>277</i>&nbsp;     * @param moveDownMax Limit of building level for &quot;down&quot; movement
+<i>278</i>&nbsp;     * @return List of tiles where a worker can move to.
+<i>279</i>&nbsp;     */
+<i>280</i>&nbsp;    public List&lt;Tile&gt; getMovableToNeigh(int moveUpMax, int moveDownMax) {
+<b class="fc"><i>281</i>&nbsp;        List&lt;Tile&gt; result = new ArrayList&lt;&gt;();</b>
+<i>282</i>&nbsp;        try {
+<b class="fc"><i>283</i>&nbsp;            result = this.getWalkableNeighbors();</b>
+<b class="fc"><i>284</i>&nbsp;        } catch (NoWalkableTilesException e) {</b>
+<b class="fc"><i>285</i>&nbsp;            return result;</b>
+<b class="fc"><i>286</i>&nbsp;        }</b>
+<i>287</i>&nbsp;
+<b class="fc"><i>288</i>&nbsp;        result.removeIf(temp -&gt; !(isMovableTo(this, temp, moveUpMax, moveDownMax)));</b>
+<i>289</i>&nbsp;
+<b class="fc"><i>290</i>&nbsp;        return result;</b>
+<i>291</i>&nbsp;    }
+<i>292</i>&nbsp;
+<i>293</i>&nbsp;    /*
+<i>294</i>&nbsp;    The worker is at this tile position.
+<i>295</i>&nbsp;    upDiff is how many level of difference it can select upwards, downDiff is downwards, canIntoOpp if it&#39;s a special
+<i>296</i>&nbsp;    power for which it can select opponent cells
+<i>297</i>&nbsp;     */
+<i>298</i>&nbsp;    public ArrayList&lt;Integer&gt; getOptions(int upDiff, int downMin, boolean canIntoOpp, ArrayList&lt;Integer&gt; limitations) {
+<i>299</i>&nbsp;
+<b class="fc"><i>300</i>&nbsp;        ArrayList&lt;Tile&gt; tiles = this.getNeighborsOptimized();</b>
+<i>301</i>&nbsp;
+<i>302</i>&nbsp;
+<b class="fc"><i>303</i>&nbsp;        ArrayList&lt;Integer&gt; cellOpt = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>304</i>&nbsp;        cellOpt.add(this.getX());</b>
+<b class="fc"><i>305</i>&nbsp;        cellOpt.add(this.getY());</b>
+<i>306</i>&nbsp;
+<b class="fc"><i>307</i>&nbsp;        for (Tile t: tiles) {</b>
+<b class="fc"><i>308</i>&nbsp;            if (!t.hasWorker() || (canIntoOpp &amp;&amp; (t.getWorker().getOwner().getInitial() != this.getWorker().getOwner().getInitial()))) {</b>
+<b class="fc"><i>309</i>&nbsp;                if (t.getBuildingLevel() - this.getBuildingLevel() &lt;= upDiff &amp;&amp; t.getBuildingLevel() &gt;= downMin &amp;&amp; !t.hasDome()) {</b>
+<b class="fc"><i>310</i>&nbsp;                    if (limitations == null) {</b>
+<b class="fc"><i>311</i>&nbsp;                        cellOpt.add(t.getX());</b>
+<b class="fc"><i>312</i>&nbsp;                        cellOpt.add(t.getY());</b>
+<i>313</i>&nbsp;                    }
+<i>314</i>&nbsp;                    else {
+<b class="nc"><i>315</i>&nbsp;                        boolean appeared = false;</b>
+<b class="nc"><i>316</i>&nbsp;                        for (int i = 0; i &lt; limitations.size(); i += 2) {</b>
+<b class="nc"><i>317</i>&nbsp;                            if (limitations.get(i) == t.getX() &amp;&amp; limitations.get(i + 1) == t.getY()) {</b>
+<b class="nc"><i>318</i>&nbsp;                                appeared = true;</b>
+<b class="nc"><i>319</i>&nbsp;                                break;</b>
+<i>320</i>&nbsp;                            }
+<i>321</i>&nbsp;                        }
+<b class="nc"><i>322</i>&nbsp;                        if (!appeared) {</b>
+<b class="nc"><i>323</i>&nbsp;                            cellOpt.add(t.getX());</b>
+<b class="nc"><i>324</i>&nbsp;                            cellOpt.add(t.getY());</b>
+<i>325</i>&nbsp;                        }
+<i>326</i>&nbsp;                    }
+<i>327</i>&nbsp;                }
+<i>328</i>&nbsp;            }
+<b class="fc"><i>329</i>&nbsp;        }</b>
+<i>330</i>&nbsp;
+<b class="fc"><i>331</i>&nbsp;        return cellOpt;</b>
+<i>332</i>&nbsp;    }
+<i>333</i>&nbsp;
+<i>334</i>&nbsp;    @Override
+<i>335</i>&nbsp;    public String toString() {
+<b class="fc"><i>336</i>&nbsp;        return ((this.getX())+&quot; &quot;+(this.getY()));</b>
+<i>337</i>&nbsp;    }
+<i>338</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

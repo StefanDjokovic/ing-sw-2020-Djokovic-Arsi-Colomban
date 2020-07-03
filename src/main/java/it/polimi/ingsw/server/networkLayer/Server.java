@@ -25,7 +25,7 @@ public class Server {
     /**
      * Constructor method, creates the server on the specified port
      * @param port port where the server needs to be initialized
-     * @throws IOException
+     * @throws IOException Exception
      */
     public Server(int port) throws IOException    {
         this.serverSocket = new java.net.ServerSocket(port);

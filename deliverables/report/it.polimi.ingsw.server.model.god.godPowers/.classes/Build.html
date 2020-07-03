@@ -1,0 +1,136 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Build</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.server.model.god.godPowers</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Build (it.polimi.ingsw.server.model.god.godPowers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Build</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (1/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    12,5%
+  </span>
+  <span class="absValue">
+    (2/ 16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.server.model.god.godPowers;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.messages.OptionSelection;
+<i>4</i>&nbsp;import it.polimi.ingsw.server.model.logger.Log;
+<i>5</i>&nbsp;import it.polimi.ingsw.server.model.logger.Logger;
+<i>6</i>&nbsp;import it.polimi.ingsw.server.model.board.NonExistingTileException;
+<i>7</i>&nbsp;import it.polimi.ingsw.server.model.board.NotBuildableException;
+<i>8</i>&nbsp;import it.polimi.ingsw.server.model.god.*;
+<i>9</i>&nbsp;import it.polimi.ingsw.server.model.board.Board;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.util.ArrayList;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;// Standard build GodPower
+<i>15</i>&nbsp;public class Build extends GodPower {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public Build(GodLogic godLogic, boolean canPass) {
+<b class="fc"><i>18</i>&nbsp;        super(godLogic, canPass);</b>
+<b class="fc"><i>19</i>&nbsp;    }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
+<i>23</i>&nbsp;        try {
+<b class="nc"><i>24</i>&nbsp;            board.getTile(posXTo, posYTo).buildUp();</b>
+<b class="nc"><i>25</i>&nbsp;        } catch (NonExistingTileException | NotBuildableException e) {</b>
+<b class="nc"><i>26</i>&nbsp;            System.out.println(&quot;You failed!&quot;);</b>
+<b class="nc"><i>27</i>&nbsp;        }</b>
+<b class="nc"><i>28</i>&nbsp;        return 0;</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    @Override
+<i>33</i>&nbsp;    public OptionSelection getOptions(Logger logger) {
+<b class="nc"><i>34</i>&nbsp;        OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 0, false, null, getCanPass());</b>
+<i>35</i>&nbsp;        // Build is used after a Move: you can only build with the character that has moved
+<b class="nc"><i>36</i>&nbsp;        if (logger.getLastLog().getPlayerInit() == getGodLogic().getPlayer().getInitial()) {</b>
+<i>37</i>&nbsp;            Log log;
+<b class="nc"><i>38</i>&nbsp;            if (logger.getLastLog().getType() == 0) {</b>
+<b class="nc"><i>39</i>&nbsp;                log = logger.getLastLog();</b>
+<i>40</i>&nbsp;            }
+<i>41</i>&nbsp;            else {
+<i>42</i>&nbsp;                // In case there was some other power before this build
+<b class="nc"><i>43</i>&nbsp;                log = logger.getSecondToLastLog();</b>
+<i>44</i>&nbsp;            }
+<b class="nc"><i>45</i>&nbsp;            int lastWorkerUsedX = log.getAction(2);</b>
+<b class="nc"><i>46</i>&nbsp;            int lastWorkerUsedY = log.getAction(3);</b>
+<i>47</i>&nbsp;
+<b class="nc"><i>48</i>&nbsp;            opt = opt.singleOption(lastWorkerUsedX, lastWorkerUsedY);</b>
+<i>49</i>&nbsp;        }
+<b class="nc"><i>50</i>&nbsp;        return opt;</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TileView</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.server.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TileView (it.polimi.ingsw.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TileView</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/ 10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.server.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.Serializable;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;public class TileView implements Serializable {
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;    private int buildingLevel;
+<i>8</i>&nbsp;    private boolean hasDome;
+<i>9</i>&nbsp;    private char initWorker;    // &#39;?&#39; if there is no worker
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    //set to public, otherwise not testable
+<b class="fc"><i>12</i>&nbsp;    public TileView(int buildingLevel, boolean hasDome, char initWorker) {</b>
+<b class="fc"><i>13</i>&nbsp;        this.buildingLevel = buildingLevel;</b>
+<b class="fc"><i>14</i>&nbsp;        this.hasDome = hasDome;</b>
+<b class="fc"><i>15</i>&nbsp;        this.initWorker = initWorker;</b>
+<b class="fc"><i>16</i>&nbsp;    }</b>
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;    void setInitWorker(char initWorker) { this.initWorker = initWorker; }</b>
+<i>19</i>&nbsp;
+<b class="fc"><i>20</i>&nbsp;    public char getInitWorker() { return initWorker; }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public boolean hasDome() {
+<b class="fc"><i>23</i>&nbsp;        return hasDome;</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public boolean hasWorker() {
+<b class="fc"><i>27</i>&nbsp;        return this.initWorker != &#39;?&#39;;</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    public int getBuildingLevel() {
+<b class="fc"><i>31</i>&nbsp;        return buildingLevel;</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

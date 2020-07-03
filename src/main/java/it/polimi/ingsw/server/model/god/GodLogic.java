@@ -110,6 +110,7 @@ public class GodLogic {
      * Executes the turn routine, creating all the messages that the model will have to send to the view to update
      * the view's board, to request the power coordinates.
      * @param game model's main object, that initializes everything else
+     * @return Code for execution status
      */
     public int executeTurn(Game game) {
         OptionSelection opt = turn.get(currStep).getOptions(logger);

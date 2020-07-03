@@ -90,6 +90,7 @@
         <configuration>
           <source>13</source>
           <target>13</target>
+          <encoding>Cp1252</encoding>
         </configuration>
       </plugin>
       <plugin>

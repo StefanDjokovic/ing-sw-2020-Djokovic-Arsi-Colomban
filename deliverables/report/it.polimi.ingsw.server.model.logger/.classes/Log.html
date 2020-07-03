@@ -1,0 +1,161 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Log</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.server.model.logger</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Log (it.polimi.ingsw.server.model.logger)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Log</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96%
+  </span>
+  <span class="absValue">
+    (24/ 25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.server.model.logger;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.ArrayList;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;public class Log {
+<i>6</i>&nbsp;
+<b class="fc"><i>7</i>&nbsp;    private int type = -1;</b>
+<i>8</i>&nbsp;    private char playerInit;
+<i>9</i>&nbsp;    private ArrayList&lt;Integer&gt; action;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    /**
+<i>12</i>&nbsp;     * Constructor method if there are no logs, a Log of type -1 is returned
+<i>13</i>&nbsp;     */
+<i>14</i>&nbsp;    // If there are no logs a Log of type -1 is returned
+<b class="fc"><i>15</i>&nbsp;    public Log() { }</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * Constructor method that logs a turn step from a starting tile to a destination tile (type 0)
+<i>19</i>&nbsp;     * @param XFrom x coordinate of the starting tile
+<i>20</i>&nbsp;     * @param YFrom y coordinate of the starting tile
+<i>21</i>&nbsp;     * @param XTo x coordinate of the destination tile
+<i>22</i>&nbsp;     * @param YTo y coordinate of the destination tile
+<i>23</i>&nbsp;     * @param playerInit player&#39;s initial
+<i>24</i>&nbsp;     */
+<b class="fc"><i>25</i>&nbsp;    public Log(int XFrom, int YFrom, int XTo, int YTo, char playerInit) {</b>
+<b class="fc"><i>26</i>&nbsp;        action = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>27</i>&nbsp;        this.type = 0;</b>
+<b class="fc"><i>28</i>&nbsp;        action.add(XFrom);</b>
+<b class="fc"><i>29</i>&nbsp;        action.add(YFrom);</b>
+<b class="fc"><i>30</i>&nbsp;        action.add(XTo);</b>
+<b class="fc"><i>31</i>&nbsp;        action.add(YTo);</b>
+<b class="fc"><i>32</i>&nbsp;        this.playerInit = playerInit;</b>
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * Constructor method that logs a pass (type 1)
+<i>37</i>&nbsp;     * @param playerInit player&#39;s initial
+<i>38</i>&nbsp;     */
+<b class="fc"><i>39</i>&nbsp;    public Log(char playerInit) {</b>
+<b class="fc"><i>40</i>&nbsp;        this.type = 1;</b>
+<b class="fc"><i>41</i>&nbsp;        this.playerInit = playerInit;</b>
+<b class="fc"><i>42</i>&nbsp;    }</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Overriden method that returns what has been logged
+<i>46</i>&nbsp;     * @return Nothing logged&quot; if there was no log, the coordinates of starting tile and destination tile or &quot;skipped&quot; if the turn has been skipped
+<i>47</i>&nbsp;     */
+<i>48</i>&nbsp;    @Override
+<i>49</i>&nbsp;    public String toString() {
+<b class="fc"><i>50</i>&nbsp;        if (type == -1) {</b>
+<b class="fc"><i>51</i>&nbsp;            return &quot;Nothing Logged&quot;;</b>
+<i>52</i>&nbsp;        }
+<b class="fc"><i>53</i>&nbsp;        else if (type == 0) {</b>
+<b class="fc"><i>54</i>&nbsp;            return playerInit + &quot; : &quot; + action.get(0) + &quot; &quot; + action.get(1) + &quot; to &quot; + action.get(2) + &quot; &quot; + action.get(3);</b>
+<i>55</i>&nbsp;        }
+<b class="fc"><i>56</i>&nbsp;        else if (type == 1) {</b>
+<b class="fc"><i>57</i>&nbsp;            return playerInit + &quot; skipped&quot;;</b>
+<i>58</i>&nbsp;        }
+<i>59</i>&nbsp;        else
+<b class="nc"><i>60</i>&nbsp;            return &quot;STH WRONG HERE&quot;;</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    /**
+<i>64</i>&nbsp;     *
+<i>65</i>&nbsp;     * @return
+<i>66</i>&nbsp;     */
+<i>67</i>&nbsp;    public char getPlayerInit() {
+<b class="fc"><i>68</i>&nbsp;        return playerInit;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    public int getAction(int pos) {
+<b class="fc"><i>72</i>&nbsp;        return action.get(pos);</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    public int getType() {
+<b class="fc"><i>76</i>&nbsp;        return type;</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

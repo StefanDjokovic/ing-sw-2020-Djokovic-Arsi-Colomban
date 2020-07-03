@@ -1,0 +1,16 @@
+it.polimi.ingsw
+it.polimi.ingsw.client
+it.polimi.ingsw.client.networkLayer
+it.polimi.ingsw.client.view
+it.polimi.ingsw.messages
+it.polimi.ingsw.messages.answers
+it.polimi.ingsw.messages.request
+it.polimi.ingsw.server
+it.polimi.ingsw.server.controller
+it.polimi.ingsw.server.model
+it.polimi.ingsw.server.model.board
+it.polimi.ingsw.server.model.god
+it.polimi.ingsw.server.model.god.godPowers
+it.polimi.ingsw.server.model.logger
+it.polimi.ingsw.server.model.player
+it.polimi.ingsw.server.networkLayer

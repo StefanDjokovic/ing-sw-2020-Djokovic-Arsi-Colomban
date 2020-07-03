@@ -184,6 +184,7 @@ public class Game extends Observable{
     /**
      * Deletes a player after they get eliminated
      * @param initialKilled initial of player that needs to be deleted
+     * @return True if it's the current player
      */
     public boolean deletePlayer(char initialKilled) {
         boolean isCurrent = false;

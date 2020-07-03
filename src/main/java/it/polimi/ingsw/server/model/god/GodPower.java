@@ -13,7 +13,7 @@ public abstract class GodPower {
 
     /**
      * Constructor
-     * @param godLogic
+     * @param godLogic God containing the logic of the god selected
      * @param canPass true if the power can be skipped, false otherwise
      */
     public GodPower(GodLogic godLogic, boolean canPass) {

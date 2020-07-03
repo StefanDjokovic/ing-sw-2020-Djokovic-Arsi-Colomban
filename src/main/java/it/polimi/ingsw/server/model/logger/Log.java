@@ -61,8 +61,8 @@ public class Log {
     }
 
     /**
-     *
-     * @return
+     * Returns char representing the player
+     * @return Char representing the player
      */
     public char getPlayerInit() {
         return playerInit;

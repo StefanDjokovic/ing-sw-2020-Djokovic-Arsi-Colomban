@@ -1,0 +1,128 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RequestWorkerPlacement</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.messages.request</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RequestWorkerPlacement (it.polimi.ingsw.messages.request)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RequestWorkerPlacement</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.messages.request;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.client.view.ClientView;
+<i>4</i>&nbsp;import it.polimi.ingsw.messages.Answer;
+<i>5</i>&nbsp;import it.polimi.ingsw.messages.Request;
+<i>6</i>&nbsp;import it.polimi.ingsw.messages.answers.AnswerWorkersPlacement;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class RequestWorkerPlacement extends Request {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    private static final long serialVersionUID = 6529685098267757618L;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    private int[][] workers;
+<i>13</i>&nbsp;    private char initial;
+<i>14</i>&nbsp;
+<b class="nc"><i>15</i>&nbsp;    public RequestWorkerPlacement(int[][] workers, char initial) {</b>
+<b class="nc"><i>16</i>&nbsp;        this.workers = workers;</b>
+<b class="nc"><i>17</i>&nbsp;        this.initial = initial;</b>
+<b class="nc"><i>18</i>&nbsp;        this.message = &quot;Need worker position&quot;;</b>
+<i>19</i>&nbsp;    }
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    @Override
+<i>22</i>&nbsp;    public boolean isValidAnswer(Answer answer) {
+<i>23</i>&nbsp;        try {
+<b class="nc"><i>24</i>&nbsp;            AnswerWorkersPlacement answerWorkersPlacement = (AnswerWorkersPlacement) answer;</b>
+<b class="nc"><i>25</i>&nbsp;            if (workers != null) {</b>
+<b class="nc"><i>26</i>&nbsp;                for (int[] w: workers) {</b>
+<b class="nc"><i>27</i>&nbsp;                    if (w[0] == answerWorkersPlacement.getX() &amp;&amp; w[1] == answerWorkersPlacement.getY())</b>
+<b class="nc"><i>28</i>&nbsp;                        return false;</b>
+<i>29</i>&nbsp;                }
+<i>30</i>&nbsp;            }
+<b class="nc"><i>31</i>&nbsp;            return true;</b>
+<i>32</i>&nbsp;        }
+<b class="nc"><i>33</i>&nbsp;        catch (java.lang.ClassCastException e) {</b>
+<b class="nc"><i>34</i>&nbsp;            System.out.println(&quot;Not the expected Answer type! Will block&quot;);</b>
+<i>35</i>&nbsp;        }
+<b class="nc"><i>36</i>&nbsp;        return false;</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    @Override
+<i>40</i>&nbsp;    public void accept(ClientView clientView) {
+<b class="nc"><i>41</i>&nbsp;        clientView.getWorkerPlacement(workers, initial);</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<b class="nc"><i>44</i>&nbsp;    public char getInitial() { return this.initial; }</b>
+<i>45</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

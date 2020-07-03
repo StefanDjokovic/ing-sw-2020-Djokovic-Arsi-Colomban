@@ -1,0 +1,179 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CoreGUI</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.client.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CoreGUI (it.polimi.ingsw.client.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CoreGUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 35)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.client.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javafx.application.Application;
+<i>4</i>&nbsp;import javafx.scene.Scene;
+<i>5</i>&nbsp;import javafx.scene.image.Image;
+<i>6</i>&nbsp;import javafx.scene.image.ImageView;
+<i>7</i>&nbsp;import javafx.scene.layout.GridPane;
+<i>8</i>&nbsp;import javafx.stage.Stage;
+<i>9</i>&nbsp;import javafx.stage.StageStyle;
+<i>10</i>&nbsp;
+<b class="nc"><i>11</i>&nbsp;public class CoreGUI extends Application {</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    public static void main(String[] args) {
+<b class="nc"><i>14</i>&nbsp;        launch(args);</b>
+<i>15</i>&nbsp;    }
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    private static Stage thisStage;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private static CoreGUI thisGUI;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * Starts the GUI, creating the reference to the stage of the JavaFX class.
+<i>23</i>&nbsp;     * @param primaryStage Reference to the stage used by other classes to change scene.
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    @Override
+<i>26</i>&nbsp;    public void start(Stage primaryStage) {
+<b class="nc"><i>27</i>&nbsp;        synchronized (CoreGUI.class) {</b>
+<b class="nc"><i>28</i>&nbsp;            thisStage = primaryStage;</b>
+<b class="nc"><i>29</i>&nbsp;            thisGUI = this;</b>
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;            thisStage.getIcons().add(new Image((&quot;graphic_resources/resourcesGUI/iconS.png&quot;)));</b>
+<i>32</i>&nbsp;
+<b class="nc"><i>33</i>&nbsp;            GridPane g = new GridPane();</b>
+<b class="nc"><i>34</i>&nbsp;            Scene s = new Scene(g, 400, 400);</b>
+<b class="nc"><i>35</i>&nbsp;            ImageView i = new ImageView();</b>
+<b class="nc"><i>36</i>&nbsp;            g.add(i, 0, 0);</b>
+<b class="nc"><i>37</i>&nbsp;            thisStage.setResizable(false);</b>
+<b class="nc"><i>38</i>&nbsp;            i.setImage(new Image(&quot;graphic_resources/resourcesGUI/loading_bg.png&quot;));</b>
+<b class="nc"><i>39</i>&nbsp;            i.fitHeightProperty().bind(g.heightProperty());</b>
+<b class="nc"><i>40</i>&nbsp;            i.fitWidthProperty().bind(g.widthProperty());</b>
+<b class="nc"><i>41</i>&nbsp;            thisStage.setScene(s);</b>
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;//            thisStage.setMinHeight(500);
+<i>44</i>&nbsp;//            thisStage.setMinWidth(700);
+<i>45</i>&nbsp;//            thisStage.setScene(new EndUI(1).getScene());
+<i>46</i>&nbsp;//            thisStage.setResizable(true);
+<i>47</i>&nbsp;
+<b class="nc"><i>48</i>&nbsp;            primaryStage.show();</b>
+<b class="nc"><i>49</i>&nbsp;            CoreGUI.class.notifyAll();</b>
+<b class="nc"><i>50</i>&nbsp;        }</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    /**
+<i>54</i>&nbsp;     * Static method, return reference to the stage of the JavaFX class.
+<i>55</i>&nbsp;     * @return Reference to the stage of the JavaFX class.
+<i>56</i>&nbsp;     */
+<i>57</i>&nbsp;    public static Stage getStage() {
+<b class="nc"><i>58</i>&nbsp;        synchronized (CoreGUI.class) {</b>
+<i>59</i>&nbsp;            try {
+<b class="nc"><i>60</i>&nbsp;                while(thisStage == null) {</b>
+<b class="nc"><i>61</i>&nbsp;                    CoreGUI.class.wait();</b>
+<i>62</i>&nbsp;                }
+<b class="nc"><i>63</i>&nbsp;                return thisStage;</b>
+<b class="nc"><i>64</i>&nbsp;            } catch (InterruptedException e) {</b>
+<b class="nc"><i>65</i>&nbsp;                e.printStackTrace();</b>
+<i>66</i>&nbsp;            }
+<b class="nc"><i>67</i>&nbsp;        }</b>
+<b class="nc"><i>68</i>&nbsp;        return thisStage;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * Returns reference to the JavaFX class.
+<i>73</i>&nbsp;     * @return Reference to the JavaFX class.
+<i>74</i>&nbsp;     */
+<i>75</i>&nbsp;    public static CoreGUI getInstance() {
+<b class="nc"><i>76</i>&nbsp;        synchronized (CoreGUI.class) {</b>
+<i>77</i>&nbsp;            try {
+<b class="nc"><i>78</i>&nbsp;                while(thisGUI == null) {</b>
+<b class="nc"><i>79</i>&nbsp;                    CoreGUI.class.wait();</b>
+<i>80</i>&nbsp;                }
+<b class="nc"><i>81</i>&nbsp;                return thisGUI;</b>
+<b class="nc"><i>82</i>&nbsp;            } catch (InterruptedException e) {</b>
+<b class="nc"><i>83</i>&nbsp;                e.printStackTrace();</b>
+<i>84</i>&nbsp;            }
+<b class="nc"><i>85</i>&nbsp;        }</b>
+<b class="nc"><i>86</i>&nbsp;        return thisGUI;</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    /**
+<i>90</i>&nbsp;     * Stops the process correctly.
+<i>91</i>&nbsp;     */
+<i>92</i>&nbsp;    @Override
+<i>93</i>&nbsp;    public void stop(){
+<b class="nc"><i>94</i>&nbsp;        System.exit(0);</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

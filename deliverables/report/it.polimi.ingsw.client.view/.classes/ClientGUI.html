@@ -1,0 +1,487 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientGUI</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.client.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientGUI (it.polimi.ingsw.client.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientGUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 39)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 122)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.client.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.client.networkLayer.Client;
+<i>4</i>&nbsp;import it.polimi.ingsw.messages.Answer;
+<i>5</i>&nbsp;import it.polimi.ingsw.messages.LobbyView;
+<i>6</i>&nbsp;import it.polimi.ingsw.messages.OptionSelection;
+<i>7</i>&nbsp;import it.polimi.ingsw.messages.Request;
+<i>8</i>&nbsp;import it.polimi.ingsw.messages.answers.*;
+<i>9</i>&nbsp;import it.polimi.ingsw.server.model.BoardView;
+<i>10</i>&nbsp;import it.polimi.ingsw.server.model.TileView;
+<i>11</i>&nbsp;import javafx.application.Platform;
+<i>12</i>&nbsp;import javafx.stage.Stage;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import java.io.IOException;
+<i>15</i>&nbsp;import java.lang.reflect.Array;
+<i>16</i>&nbsp;import java.util.ArrayList;
+<i>17</i>&nbsp;import java.util.stream.Collectors;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;public class ClientGUI extends ClientView {
+<i>20</i>&nbsp;    private BoardView bv;
+<i>21</i>&nbsp;    private TileView[][] boardView;
+<i>22</i>&nbsp;    private static ClientGUI instance;
+<i>23</i>&nbsp;    private String playerName;
+<i>24</i>&nbsp;    private ArrayList&lt;String&gt; players;
+<i>25</i>&nbsp;    private ArrayList&lt;String&gt; otherGods;
+<b class="nc"><i>26</i>&nbsp;    private int playersNum = 1;</b>
+<i>27</i>&nbsp;    private char playerInit;
+<b class="nc"><i>28</i>&nbsp;    private ArrayList&lt;String&gt; selectedGods = new ArrayList&lt;&gt;();</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    private LoginUI login;
+<i>31</i>&nbsp;    private GodSelectionUI selection;
+<i>32</i>&nbsp;    private GameUI game;
+<i>33</i>&nbsp;    private LobbyUI lobby;
+<i>34</i>&nbsp;    private boolean joining;
+<i>35</i>&nbsp;    private int chosenLobby;
+<i>36</i>&nbsp;    private int chosenNumPlayers;
+<i>37</i>&nbsp;    private boolean isFinished;
+<i>38</i>&nbsp;
+<b class="nc"><i>39</i>&nbsp;    public ClientGUI() {</b>
+<b class="nc"><i>40</i>&nbsp;        instance = this;</b>
+<b class="nc"><i>41</i>&nbsp;        ThreadGUI tg = new ThreadGUI();</b>
+<b class="nc"><i>42</i>&nbsp;        tg.start();</b>
+<b class="nc"><i>43</i>&nbsp;        isFinished = false;</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public char getPlayerInitial() {
+<b class="nc"><i>47</i>&nbsp;        return this.playerInit;</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    /**
+<i>51</i>&nbsp;     * Gets called when one of the observed classes sends an update,
+<i>52</i>&nbsp;     * the view acts accordingly to the content of the received Request message
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    @Override
+<i>55</i>&nbsp;    public void update(Request request) {
+<b class="nc"><i>56</i>&nbsp;        request.printMessage();</b>
+<b class="nc"><i>57</i>&nbsp;        request.accept(this);</b>
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;    @Override
+<i>60</i>&nbsp;    public void update(Answer answer) {
+<b class="nc"><i>61</i>&nbsp;        System.out.println(&quot;clientGUI should not receive answers&quot;);</b>
+<i>62</i>&nbsp;    }
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    /**
+<i>65</i>&nbsp;     * Returns static instance of clientGUI, used by JavaFX class to send information to the server.
+<i>66</i>&nbsp;     */
+<i>67</i>&nbsp;    public static ClientGUI getInstance() {
+<b class="nc"><i>68</i>&nbsp;        return instance;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * Saves the names of the other players in the match as a list of strings.
+<i>73</i>&nbsp;     * @param pl ArrayList of strings representing the names of the players.
+<i>74</i>&nbsp;     */
+<i>75</i>&nbsp;    public void setOtherPlayers(ArrayList&lt;String&gt; pl) {
+<b class="nc"><i>76</i>&nbsp;        this.players = pl;</b>
+<b class="nc"><i>77</i>&nbsp;        this.playersNum = pl.stream().map(x -&gt; 1).reduce(0, Integer::sum) + 1;</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    /**
+<i>81</i>&nbsp;     * Returns list of the other players. Used by JavaFX class to display names on the GUI.
+<i>82</i>&nbsp;     * @return ArrayList of strings representing the names of the players.
+<i>83</i>&nbsp;     */
+<i>84</i>&nbsp;    public ArrayList&lt;String&gt; getPlayers() {
+<b class="nc"><i>85</i>&nbsp;        return this.players;</b>
+<i>86</i>&nbsp;    }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    /**
+<i>89</i>&nbsp;     * Returns number of players in the match.
+<i>90</i>&nbsp;     * @return int representing the number of players in the match.
+<i>91</i>&nbsp;     */
+<i>92</i>&nbsp;    public int getPlayersNum() {
+<b class="nc"><i>93</i>&nbsp;        return this.playersNum;</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    /**
+<i>97</i>&nbsp;     * Returns the name of the player using this client.
+<i>98</i>&nbsp;     * @return String containing the name of the player using this client.
+<i>99</i>&nbsp;     */
+<i>100</i>&nbsp;    public String getName() {
+<b class="nc"><i>101</i>&nbsp;        return this.playerName;</b>
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;    /**
+<i>105</i>&nbsp;     * Returns a character representing the player in the match. Should be unique.
+<i>106</i>&nbsp;     * @return Character of the player using this client.
+<i>107</i>&nbsp;     */
+<i>108</i>&nbsp;    public char getInit() {
+<b class="nc"><i>109</i>&nbsp;        return this.playerInit;</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    /**
+<i>113</i>&nbsp;     * Returns list of gods selected by the player using this client.
+<i>114</i>&nbsp;     * @return List of gods selected by the player using this client.
+<i>115</i>&nbsp;     */
+<i>116</i>&nbsp;    public ArrayList&lt;String&gt; getGods() {
+<b class="nc"><i>117</i>&nbsp;        return this.selectedGods;</b>
+<i>118</i>&nbsp;    }
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;    /**
+<i>121</i>&nbsp;     * Receives the BoardView containing the current situation of the board and updates it, displaying it in the GUI.
+<i>122</i>&nbsp;     * @param bv BoardView containing a representation of the board.
+<i>123</i>&nbsp;     */
+<i>124</i>&nbsp;    public void updateBoardView(BoardView bv) {
+<b class="nc"><i>125</i>&nbsp;        this.bv=bv;</b>
+<b class="nc"><i>126</i>&nbsp;        if(game != null) {</b>
+<b class="nc"><i>127</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>128</i>&nbsp;                game.updateBoard(bv.getBoardView());</b>
+<i>129</i>&nbsp;            });
+<i>130</i>&nbsp;        }
+<i>131</i>&nbsp;    }
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * Server type function, asks the client to answer with the name. In the GUI it starts the scene containing the login page(LoginUI).
+<i>135</i>&nbsp;     */
+<i>136</i>&nbsp;    public void getPlayerInfo() {
+<b class="nc"><i>137</i>&nbsp;        Stage ss = CoreGUI.getStage();</b>
+<b class="nc"><i>138</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>139</i>&nbsp;            login = new LoginUI(joining);</b>
+<b class="nc"><i>140</i>&nbsp;            ss.setScene(login.getScene());</b>
+<b class="nc"><i>141</i>&nbsp;            ss.setTitle(&quot;Login phase&quot;);</b>
+<b class="nc"><i>142</i>&nbsp;            ss.setResizable(true);</b>
+<b class="nc"><i>143</i>&nbsp;            ss.setMinHeight(420);</b>
+<b class="nc"><i>144</i>&nbsp;            ss.setMinWidth(420);</b>
+<i>145</i>&nbsp;        });
+<i>146</i>&nbsp;    }
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;    /**
+<i>149</i>&nbsp;     * Sends the information asked with &quot;getPlayerInfo()&quot; to server. Called by LoginUI.class.
+<i>150</i>&nbsp;     * @param name Name of the player using this client.
+<i>151</i>&nbsp;     * @param playerNum Preferred number of players selected by the player using this client.
+<i>152</i>&nbsp;     */
+<i>153</i>&nbsp;    public void sendPlayerInfo(String name, int playerNum) {
+<b class="nc"><i>154</i>&nbsp;        this.playerName = name;</b>
+<b class="nc"><i>155</i>&nbsp;        if(joining) {</b>
+<b class="nc"><i>156</i>&nbsp;            updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, -1));</b>
+<i>157</i>&nbsp;        } else {
+<b class="nc"><i>158</i>&nbsp;            updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, playerNum));</b>
+<i>159</i>&nbsp;        }
+<i>160</i>&nbsp;    }
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;    /**
+<i>163</i>&nbsp;     * Server type function, asks the client to answer with the god. In the GUI it starts the scene containing the god selection page(GodSelectionUI).
+<i>164</i>&nbsp;     * @param initial Character unique for the player using this client (assigned by server).
+<i>165</i>&nbsp;     * @param options List of gods that the player can select.
+<i>166</i>&nbsp;     */
+<i>167</i>&nbsp;    public void getPlayerGod(char initial, ArrayList&lt;String&gt; options, int nPicks) {
+<b class="nc"><i>168</i>&nbsp;        playerInit = initial;</b>
+<b class="nc"><i>169</i>&nbsp;        Stage ss = CoreGUI.getStage();</b>
+<b class="nc"><i>170</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>171</i>&nbsp;            selection = new GodSelectionUI();</b>
+<b class="nc"><i>172</i>&nbsp;            ss.setScene(selection.getScene());</b>
+<b class="nc"><i>173</i>&nbsp;            ss.setTitle(&quot;God selection&quot;);</b>
+<b class="nc"><i>174</i>&nbsp;            ss.setMinHeight(300);</b>
+<b class="nc"><i>175</i>&nbsp;            ss.setMinWidth(350);</b>
+<b class="nc"><i>176</i>&nbsp;            selection.startGodSelection(options, nPicks);</b>
+<i>177</i>&nbsp;        });
+<i>178</i>&nbsp;    }
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;    /**
+<i>181</i>&nbsp;     * Sends the information asked with &quot;getPlayerGod(...)&quot; to server. Called by GodSelectionUI.class.
+<i>182</i>&nbsp;     * @param gods List of gods selected by the player (can be 1 or more).
+<i>183</i>&nbsp;     */
+<i>184</i>&nbsp;    public void sendGods(ArrayList&lt;String&gt; gods, boolean first) {
+<i>185</i>&nbsp;        //this.selectedGods = gods;
+<b class="nc"><i>186</i>&nbsp;        if (first) {</b>
+<b class="nc"><i>187</i>&nbsp;            updateObservers(new AnswerPlayerGod(gods, this.playerInit));</b>
+<i>188</i>&nbsp;        } else {
+<b class="nc"><i>189</i>&nbsp;            updateObservers(new AnswerPlayerGod(gods.get(0), this.playerInit));</b>
+<i>190</i>&nbsp;        }
+<i>191</i>&nbsp;    }
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;    /**
+<i>194</i>&nbsp;     * Server type function, asks the client to answer with the position of 1 tile on the board to place a worker. In the GUI it starts the scene containing the game page(GameUI).
+<i>195</i>&nbsp;     * @param workers Matrix containing the tiles already occupied by other workers.
+<i>196</i>&nbsp;     * @param initial Character unique for the player using this client (check).
+<i>197</i>&nbsp;     */
+<i>198</i>&nbsp;    public void getWorkerPlacement(int[][] workers, char initial) {
+<i>199</i>&nbsp;
+<b class="nc"><i>200</i>&nbsp;        Stage ss = CoreGUI.getStage();</b>
+<b class="nc"><i>201</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>202</i>&nbsp;            game = new GameUI();</b>
+<b class="nc"><i>203</i>&nbsp;            ss.setScene(game.getScene());</b>
+<b class="nc"><i>204</i>&nbsp;            ss.setTitle(&quot;Santorini&quot;);</b>
+<b class="nc"><i>205</i>&nbsp;            ss.setMinHeight(600);</b>
+<b class="nc"><i>206</i>&nbsp;            ss.setMinWidth(650);</b>
+<b class="nc"><i>207</i>&nbsp;            game.updateBoard(bv.getBoardView());</b>
+<b class="nc"><i>208</i>&nbsp;            game.placeWorkers(workers);</b>
+<b class="nc"><i>209</i>&nbsp;            ss.setResizable(false);</b>
+<i>210</i>&nbsp;        });
+<i>211</i>&nbsp;    }
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;    /**
+<i>214</i>&nbsp;     * Sends the information asked with &quot;getWorkerPlacement(...)&quot; to server. Called by GameUI.class.
+<i>215</i>&nbsp;     * @param tiles List containing the coordinates of the selected tile (position of the worker).
+<i>216</i>&nbsp;     */
+<i>217</i>&nbsp;    public void sendWorkerPlacement(ArrayList&lt;String&gt; tiles) {
+<b class="nc"><i>218</i>&nbsp;        updateObservers(new AnswerWorkersPlacement(tiles.get(0).charAt(0) - 48, tiles.get(0).charAt(2) - 48, playerInit));</b>
+<i>219</i>&nbsp;    }
+<i>220</i>&nbsp;
+<i>221</i>&nbsp;    /**
+<i>222</i>&nbsp;     * Server type function, if opt.size() = 2 it asks the client to answer with the position of 1 worker on the board to move. If opt.size() = 1 it asks the client to answer with the tile where the player wants to build.
+<i>223</i>&nbsp;     * @param opt Possible workers the player can select.
+<i>224</i>&nbsp;     * @param canPass Boolean, true if the player can skip this phase.
+<i>225</i>&nbsp;     */
+<i>226</i>&nbsp;    public void getSelectedWorker(OptionSelection opt, boolean canPass) {
+<b class="nc"><i>227</i>&nbsp;        if (canPass) {</b>
+<b class="nc"><i>228</i>&nbsp;            game.makeSkippable();</b>
+<i>229</i>&nbsp;        }
+<b class="nc"><i>230</i>&nbsp;        if(opt.getValues().size() == 2) {</b>
+<b class="nc"><i>231</i>&nbsp;            game.selectWorker(opt);</b>
+<b class="nc"><i>232</i>&nbsp;        } else if (opt.getValues().size() == 1) {</b>
+<b class="nc"><i>233</i>&nbsp;            game.selectWorkerOneOption(opt);</b>
+<i>234</i>&nbsp;        }
+<i>235</i>&nbsp;    }
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;    /**
+<i>238</i>&nbsp;     * Sends the information asked with &quot;getSelectedWorker(...)&quot; to server. Called by GameUI.class.
+<i>239</i>&nbsp;     * @param pow Coordinates of the selected tile/worker, based on information contained in getSelectedWorker(...).
+<i>240</i>&nbsp;     */
+<i>241</i>&nbsp;    public void sendPower(ArrayList&lt;Integer&gt; pow) {
+<b class="nc"><i>242</i>&nbsp;        Answer answer = new AnswerPowerCoordinates(pow.get(0), pow.get(1), pow.get(2), pow.get(3));</b>
+<i>243</i>&nbsp;
+<b class="nc"><i>244</i>&nbsp;        updateObservers(answer);</b>
+<i>245</i>&nbsp;    }
+<i>246</i>&nbsp;
+<i>247</i>&nbsp;    /**
+<i>248</i>&nbsp;     * Signals to the server that the player wants to skip this phase.
+<i>249</i>&nbsp;     */
+<i>250</i>&nbsp;    public void sendPass() {
+<b class="nc"><i>251</i>&nbsp;        updateObservers(new AnswerPowerCoordinates());</b>
+<i>252</i>&nbsp;    }
+<i>253</i>&nbsp;
+<i>254</i>&nbsp;    //??????
+<i>255</i>&nbsp;    public void getWorkerSelection(OptionSelection opt, boolean canPass) {
+<i>256</i>&nbsp;
+<i>257</i>&nbsp;    }
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;    /**
+<i>260</i>&nbsp;     * Displays final message based on who won.
+<i>261</i>&nbsp;     * @param winnerInit Character of the player that won the match.
+<i>262</i>&nbsp;     */
+<i>263</i>&nbsp;    public void displayGameEnd(char winnerInit) {
+<i>264</i>&nbsp;        int won;
+<i>265</i>&nbsp;
+<b class="nc"><i>266</i>&nbsp;        if(winnerInit == playerInit) {</b>
+<b class="nc"><i>267</i>&nbsp;            won = 0;</b>
+<i>268</i>&nbsp;        } else {
+<b class="nc"><i>269</i>&nbsp;            won = 1;</b>
+<i>270</i>&nbsp;        }
+<i>271</i>&nbsp;
+<b class="nc"><i>272</i>&nbsp;        Stage ss = CoreGUI.getStage();</b>
+<b class="nc"><i>273</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>274</i>&nbsp;            EndUI e = new EndUI(won);</b>
+<b class="nc"><i>275</i>&nbsp;            CoreGUI.getStage().setScene(e.getScene());</b>
+<i>276</i>&nbsp;            //ss.setMinHeight(500);
+<i>277</i>&nbsp;            //ss.setMinWidth(500);
+<b class="nc"><i>278</i>&nbsp;            ss.setTitle(&quot;End&quot;);</b>
+<i>279</i>&nbsp;        });
+<b class="nc"><i>280</i>&nbsp;        isFinished = true;</b>
+<i>281</i>&nbsp;    }
+<i>282</i>&nbsp;
+<i>283</i>&nbsp;    /**
+<i>284</i>&nbsp;     * Displays final message in case of loss because of no option
+<i>285</i>&nbsp;     */
+<i>286</i>&nbsp;    public void displayGameEnd() {
+<b class="nc"><i>287</i>&nbsp;        Stage ss = CoreGUI.getStage();</b>
+<b class="nc"><i>288</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>289</i>&nbsp;            EndUI e = new EndUI(1);</b>
+<b class="nc"><i>290</i>&nbsp;            CoreGUI.getStage().setScene(e.getScene());</b>
+<i>291</i>&nbsp;            //ss.setMinHeight(500);
+<i>292</i>&nbsp;            //ss.setMinWidth(500);
+<b class="nc"><i>293</i>&nbsp;            ss.setTitle(&quot;End&quot;);</b>
+<i>294</i>&nbsp;        });
+<b class="nc"><i>295</i>&nbsp;        isFinished = true;</b>
+<i>296</i>&nbsp;    }
+<i>297</i>&nbsp;
+<i>298</i>&nbsp;    //needed but not used
+<i>299</i>&nbsp;    public void displayBoard() {
+<i>300</i>&nbsp;    }
+<i>301</i>&nbsp;
+<i>302</i>&nbsp;    public void setGameInformation(ArrayList&lt;String&gt; playersName, ArrayList&lt;Character&gt; playersInitial, int nPlayers) {
+<i>303</i>&nbsp;        //this.players =  playersInitial.stream().map(String::valueOf).collect(Collectors.toCollection(ArrayList::new));
+<i>304</i>&nbsp;        //this.players = playersName;
+<i>305</i>&nbsp;    }
+<i>306</i>&nbsp;
+<i>307</i>&nbsp;    public ArrayList&lt;String&gt; getOtherGods () {
+<b class="nc"><i>308</i>&nbsp;        return otherGods;</b>
+<i>309</i>&nbsp;    }
+<i>310</i>&nbsp;
+<i>311</i>&nbsp;    @Override
+<i>312</i>&nbsp;    public void setGodInformation(ArrayList&lt;String&gt; playersName, ArrayList&lt;Character&gt; playersInitial, ArrayList&lt;String&gt; godNames, int nPlayers) {
+<b class="nc"><i>313</i>&nbsp;        this.otherGods = godNames;</b>
+<b class="nc"><i>314</i>&nbsp;        this.players =  playersInitial.stream().map(String::valueOf).collect(Collectors.toCollection(ArrayList::new));</b>
+<i>315</i>&nbsp;
+<b class="nc"><i>316</i>&nbsp;        for (int i = 0 ; i &lt; playersName.size() ; i++) {</b>
+<b class="nc"><i>317</i>&nbsp;            if (playersName.get(i).equals(getName())) {</b>
+<b class="nc"><i>318</i>&nbsp;                selectedGods.add(godNames.get(i));</b>
+<i>319</i>&nbsp;            }
+<i>320</i>&nbsp;        }
+<i>321</i>&nbsp;    }
+<i>322</i>&nbsp;
+<i>323</i>&nbsp;    // TODO: change to show who is moving
+<i>324</i>&nbsp;    public void waitingOpponent(char playerInit) {
+<i>325</i>&nbsp;    }
+<i>326</i>&nbsp;
+<b class="nc"><i>327</i>&nbsp;    boolean isActive = false;</b>
+<i>328</i>&nbsp;    ArrayList&lt;LobbyView&gt; currLobbies;
+<i>329</i>&nbsp;
+<i>330</i>&nbsp;    /**
+<i>331</i>&nbsp;     * Server type function, sends information about current active matches. In the GUI it starts the scene containing the lobby selection page(LobbyUI).
+<i>332</i>&nbsp;     * @param lobbies Information about every active match hosted by the server.
+<i>333</i>&nbsp;     * @param error Status flag, used to notify that there is no match available.
+<i>334</i>&nbsp;     */
+<i>335</i>&nbsp;    public void lobbyAndNameSelection(ArrayList&lt;LobbyView&gt; lobbies, int error) {
+<b class="nc"><i>336</i>&nbsp;        currLobbies = lobbies;</b>
+<b class="nc"><i>337</i>&nbsp;        if (error != 0 &amp;&amp; error != 2) {</b>
+<b class="nc"><i>338</i>&nbsp;            System.out.println(&quot;Lobby error: &quot;+ error);</b>
+<i>339</i>&nbsp;            //return;
+<i>340</i>&nbsp;        }
+<i>341</i>&nbsp;
+<b class="nc"><i>342</i>&nbsp;        if (!isActive) {</b>
+<b class="nc"><i>343</i>&nbsp;            isActive = true;</b>
+<b class="nc"><i>344</i>&nbsp;            Stage ss = CoreGUI.getStage();</b>
+<b class="nc"><i>345</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>346</i>&nbsp;                lobby = new LobbyUI();</b>
+<b class="nc"><i>347</i>&nbsp;                ss.setScene(lobby.getScene());</b>
+<b class="nc"><i>348</i>&nbsp;                ss.setResizable(true);</b>
+<b class="nc"><i>349</i>&nbsp;                ss.setMinHeight(500);</b>
+<b class="nc"><i>350</i>&nbsp;                ss.setMinWidth(600);</b>
+<b class="nc"><i>351</i>&nbsp;                ss.setResizable(true);</b>
+<b class="nc"><i>352</i>&nbsp;                ss.setTitle(&quot;Lobby selection&quot;);</b>
+<b class="nc"><i>353</i>&nbsp;                lobby.refresh(lobbies);</b>
+<i>354</i>&nbsp;            });
+<b class="nc"><i>355</i>&nbsp;        } else {</b>
+<b class="nc"><i>356</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>357</i>&nbsp;                lobby.refresh(lobbies);</b>
+<i>358</i>&nbsp;            });
+<i>359</i>&nbsp;        }
+<i>360</i>&nbsp;    }
+<i>361</i>&nbsp;
+<i>362</i>&nbsp;    /**
+<i>363</i>&nbsp;     * Sends the information asked with &quot;lobbyAndNameSelection(...)&quot; to server. Called by LobbyUI.class.
+<i>364</i>&nbsp;     * @param number Room number selected.
+<i>365</i>&nbsp;     * @param isJoining True if the player is joining a match or creating one.
+<i>366</i>&nbsp;     * @param plNum Selected number of players, &quot;-1&quot; if the player is joining.
+<i>367</i>&nbsp;     */
+<i>368</i>&nbsp;    public void sendLobbySelection(int number, boolean isJoining, int plNum) {
+<b class="nc"><i>369</i>&nbsp;        joining = isJoining;</b>
+<b class="nc"><i>370</i>&nbsp;        chosenLobby = number;</b>
+<b class="nc"><i>371</i>&nbsp;        chosenNumPlayers = plNum;</b>
+<i>372</i>&nbsp;
+<b class="nc"><i>373</i>&nbsp;        if (number == 0) {</b>
+<b class="nc"><i>374</i>&nbsp;            updateObservers(new AnswerLobbyAndName(chosenLobby, playerName, plNum));</b>
+<i>375</i>&nbsp;        } else {
+<b class="nc"><i>376</i>&nbsp;            getPlayerInfo();</b>
+<b class="nc"><i>377</i>&nbsp;            isActive = false;</b>
+<i>378</i>&nbsp;        }
+<i>379</i>&nbsp;    }
+<i>380</i>&nbsp;
+<i>381</i>&nbsp;    /**
+<i>382</i>&nbsp;     * Restarts the process of connection and login (unused)
+<i>383</i>&nbsp;     */
+<i>384</i>&nbsp;    public void replay() {
+<i>385</i>&nbsp;        //TODO reconnect!
+<i>386</i>&nbsp;        //sendLobbySelection(0, false, -1);
+<b class="nc"><i>387</i>&nbsp;        lobbyAndNameSelection(null, 0);</b>
+<i>388</i>&nbsp;    }
+<i>389</i>&nbsp;
+<i>390</i>&nbsp;    /**
+<i>391</i>&nbsp;     * Notifies to the player that the connection to the server has been lost
+<i>392</i>&nbsp;     */
+<i>393</i>&nbsp;    public void displayLostConnection() {
+<b class="nc"><i>394</i>&nbsp;        if (!isFinished) {</b>
+<b class="nc"><i>395</i>&nbsp;            Stage ss = CoreGUI.getStage();</b>
+<b class="nc"><i>396</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>397</i>&nbsp;                EndUI e = new EndUI(2);</b>
+<b class="nc"><i>398</i>&nbsp;                ss.setScene(e.getScene());</b>
+<b class="nc"><i>399</i>&nbsp;                ss.setMinHeight(500);</b>
+<b class="nc"><i>400</i>&nbsp;                ss.setMinWidth(500);</b>
+<i>401</i>&nbsp;            });
+<i>402</i>&nbsp;        }
+<i>403</i>&nbsp;    }
+<i>404</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

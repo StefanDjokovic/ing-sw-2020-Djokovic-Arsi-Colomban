@@ -44,7 +44,9 @@ public class ClientCLI extends ClientView {
 
     /**
      * Sets the player's initial as decided by the model
-     * @param
+     * @param playersName Name of the player
+     * @param playersInitial Char representing the player
+     * @param nPlayers Number of players in the match
      */
     @Override
     public void setGameInformation(ArrayList<String> playersName,

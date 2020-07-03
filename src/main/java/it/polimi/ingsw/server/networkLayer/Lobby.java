@@ -33,7 +33,7 @@ public class Lobby {
 
     /**
      * Tells the caller if the specified player is already in the lobby
-     * @param playerName
+     * @param playerName Name of the player to look for
      * @return true if the player is not in the lobby, false if it already is
      */
     public boolean isAvailable(String playerName) {

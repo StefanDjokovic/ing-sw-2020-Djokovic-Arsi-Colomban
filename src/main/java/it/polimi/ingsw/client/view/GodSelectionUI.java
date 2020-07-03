@@ -194,6 +194,7 @@ public class GodSelectionUI {
     /**
      * Starts the scene using only the cards allowed by the server
      * @param options List of gods the player can choose from
+     * @param nPicks Number of gods the player must choose
      */
     public void startGodSelection(ArrayList<String> options, int nPicks) {
         godButtons.stream().forEach(x -> {

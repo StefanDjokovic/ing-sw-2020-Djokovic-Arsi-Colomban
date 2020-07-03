@@ -1,0 +1,140 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AnswerPowerCoordinates</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.messages.answers</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AnswerPowerCoordinates (it.polimi.ingsw.messages.answers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnswerPowerCoordinates</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.messages.answers;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.server.controller.Controller;
+<i>4</i>&nbsp;import it.polimi.ingsw.messages.Answer;
+<i>5</i>&nbsp;import it.polimi.ingsw.server.controller.ControllerView;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public class AnswerPowerCoordinates extends Answer {
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    private static final long serialVersionUID = 6529685098267757603L;
+<i>10</i>&nbsp;
+<b class="nc"><i>11</i>&nbsp;    private int posXFrom = -1;</b>
+<i>12</i>&nbsp;    private int posYFrom;
+<i>13</i>&nbsp;    private int posXTo;
+<i>14</i>&nbsp;    private int posYTo;
+<i>15</i>&nbsp;
+<b class="nc"><i>16</i>&nbsp;    public AnswerPowerCoordinates(int posXFrom, int posYFrom, int posXTo, int posYTo) {</b>
+<b class="nc"><i>17</i>&nbsp;        message = &quot;Answer move coordinates&quot;;</b>
+<b class="nc"><i>18</i>&nbsp;        this.posXFrom = posXFrom;</b>
+<b class="nc"><i>19</i>&nbsp;        this.posYFrom = posYFrom;</b>
+<b class="nc"><i>20</i>&nbsp;        this.posXTo = posXTo;</b>
+<b class="nc"><i>21</i>&nbsp;        this.posYTo = posYTo;</b>
+<i>22</i>&nbsp;    }
+<i>23</i>&nbsp;
+<b class="nc"><i>24</i>&nbsp;    public AnswerPowerCoordinates() {</b>
+<b class="nc"><i>25</i>&nbsp;        message = &quot;Answer move coordinates&quot;;</b>
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    public int getPosXFrom() {
+<b class="nc"><i>29</i>&nbsp;        return posXFrom;</b>
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    public int getPosYFrom() {
+<b class="nc"><i>33</i>&nbsp;        return posYFrom;</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public int getPosXTo() {
+<b class="nc"><i>37</i>&nbsp;        return posXTo;</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public int getPosYTo() {
+<b class="nc"><i>41</i>&nbsp;        return posYTo;</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    @Override
+<i>45</i>&nbsp;    public void printMessage() {
+<b class="nc"><i>46</i>&nbsp;        System.out.println(&quot;Coordinates of choice: from &quot; + posXFrom + &quot;,&quot; + posYFrom + &quot; ; to &quot; + posXTo + &quot;,&quot; + posYTo);</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    @Override
+<i>50</i>&nbsp;    public void act(ControllerView controller) {
+<b class="nc"><i>51</i>&nbsp;        if (posXFrom == -1)</b>
+<b class="nc"><i>52</i>&nbsp;            controller.executePass();</b>
+<i>53</i>&nbsp;        else
+<b class="nc"><i>54</i>&nbsp;            controller.executeMoveOrBuild(posXFrom, posYFrom, posXTo, posYTo);</b>
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

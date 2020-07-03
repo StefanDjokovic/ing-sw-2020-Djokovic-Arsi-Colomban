@@ -179,6 +179,7 @@ public class Controller implements Observer, ControllerView {
      * Called after a player is removed from the game. If there are still players with uninitialized gods, it initializes them.
      * If there are still players with uninitialized workers, it initializes them.
      * Otherwise, it starts the game
+     * @param isCurrent True if it's the current player
      */
     public void gameContinueOnKillPlayer(boolean isCurrent) {
         if (game.nPlayersWithGod() != game.nPlayers()) {

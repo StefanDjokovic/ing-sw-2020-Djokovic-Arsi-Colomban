@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ClientGUI extends ClientView {
     private BoardView bv;
@@ -62,6 +63,7 @@ public class ClientGUI extends ClientView {
 
     /**
      * Returns static instance of clientGUI, used by JavaFX class to send information to the server.
+     * @return reference to the ClientGUI class
      */
     public static ClientGUI getInstance() {
         return instance;
@@ -179,6 +181,7 @@ public class ClientGUI extends ClientView {
     /**
      * Sends the information asked with "getPlayerGod(...)" to server. Called by GodSelectionUI.class.
      * @param gods List of gods selected by the player (can be 1 or more).
+     * @param first True if the god selection UI has already been called
      */
     public void sendGods(ArrayList<String> gods, boolean first) {
         //this.selectedGods = gods;
@@ -299,7 +302,8 @@ public class ClientGUI extends ClientView {
     }
 
     public void setGameInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, int nPlayers) {
-        this.players = playersName;
+        //this.players =  playersInitial.stream().map(String::valueOf).collect(Collectors.toCollection(ArrayList::new));
+        //this.players = playersName;
     }
 
     public ArrayList<String> getOtherGods () {
@@ -309,6 +313,7 @@ public class ClientGUI extends ClientView {
     @Override
     public void setGodInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, ArrayList<String> godNames, int nPlayers) {
         this.otherGods = godNames;
+        this.players =  playersInitial.stream().map(String::valueOf).collect(Collectors.toCollection(ArrayList::new));
 
         for (int i = 0 ; i < playersName.size() ; i++) {
             if (playersName.get(i).equals(getName())) {

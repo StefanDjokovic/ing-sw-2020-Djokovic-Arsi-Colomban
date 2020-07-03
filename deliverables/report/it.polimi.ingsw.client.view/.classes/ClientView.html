@@ -1,0 +1,109 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientView</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.client.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientView (it.polimi.ingsw.client.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.client.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Observable;
+<i>4</i>&nbsp;import it.polimi.ingsw.Observer;
+<i>5</i>&nbsp;import it.polimi.ingsw.messages.LobbyView;
+<i>6</i>&nbsp;import it.polimi.ingsw.messages.OptionSelection;
+<i>7</i>&nbsp;import it.polimi.ingsw.server.model.BoardView;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.util.ArrayList;
+<i>10</i>&nbsp;
+<b class="nc"><i>11</i>&nbsp;public abstract class ClientView extends Observable implements Observer {</b>
+<i>12</i>&nbsp;    public abstract void updateBoardView(BoardView boardView);
+<i>13</i>&nbsp;    public abstract char getPlayerInitial();
+<i>14</i>&nbsp;    public abstract void getPlayerGod(char initial, ArrayList&lt;String&gt; options, int nPicks);
+<i>15</i>&nbsp;    public abstract void getWorkerPlacement(int[][] workers, char initial);
+<i>16</i>&nbsp;    public abstract void getSelectedWorker(OptionSelection opt, boolean canPass);
+<i>17</i>&nbsp;    public abstract void getWorkerSelection(OptionSelection opt, boolean canPass);
+<i>18</i>&nbsp;    public abstract void displayGameEnd(char winnerInit);
+<i>19</i>&nbsp;    public abstract void displayGameEnd();  // When one player loses
+<i>20</i>&nbsp;    public abstract void waitingOpponent(char opponentInitial);
+<i>21</i>&nbsp;    public abstract void setGameInformation(ArrayList&lt;String&gt; playersName, ArrayList&lt;Character&gt; playersInitial, int nPlayers);
+<i>22</i>&nbsp;    public abstract void setGodInformation(ArrayList&lt;String&gt; playersName, ArrayList&lt;Character&gt; playersInitial, ArrayList&lt;String&gt; godNames, int nPlayers);
+<i>23</i>&nbsp;    public abstract void displayBoard();
+<i>24</i>&nbsp;    public abstract void lobbyAndNameSelection(ArrayList&lt;LobbyView&gt; lobbies, int error);
+<i>25</i>&nbsp;    public abstract void displayLostConnection();
+<i>26</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

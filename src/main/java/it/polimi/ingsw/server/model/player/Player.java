@@ -45,8 +45,8 @@ public class Player {
     /**
      * Sets the god logic of the player.
      * @param godLogic String containing the name of the god logic to implement.
-     * @param logger
-     * @param board
+     * @param logger Logger of the match containing the info about the turns
+     * @param board Reference to the board containing the tiles
      * @return Reference to the god logic class implemented.
      */
     public GodLogic setGodLogic(String godLogic, Logger logger, Board board) {
@@ -94,6 +94,7 @@ public class Player {
     /**
      * Starts executing the turn routine
      * @param game model's main object, that initializes everything else
+     * @return code check for game status
      */
     public int executeTurn(Game game) {
         return godLogic.executeTurn(game);

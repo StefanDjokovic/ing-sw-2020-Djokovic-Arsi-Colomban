@@ -1,0 +1,214 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OptionSelection</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.messages</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OptionSelection (it.polimi.ingsw.messages)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OptionSelection</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (3/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7,2%
+  </span>
+  <span class="absValue">
+    (5/ 69)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.messages;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javax.swing.text.html.Option;
+<i>4</i>&nbsp;import java.io.Serializable;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;
+<b class="fc"><i>7</i>&nbsp;public class OptionSelection implements Serializable {</b>
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    private static final long serialVersionUID = 6529685098267757620L;
+<i>10</i>&nbsp;
+<b class="fc"><i>11</i>&nbsp;    private ArrayList&lt;ArrayList&lt;Integer&gt;&gt; values = new ArrayList&lt;&gt;();</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    public void setOptions(ArrayList&lt;Integer&gt; positions) {
+<b class="nc"><i>15</i>&nbsp;        values.add(positions);</b>
+<b class="nc"><i>16</i>&nbsp;    }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    public void addWorkerOptions(ArrayList&lt;Integer&gt; optWorker) {
+<b class="fc"><i>19</i>&nbsp;        this.values.add(optWorker);</b>
+<b class="fc"><i>20</i>&nbsp;    }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; getValues() {
+<b class="fc"><i>23</i>&nbsp;        return this.values;</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public void removeXAndY(OptionSelection opt, int x, int y) {
+<b class="nc"><i>27</i>&nbsp;        for (ArrayList&lt;Integer&gt; comb: opt.getValues()) {</b>
+<b class="nc"><i>28</i>&nbsp;            for (int i = 2; i &lt; comb.size(); i += 2) {</b>
+<b class="nc"><i>29</i>&nbsp;                if (comb.get(i) == x &amp;&amp; comb.get(i + 1) == y) {</b>
+<b class="nc"><i>30</i>&nbsp;                    comb.remove(i+1);</b>
+<b class="nc"><i>31</i>&nbsp;                    comb.remove(i);</b>
+<b class="nc"><i>32</i>&nbsp;                    i -= 2;</b>
+<i>33</i>&nbsp;                }
+<i>34</i>&nbsp;            }
+<b class="nc"><i>35</i>&nbsp;        }</b>
+<b class="nc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public OptionSelection singleOption(int x, int y) {
+<b class="nc"><i>39</i>&nbsp;        OptionSelection newOpt = new OptionSelection();</b>
+<b class="nc"><i>40</i>&nbsp;        for (ArrayList&lt;Integer&gt; a: this.getValues()) {</b>
+<b class="nc"><i>41</i>&nbsp;            if (a.get(0) == x &amp;&amp; a.get(1) == y) {</b>
+<b class="nc"><i>42</i>&nbsp;                newOpt.setOptions(a);</b>
+<b class="nc"><i>43</i>&nbsp;                break;</b>
+<i>44</i>&nbsp;            }
+<b class="nc"><i>45</i>&nbsp;        }</b>
+<b class="nc"><i>46</i>&nbsp;        return newOpt;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    public void addWorkerAsOption() {
+<b class="nc"><i>50</i>&nbsp;        values.get(0).add(values.get(0).get(0));</b>
+<b class="nc"><i>51</i>&nbsp;        values.get(0).add(values.get(0).get(1));</b>
+<b class="nc"><i>52</i>&nbsp;    }</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    public OptionSelection removeOptionsPerimeter() {
+<b class="nc"><i>55</i>&nbsp;        OptionSelection newOpt = new OptionSelection();</b>
+<b class="nc"><i>56</i>&nbsp;        ArrayList&lt;Integer&gt; opt = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>57</i>&nbsp;        ArrayList&lt;Integer&gt; oldOpt = this.getValues().get(0);</b>
+<b class="nc"><i>58</i>&nbsp;        opt.add(oldOpt.get(0));</b>
+<b class="nc"><i>59</i>&nbsp;        opt.add(oldOpt.get(1));</b>
+<b class="nc"><i>60</i>&nbsp;        for (int i = 2; i &lt; oldOpt.size(); i += 2) {</b>
+<b class="nc"><i>61</i>&nbsp;            if (!(oldOpt.get(i) == 0 || oldOpt.get(i) == 4 || oldOpt.get(i + 1) == 0 || oldOpt.get(i + 1) == 4)) {</b>
+<b class="nc"><i>62</i>&nbsp;                opt.add(oldOpt.get(i));</b>
+<b class="nc"><i>63</i>&nbsp;                opt.add(oldOpt.get(i + 1));</b>
+<i>64</i>&nbsp;            }
+<i>65</i>&nbsp;        }
+<b class="nc"><i>66</i>&nbsp;        newOpt.addWorkerOptions(opt);</b>
+<i>67</i>&nbsp;
+<b class="nc"><i>68</i>&nbsp;        return newOpt;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    public boolean isValid(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+<b class="nc"><i>72</i>&nbsp;        for (ArrayList&lt;Integer&gt; opt: values) {</b>
+<b class="nc"><i>73</i>&nbsp;            if (opt.get(0) == posXFrom &amp;&amp; opt.get(1) == posYFrom) {</b>
+<b class="nc"><i>74</i>&nbsp;                for (int i = 2; i &lt; opt.size(); i += 2) {</b>
+<b class="nc"><i>75</i>&nbsp;                    if (opt.get(i) == posXTo &amp;&amp; opt.get(i+1) == posYTo) {</b>
+<b class="nc"><i>76</i>&nbsp;                        return true;</b>
+<i>77</i>&nbsp;                    }
+<i>78</i>&nbsp;                }
+<i>79</i>&nbsp;            }
+<b class="nc"><i>80</i>&nbsp;        }</b>
+<i>81</i>&nbsp;
+<b class="nc"><i>82</i>&nbsp;        return false;</b>
+<i>83</i>&nbsp;    }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    /**
+<i>87</i>&nbsp;     * Indicates whether a player has options for his turn or not
+<i>88</i>&nbsp;     * @return true if the player has playable options, false if not
+<i>89</i>&nbsp;     */
+<i>90</i>&nbsp;    public boolean hasOptions() {
+<b class="nc"><i>91</i>&nbsp;        for (ArrayList&lt;Integer&gt; o: this.getValues()) {</b>
+<b class="nc"><i>92</i>&nbsp;            if (o.size() &gt; 2) {</b>
+<b class="nc"><i>93</i>&nbsp;                return true;</b>
+<i>94</i>&nbsp;            }
+<b class="nc"><i>95</i>&nbsp;        }</b>
+<b class="nc"><i>96</i>&nbsp;        return false;</b>
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;    public void compressUselessOptions() {
+<b class="nc"><i>100</i>&nbsp;        if (this.getValues().get(0).size() &lt;= 2) {</b>
+<b class="nc"><i>101</i>&nbsp;            this.getValues().remove(0);</b>
+<b class="nc"><i>102</i>&nbsp;            if (this.getValues().size() &gt; 0 &amp;&amp; this.getValues().get(0).size() &lt;= 2)</b>
+<b class="nc"><i>103</i>&nbsp;                this.getValues().remove(0);</b>
+<i>104</i>&nbsp;        }
+<i>105</i>&nbsp;        else {
+<b class="nc"><i>106</i>&nbsp;            if (this.getValues().size() &gt; 1 &amp;&amp; this.getValues().get(1).size() &lt;= 2)</b>
+<b class="nc"><i>107</i>&nbsp;                this.getValues().remove(1);</b>
+<i>108</i>&nbsp;        }
+<i>109</i>&nbsp;
+<b class="nc"><i>110</i>&nbsp;    }</b>
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    @Override
+<i>113</i>&nbsp;    public String toString() {
+<b class="nc"><i>114</i>&nbsp;        StringBuilder p = new StringBuilder();</b>
+<b class="nc"><i>115</i>&nbsp;        int count = 1;</b>
+<b class="nc"><i>116</i>&nbsp;        for (ArrayList&lt;Integer&gt; workerOptions : values) {</b>
+<b class="nc"><i>117</i>&nbsp;            p.append(&quot;Worker &quot;).append(count).append(&quot; at&quot;);</b>
+<b class="nc"><i>118</i>&nbsp;            for (int j = 0; j &lt; workerOptions.size(); j++) {</b>
+<b class="nc"><i>119</i>&nbsp;                p.append(&quot; &quot;).append(workerOptions.get(j));</b>
+<b class="nc"><i>120</i>&nbsp;                if (j == 1) {</b>
+<b class="nc"><i>121</i>&nbsp;                    p.append(&quot; Options:&quot;);</b>
+<i>122</i>&nbsp;                }
+<b class="nc"><i>123</i>&nbsp;                else if (j % 2 == 1)</b>
+<b class="nc"><i>124</i>&nbsp;                    p.append(&quot; ;&quot;);</b>
+<i>125</i>&nbsp;            }
+<b class="nc"><i>126</i>&nbsp;            p.append(&quot;\n&quot;);</b>
+<b class="nc"><i>127</i>&nbsp;            count++;</b>
+<b class="nc"><i>128</i>&nbsp;        }</b>
+<b class="nc"><i>129</i>&nbsp;        return p.toString();</b>
+<i>130</i>&nbsp;    }
+<i>131</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

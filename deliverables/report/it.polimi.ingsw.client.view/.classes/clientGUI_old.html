@@ -1,0 +1,711 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: clientGUI_old</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.client.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: clientGUI_old (it.polimi.ingsw.client.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">clientGUI_old</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 364)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.client.view;
+<i>2</i>&nbsp;import it.polimi.ingsw.server.model.BoardView;
+<i>3</i>&nbsp;import it.polimi.ingsw.server.model.TileView;
+<i>4</i>&nbsp;import javafx.application.Application;
+<i>5</i>&nbsp;import javafx.application.Platform;
+<i>6</i>&nbsp;import javafx.event.ActionEvent;
+<i>7</i>&nbsp;import javafx.event.EventHandler;
+<i>8</i>&nbsp;import javafx.geometry.*;
+<i>9</i>&nbsp;import javafx.scene.Node;
+<i>10</i>&nbsp;import javafx.scene.Scene;
+<i>11</i>&nbsp;import javafx.scene.control.*;
+<i>12</i>&nbsp;import javafx.scene.image.Image;
+<i>13</i>&nbsp;import javafx.scene.image.ImageView;
+<i>14</i>&nbsp;import javafx.scene.layout.*;
+<i>15</i>&nbsp;import javafx.scene.paint.Color;
+<i>16</i>&nbsp;import javafx.scene.text.Font;
+<i>17</i>&nbsp;import javafx.scene.text.FontWeight;
+<i>18</i>&nbsp;import javafx.stage.Stage;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;import javafx.scene.input.MouseEvent;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;import java.io.FileInputStream;
+<i>23</i>&nbsp;import java.io.FileNotFoundException;
+<i>24</i>&nbsp;import java.util.ArrayList;
+<i>25</i>&nbsp;import java.util.Arrays;
+<i>26</i>&nbsp;import java.util.stream.Collectors;
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;public class clientGUI_old extends Application{</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    private String playerName;
+<i>31</i>&nbsp;    private String playerInit;
+<i>32</i>&nbsp;    private ArrayList&lt;String&gt; others;
+<i>33</i>&nbsp;    private TileView[][] board;
+<i>34</i>&nbsp;    private Button[][] boardSlots;
+<i>35</i>&nbsp;    private ArrayList&lt;ToggleButton&gt; godButtons;
+<i>36</i>&nbsp;    private ArrayList&lt;String&gt; selectedGods;
+<i>37</i>&nbsp;    private int playersNum;
+<i>38</i>&nbsp;
+<b class="nc"><i>39</i>&nbsp;    EventHandler&lt;MouseEvent&gt; workerHandler = e -&gt; {</b>
+<b class="nc"><i>40</i>&nbsp;        returnWorker(GridPane.getRowIndex(((Node)e.getSource())), GridPane.getColumnIndex(((Node)e.getSource())));</b>
+<i>41</i>&nbsp;    };
+<i>42</i>&nbsp;
+<b class="nc"><i>43</i>&nbsp;    EventHandler&lt;MouseEvent&gt; tileHandler = e -&gt; {</b>
+<b class="nc"><i>44</i>&nbsp;        returnTile(GridPane.getRowIndex(((Node)e.getSource())), GridPane.getColumnIndex(((Node)e.getSource())));</b>
+<i>45</i>&nbsp;    };
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    //start -&gt; loginUI (chiede nome) -&gt; sendName (invia nome)
+<i>48</i>&nbsp;    // startGodSelectionUI (riceve iniziale corretta e nome altri) -&gt; godSelectionUI (chiede gods) -&gt; sendGods (invia gods)
+<i>49</i>&nbsp;    // startGameUI (riceve conferma) -&gt; gameUI
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    @Override
+<i>52</i>&nbsp;    public void start(Stage stage) {
+<b class="nc"><i>53</i>&nbsp;        initBoard();</b>
+<b class="nc"><i>54</i>&nbsp;        initBoardSlots();</b>
+<b class="nc"><i>55</i>&nbsp;        others = new ArrayList&lt;&gt;();</b>
+<i>56</i>&nbsp;        //debug
+<b class="nc"><i>57</i>&nbsp;        others.add(&quot;Giovanni&quot;);</b>
+<b class="nc"><i>58</i>&nbsp;        others.add(&quot;Aldo&quot;);</b>
+<b class="nc"><i>59</i>&nbsp;        others.add(&quot;Giacomo&quot;);</b>
+<b class="nc"><i>60</i>&nbsp;        loginUI(stage);</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    private void loginUI(Stage stage) {
+<b class="nc"><i>64</i>&nbsp;        GridPane root = new GridPane();</b>
+<b class="nc"><i>65</i>&nbsp;        root.setHgap(8);</b>
+<b class="nc"><i>66</i>&nbsp;        root.setVgap(8);</b>
+<i>67</i>&nbsp;
+<b class="nc"><i>68</i>&nbsp;        Scene scene = new Scene(root, 400, 350);</b>
+<i>69</i>&nbsp;
+<b class="nc"><i>70</i>&nbsp;        Label lbl = new Label(&quot;Santorini&quot;);</b>
+<b class="nc"><i>71</i>&nbsp;        lbl.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 35));</b>
+<b class="nc"><i>72</i>&nbsp;        Label lbl3 = new Label(&quot;by Pietro Arsi, Giorgio Colomban and Stefan Djokovic&quot;);</b>
+<b class="nc"><i>73</i>&nbsp;        lbl3.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 12));</b>
+<b class="nc"><i>74</i>&nbsp;        lbl3.setTextFill(Color.web(&quot;Grey&quot;));</b>
+<b class="nc"><i>75</i>&nbsp;        Label lbl2 = new Label(&quot;Please specify your nickname&quot;);</b>
+<b class="nc"><i>76</i>&nbsp;        lbl2.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 18));</b>
+<i>77</i>&nbsp;
+<b class="nc"><i>78</i>&nbsp;        Button bt = new Button();</b>
+<b class="nc"><i>79</i>&nbsp;        bt.setText(&quot;Exit&quot;);</b>
+<b class="nc"><i>80</i>&nbsp;        bt.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 15));</b>
+<b class="nc"><i>81</i>&nbsp;        bt.setOnAction((ActionEvent event) -&gt; {</b>
+<b class="nc"><i>82</i>&nbsp;            Platform.exit();</b>
+<i>83</i>&nbsp;        });
+<i>84</i>&nbsp;
+<b class="nc"><i>85</i>&nbsp;        TextField txtf = new TextField();</b>
+<b class="nc"><i>86</i>&nbsp;        txtf.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 12));</b>
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;
+<b class="nc"><i>89</i>&nbsp;        Button bt2 = new Button();</b>
+<b class="nc"><i>90</i>&nbsp;        bt2.setText(&quot;Play&quot;);</b>
+<b class="nc"><i>91</i>&nbsp;        bt2.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 15));</b>
+<b class="nc"><i>92</i>&nbsp;        bt2.setOnAction((ActionEvent event) -&gt; {</b>
+<b class="nc"><i>93</i>&nbsp;            if(!txtf.getCharacters().toString().equals(&quot;&quot;)) {</b>
+<b class="nc"><i>94</i>&nbsp;                sendName(txtf.getCharacters().toString());</b>
+<b class="nc"><i>95</i>&nbsp;                stage.close();</b>
+<i>96</i>&nbsp;            }
+<i>97</i>&nbsp;        });
+<i>98</i>&nbsp;
+<b class="nc"><i>99</i>&nbsp;        GridPane.setHalignment(lbl, HPos.CENTER);</b>
+<b class="nc"><i>100</i>&nbsp;        GridPane.setHalignment(lbl3, HPos.CENTER);</b>
+<b class="nc"><i>101</i>&nbsp;        GridPane.setHalignment(lbl2, HPos.CENTER);</b>
+<b class="nc"><i>102</i>&nbsp;        GridPane.setHalignment(txtf, HPos.CENTER);</b>
+<b class="nc"><i>103</i>&nbsp;        GridPane.setHalignment(bt2, HPos.CENTER);</b>
+<b class="nc"><i>104</i>&nbsp;        GridPane.setHalignment(bt, HPos.CENTER);</b>
+<i>105</i>&nbsp;
+<b class="nc"><i>106</i>&nbsp;        root.add(lbl, 0, 0);</b>
+<b class="nc"><i>107</i>&nbsp;        root.add(lbl3, 0, 1);</b>
+<b class="nc"><i>108</i>&nbsp;        root.add(lbl2, 0, 2);</b>
+<b class="nc"><i>109</i>&nbsp;        Pane p1 = new Pane();</b>
+<b class="nc"><i>110</i>&nbsp;        p1.setPrefHeight(25);</b>
+<b class="nc"><i>111</i>&nbsp;        root.add(p1, 0, 3);</b>
+<b class="nc"><i>112</i>&nbsp;        root.add(txtf, 0, 4);</b>
+<b class="nc"><i>113</i>&nbsp;        root.add(bt2, 0, 5);</b>
+<b class="nc"><i>114</i>&nbsp;        Pane p = new Pane();</b>
+<b class="nc"><i>115</i>&nbsp;        p.setPrefHeight(75);</b>
+<b class="nc"><i>116</i>&nbsp;        root.add(p, 0, 6);</b>
+<b class="nc"><i>117</i>&nbsp;        root.add(bt, 0, 7);</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;        //HBox root2 = new HBox();
+<b class="nc"><i>120</i>&nbsp;        root.setPadding(new Insets(25));</b>
+<b class="nc"><i>121</i>&nbsp;        root.setAlignment(Pos.CENTER);</b>
+<i>122</i>&nbsp;        //root.setSpacing(25);
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;        //Scene scene2 = new Scene(root2, 280, 200);
+<i>125</i>&nbsp;
+<b class="nc"><i>126</i>&nbsp;        stage.setTitle(&quot;Login&quot;);</b>
+<b class="nc"><i>127</i>&nbsp;        stage.setScene(scene);</b>
+<b class="nc"><i>128</i>&nbsp;        stage.setResizable(false);</b>
+<b class="nc"><i>129</i>&nbsp;        stage.show();</b>
+<i>130</i>&nbsp;    }
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    private void godSelectionUI(Stage stage) {
+<b class="nc"><i>133</i>&nbsp;        godButtons=createGodButtons();</b>
+<b class="nc"><i>134</i>&nbsp;        ScrollPane sp = new ScrollPane();</b>
+<b class="nc"><i>135</i>&nbsp;        FlowPane fp = new FlowPane(Orientation.HORIZONTAL);</b>
+<b class="nc"><i>136</i>&nbsp;        fp.getStylesheets().add(&quot;style.css&quot;);</b>
+<b class="nc"><i>137</i>&nbsp;        GridPane root = new GridPane();</b>
+<b class="nc"><i>138</i>&nbsp;        root.setHgap(25);</b>
+<b class="nc"><i>139</i>&nbsp;        root.setVgap(25);</b>
+<b class="nc"><i>140</i>&nbsp;        fp.setHgap(8);</b>
+<b class="nc"><i>141</i>&nbsp;        fp.setVgap(8);</b>
+<b class="nc"><i>142</i>&nbsp;        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);</b>
+<i>143</i>&nbsp;        //fp.setPrefWrapLength(sp.getWidth());
+<b class="nc"><i>144</i>&nbsp;        sp.setFitToWidth(true);</b>
+<b class="nc"><i>145</i>&nbsp;        sp.setFitToHeight(true);</b>
+<i>146</i>&nbsp;
+<b class="nc"><i>147</i>&nbsp;        Scene scene = new Scene(root, 800, 700);</b>
+<i>148</i>&nbsp;
+<b class="nc"><i>149</i>&nbsp;        ColumnConstraints c = new ColumnConstraints();</b>
+<b class="nc"><i>150</i>&nbsp;        c.setHgrow(Priority.ALWAYS);</b>
+<b class="nc"><i>151</i>&nbsp;        root.getColumnConstraints().add(c);</b>
+<b class="nc"><i>152</i>&nbsp;        RowConstraints r1 = new RowConstraints();</b>
+<b class="nc"><i>153</i>&nbsp;        r1.setVgrow(Priority.NEVER);</b>
+<b class="nc"><i>154</i>&nbsp;        RowConstraints r2 = new RowConstraints();</b>
+<b class="nc"><i>155</i>&nbsp;        r2.setVgrow(Priority.ALWAYS);</b>
+<b class="nc"><i>156</i>&nbsp;        RowConstraints r3 = new RowConstraints();</b>
+<b class="nc"><i>157</i>&nbsp;        r3.setVgrow(Priority.NEVER);</b>
+<b class="nc"><i>158</i>&nbsp;        root.getRowConstraints().addAll(r1, r2, r3);</b>
+<i>159</i>&nbsp;
+<b class="nc"><i>160</i>&nbsp;        godButtons.forEach(x -&gt; fp.getChildren().add(x));</b>
+<i>161</i>&nbsp;
+<b class="nc"><i>162</i>&nbsp;        fp.setPadding(new Insets(25));</b>
+<b class="nc"><i>163</i>&nbsp;        sp.setContent(fp);</b>
+<i>164</i>&nbsp;
+<b class="nc"><i>165</i>&nbsp;        Label l = new Label(&quot;Select the gods&quot;);</b>
+<b class="nc"><i>166</i>&nbsp;        l.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 35));</b>
+<b class="nc"><i>167</i>&nbsp;        GridPane.setHalignment(l, HPos.CENTER);</b>
+<i>168</i>&nbsp;
+<b class="nc"><i>169</i>&nbsp;        Button b = new Button(&quot;Continue&quot;);</b>
+<b class="nc"><i>170</i>&nbsp;        b.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 12));</b>
+<b class="nc"><i>171</i>&nbsp;        b.setOnAction((ActionEvent event) -&gt; {</b>
+<b class="nc"><i>172</i>&nbsp;            sendGods(selectedGods);</b>
+<b class="nc"><i>173</i>&nbsp;            stage.close();</b>
+<i>174</i>&nbsp;        });
+<b class="nc"><i>175</i>&nbsp;        GridPane.setHalignment(b, HPos.CENTER);</b>
+<i>176</i>&nbsp;
+<b class="nc"><i>177</i>&nbsp;        root.add(l, 0, 0);</b>
+<b class="nc"><i>178</i>&nbsp;        root.add(sp, 0, 1);</b>
+<b class="nc"><i>179</i>&nbsp;        root.add(b, 0, 2);</b>
+<i>180</i>&nbsp;
+<b class="nc"><i>181</i>&nbsp;        root.setPadding(new Insets(25));</b>
+<b class="nc"><i>182</i>&nbsp;        root.setAlignment(Pos.CENTER);</b>
+<b class="nc"><i>183</i>&nbsp;        stage.setTitle(&quot;God selection&quot;);</b>
+<b class="nc"><i>184</i>&nbsp;        stage.setScene(scene);</b>
+<i>185</i>&nbsp;        //stage.setResizable(false);
+<b class="nc"><i>186</i>&nbsp;        stage.show();</b>
+<i>187</i>&nbsp;    }
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;    private void gameUI(Stage stage) {
+<b class="nc"><i>190</i>&nbsp;        GridPane root = new GridPane();</b>
+<b class="nc"><i>191</i>&nbsp;        GridPane grid = new GridPane();</b>
+<i>192</i>&nbsp;        //grid.setPadding(new Insets(25));
+<b class="nc"><i>193</i>&nbsp;        root.setPadding(new Insets(25));</b>
+<b class="nc"><i>194</i>&nbsp;        grid.setHgap(8);</b>
+<b class="nc"><i>195</i>&nbsp;        grid.setVgap(8);</b>
+<b class="nc"><i>196</i>&nbsp;        root.setHgap(8);</b>
+<b class="nc"><i>197</i>&nbsp;        root.setVgap(8);</b>
+<i>198</i>&nbsp;
+<b class="nc"><i>199</i>&nbsp;        Scene scene = new Scene(root, 630, 470);</b>
+<b class="nc"><i>200</i>&nbsp;        grid.getStylesheets().add(&quot;style.css&quot;);</b>
+<b class="nc"><i>201</i>&nbsp;        root.getStylesheets().add(&quot;style.css&quot;);</b>
+<i>202</i>&nbsp;
+<b class="nc"><i>203</i>&nbsp;        Button regole = new Button();</b>
+<b class="nc"><i>204</i>&nbsp;        regole.setId(&quot;buttontutorial&quot;);</b>
+<b class="nc"><i>205</i>&nbsp;        regole.setText(&quot;Show rules&quot;);</b>
+<b class="nc"><i>206</i>&nbsp;        regole.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 15));</b>
+<b class="nc"><i>207</i>&nbsp;        regole.setOnAction((ActionEvent event) -&gt; {</b>
+<b class="nc"><i>208</i>&nbsp;            rulesUI(new Stage());</b>
+<i>209</i>&nbsp;        });
+<b class="nc"><i>210</i>&nbsp;        GridPane.setHalignment(regole, HPos.LEFT);</b>
+<b class="nc"><i>211</i>&nbsp;        root.add(regole, 0, 1);</b>
+<i>212</i>&nbsp;
+<b class="nc"><i>213</i>&nbsp;        Button bt = new Button();</b>
+<b class="nc"><i>214</i>&nbsp;        bt.setId(&quot;buttonexit&quot;);</b>
+<b class="nc"><i>215</i>&nbsp;        bt.setText(&quot;Esci&quot;);</b>
+<b class="nc"><i>216</i>&nbsp;        bt.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 15));</b>
+<b class="nc"><i>217</i>&nbsp;        bt.setOnAction((ActionEvent event) -&gt; {</b>
+<b class="nc"><i>218</i>&nbsp;            Platform.exit();</b>
+<i>219</i>&nbsp;        });
+<b class="nc"><i>220</i>&nbsp;        GridPane.setHalignment(bt, HPos.LEFT);</b>
+<b class="nc"><i>221</i>&nbsp;        GridPane.setValignment(bt, VPos.BOTTOM);</b>
+<b class="nc"><i>222</i>&nbsp;        root.add(bt, 0, 2);</b>
+<i>223</i>&nbsp;
+<b class="nc"><i>224</i>&nbsp;        VBox leftInfo = new VBox();</b>
+<i>225</i>&nbsp;
+<b class="nc"><i>226</i>&nbsp;        Label lbl2 = new Label();</b>
+<b class="nc"><i>227</i>&nbsp;        lbl2.setText(&quot;GAME INFO&quot;);</b>
+<b class="nc"><i>228</i>&nbsp;        lbl2.setFont(Font.font(&quot;Futura&quot;, 20));</b>
+<b class="nc"><i>229</i>&nbsp;        leftInfo.getChildren().add(lbl2);</b>
+<i>230</i>&nbsp;
+<b class="nc"><i>231</i>&nbsp;        Label lbl3 = new Label();</b>
+<b class="nc"><i>232</i>&nbsp;        lbl3.setText(&quot;Player name: &quot;+playerName);</b>
+<b class="nc"><i>233</i>&nbsp;        lbl3.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>234</i>&nbsp;        leftInfo.getChildren().add(lbl3);</b>
+<i>235</i>&nbsp;
+<b class="nc"><i>236</i>&nbsp;        Label gods = new Label();</b>
+<b class="nc"><i>237</i>&nbsp;        gods.setText(&quot;Gods: &quot;+selectedGods.stream().collect(Collectors.joining(&quot;, &quot;)));</b>
+<b class="nc"><i>238</i>&nbsp;        gods.setWrapText(true);</b>
+<b class="nc"><i>239</i>&nbsp;        gods.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>240</i>&nbsp;        leftInfo.getChildren().add(gods);</b>
+<i>241</i>&nbsp;
+<b class="nc"><i>242</i>&nbsp;        Label lbl4 = new Label();</b>
+<b class="nc"><i>243</i>&nbsp;        lbl4.setText(&quot;Player initial: &quot;+playerInit);</b>
+<b class="nc"><i>244</i>&nbsp;        lbl4.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>245</i>&nbsp;        leftInfo.getChildren().add(lbl4);</b>
+<i>246</i>&nbsp;
+<b class="nc"><i>247</i>&nbsp;        Pane space = new Pane();</b>
+<b class="nc"><i>248</i>&nbsp;        space.setPrefHeight(30);</b>
+<b class="nc"><i>249</i>&nbsp;        leftInfo.getChildren().add(space);</b>
+<i>250</i>&nbsp;
+<b class="nc"><i>251</i>&nbsp;        Label lbl5 = new Label();</b>
+<b class="nc"><i>252</i>&nbsp;        lbl5.setText(&quot;OTHER PLAYERS&quot;);</b>
+<b class="nc"><i>253</i>&nbsp;        lbl5.setWrapText(true);</b>
+<b class="nc"><i>254</i>&nbsp;        lbl5.setFont(Font.font(&quot;Futura&quot;, 20));</b>
+<b class="nc"><i>255</i>&nbsp;        leftInfo.getChildren().add(lbl5);</b>
+<i>256</i>&nbsp;
+<b class="nc"><i>257</i>&nbsp;        if(others!=null) {</b>
+<b class="nc"><i>258</i>&nbsp;            others.forEach(player -&gt; {</b>
+<b class="nc"><i>259</i>&nbsp;                Label l = new Label(player);</b>
+<b class="nc"><i>260</i>&nbsp;                l.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>261</i>&nbsp;                leftInfo.getChildren().add(l);</b>
+<i>262</i>&nbsp;            });
+<i>263</i>&nbsp;        }
+<i>264</i>&nbsp;
+<b class="nc"><i>265</i>&nbsp;        Pane space2 = new Pane();</b>
+<b class="nc"><i>266</i>&nbsp;        space2.setPrefHeight(30);</b>
+<b class="nc"><i>267</i>&nbsp;        leftInfo.getChildren().add(space2);</b>
+<i>268</i>&nbsp;
+<b class="nc"><i>269</i>&nbsp;        Label lbl6 = new Label();</b>
+<b class="nc"><i>270</i>&nbsp;        lbl6.setText(&quot;COLOR CODE&quot;);</b>
+<b class="nc"><i>271</i>&nbsp;        lbl6.setWrapText(true);</b>
+<b class="nc"><i>272</i>&nbsp;        lbl6.setFont(Font.font(&quot;Futura&quot;, 20));</b>
+<b class="nc"><i>273</i>&nbsp;        leftInfo.getChildren().add(lbl6);</b>
+<i>274</i>&nbsp;
+<b class="nc"><i>275</i>&nbsp;        Label l0 = new Label(&quot;Level 0&quot;);</b>
+<b class="nc"><i>276</i>&nbsp;        l0.setId(&quot;level0&quot;);</b>
+<b class="nc"><i>277</i>&nbsp;        l0.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>278</i>&nbsp;        leftInfo.getChildren().add(l0);</b>
+<i>279</i>&nbsp;
+<b class="nc"><i>280</i>&nbsp;        Label l1 = new Label(&quot;Level 1&quot;);</b>
+<b class="nc"><i>281</i>&nbsp;        l1.setId(&quot;level1&quot;);</b>
+<b class="nc"><i>282</i>&nbsp;        l1.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>283</i>&nbsp;        leftInfo.getChildren().add(l1);</b>
+<i>284</i>&nbsp;
+<b class="nc"><i>285</i>&nbsp;        Label l2 = new Label(&quot;Level 2&quot;);</b>
+<b class="nc"><i>286</i>&nbsp;        l2.setId(&quot;level2&quot;);</b>
+<b class="nc"><i>287</i>&nbsp;        l2.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>288</i>&nbsp;        leftInfo.getChildren().add(l2);</b>
+<i>289</i>&nbsp;
+<b class="nc"><i>290</i>&nbsp;        Label l3 = new Label(&quot;Level 3&quot;);</b>
+<b class="nc"><i>291</i>&nbsp;        l3.setId(&quot;level3&quot;);</b>
+<b class="nc"><i>292</i>&nbsp;        l3.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>293</i>&nbsp;        leftInfo.getChildren().add(l3);</b>
+<i>294</i>&nbsp;
+<b class="nc"><i>295</i>&nbsp;        Label dome = new Label(&quot;Dome&quot;);</b>
+<b class="nc"><i>296</i>&nbsp;        dome.setId(&quot;dome&quot;);</b>
+<b class="nc"><i>297</i>&nbsp;        dome.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>298</i>&nbsp;        leftInfo.getChildren().add(dome);</b>
+<i>299</i>&nbsp;
+<i>300</i>&nbsp;        //insert all the buttons
+<b class="nc"><i>301</i>&nbsp;        for(int a = 0 ; a &lt; 5 ; a++){</b>
+<b class="nc"><i>302</i>&nbsp;            for(int b = 0 ; b &lt; 5 ; b++){</b>
+<b class="nc"><i>303</i>&nbsp;                grid.add(boardSlots[a][b], b, a);</b>
+<i>304</i>&nbsp;            }
+<i>305</i>&nbsp;        }
+<i>306</i>&nbsp;
+<b class="nc"><i>307</i>&nbsp;        root.add(leftInfo, 0, 0);</b>
+<b class="nc"><i>308</i>&nbsp;        root.add(grid, 1, 0, 1, 2);</b>
+<i>309</i>&nbsp;
+<i>310</i>&nbsp;        //debug
+<i>311</i>&nbsp;        //root.setGridLinesVisible(true);
+<i>312</i>&nbsp;        //boardSlots[2][2].setId(&quot;button3&quot;);
+<i>313</i>&nbsp;        //boardSlots[2][2].setDisable(true);
+<i>314</i>&nbsp;        //addListener(2, 2);
+<i>315</i>&nbsp;        /*ArrayList&lt;Integer&gt; a = new ArrayList&lt;&gt;();
+<i>316</i>&nbsp;        a.add(0);
+<i>317</i>&nbsp;        a.add(0);
+<i>318</i>&nbsp;        a.add(1);
+<i>319</i>&nbsp;        a.add(1);
+<i>320</i>&nbsp;        a.add(0);
+<i>321</i>&nbsp;        a.add(1);
+<i>322</i>&nbsp;        a.add(1);
+<i>323</i>&nbsp;        a.add(0);
+<i>324</i>&nbsp;        askForTile(a);*/
+<i>325</i>&nbsp;
+<b class="nc"><i>326</i>&nbsp;        stage.setTitle(&quot;God selection&quot;);</b>
+<b class="nc"><i>327</i>&nbsp;        stage.setScene(scene);</b>
+<b class="nc"><i>328</i>&nbsp;        stage.setResizable(false);</b>
+<b class="nc"><i>329</i>&nbsp;        stage.show();</b>
+<i>330</i>&nbsp;    }
+<i>331</i>&nbsp;
+<i>332</i>&nbsp;    public void rulesUI(Stage stage) {
+<b class="nc"><i>333</i>&nbsp;        ScrollPane sp = new ScrollPane();</b>
+<i>334</i>&nbsp;        //FlowPane fp = new FlowPane(Orientation.HORIZONTAL);
+<b class="nc"><i>335</i>&nbsp;        VBox vb = new VBox();</b>
+<i>336</i>&nbsp;        //fp.getStylesheets().add(&quot;style.css&quot;);
+<b class="nc"><i>337</i>&nbsp;        GridPane root = new GridPane();</b>
+<b class="nc"><i>338</i>&nbsp;        root.setHgap(25);</b>
+<b class="nc"><i>339</i>&nbsp;        root.setVgap(25);</b>
+<i>340</i>&nbsp;        //fp.setHgap(8);
+<i>341</i>&nbsp;        //fp.setVgap(8);
+<b class="nc"><i>342</i>&nbsp;        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);</b>
+<b class="nc"><i>343</i>&nbsp;        sp.setFitToWidth(true);</b>
+<i>344</i>&nbsp;
+<b class="nc"><i>345</i>&nbsp;        Scene scene = new Scene(root, 800, 700);</b>
+<i>346</i>&nbsp;
+<i>347</i>&nbsp;        //fp.width
+<i>348</i>&nbsp;        /*vb.prefWidthProperty().bind(sp.widthProperty());
+<i>349</i>&nbsp;        vb.setFillWidth(true);*/
+<i>350</i>&nbsp;
+<b class="nc"><i>351</i>&nbsp;        ColumnConstraints c = new ColumnConstraints();</b>
+<b class="nc"><i>352</i>&nbsp;        c.setHgrow(Priority.ALWAYS);</b>
+<b class="nc"><i>353</i>&nbsp;        root.getColumnConstraints().add(c);</b>
+<b class="nc"><i>354</i>&nbsp;        RowConstraints r1 = new RowConstraints();</b>
+<b class="nc"><i>355</i>&nbsp;        r1.setVgrow(Priority.NEVER);</b>
+<b class="nc"><i>356</i>&nbsp;        RowConstraints r2 = new RowConstraints();</b>
+<b class="nc"><i>357</i>&nbsp;        r2.setVgrow(Priority.ALWAYS);</b>
+<b class="nc"><i>358</i>&nbsp;        root.getRowConstraints().addAll(r1, r2);</b>
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;
+<i>361</i>&nbsp;        try {
+<b class="nc"><i>362</i>&nbsp;            ImageView si = new ImageView();</b>
+<b class="nc"><i>363</i>&nbsp;            si.setImage(new Image(new FileInputStream(&quot;src/resources/pages/0.jpg&quot;)));</b>
+<b class="nc"><i>364</i>&nbsp;            si.setFitWidth(650);</b>
+<b class="nc"><i>365</i>&nbsp;            si.setPreserveRatio(true);</b>
+<b class="nc"><i>366</i>&nbsp;            vb.getChildren().add(si);</b>
+<b class="nc"><i>367</i>&nbsp;            si = new ImageView();</b>
+<b class="nc"><i>368</i>&nbsp;            si.setImage(new Image(new FileInputStream(&quot;src/resources/pages/1.jpg&quot;)));</b>
+<b class="nc"><i>369</i>&nbsp;            si.setFitWidth(650);</b>
+<b class="nc"><i>370</i>&nbsp;            si.setPreserveRatio(true);</b>
+<b class="nc"><i>371</i>&nbsp;            vb.getChildren().add(si);</b>
+<b class="nc"><i>372</i>&nbsp;            si = new ImageView();</b>
+<b class="nc"><i>373</i>&nbsp;            si.setImage(new Image(new FileInputStream(&quot;src/resources/pages/2.jpg&quot;)));</b>
+<b class="nc"><i>374</i>&nbsp;            si.setFitWidth(650);</b>
+<b class="nc"><i>375</i>&nbsp;            si.setPreserveRatio(true);</b>
+<b class="nc"><i>376</i>&nbsp;            vb.getChildren().add(si);</b>
+<b class="nc"><i>377</i>&nbsp;            si = new ImageView();</b>
+<b class="nc"><i>378</i>&nbsp;            si.setImage(new Image(new FileInputStream(&quot;src/resources/pages/3.jpg&quot;)));</b>
+<b class="nc"><i>379</i>&nbsp;            si.setFitWidth(650);</b>
+<b class="nc"><i>380</i>&nbsp;            si.setPreserveRatio(true);</b>
+<b class="nc"><i>381</i>&nbsp;            vb.getChildren().add(si);</b>
+<b class="nc"><i>382</i>&nbsp;            si = new ImageView();</b>
+<b class="nc"><i>383</i>&nbsp;            si.setImage(new Image(new FileInputStream(&quot;src/resources/pages/4.jpg&quot;)));</b>
+<b class="nc"><i>384</i>&nbsp;            si.setFitWidth(650);</b>
+<b class="nc"><i>385</i>&nbsp;            si.setPreserveRatio(true);</b>
+<b class="nc"><i>386</i>&nbsp;            vb.getChildren().add(si);</b>
+<b class="nc"><i>387</i>&nbsp;            si = new ImageView();</b>
+<b class="nc"><i>388</i>&nbsp;            si.setImage(new Image(new FileInputStream(&quot;src/resources/pages/5.jpg&quot;)));</b>
+<b class="nc"><i>389</i>&nbsp;            si.setFitWidth(650);</b>
+<b class="nc"><i>390</i>&nbsp;            si.setPreserveRatio(true);</b>
+<b class="nc"><i>391</i>&nbsp;            vb.getChildren().add(si);</b>
+<b class="nc"><i>392</i>&nbsp;        } catch (FileNotFoundException e) {</b>
+<b class="nc"><i>393</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i>394</i>&nbsp;        }</b>
+<i>395</i>&nbsp;
+<b class="nc"><i>396</i>&nbsp;        vb.setAlignment(Pos.CENTER);</b>
+<b class="nc"><i>397</i>&nbsp;        vb.setPadding(new Insets(25));</b>
+<b class="nc"><i>398</i>&nbsp;        sp.setContent(vb);</b>
+<i>399</i>&nbsp;
+<b class="nc"><i>400</i>&nbsp;        Label l = new Label(&quot;Rules&quot;);</b>
+<b class="nc"><i>401</i>&nbsp;        l.setFont(Font.font(&quot;Futura&quot;, FontWeight.NORMAL, 30));</b>
+<b class="nc"><i>402</i>&nbsp;        GridPane.setHalignment(l, HPos.CENTER);</b>
+<i>403</i>&nbsp;
+<b class="nc"><i>404</i>&nbsp;        root.add(l, 0, 0);</b>
+<b class="nc"><i>405</i>&nbsp;        root.add(sp, 0, 1);</b>
+<i>406</i>&nbsp;
+<b class="nc"><i>407</i>&nbsp;        root.setPadding(new Insets(25));</b>
+<b class="nc"><i>408</i>&nbsp;        root.setAlignment(Pos.CENTER);</b>
+<b class="nc"><i>409</i>&nbsp;        stage.setTitle(&quot;God selection&quot;);</b>
+<b class="nc"><i>410</i>&nbsp;        stage.setScene(scene);</b>
+<i>411</i>&nbsp;        //stage.setResizable(false);
+<b class="nc"><i>412</i>&nbsp;        stage.show();</b>
+<i>413</i>&nbsp;    }
+<i>414</i>&nbsp;
+<i>415</i>&nbsp;    public void sendName(String name) {
+<b class="nc"><i>416</i>&nbsp;        System.out.println(&quot;Read: &quot;+name);</b>
+<b class="nc"><i>417</i>&nbsp;        this.playerName=name;</b>
+<b class="nc"><i>418</i>&nbsp;        this.playerInit=String.valueOf(name.charAt(0));</b>
+<i>419</i>&nbsp;        //send
+<i>420</i>&nbsp;
+<i>421</i>&nbsp;        //debug
+<b class="nc"><i>422</i>&nbsp;        startGodSelectionUI(this.playerInit.charAt(0), new ArrayList&lt;String&gt;(Arrays.asList(&quot;giovanni&quot;, &quot;giacomo&quot;)));</b>
+<i>423</i>&nbsp;    }
+<i>424</i>&nbsp;
+<i>425</i>&nbsp;    public void sendGods(ArrayList&lt;String&gt; gods) {
+<b class="nc"><i>426</i>&nbsp;        System.out.println(&quot;Gods: &quot;+selectedGods.stream().collect(Collectors.joining(&quot;, &quot;)));</b>
+<i>427</i>&nbsp;        //send
+<i>428</i>&nbsp;
+<i>429</i>&nbsp;
+<i>430</i>&nbsp;        //debug
+<b class="nc"><i>431</i>&nbsp;        startGameUI(true);</b>
+<i>432</i>&nbsp;    }
+<i>433</i>&nbsp;
+<i>434</i>&nbsp;    public void startGodSelectionUI(char initial, ArrayList&lt;String&gt; others) {
+<i>435</i>&nbsp;        //sets stuff from server info
+<b class="nc"><i>436</i>&nbsp;        this.playerInit=String.valueOf(initial);</b>
+<b class="nc"><i>437</i>&nbsp;        this.others=others;</b>
+<b class="nc"><i>438</i>&nbsp;        this.playersNum=others.size()+1;</b>
+<i>439</i>&nbsp;
+<i>440</i>&nbsp;        //start game
+<b class="nc"><i>441</i>&nbsp;        godSelectionUI(new Stage());</b>
+<i>442</i>&nbsp;    }
+<i>443</i>&nbsp;
+<i>444</i>&nbsp;    public void startGameUI(Boolean conferma) {
+<b class="nc"><i>445</i>&nbsp;        if(conferma) {</b>
+<b class="nc"><i>446</i>&nbsp;            gameUI(new Stage());</b>
+<i>447</i>&nbsp;        } else {
+<b class="nc"><i>448</i>&nbsp;            System.out.println(&quot;Something went wrong...&quot;);</b>
+<i>449</i>&nbsp;        }
+<i>450</i>&nbsp;    }
+<i>451</i>&nbsp;
+<i>452</i>&nbsp;    private void initBoardSlots() {
+<b class="nc"><i>453</i>&nbsp;        boardSlots = new Button[5][5];</b>
+<i>454</i>&nbsp;
+<b class="nc"><i>455</i>&nbsp;        for(int a = 0 ; a &lt; 5 ; a++){</b>
+<b class="nc"><i>456</i>&nbsp;            for(int b = 0 ; b &lt; 5 ; b++){</b>
+<b class="nc"><i>457</i>&nbsp;                boardSlots[a][b] = new Button();</b>
+<b class="nc"><i>458</i>&nbsp;                boardSlots[a][b].setPrefSize(75, 75);</b>
+<b class="nc"><i>459</i>&nbsp;                boardSlots[a][b].setFont(Font.font(&quot;Futura&quot;, 8));</b>
+<b class="nc"><i>460</i>&nbsp;                boardSlots[a][b].setText(a+&quot; &quot;+b);</b>
+<b class="nc"><i>461</i>&nbsp;                boardSlots[a][b].setId(&quot;button&quot;);</b>
+<b class="nc"><i>462</i>&nbsp;                boardSlots[a][b].setAccessibleRoleDescription(a+&quot;,&quot;+b);</b>
+<b class="nc"><i>463</i>&nbsp;                boardSlots[a][b].setOnAction((ActionEvent event) -&gt; {</b>
+<b class="nc"><i>464</i>&nbsp;                    System.out.println(&quot;Tile pressed: &quot; + GridPane.getRowIndex(((Node)event.getSource())) + &quot;,&quot; + (GridPane.getColumnIndex(((Node)event.getSource()))));</b>
+<i>465</i>&nbsp;                });
+<i>466</i>&nbsp;            }
+<i>467</i>&nbsp;        }
+<i>468</i>&nbsp;    }
+<i>469</i>&nbsp;
+<i>470</i>&nbsp;    private void initBoard() {
+<b class="nc"><i>471</i>&nbsp;        board = new TileView[5][5];</b>
+<i>472</i>&nbsp;    }
+<i>473</i>&nbsp;
+<i>474</i>&nbsp;    private void updateBoardSlots(BoardView boardview) {
+<b class="nc"><i>475</i>&nbsp;        board = boardview.getBoardView();</b>
+<i>476</i>&nbsp;
+<i>477</i>&nbsp;        //update for workers and board state
+<b class="nc"><i>478</i>&nbsp;        for(int x = 0 ; x &lt; 5 ; x++) {</b>
+<b class="nc"><i>479</i>&nbsp;            for(int y = 0 ; y &lt; 5 ; y++) {</b>
+<b class="nc"><i>480</i>&nbsp;                boardSlots[x][y].setText(String.valueOf(board[x][y].getInitWorker()));</b>
+<b class="nc"><i>481</i>&nbsp;                if(board[x][y].hasDome()){</b>
+<b class="nc"><i>482</i>&nbsp;                    boardSlots[x][y].setId(&quot;buttondome&quot;);</b>
+<i>483</i>&nbsp;                }
+<b class="nc"><i>484</i>&nbsp;                else if(board[x][y].getBuildingLevel()==0){</b>
+<b class="nc"><i>485</i>&nbsp;                    boardSlots[x][y].setId(&quot;button0&quot;);</b>
+<i>486</i>&nbsp;                }
+<b class="nc"><i>487</i>&nbsp;                else if(board[x][y].getBuildingLevel()==1){</b>
+<b class="nc"><i>488</i>&nbsp;                    boardSlots[x][y].setId(&quot;button1&quot;);</b>
+<i>489</i>&nbsp;                }
+<b class="nc"><i>490</i>&nbsp;                else if(board[x][y].getBuildingLevel()==2){</b>
+<b class="nc"><i>491</i>&nbsp;                    boardSlots[x][y].setId(&quot;button2&quot;);</b>
+<i>492</i>&nbsp;                }
+<b class="nc"><i>493</i>&nbsp;                else if(board[x][y].getBuildingLevel()==3){</b>
+<b class="nc"><i>494</i>&nbsp;                    boardSlots[x][y].setId(&quot;button3&quot;);</b>
+<i>495</i>&nbsp;                }
+<i>496</i>&nbsp;            }
+<i>497</i>&nbsp;        }
+<i>498</i>&nbsp;    }
+<i>499</i>&nbsp;
+<i>500</i>&nbsp;    public void askForWorker(ArrayList&lt;Integer&gt; options) {
+<b class="nc"><i>501</i>&nbsp;        for(int x = 0 ; x &lt; 5 ; x++) {</b>
+<b class="nc"><i>502</i>&nbsp;            for(int y = 0 ; y &lt; 5 ; y++) {</b>
+<b class="nc"><i>503</i>&nbsp;                boardSlots[x][y].setDisable(true);</b>
+<i>504</i>&nbsp;            }
+<i>505</i>&nbsp;        }
+<b class="nc"><i>506</i>&nbsp;        for(int a = 0 ; a &lt; options.size() - 1 ; a+=2) {</b>
+<i>507</i>&nbsp;            //addListenerWorker(options.get(a), options.get(a+1));
+<b class="nc"><i>508</i>&nbsp;            boardSlots[options.get(a)][options.get(a+1)].addEventFilter(MouseEvent.MOUSE_CLICKED, workerHandler);</b>
+<b class="nc"><i>509</i>&nbsp;            boardSlots[options.get(a)][options.get(a+1)].setDisable(false);</b>
+<i>510</i>&nbsp;        }
+<i>511</i>&nbsp;    }
+<i>512</i>&nbsp;
+<i>513</i>&nbsp;    public void askForTile(ArrayList&lt;Integer&gt; options) {
+<b class="nc"><i>514</i>&nbsp;        for(int x = 0 ; x &lt; 5 ; x++) {</b>
+<b class="nc"><i>515</i>&nbsp;            for(int y = 0 ; y &lt; 5 ; y++) {</b>
+<b class="nc"><i>516</i>&nbsp;                boardSlots[x][y].setDisable(true);</b>
+<i>517</i>&nbsp;            }
+<i>518</i>&nbsp;        }
+<b class="nc"><i>519</i>&nbsp;        for(int a = 0 ; a &lt; options.size() - 1 ; a+=2) {</b>
+<i>520</i>&nbsp;            //addListenerTile(options.get(a), options.get(a+1));
+<b class="nc"><i>521</i>&nbsp;            boardSlots[options.get(a)][options.get(a+1)].addEventFilter(MouseEvent.MOUSE_CLICKED, tileHandler);</b>
+<b class="nc"><i>522</i>&nbsp;            boardSlots[options.get(a)][options.get(a+1)].setDisable(false);</b>
+<i>523</i>&nbsp;        }
+<i>524</i>&nbsp;    }
+<i>525</i>&nbsp;
+<i>526</i>&nbsp;    public void returnWorker(int row, int column) {
+<i>527</i>&nbsp;        //if is valid
+<b class="nc"><i>528</i>&nbsp;        boardSlots[row][column].removeEventFilter(MouseEvent.MOUSE_CLICKED, workerHandler);</b>
+<b class="nc"><i>529</i>&nbsp;        System.out.println(&quot;Worker: &quot; + row + &quot; &quot; + column);</b>
+<i>530</i>&nbsp;    }
+<i>531</i>&nbsp;
+<i>532</i>&nbsp;    public void returnTile(int row, int column) {
+<i>533</i>&nbsp;        //if is valid
+<b class="nc"><i>534</i>&nbsp;        boardSlots[row][column].removeEventFilter(MouseEvent.MOUSE_CLICKED, tileHandler);</b>
+<b class="nc"><i>535</i>&nbsp;        System.out.println(&quot;Tile: &quot; + row + &quot; &quot; + column);</b>
+<i>536</i>&nbsp;    }
+<i>537</i>&nbsp;
+<i>538</i>&nbsp;    private ArrayList&lt;ToggleButton&gt; createGodButtons() {
+<b class="nc"><i>539</i>&nbsp;        ArrayList&lt;ToggleButton&gt; buttons = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>540</i>&nbsp;        selectedGods = new ArrayList&lt;&gt;();</b>
+<i>541</i>&nbsp;
+<b class="nc"><i>542</i>&nbsp;        ToggleButton b = new ToggleButton();</b>
+<b class="nc"><i>543</i>&nbsp;        b.setId(&quot;apollo&quot;);</b>
+<b class="nc"><i>544</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>545</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>546</i>&nbsp;        b.setId(&quot;artemis&quot;);</b>
+<b class="nc"><i>547</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>548</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>549</i>&nbsp;        b.setId(&quot;athena&quot;);</b>
+<b class="nc"><i>550</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>551</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>552</i>&nbsp;        b.setId(&quot;atlas&quot;);</b>
+<b class="nc"><i>553</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>554</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>555</i>&nbsp;        b.setId(&quot;demeter&quot;);</b>
+<b class="nc"><i>556</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>557</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>558</i>&nbsp;        b.setId(&quot;hephaestus&quot;);</b>
+<b class="nc"><i>559</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>560</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>561</i>&nbsp;        b.setId(&quot;hermes&quot;);</b>
+<b class="nc"><i>562</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>563</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>564</i>&nbsp;        b.setId(&quot;minotaur&quot;);</b>
+<b class="nc"><i>565</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>566</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>567</i>&nbsp;        b.setId(&quot;pan&quot;);</b>
+<b class="nc"><i>568</i>&nbsp;        buttons.add(b);</b>
+<b class="nc"><i>569</i>&nbsp;        b = new ToggleButton();</b>
+<b class="nc"><i>570</i>&nbsp;        b.setId(&quot;prometheus&quot;);</b>
+<b class="nc"><i>571</i>&nbsp;        buttons.add(b);</b>
+<i>572</i>&nbsp;
+<i>573</i>&nbsp;        //debug
+<i>574</i>&nbsp;        //System.out.println(godButtons.toString());
+<i>575</i>&nbsp;
+<i>576</i>&nbsp;        ToggleButton x;
+<b class="nc"><i>577</i>&nbsp;        for(int a = 1 ; a &lt;= buttons.size() ;  a++){</b>
+<b class="nc"><i>578</i>&nbsp;            x = buttons.get(a-1);</b>
+<b class="nc"><i>579</i>&nbsp;            x.setFont(Font.font(&quot;Futura&quot;, 12));</b>
+<b class="nc"><i>580</i>&nbsp;            x.setPrefSize(200, 300);</b>
+<b class="nc"><i>581</i>&nbsp;            x.setOnAction((ActionEvent event) -&gt; {</b>
+<i>582</i>&nbsp;                /*if(selectedGods.size() &lt; playersNum) {
+<i>583</i>&nbsp;                    if (!selectedGods.contains(((Control) event.getSource()).getId())) {
+<i>584</i>&nbsp;                        selectedGods.add(String.valueOf(((Control) event.getSource()).getId()));
+<i>585</i>&nbsp;                        System.out.println(&quot;Add: &quot; + String.valueOf(((Control) event.getSource()).getId()));
+<i>586</i>&nbsp;                    } else {
+<i>587</i>&nbsp;                        selectedGods.remove(String.valueOf(((Control) event.getSource()).getId()));
+<i>588</i>&nbsp;                        System.out.println(&quot;Remove: &quot; + String.valueOf(((Control) event.getSource()).getId()));
+<i>589</i>&nbsp;                    }
+<i>590</i>&nbsp;                } else {
+<i>591</i>&nbsp;                    ((ToggleButton) event.getSource()).setSelected(false);
+<i>592</i>&nbsp;                }*/
+<b class="nc"><i>593</i>&nbsp;                if(selectedGods.contains(((Control) event.getSource()).getId())) {</b>
+<b class="nc"><i>594</i>&nbsp;                    selectedGods.remove(String.valueOf(((Control) event.getSource()).getId()));</b>
+<b class="nc"><i>595</i>&nbsp;                    System.out.println(&quot;Remove: &quot; + String.valueOf(((Control) event.getSource()).getId()));</b>
+<i>596</i>&nbsp;                } else {
+<b class="nc"><i>597</i>&nbsp;                    if(selectedGods.size() &lt; playersNum) {</b>
+<b class="nc"><i>598</i>&nbsp;                        selectedGods.add(String.valueOf(((Control) event.getSource()).getId()));</b>
+<b class="nc"><i>599</i>&nbsp;                        System.out.println(&quot;Add: &quot; + String.valueOf(((Control) event.getSource()).getId()));</b>
+<i>600</i>&nbsp;                    } else {
+<b class="nc"><i>601</i>&nbsp;                        ((ToggleButton) event.getSource()).setSelected(false);</b>
+<i>602</i>&nbsp;                    }
+<i>603</i>&nbsp;                }
+<i>604</i>&nbsp;            });
+<b class="nc"><i>605</i>&nbsp;            System.out.println(String.format(&quot;%02d&quot;, a));</b>
+<b class="nc"><i>606</i>&nbsp;            x.setBackground(new Background(new BackgroundImage(new Image(&quot;/graphic_resources/godCards/&quot;+String.format(&quot;%02d&quot;, a)+&quot;.png&quot;, x.getWidth(), x.getHeight(), false, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(x.getWidth(), x.getHeight(), true, true, true, false))));</b>
+<i>607</i>&nbsp;        }
+<i>608</i>&nbsp;
+<i>609</i>&nbsp;        //debug
+<i>610</i>&nbsp;        /*Button b;
+<i>611</i>&nbsp;        int x=0;
+<i>612</i>&nbsp;        while(x &lt; 30){
+<i>613</i>&nbsp;            b = new Button();
+<i>614</i>&nbsp;            b.setId(&quot;generic god&quot;);
+<i>615</i>&nbsp;            b.setFont(Font.font(&quot;Futura&quot;, 12));
+<i>616</i>&nbsp;            b.setPrefSize(200, 300);
+<i>617</i>&nbsp;            b.setBackground(new Background(new BackgroundImage(new Image(&quot;/graphic_resources/godCards/02.png&quot;, b.getWidth(), b.getHeight(), false, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(b.getWidth(), b.getHeight(), true, true, true, false))));
+<i>618</i>&nbsp;            buttons.add(b);
+<i>619</i>&nbsp;            x++;
+<i>620</i>&nbsp;        }*/
+<i>621</i>&nbsp;
+<b class="nc"><i>622</i>&nbsp;        return buttons;</b>
+<i>623</i>&nbsp;    }
+<i>624</i>&nbsp;
+<i>625</i>&nbsp;    public static void main(String[] args) {
+<b class="nc"><i>626</i>&nbsp;        launch(args);</b>
+<i>627</i>&nbsp;    }
+<i>628</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

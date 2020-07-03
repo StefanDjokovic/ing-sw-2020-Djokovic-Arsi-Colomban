@@ -1,0 +1,183 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RequestGameInformation</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.messages.request</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RequestGameInformation (it.polimi.ingsw.messages.request)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RequestGameInformation</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 56)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.messages.request;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.client.view.ClientView;
+<i>4</i>&nbsp;import it.polimi.ingsw.messages.Request;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.ArrayList;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class RequestGameInformation extends Request {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    private static final long serialVersionUID = 6529685098267757611L;
+<i>11</i>&nbsp;
+<b class="nc"><i>12</i>&nbsp;    private ArrayList&lt;String&gt; playersName = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>13</i>&nbsp;    private ArrayList&lt;Character&gt; playersInitial = new ArrayList&lt;&gt;();</b>
+<i>14</i>&nbsp;    private ArrayList&lt;String&gt; godNames;
+<i>15</i>&nbsp;    private String playerName1;
+<i>16</i>&nbsp;    private String playerName2;
+<i>17</i>&nbsp;    private String playerName3;
+<i>18</i>&nbsp;    private char playerInit1;
+<i>19</i>&nbsp;    private char playerInit2;
+<i>20</i>&nbsp;    private char playerInit3;
+<i>21</i>&nbsp;    private int nPlayers;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    public RequestGameInformation(String playerName1, String playerName2,
+<b class="nc"><i>24</i>&nbsp;                                  char playerInit1, char playerInit2) {</b>
+<b class="nc"><i>25</i>&nbsp;        playersName.add(playerName1);</b>
+<b class="nc"><i>26</i>&nbsp;        playersName.add(playerName2);</b>
+<b class="nc"><i>27</i>&nbsp;        this.playerName1 = playerName1;</b>
+<b class="nc"><i>28</i>&nbsp;        this.playerName2 = playerName2;</b>
+<b class="nc"><i>29</i>&nbsp;        playersInitial.add(playerInit1);</b>
+<b class="nc"><i>30</i>&nbsp;        playersInitial.add(playerInit2);</b>
+<b class="nc"><i>31</i>&nbsp;        this.playerInit1 = playerInit1;</b>
+<b class="nc"><i>32</i>&nbsp;        this.playerInit2 = playerInit2;</b>
+<b class="nc"><i>33</i>&nbsp;        this.nPlayers = 2;</b>
+<b class="nc"><i>34</i>&nbsp;        this.isAsync = true;</b>
+<b class="nc"><i>35</i>&nbsp;        this.message = &quot;This message contains game information&quot;;</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public RequestGameInformation(String playerName1, String playerName2,
+<i>39</i>&nbsp;                                  String playerName3, char playerInit1, char playerInit2,
+<b class="nc"><i>40</i>&nbsp;                                  char playerInit3) {</b>
+<b class="nc"><i>41</i>&nbsp;        playersName.add(playerName1);</b>
+<b class="nc"><i>42</i>&nbsp;        playersName.add(playerName2);</b>
+<b class="nc"><i>43</i>&nbsp;        playersName.add(playerName3);</b>
+<b class="nc"><i>44</i>&nbsp;        this.playerName1 = playerName1;</b>
+<b class="nc"><i>45</i>&nbsp;        this.playerName2 = playerName2;</b>
+<b class="nc"><i>46</i>&nbsp;        this.playerName3 = playerName3;</b>
+<b class="nc"><i>47</i>&nbsp;        playersInitial.add(playerInit1);</b>
+<b class="nc"><i>48</i>&nbsp;        playersInitial.add(playerInit2);</b>
+<b class="nc"><i>49</i>&nbsp;        playersInitial.add(playerInit3);</b>
+<b class="nc"><i>50</i>&nbsp;        this.playerInit1 = playerInit1;</b>
+<b class="nc"><i>51</i>&nbsp;        this.playerInit2 = playerInit2;</b>
+<b class="nc"><i>52</i>&nbsp;        this.playerInit3 = playerInit3;</b>
+<b class="nc"><i>53</i>&nbsp;        this.nPlayers = 3;</b>
+<b class="nc"><i>54</i>&nbsp;        this.isAsync = true;</b>
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    public RequestGameInformation(String playerName1, String playerName2,
+<i>59</i>&nbsp;                                  String playerName3, char playerInit1, char playerInit2,
+<b class="nc"><i>60</i>&nbsp;                                  char playerInit3, String god1, String god2, String god3) {</b>
+<b class="nc"><i>61</i>&nbsp;        playersName.add(playerName1);</b>
+<b class="nc"><i>62</i>&nbsp;        playersName.add(playerName2);</b>
+<b class="nc"><i>63</i>&nbsp;        playersName.add(playerName3);</b>
+<b class="nc"><i>64</i>&nbsp;        playersInitial.add(playerInit1);</b>
+<b class="nc"><i>65</i>&nbsp;        playersInitial.add(playerInit2);</b>
+<b class="nc"><i>66</i>&nbsp;        playersInitial.add(playerInit3);</b>
+<b class="nc"><i>67</i>&nbsp;        this.nPlayers = 3;</b>
+<b class="nc"><i>68</i>&nbsp;        this.isAsync = true;</b>
+<b class="nc"><i>69</i>&nbsp;        godNames = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>70</i>&nbsp;        godNames.add(god1);</b>
+<b class="nc"><i>71</i>&nbsp;        godNames.add(god2);</b>
+<b class="nc"><i>72</i>&nbsp;        godNames.add(god3);</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    public RequestGameInformation(String playerName1, String playerName2,
+<i>76</i>&nbsp;                                  char playerInit1, char playerInit2,
+<b class="nc"><i>77</i>&nbsp;                                  String god1, String god2) {</b>
+<b class="nc"><i>78</i>&nbsp;        playersName.add(playerName1);</b>
+<b class="nc"><i>79</i>&nbsp;        playersName.add(playerName2);</b>
+<b class="nc"><i>80</i>&nbsp;        playersInitial.add(playerInit1);</b>
+<b class="nc"><i>81</i>&nbsp;        playersInitial.add(playerInit2);</b>
+<b class="nc"><i>82</i>&nbsp;        this.nPlayers = 2;</b>
+<b class="nc"><i>83</i>&nbsp;        this.isAsync = true;</b>
+<b class="nc"><i>84</i>&nbsp;        godNames = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>85</i>&nbsp;        godNames.add(god1);</b>
+<b class="nc"><i>86</i>&nbsp;        godNames.add(god2);</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    @Override
+<i>90</i>&nbsp;    public void accept(ClientView clientView) {
+<b class="nc"><i>91</i>&nbsp;        if (godNames == null) {</b>
+<b class="nc"><i>92</i>&nbsp;            clientView.setGameInformation(playersName, playersInitial, nPlayers);</b>
+<i>93</i>&nbsp;        }
+<i>94</i>&nbsp;        else {
+<b class="nc"><i>95</i>&nbsp;            clientView.setGodInformation(playersName, playersInitial, godNames, nPlayers);</b>
+<i>96</i>&nbsp;        }
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;
+<b class="nc"><i>99</i>&nbsp;    public char getInitial() { return this.initial; }</b>
+<i>100</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-03 16:22</div>
+</div>
+</body>
+</html>

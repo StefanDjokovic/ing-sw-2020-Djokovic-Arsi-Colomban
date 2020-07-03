@@ -39,7 +39,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
 
     /**
      * Sends a Request object to the client synchronously
-     * @param request
+     * @param request Request that contain the instruction
      */
     public void send(Request request) {
         if (isActiveFlag) {
