@@ -8,6 +8,11 @@ import it.polimi.ingsw.server.model.god.GodLogic;
 import java.util.ArrayList;
 
 public class MoveLimitedOnFirstBuild extends Move {
+    /**
+     * Constructor
+     * @param godLogic player's god
+     * @param canPass  true if the power can be skipped, false otherwise
+     */
     public MoveLimitedOnFirstBuild(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }

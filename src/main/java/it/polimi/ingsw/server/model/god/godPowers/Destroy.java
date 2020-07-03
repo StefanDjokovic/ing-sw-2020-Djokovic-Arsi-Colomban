@@ -12,14 +12,22 @@ import it.polimi.ingsw.server.model.logger.Logger;
 public class Destroy extends GodPower {
     /**
      * Constructor
-     *
-     * @param godLogic God containing the logic of the god selected
+     * @param godLogic player's god
      * @param canPass  true if the power can be skipped, false otherwise
      */
     public Destroy(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }
 
+    /**
+     * Lowers the building level of the selected tile by 1 level
+     * @param board variable that contains the state of the board
+     * @param posXFrom x coordinate of the worker that is going to use the power
+     * @param posYFrom y coordinate of the worker that is going to use the power
+     * @param posXTo x coordinate of the tile targeted by the power
+     * @param posYTo y coordinate of the tile targeted by the power
+     * @return
+     */
     @Override
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         try {
