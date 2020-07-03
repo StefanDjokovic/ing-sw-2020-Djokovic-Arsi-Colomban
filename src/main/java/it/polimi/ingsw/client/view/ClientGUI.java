@@ -33,11 +33,13 @@ public class ClientGUI extends ClientView {
     private boolean joining;
     private int chosenLobby;
     private int chosenNumPlayers;
+    private boolean isFinished;
 
     public ClientGUI() {
         instance = this;
         ThreadGUI tg = new ThreadGUI();
         tg.start();
+        isFinished = false;
     }
 
     public char getPlayerInitial() {
@@ -270,10 +272,11 @@ public class ClientGUI extends ClientView {
         Platform.runLater(() -> {
             EndUI e = new EndUI(won);
             CoreGUI.getStage().setScene(e.getScene());
-            ss.setMinHeight(500);
-            ss.setMinWidth(500);
+            //ss.setMinHeight(500);
+            //ss.setMinWidth(500);
             ss.setTitle("End");
         });
+        isFinished = true;
     }
 
     /**
@@ -284,10 +287,11 @@ public class ClientGUI extends ClientView {
         Platform.runLater(() -> {
             EndUI e = new EndUI(1);
             CoreGUI.getStage().setScene(e.getScene());
-            ss.setMinHeight(500);
-            ss.setMinWidth(500);
+            //ss.setMinHeight(500);
+            //ss.setMinWidth(500);
             ss.setTitle("End");
         });
+        isFinished = true;
     }
 
     //needed but not used
@@ -384,12 +388,14 @@ public class ClientGUI extends ClientView {
      * Notifies to the player that the connection to the server has been lost
      */
     public void displayLostConnection() {
-        Stage ss = CoreGUI.getStage();
-        Platform.runLater(() -> {
-            EndUI e = new EndUI(2);
-            ss.setScene(e.getScene());
-            ss.setMinHeight(500);
-            ss.setMinWidth(500);
-        });
+        if (!isFinished) {
+            Stage ss = CoreGUI.getStage();
+            Platform.runLater(() -> {
+                EndUI e = new EndUI(2);
+                ss.setScene(e.getScene());
+                ss.setMinHeight(500);
+                ss.setMinWidth(500);
+            });
+        }
     }
 }
