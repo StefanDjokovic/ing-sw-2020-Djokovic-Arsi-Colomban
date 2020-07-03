@@ -88,6 +88,7 @@ public class Client implements Observer {
             }
             if (!pinged) {
                 System.out.println("F for the server");
+                clientView.displayLostConnection();
                 noWinners = false;
             }
             // HERE WE HAVE TO DECLARE THE SERVER DEAD
