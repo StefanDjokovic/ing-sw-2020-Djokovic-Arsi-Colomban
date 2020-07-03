@@ -187,7 +187,9 @@ public class ClientBOT extends ClientView {
     public void lobbyAndNameSelection(ArrayList<LobbyView> lobbies, int error) {
         Random r = new Random();
         String name = Character.toString((char)(r.nextInt(26) + 'A'));
-
+        name = name + (char)(r.nextInt(26) + 'A');
+        name = name + (char)(r.nextInt(26) + 'A');
+        name = name + (char)(r.nextInt(26) + 'A');
         updateObservers(new AnswerLobbyAndName(-3, name, 3));
     }
 

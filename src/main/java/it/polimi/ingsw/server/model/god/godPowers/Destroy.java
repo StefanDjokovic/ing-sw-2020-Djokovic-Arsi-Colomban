@@ -24,7 +24,6 @@ public class Destroy extends GodPower {
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         try {
             board.getTile(posXTo, posYTo).buildDown();
-            System.out.println("Should have built... right?");
         } catch (NonExistingTileException | NotBuildableException e) {
             System.out.println("You failed!");
         }

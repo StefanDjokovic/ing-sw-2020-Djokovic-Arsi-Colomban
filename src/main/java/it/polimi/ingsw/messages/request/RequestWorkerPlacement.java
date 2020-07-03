@@ -7,6 +7,8 @@ import it.polimi.ingsw.messages.answers.AnswerWorkersPlacement;
 
 public class RequestWorkerPlacement extends Request {
 
+    private static final long serialVersionUID = 6529685098267757618L;
+
     private int[][] workers;
     private char initial;
 

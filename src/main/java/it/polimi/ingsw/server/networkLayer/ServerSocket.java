@@ -63,8 +63,21 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                     answer.setInitial(playerInitial);
                     updateObservers(answer);
                 }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
+            } catch (IOException e) {
+                System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete from the Game" + "\u001B[0m");
+                e.printStackTrace();
+                System.out.println("Is it here?!");
+                closeServerSocket();
+                // If there are observers it means the game has started; otherwise just take away this user from the lobby
+                if (getObserversSize() != 0)
+                    updateObservers(new AnswerKillPlayer(playerInitial));
+                else {
+                    playingLobby.deletePlayer(playerName);
+                }
+            } catch (ClassNotFoundException e) {
+                System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete from the Game" + "\u001B[0m");
+                e.printStackTrace();
+                System.out.println("Or here?!");
                 closeServerSocket();
                 // If there are observers it means the game has started; otherwise just take away this user from the lobby
                 if (getObserversSize() != 0)
@@ -88,6 +101,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             return (AnswerLobbyAndName) temp;
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
+            e.printStackTrace();
             closeServerSocket();
             updateObservers(new AnswerKillPlayer(playerInitial));
         }
@@ -152,7 +166,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         System.out.println("Joined the lobby!");
         send(new RequestWaitOpponentMove());
 
-        System.out.println("Starting asyncRead");
         asyncReadFromSocket();
     }
 
@@ -178,6 +191,6 @@ public class ServerSocket extends Observable implements Runnable, Observer {
      */
     @Override
     public void update(Answer answer) {
-        System.out.println("clientCLI shouldn't receive answers");
+        System.out.println("ServerSocket doesn't deal with Answers");
     }
 }

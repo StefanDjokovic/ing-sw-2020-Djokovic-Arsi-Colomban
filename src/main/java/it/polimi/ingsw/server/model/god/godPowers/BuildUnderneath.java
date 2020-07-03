@@ -25,7 +25,8 @@ public class BuildUnderneath extends Build {
     @Override
     public OptionSelection getOptions(Logger logger) {
         OptionSelection opt = super.getOptions(logger);
-        opt.addWorkerAsOption();
+        if (getGodLogic().getLevelTile(opt.getValues().get(0).get(0), opt.getValues().get(0).get(1)) < 3)
+            opt.addWorkerAsOption();
 
         return opt;
     }

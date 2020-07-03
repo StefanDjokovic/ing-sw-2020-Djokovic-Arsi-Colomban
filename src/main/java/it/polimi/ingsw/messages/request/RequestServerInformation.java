@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class RequestServerInformation extends Request {
 
+    private static final long serialVersionUID = 6529685098267757615L;
+
     private ArrayList<LobbyView> lobbies;
     private int error;
 

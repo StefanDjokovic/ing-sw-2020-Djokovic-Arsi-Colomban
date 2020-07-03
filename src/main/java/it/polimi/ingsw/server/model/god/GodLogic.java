@@ -121,6 +121,7 @@ public class GodLogic {
         if (opt != null) {
             if (opt.hasOptions() || turn.get(currStep).getCanPass()) {
                 opt.compressUselessOptions();
+                System.out.println(opt);
                 RequestUpdateBoardView RequestUpdateBoardView = new RequestUpdateBoardView(new BoardView(board), '*');
                 game.updateObservers(RequestUpdateBoardView);
                 Request request = new RequestPowerCoordinates(opt, this.canPass, player.getInitial());
@@ -206,6 +207,15 @@ public class GodLogic {
         else {
             return getPlayer().getOptionsPlayer(this.upDiffDebuff, this.downDiffDebuff, canIntoOpp, limitations);
         }
+    }
+
+    public int getLevelTile(int x, int y) {
+        try {
+            return board.getTile(x, y).getBuildingLevel();
+        } catch (NonExistingTileException e) {
+            System.out.println("This should really not happen");
+        }
+        return -1;
     }
 
     /**

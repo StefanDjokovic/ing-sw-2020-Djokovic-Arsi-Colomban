@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.controller.ControllerView;
 
 public class AnswerPowerCoordinates extends Answer {
 
+    private static final long serialVersionUID = 6529685098267757603L;
+
     private int posXFrom = -1;
     private int posYFrom;
     private int posXTo;
@@ -37,6 +39,11 @@ public class AnswerPowerCoordinates extends Answer {
 
     public int getPosYTo() {
         return posYTo;
+    }
+
+    @Override
+    public void printMessage() {
+        System.out.println("Coordinates of choice: from " + posXFrom + "," + posYFrom + " ; to " + posXTo + "," + posYTo);
     }
 
     @Override

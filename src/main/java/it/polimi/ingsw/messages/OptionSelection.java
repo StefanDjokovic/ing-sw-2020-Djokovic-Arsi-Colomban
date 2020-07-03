@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class OptionSelection implements Serializable {
 
+    private static final long serialVersionUID = 6529685098267757620L;
+
     private ArrayList<ArrayList<Integer>> values = new ArrayList<>();
 
 
@@ -52,8 +54,6 @@ public class OptionSelection implements Serializable {
     public OptionSelection removeOptionsPerimeter() {
         OptionSelection newOpt = new OptionSelection();
         ArrayList<Integer> opt = new ArrayList<>();
-        System.out.println("Here is opt again");
-        System.out.println(this);
         ArrayList<Integer> oldOpt = this.getValues().get(0);
         opt.add(oldOpt.get(0));
         opt.add(oldOpt.get(1));

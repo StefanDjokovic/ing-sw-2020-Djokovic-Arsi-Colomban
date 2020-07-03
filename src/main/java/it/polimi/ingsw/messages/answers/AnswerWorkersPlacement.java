@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.controller.ControllerView;
 
 public class AnswerWorkersPlacement extends Answer {
 
+    private static final long serialVersionUID = 6529685098267757604L;
+
     private int x;
     private int y;
     private char initial;

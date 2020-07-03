@@ -7,6 +7,8 @@ import it.polimi.ingsw.server.controller.ControllerView;
 // Used only by Server to organize the lobby
 public class AnswerLobbyAndName extends Answer {
 
+    private static final long serialVersionUID = 6529685098267757601L;
+
     private int lobbyNumber;
     private int nPlayers;
     private String name;

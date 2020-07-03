@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class RequestGameInformation extends Request {
 
+    private static final long serialVersionUID = 6529685098267757611L;
+
     private ArrayList<String> playersName = new ArrayList<>();
     private ArrayList<Character> playersInitial = new ArrayList<>();
     private ArrayList<String> godNames;
@@ -77,7 +79,7 @@ public class RequestGameInformation extends Request {
         playersName.add(playerName2);
         playersInitial.add(playerInit1);
         playersInitial.add(playerInit2);
-        this.nPlayers = 3;
+        this.nPlayers = 2;
         this.isAsync = true;
         godNames = new ArrayList<>();
         godNames.add(god1);

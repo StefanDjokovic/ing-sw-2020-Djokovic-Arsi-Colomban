@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class RequestPlayerGod extends Request {
 
+    private static final long serialVersionUID = 6529685098267757613L;
+
     private ArrayList<String> options;
     private int nPicks;
 

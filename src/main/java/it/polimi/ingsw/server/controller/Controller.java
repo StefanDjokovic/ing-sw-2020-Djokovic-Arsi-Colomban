@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.controller;
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
@@ -31,13 +32,21 @@ public class Controller implements Observer, ControllerView {
     public void update(Answer answer) {
         // We check with the last request sent if it's valid
         answer.printMessage();
-        if (waitingAnswer.isValidAnswer(answer) || waitingAnswer == null || answer instanceof AnswerKillPlayer) {
+        if (waitingAnswer == null || answer instanceof AnswerKillPlayer ||
+                (waitingAnswer.isValidAnswer(answer) && waitingAnswer.getInitial() == answer.getInitial())) {
             // We can now act
-            System.out.println("wu hu!");
             answer.act(this);
         }
         else {
-            System.out.println("Invalid Answer!");
+            System.out.println("Invalid Answer! Reason:");
+            if (waitingAnswer != null) {
+                waitingAnswer.printMessage();
+                answer.printMessage();
+            }
+            else {
+                System.out.println("Some weird stuff");
+            }
+
             // TODO: decide what to do in case the answer is wrong, for now it's just hanging
         }
 
@@ -144,7 +153,7 @@ public class Controller implements Observer, ControllerView {
      * @param posYTo y coordinate of the destination tile
      */
     public void executeMoveOrBuild(int posXFrom, int posYFrom, int posXTo, int posYTo) {
-        System.out.println("Controller is executing Move");
+        System.out.println("Controller is executing the action");
         game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
         game.gameTurnExecution();
     }

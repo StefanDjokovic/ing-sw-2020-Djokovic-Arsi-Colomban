@@ -33,9 +33,6 @@ public class DoubleMove extends Move {
     public OptionSelection getOptions(Logger logger) {
         OptionSelection opt;
         if (logger.getLastLog().getPlayerInit() == getGodLogic().getPlayer().getInitial()) {
-            System.out.println("\n\nI recognize that my worker is the last one I used sus\n\n");
-            System.out.println(logger);
-            System.out.println("\nEND LOG PRINT\n");
             opt =  getGodLogic().getOptionsGodLogic(1, 0, false, limitations, true);
             int lastWorkerUsedX = logger.getLastLog().getAction(2);     // X position dest
             int lastWorkerUsedY = logger.getLastLog().getAction(3);     // Y position dest
@@ -47,7 +44,6 @@ public class DoubleMove extends Move {
                     break;
                 }
             }
-            System.out.println(opt);
         }
         else
             opt =  getGodLogic().getOptionsGodLogic(1, 0, false, null, false);

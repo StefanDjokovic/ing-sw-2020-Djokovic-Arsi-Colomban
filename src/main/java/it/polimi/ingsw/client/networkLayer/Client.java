@@ -31,12 +31,12 @@ public class Client implements Observer {
         Thread thread = new Thread(() -> {
             try {
                 while(noWinners) {
-                    Object request = inputStream.readObject();
-                    Request r = (Request)request ;
-                    System.out.println("message: " + r.getMessage());
-                    r.accept(clientView);
-                    if (r.getMessage().equals("END"))
-                        noWinners = false;
+                        Object request = inputStream.readObject();
+                        Request r = (Request)request ;
+                        System.out.println("message: " + r.getMessage());
+                        r.accept(clientView);
+                        if (r.getMessage().equals("END"))
+                            noWinners = false;
                 }
             } catch (SocketException e) {
                 System.out.println("Wasn't able to send the message, the server appears to be down");

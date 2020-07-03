@@ -82,5 +82,6 @@ public class ClientApp {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+
     }
 }
