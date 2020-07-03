@@ -262,7 +262,8 @@ public class ClientGUI extends ClientView {
      * Displays final message based on who won.
      * @param winnerInit Character of the player that won the match.
      */
-    public void displayGameEnd(char winnerInit) {
+    public synchronized void displayGameEnd(char winnerInit) {
+        isFinished = true;
         int won;
 
         if(winnerInit == playerInit) {
@@ -279,13 +280,14 @@ public class ClientGUI extends ClientView {
             //ss.setMinWidth(500);
             ss.setTitle("End");
         });
-        isFinished = true;
+
     }
 
     /**
      * Displays final message in case of loss because of no option
      */
-    public void displayGameEnd() {
+    public synchronized void displayGameEnd() {
+        isFinished = true;
         Stage ss = CoreGUI.getStage();
         Platform.runLater(() -> {
             EndUI e = new EndUI(1);
@@ -294,7 +296,6 @@ public class ClientGUI extends ClientView {
             //ss.setMinWidth(500);
             ss.setTitle("End");
         });
-        isFinished = true;
     }
 
     //needed but not used
@@ -392,7 +393,7 @@ public class ClientGUI extends ClientView {
     /**
      * Notifies to the player that the connection to the server has been lost
      */
-    public void displayLostConnection() {
+    public synchronized void displayLostConnection() {
         if (!isFinished) {
             Stage ss = CoreGUI.getStage();
             Platform.runLater(() -> {

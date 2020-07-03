@@ -151,7 +151,9 @@ public class Controller implements Observer, ControllerView {
      * @param posXTo x coordinate of the destination tile
      * @param posYTo y coordinate of the destination tile
      */
+    boolean gamersGaming = false;
     public void executeMoveOrBuild(int posXFrom, int posYFrom, int posXTo, int posYTo) {
+        gamersGaming = true;
         System.out.println("Controller is executing the action");
         game.gameReceiveOptions(posXFrom, posYFrom, posXTo, posYTo);
         game.gameTurnExecution();
@@ -170,9 +172,11 @@ public class Controller implements Observer, ControllerView {
      * Called by ServerSocket when a player disconnects, it deletes the player from the game
      * @param initial initial of the player that needs to be deleted
      */
-    public void killPlayer(char initial) {
-        boolean isCurrent = game.deletePlayer(initial);
-        gameContinueOnKillPlayer(isCurrent);
+    public synchronized void killPlayer(char initial) {
+        if (game.isPlayerAlive(initial)) {
+            boolean isCurrent = game.deletePlayer(initial);
+            gameContinueOnKillPlayer(isCurrent);
+        }
     }
 
     /**
@@ -182,11 +186,13 @@ public class Controller implements Observer, ControllerView {
      * @param isCurrent True if it's the current player
      */
     public void gameContinueOnKillPlayer(boolean isCurrent) {
-        if (game.nPlayersWithGod() != game.nPlayers()) {
-            game.initGods();
-        }
-        else if (game.missingWorkers()) {
-            game.initWorker();
+        if (!gamersGaming) {
+            if (game.nPlayersWithGod() != game.nPlayers()) {
+                game.initGods();
+            }
+            else if (game.missingWorkers()) {
+                game.initWorker();
+            }
         }
         else {
             game.gameContinueOnKill(isCurrent);
