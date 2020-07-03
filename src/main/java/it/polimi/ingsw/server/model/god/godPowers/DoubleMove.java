@@ -27,7 +27,7 @@ public class DoubleMove extends Move {
      * @param posYFrom y coordinate of the worker that is going to use the power
      * @param posXTo x coordinate of the tile targeted by the power
      * @param posYTo y coordinate of the tile targeted by the power
-     * @return
+     * @return calls the father method (move) to perform the second move
      */
     @Override
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
