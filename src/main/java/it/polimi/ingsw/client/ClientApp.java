@@ -87,11 +87,8 @@ public class ClientApp {
             System.out.println("ERROR INCOMPLETE INITIALIZATION");
         }
 
-        try {
-            client.run();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+        client.run();
+
 
     }
 }

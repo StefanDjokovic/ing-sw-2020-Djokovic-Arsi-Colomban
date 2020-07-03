@@ -17,7 +17,6 @@ public class RequestUpdateBoardView extends Request {
 
     @Override
     public void accept(ClientView clientView) {
-        printMessage();
         clientView.updateBoardView(boardView);
         clientView.displayBoard();
     }

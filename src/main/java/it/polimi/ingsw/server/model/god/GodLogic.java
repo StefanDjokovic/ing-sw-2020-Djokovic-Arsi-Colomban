@@ -35,13 +35,8 @@ public class GodLogic {
         this.logger = logger;
         this.board = board;
 
-        // TODO: pull this information from JSON file
         // Initializing Turn Schema
         switch (godLogicName) {
-            case "Basic":
-                turn.add(new Move(this, false));
-                turn.add(new Build(this, false));
-                break;
             case "Apollo":
                 turn.add(new Swap(this, false));
                 turn.add(new Build(this, false));

@@ -211,10 +211,12 @@ public class ClientCLI extends ClientView {
      * Displays "Waiting opponent move" on the cli
      */
     public void waitingOpponent(char opponentInitial) {
-        if (opponentInitial != '*')
-            System.out.println("Waiting " + opponentInitial + "'s move");
-        else
-            System.out.println("Waiting...");
+        synchronized (this) {
+            if (opponentInitial != '*')
+                System.out.println("Waiting " + opponentInitial + "'s move");
+            else
+                System.out.println("Waiting...");
+        }
     }
 
     /**
@@ -227,19 +229,20 @@ public class ClientCLI extends ClientView {
         boolean unselected = true;
 
         int posX = -1, posY = -1;
-        // very ugly, will fix later
-        while(unselected) {
-            System.out.println("Select X and Y coordinates of your worker");
-            posX = getValidInt();
-            posY = getValidInt();
+        synchronized (this) {
+            while(unselected) {
+                System.out.println("Select X and Y coordinates of your worker");
+                posX = getValidInt();
+                posY = getValidInt();
 
-            if (posX >= 0 && posX < 5 && posY >= 0 && posY < 5) {
-                unselected = false;
-                if (workers != null) {
-                    for (int[] worker : workers) {
-                        if (posX == worker[0] && posY == worker[1]) {
-                            unselected = true;
-                            break;
+                if (posX >= 0 && posX < 5 && posY >= 0 && posY < 5) {
+                    unselected = false;
+                    if (workers != null) {
+                        for (int[] worker : workers) {
+                            if (posX == worker[0] && posY == worker[1]) {
+                                unselected = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -526,104 +529,107 @@ public class ClientCLI extends ClientView {
      * @param selectable matrix wiht all the selectable tiles
      */
     public void printSelectableBoard(boolean[][] selectable) {
-
-        if (selectable == null) {
-            selectable = new boolean[5][];
-            for (int i = 0; i < 5; i++)
-                selectable[i] = new boolean[5];
-        }
-
-        String ANSI_WHITE = "\u001B[37m";
-
-        System.out.println();
-        System.out.println(ANSI_WHITE + "╔═════════╦═════════╦═════════╦═════════╦═════════╗");
-        for (int i = 0; i < 5; i++) {
-            for (int k = 0; k < 3; k++) {
-                for (int j = 0; j < 5; j++) {
-                    System.out.print("║");
-                    if (boardView[i][j].getBuildingLevel() == 0 && !boardView[i][j].hasDome())
-                        currColor = ANSI_GREEN_BACKGROUND;
-                    else if (boardView[i][j].getBuildingLevel() == 1 && !boardView[i][j].hasDome())
-                        currColor = ANSI_YELLOW_BACKGROUND;
-                    else if (boardView[i][j].getBuildingLevel() == 2 && !boardView[i][j].hasDome())
-                        currColor = ANSI_WHITE_BACKGROUND;
-                    else if (boardView[i][j].getBuildingLevel() == 3 && !boardView[i][j].hasDome())
-                        currColor = ANSI_BRIGHTBLACK_BACKGROUND;
-                    else
-                        currColor = ANSI_BLUE_BACKGROUND;
-
-                    if (k != 1) {
-                        System.out.print(currColor + "         " + ANSI_RESET);
-                    }
-                    else if (selectable[i][j]) {
-                        if (boardView[i][j].getInitWorker() != '?')
-                            System.out.print(currColor + "   " + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + " "
-                                    + boardView[i][j].getInitWorker() + " " + currColor +
-                                    "   " + ANSI_RESET);
-                        else
-                            System.out.print(currColor + "   " + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + "   " + currColor +
-                                    "   " + ANSI_RESET);
-                    }
-                    else {
-                        if (boardView[i][j].getInitWorker() != '?')
-                            System.out.print(currColor + "    " + ANSI_BLACK + boardView[i][j].getInitWorker() + "    " + ANSI_RESET);
-                        else
-                            System.out.print(currColor + "         " + ANSI_RESET);
-                    }
-
-                }
-                System.out.print("║");
-                System.out.println();
+        synchronized (this) {
+            if (selectable == null) {
+                selectable = new boolean[5][];
+                for (int i = 0; i < 5; i++)
+                    selectable[i] = new boolean[5];
             }
 
-            if (i != 4)
-                System.out.println("╠═════════╬═════════╬═════════╬═════════╬═════════╣");
+            String ANSI_WHITE = "\u001B[37m";
 
+            System.out.println();
+            System.out.println(ANSI_WHITE + "╔═════════╦═════════╦═════════╦═════════╦═════════╗");
+            for (int i = 0; i < 5; i++) {
+                for (int k = 0; k < 3; k++) {
+                    for (int j = 0; j < 5; j++) {
+                        System.out.print("║");
+                        if (boardView[i][j].getBuildingLevel() == 0 && !boardView[i][j].hasDome())
+                            currColor = ANSI_GREEN_BACKGROUND;
+                        else if (boardView[i][j].getBuildingLevel() == 1 && !boardView[i][j].hasDome())
+                            currColor = ANSI_YELLOW_BACKGROUND;
+                        else if (boardView[i][j].getBuildingLevel() == 2 && !boardView[i][j].hasDome())
+                            currColor = ANSI_WHITE_BACKGROUND;
+                        else if (boardView[i][j].getBuildingLevel() == 3 && !boardView[i][j].hasDome())
+                            currColor = ANSI_BRIGHTBLACK_BACKGROUND;
+                        else
+                            currColor = ANSI_BLUE_BACKGROUND;
+
+                        if (k != 1) {
+                            System.out.print(currColor + "         " + ANSI_RESET);
+                        }
+                        else if (selectable[i][j]) {
+                            if (boardView[i][j].getInitWorker() != '?')
+                                System.out.print(currColor + "   " + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + " "
+                                        + boardView[i][j].getInitWorker() + " " + currColor +
+                                        "   " + ANSI_RESET);
+                            else
+                                System.out.print(currColor + "   " + ANSI_BLACK + ANSI_BRIGHTRED_BACKGROUND + "   " + currColor +
+                                        "   " + ANSI_RESET);
+                        }
+                        else {
+                            if (boardView[i][j].getInitWorker() != '?')
+                                System.out.print(currColor + "    " + ANSI_BLACK + boardView[i][j].getInitWorker() + "    " + ANSI_RESET);
+                            else
+                                System.out.print(currColor + "         " + ANSI_RESET);
+                        }
+
+                    }
+                    System.out.print("║");
+                    System.out.println();
+                }
+
+                if (i != 4)
+                    System.out.println("╠═════════╬═════════╬═════════╬═════════╬═════════╣");
+
+            }
+            System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
         }
-        System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
+
     }
 
     /**
      * Displays the board's current state
      */
     public void displayBoard() {
+        synchronized (this) {
+            String ANSI_WHITE = "\u001B[37m";
 
-        String ANSI_WHITE = "\u001B[37m";
-
-        System.out.println();
-        System.out.println(ANSI_WHITE + "╔═════════╦═════════╦═════════╦═════════╦═════════╗");
-        for (int i = 0; i < 5; i++) {
-            for (int k = 0; k < 3; k++) {
-                for (int j = 0; j < 5; j++) {
-                    System.out.print("║");
-                    if (boardView[i][j].getBuildingLevel() == 0 && !boardView[i][j].hasDome())
-                        currColor = ANSI_GREEN_BACKGROUND;
-                    else if (boardView[i][j].getBuildingLevel() == 1 && !boardView[i][j].hasDome())
-                        currColor = ANSI_YELLOW_BACKGROUND;
-                    else if (boardView[i][j].getBuildingLevel() == 2 && !boardView[i][j].hasDome())
-                        currColor = ANSI_WHITE_BACKGROUND;
-                    else if (boardView[i][j].getBuildingLevel() == 3 && !boardView[i][j].hasDome())
-                        currColor = ANSI_BRIGHTBLACK_BACKGROUND;
-                    else
-                        currColor = ANSI_BLUE_BACKGROUND;
-
-                    if (k != 1) {
-                        System.out.print(currColor + "         " + ANSI_RESET);
-                    }
-                    else {
-                        if (boardView[i][j].getInitWorker() != '?')
-                            System.out.print(currColor + "    " + ANSI_BLACK + boardView[i][j].getInitWorker() + "    " + ANSI_RESET);
+            System.out.println();
+            System.out.println(ANSI_WHITE + "╔═════════╦═════════╦═════════╦═════════╦═════════╗");
+            for (int i = 0; i < 5; i++) {
+                for (int k = 0; k < 3; k++) {
+                    for (int j = 0; j < 5; j++) {
+                        System.out.print("║");
+                        if (boardView[i][j].getBuildingLevel() == 0 && !boardView[i][j].hasDome())
+                            currColor = ANSI_GREEN_BACKGROUND;
+                        else if (boardView[i][j].getBuildingLevel() == 1 && !boardView[i][j].hasDome())
+                            currColor = ANSI_YELLOW_BACKGROUND;
+                        else if (boardView[i][j].getBuildingLevel() == 2 && !boardView[i][j].hasDome())
+                            currColor = ANSI_WHITE_BACKGROUND;
+                        else if (boardView[i][j].getBuildingLevel() == 3 && !boardView[i][j].hasDome())
+                            currColor = ANSI_BRIGHTBLACK_BACKGROUND;
                         else
+                            currColor = ANSI_BLUE_BACKGROUND;
+
+                        if (k != 1) {
                             System.out.print(currColor + "         " + ANSI_RESET);
+                        }
+                        else {
+                            if (boardView[i][j].getInitWorker() != '?')
+                                System.out.print(currColor + "    " + ANSI_BLACK + boardView[i][j].getInitWorker() + "    " + ANSI_RESET);
+                            else
+                                System.out.print(currColor + "         " + ANSI_RESET);
+                        }
                     }
+                    System.out.print("║");
+                    System.out.println();
                 }
-                System.out.print("║");
-                System.out.println();
+                if (i != 4)
+                    System.out.println("╠═════════╬═════════╬═════════╬═════════╬═════════╣");
             }
-            if (i != 4)
-                System.out.println("╠═════════╬═════════╬═════════╬═════════╬═════════╣");
+            System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
         }
-        System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
     }
 
 

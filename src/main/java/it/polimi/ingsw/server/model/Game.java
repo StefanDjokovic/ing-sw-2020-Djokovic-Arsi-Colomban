@@ -57,7 +57,6 @@ public class Game extends Observable{
 
         if (opt == null) {
             opt = new HashMap<>();
-            opt.put("Basic", 0);
             opt.put("Apollo", 1);
             opt.put("Artemis", 2);
             opt.put("Athena", 3);
@@ -228,6 +227,7 @@ public class Game extends Observable{
      */
     // currPlayer keeps track of the player that is playing (it is the position in the ArrayList of players)
     private int currPlayer = 0;
+    private boolean gameEndDeclared = false;
     //status is 0 when the player has not finished his turn, 1 when the player finished his turn, 2 when the current player won
     private int status = -1;
     public void gameTurnExecution() {
@@ -239,11 +239,19 @@ public class Game extends Observable{
         }
         else {
             if (players.size() == 1) {
-                gameEndConditionOnOnePlayer();
+                if (!gameEndDeclared) {
+                    gameEndConditionOnOnePlayer();
+                    System.out.println("Won because just one player was left!");
+                    gameEndDeclared = true;
+                }
             }
             else if (players.size() > 1){
-                updateObservers(new RequestUpdateBoardView(new BoardView(board), '*'));
-                updateObservers(new RequestGameEnd(players.get(currPlayer).getInitial()));
+                if (!gameEndDeclared) {
+                    updateObservers(new RequestUpdateBoardView(new BoardView(board), '*'));
+                    updateObservers(new RequestGameEnd(players.get(currPlayer).getInitial()));
+                    System.out.println("Game ended, won by " + players.get(currPlayer).getInitial());
+                    gameEndDeclared = true;
+                }
             }
         }
     }
@@ -262,7 +270,11 @@ public class Game extends Observable{
     private boolean gameEndConditionOnOnePlayer() {
         if (players.size() == 1) {
             updateObservers(new RequestGameEnd(players.get(0).getInitial()));
-            System.out.println("Game ended with only one player remaining");
+            if (!gameEndDeclared) {
+                gameEndConditionOnOnePlayer();
+                System.out.println("Won because just one player was left!");
+                gameEndDeclared = true;
+            }
             return true;
         }
         return false;

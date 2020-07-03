@@ -31,14 +31,13 @@ public class Controller implements Observer, ControllerView {
     @Override
     public void update(Answer answer) {
         // We check with the last request sent if it's valid
-        answer.printMessage();
         if (waitingAnswer == null || answer instanceof AnswerKillPlayer ||
                 (waitingAnswer.isValidAnswer(answer) && waitingAnswer.getInitial() == answer.getInitial())) {
             // We can now act
             answer.act(this);
         }
         else {
-            System.out.println("Invalid Answer! Reason:");
+            System.out.println("Invalid Answer received:");
             if (waitingAnswer != null) {
                 waitingAnswer.printMessage();
                 answer.printMessage();
