@@ -134,6 +134,12 @@ public class ClientCLI extends ClientView {
         System.out.println("Please, input Player's name: ");
         scanner = new Scanner(System.in);
         String playerName = scanner.nextLine();
+        playerName = playerName.trim();
+        while (playerName.equals("")) {
+            System.out.println("Empty names are not valid");
+            playerName = scanner.nextLine();
+            playerName = playerName.trim();
+        }
         if (playerName.length() > 10)
             playerName = playerName.substring(0, 10);
         System.out.println("Name selected: " + playerName);
