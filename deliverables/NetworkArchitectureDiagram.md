@@ -15,6 +15,11 @@
  The two kinds of messages are:
   + __Requests__: messages sent from the server to the client, once they arrive they ask the View to do something
   + __Answers__: messages sent from the client to the server, once they arrive they ask the Controller to do something
+  
+---
+
+* __Pings__: every 5 seconds the server sends a ping to the client. The client has a 5 seconds-long time-frame to pong back, otherwise it will be considered disconnected and deleted by the server. The client has to receive a ping from the server every 10 seconds. If this doesn't happen, the client will consider the server dead and will halt the game. This process starts when a client joins a lobby
+
 
 # Initialization
 
