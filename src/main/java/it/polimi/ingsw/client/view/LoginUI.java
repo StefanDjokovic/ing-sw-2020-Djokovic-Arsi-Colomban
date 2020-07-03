@@ -94,7 +94,7 @@ public class LoginUI {
         bt2.setText("Play");
         bt2.setFont(Font.font("Futura", FontWeight.NORMAL, 15));
         bt2.setOnAction((ActionEvent event) -> {
-            if((!txtf.getCharacters().toString().equals("") && isJoining) || (!txtf.getCharacters().toString().equals("") && !cb.getSelectionModel().isEmpty())) {
+            if((!txtf.getCharacters().toString().trim().equals("") && isJoining) || (!txtf.getCharacters().toString().trim().equals("") && !cb.getSelectionModel().isEmpty())) {
                 sendName(isJoining);
             }
         });
@@ -163,7 +163,7 @@ public class LoginUI {
         cb.setDisable(true);
         info.setText("Waiting for other player(s)");
 
-        String name = txtf.getCharacters().toString();
+        String name = txtf.getCharacters().toString().trim();
         if (name.length() > 10) {
             name = name.substring(0, 9);
         }

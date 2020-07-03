@@ -30,7 +30,7 @@ public class Build extends GodPower {
      * @param posYFrom y coordinate of the worker that is going to use the power
      * @param posXTo x coordinate of the tile targeted by the power
      * @param posYTo y coordinate of the tile targeted by the power
-     * @return
+     * @return 0 at the end of the execution
      */
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
         try {
@@ -41,11 +41,6 @@ public class Build extends GodPower {
         return 0;
     }
 
-    /**
-     *
-     * @param logger the logger of the game
-     * @return
-     */
     @Override
     public OptionSelection getOptions(Logger logger) {
         OptionSelection opt = getGodLogic().getOptionsGodLogic(99, 0, false, null, getCanPass());

@@ -31,7 +31,7 @@ public class Move extends GodPower {
      * @param posYFrom y coordinate of the worker that is going to use the power
      * @param posXTo x coordinate of the tile targeted by the power
      * @param posYTo y coordinate of the tile targeted by the power
-     * @return
+     * @return 2 if the player wins, 1 if they don't
      */
     @Override
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
