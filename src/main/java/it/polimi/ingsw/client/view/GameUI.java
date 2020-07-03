@@ -404,7 +404,7 @@ public class GameUI {
                 sendMovement();
             }
         });
-        Platform.runLater(() -> {infoLabel.setText("Choose the worker you want to move and where you want to move");});
+        Platform.runLater(() -> {infoLabel.setText("Select an available worker and an available tile");});
     }
 
     /**
@@ -464,7 +464,7 @@ public class GameUI {
                 sendBuildInfo();
             }
         });
-        Platform.runLater(() -> {infoLabel.setText("Choose where you want to build");});
+        Platform.runLater(() -> {infoLabel.setText("Select an available tile");});
     }
 
     /**
