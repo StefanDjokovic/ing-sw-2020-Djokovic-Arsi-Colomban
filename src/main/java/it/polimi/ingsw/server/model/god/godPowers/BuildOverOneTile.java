@@ -7,6 +7,12 @@ import it.polimi.ingsw.server.model.god.GodLogic;
 import java.util.ArrayList;
 
 public class BuildOverOneTile extends Build {
+
+    /**
+     * Constructor
+     * @param godLogic player's god
+     * @param canPass  true if the power can be skipped, false otherwise
+     */
     public BuildOverOneTile(GodLogic godLogic, boolean canPass) {
         super(godLogic, canPass);
     }

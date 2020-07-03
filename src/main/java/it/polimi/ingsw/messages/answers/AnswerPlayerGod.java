@@ -6,6 +6,9 @@ import it.polimi.ingsw.server.controller.ControllerView;
 
 import java.util.ArrayList;
 
+/**
+ * Contains the player's selected god
+ */
 public class AnswerPlayerGod extends Answer {
 
     private static final long serialVersionUID = 6529685098267757602L;

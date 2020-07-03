@@ -4,6 +4,9 @@ import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.server.controller.ControllerView;
 
+/**
+ * Contains the player's selection for their worker's placement
+ */
 public class AnswerWorkersPlacement extends Answer {
 
     private static final long serialVersionUID = 6529685098267757604L;

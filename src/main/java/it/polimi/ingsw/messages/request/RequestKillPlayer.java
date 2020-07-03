@@ -4,6 +4,9 @@ import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerKillPlayer;
 
+/**
+ * Sent by the server when a player loses and must by deleted from the game. Displays game end message for the deleted player
+ */
 public class RequestKillPlayer extends Request {
 
     private static final long serialVersionUID = 6529685098267757612L;

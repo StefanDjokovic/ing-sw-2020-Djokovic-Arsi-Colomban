@@ -4,6 +4,9 @@ import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.server.model.BoardView;
 
+/**
+ * Server tells the client to updated the board
+ */
 public class RequestUpdateBoardView extends Request {
 
     private static final long serialVersionUID = 6529685098267757616L;

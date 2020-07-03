@@ -4,7 +4,9 @@ import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.ControllerView;
 
-// ONLY sent by the ServerSocket to delete a player
+/**
+ * Sent when a player needs to be removed from the game
+ */
 public class AnswerKillPlayer extends Answer {
 
     private static final long serialVersionUID = 6529685098267757600L;

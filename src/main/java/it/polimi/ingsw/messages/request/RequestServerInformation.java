@@ -7,6 +7,9 @@ import it.polimi.ingsw.messages.Request;
 
 import java.util.ArrayList;
 
+/**
+ * Server send lobby info to the client
+ */
 public class RequestServerInformation extends Request {
 
     private static final long serialVersionUID = 6529685098267757615L;
