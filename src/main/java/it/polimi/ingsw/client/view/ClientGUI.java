@@ -313,8 +313,8 @@ public class ClientGUI extends ClientView {
         }
     }
 
-    //needed but not used
-    public void waitingOpponent() {
+    // TODO: change to show who is moving
+    public void waitingOpponent(char playerInit) {
     }
 
     boolean isActive = false;

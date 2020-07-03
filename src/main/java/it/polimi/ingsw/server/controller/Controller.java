@@ -172,9 +172,8 @@ public class Controller implements Observer, ControllerView {
      * @param initial initial of the player that needs to be deleted
      */
     public void killPlayer(char initial) {
-        boolean isCurrent = game.deletePlayer(game.getPlayerFromInitial(initial));
-        if (isCurrent)
-            gameContinueOnKillPlayer();
+        boolean isCurrent = game.deletePlayer(initial);
+        gameContinueOnKillPlayer(isCurrent);
     }
 
     /**
@@ -182,7 +181,7 @@ public class Controller implements Observer, ControllerView {
      * If there are still players with uninitialized workers, it initializes them.
      * Otherwise, it starts the game
      */
-    public void gameContinueOnKillPlayer() {
+    public void gameContinueOnKillPlayer(boolean isCurrent) {
         if (game.nPlayersWithGod() != game.nPlayers()) {
             game.initGods();
         }
@@ -190,7 +189,7 @@ public class Controller implements Observer, ControllerView {
             game.initWorker();
         }
         else {
-            game.gameTurnExecution();
+            game.gameContinueOnKill(isCurrent);
         }
     }
 }

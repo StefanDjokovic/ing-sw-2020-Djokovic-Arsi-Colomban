@@ -63,21 +63,8 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                     answer.setInitial(playerInitial);
                     updateObservers(answer);
                 }
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete from the Game" + "\u001B[0m");
-                e.printStackTrace();
-                System.out.println("Is it here?!");
-                closeServerSocket();
-                // If there are observers it means the game has started; otherwise just take away this user from the lobby
-                if (getObserversSize() != 0)
-                    updateObservers(new AnswerKillPlayer(playerInitial));
-                else {
-                    playingLobby.deletePlayer(playerName);
-                }
-            } catch (ClassNotFoundException e) {
-                System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete from the Game" + "\u001B[0m");
-                e.printStackTrace();
-                System.out.println("Or here?!");
                 closeServerSocket();
                 // If there are observers it means the game has started; otherwise just take away this user from the lobby
                 if (getObserversSize() != 0)
@@ -164,7 +151,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
         }
         playingLobby = unSelected;
         System.out.println("Joined the lobby!");
-        send(new RequestWaitOpponentMove());
+        send(new RequestWaitOpponentMove('*'));
 
         asyncReadFromSocket();
     }
@@ -180,7 +167,7 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                 send(request);
             }
             else {
-                send(new RequestWaitOpponentMove());
+                send(new RequestWaitOpponentMove(request.getInitial()));
             }
         }
     }

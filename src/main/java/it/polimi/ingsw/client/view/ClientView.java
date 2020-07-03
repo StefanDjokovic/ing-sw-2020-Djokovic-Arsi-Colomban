@@ -16,8 +16,8 @@ public abstract class ClientView extends Observable implements Observer {
     public abstract void getSelectedWorker(OptionSelection opt, boolean canPass);
     public abstract void getWorkerSelection(OptionSelection opt, boolean canPass);
     public abstract void displayGameEnd(char winnerInit);
-    public abstract void displayGameEnd();  // On loss
-    public abstract void waitingOpponent();
+    public abstract void displayGameEnd();  // When one player loses
+    public abstract void waitingOpponent(char opponentInitial);
     public abstract void setGameInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, int nPlayers);
     public abstract void setGodInformation(ArrayList<String> playersName, ArrayList<Character> playersInitial, ArrayList<String> godNames, int nPlayers);
     public abstract void displayBoard();

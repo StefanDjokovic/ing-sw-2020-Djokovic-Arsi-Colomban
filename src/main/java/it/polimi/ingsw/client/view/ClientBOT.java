@@ -161,7 +161,7 @@ public class ClientBOT extends ClientView {
     }
 
     @Override
-    public void waitingOpponent() {
+    public void waitingOpponent(char opponentInitial) {
         System.out.println("Lul they are sending me waiting opponent messages, they don't know I'm fake");
     }
 

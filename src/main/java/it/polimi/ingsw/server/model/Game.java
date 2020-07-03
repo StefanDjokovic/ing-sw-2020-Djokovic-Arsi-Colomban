@@ -184,19 +184,27 @@ public class Game extends Observable{
 
     /**
      * Deletes a player after they get eliminated
-     * @param p player that needs to be deleted
+     * @param initialKilled initial of player that needs to be deleted
      */
-    public boolean deletePlayer(Player p) {
+    public boolean deletePlayer(char initialKilled) {
         boolean isCurrent = false;
         for (int i = 0; i < players.size(); i++) {
-            if (currPlayer < players.size() && players.get(currPlayer) == p)
+            if (currPlayer < players.size() && players.get(currPlayer).getInitial() == initialKilled)
                 isCurrent = true;
-            if (players.get(i) == p) {
+            if (players.get(i).getInitial() == initialKilled) {
                 players.get(i).delete();
-                players.remove(p);
+                players.remove(i);
 
-                if (players.size() != 0 && currPlayer == players.size())
-                    currPlayer = 0;
+                if (isCurrent) {
+                    if (players.size() != 0 && currPlayer == players.size())
+                        currPlayer = 0;
+                }
+                else {
+                    if (i < currPlayer)
+                        currPlayer--;
+                }
+
+                break;
             }
         }
 
@@ -230,14 +238,34 @@ public class Game extends Observable{
                 val = players.get(currPlayer).executeTurn(this);
         }
         else {
-            if (players.size() == 1)
-                updateObservers(new RequestGameEnd(players.get(0).getInitial()));
+            if (players.size() == 1) {
+                gameEndConditionOnOnePlayer();
+            }
             else if (players.size() > 1){
                 updateObservers(new RequestUpdateBoardView(new BoardView(board), '*'));
                 updateObservers(new RequestGameEnd(players.get(currPlayer).getInitial()));
             }
-            gameEnd();
         }
+    }
+
+    public void gameContinueOnKill(boolean isCurrent) {
+        if (isCurrent)
+            gameTurnExecution();
+        else {
+            gameEndConditionOnOnePlayer();
+        }
+    }
+
+    /**
+     * Prints "End of the game!" on the server's console, not really useful
+     */
+    private boolean gameEndConditionOnOnePlayer() {
+        if (players.size() == 1) {
+            updateObservers(new RequestGameEnd(players.get(0).getInitial()));
+            System.out.println("Game ended with only one player remaining");
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -321,13 +349,6 @@ public class Game extends Observable{
      */
     public Board getBoard() {
         return board;
-    }
-
-    /**
-     * Prints "End of the game!" on the server's console, not really useful
-     */
-    private void gameEnd() {
-        System.out.println("End of the game!");
     }
 
     /**

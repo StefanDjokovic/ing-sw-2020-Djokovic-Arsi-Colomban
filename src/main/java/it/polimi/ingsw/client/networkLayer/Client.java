@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.networkLayer;
 
 import it.polimi.ingsw.Observer;
-import it.polimi.ingsw.client.view.ClientGUI;
 import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
@@ -10,7 +9,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 
 public class Client implements Observer {
 
@@ -38,10 +36,8 @@ public class Client implements Observer {
                         if (r.getMessage().equals("END"))
                             noWinners = false;
                 }
-            } catch (SocketException e) {
-                System.out.println("Wasn't able to send the message, the server appears to be down");
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("DISCONNECTED FROM THE SERVER");
+                System.out.println("Wasn't able to send the message, the server appears to be down");
             }
 
         });
@@ -76,7 +72,6 @@ public class Client implements Observer {
             inputStream.close();
             outputStream.close();
             socket.close();
-            System.out.println("DISCONNECTED FROM SERVER");
             clientView.displayLostConnection();
         }
     }

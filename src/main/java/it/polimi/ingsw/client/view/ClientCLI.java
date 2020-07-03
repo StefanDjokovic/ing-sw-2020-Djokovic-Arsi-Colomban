@@ -208,8 +208,11 @@ public class ClientCLI extends ClientView {
     /**
      * Displays "Waiting opponent move" on the cli
      */
-    public void waitingOpponent() {
-        System.out.println("Waiting opponent move");
+    public void waitingOpponent(char opponentInitial) {
+        if (opponentInitial != '*')
+            System.out.println("Waiting " + opponentInitial + "'s move");
+        else
+            System.out.println("Waiting...");
     }
 
     /**
@@ -621,10 +624,8 @@ public class ClientCLI extends ClientView {
         System.out.println("╚═════════╩═════════╩═════════╩═════════╩═════════╝");
     }
 
-    /**
-     * Empty, needed by GUI
-     */
-    public void displayLostConnection() {
 
+    public void displayLostConnection() {
+        System.out.println("Disconnected from the server");
     }
 }
