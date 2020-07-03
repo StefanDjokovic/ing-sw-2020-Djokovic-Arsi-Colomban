@@ -5,6 +5,9 @@ import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerWorkersPlacement;
 
+/**
+ * Server asks client to select two tiles for their workers
+ */
 public class RequestWorkerPlacement extends Request {
 
     private static final long serialVersionUID = 6529685098267757618L;

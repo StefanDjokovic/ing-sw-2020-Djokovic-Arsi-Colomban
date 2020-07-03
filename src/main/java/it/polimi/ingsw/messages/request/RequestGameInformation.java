@@ -5,6 +5,9 @@ import it.polimi.ingsw.messages.Request;
 
 import java.util.ArrayList;
 
+/**
+ * Sent by the server, gives the client all the lobby information
+ */
 public class RequestGameInformation extends Request {
 
     private static final long serialVersionUID = 6529685098267757611L;

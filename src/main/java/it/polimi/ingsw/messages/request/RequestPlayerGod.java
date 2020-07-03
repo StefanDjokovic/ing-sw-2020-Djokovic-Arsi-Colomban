@@ -8,6 +8,9 @@ import it.polimi.ingsw.messages.answers.AnswerPlayerGod;
 
 import java.util.ArrayList;
 
+/**
+ * Server asks client to pick a god
+ */
 public class RequestPlayerGod extends Request {
 
     private static final long serialVersionUID = 6529685098267757613L;

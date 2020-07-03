@@ -4,7 +4,9 @@ import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.ControllerView;
 
-// Used only by Server to organize the lobby
+/**
+ * Contains lobby number, number of players the lobby can host and the player's name
+ */
 public class AnswerLobbyAndName extends Answer {
 
     private static final long serialVersionUID = 6529685098267757601L;

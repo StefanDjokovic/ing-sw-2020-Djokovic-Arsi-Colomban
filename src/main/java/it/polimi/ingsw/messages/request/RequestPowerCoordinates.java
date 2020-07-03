@@ -6,6 +6,9 @@ import it.polimi.ingsw.messages.OptionSelection;
 import it.polimi.ingsw.messages.Request;
 import it.polimi.ingsw.messages.answers.AnswerPowerCoordinates;
 
+/**
+ * Server asks client for coordinates to execute a turn step
+ */
 public class RequestPowerCoordinates extends Request {
 
     private static final long serialVersionUID = 6529685098267757614L;

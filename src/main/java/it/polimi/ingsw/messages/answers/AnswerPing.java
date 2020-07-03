@@ -3,6 +3,9 @@ package it.polimi.ingsw.messages.answers;
 import it.polimi.ingsw.messages.Answer;
 import it.polimi.ingsw.server.controller.ControllerView;
 
+/**
+ * Answers a ping from the server
+ */
 public class AnswerPing extends Answer {
 
     private static final long serialVersionUID = 6529685098267757113L;
