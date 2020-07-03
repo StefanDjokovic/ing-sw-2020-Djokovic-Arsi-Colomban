@@ -636,6 +636,6 @@ public class ClientCLI extends ClientView {
 
 
     public void displayLostConnection() {
-        System.out.println("Disconnected from the server");
+        System.out.println("Disconnecting from the server");
     }
 }

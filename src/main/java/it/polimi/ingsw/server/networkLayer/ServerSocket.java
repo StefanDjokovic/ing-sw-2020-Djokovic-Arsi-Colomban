@@ -48,8 +48,8 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                 outputStream.writeObject(request);
                 outputStream.flush();
             } catch (IOException e) {
-                System.out.println("IO Exception on send, you are dumb");
-                System.err.println(e.getMessage());
+                System.out.println("The socket was not active!");
+                closeServerSocket();
             }
         }
     }
@@ -72,8 +72,8 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                         updateObservers(answer);
                 }
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete from the Game" + "\u001B[0m");
                 closeServerSocket();
+                System.out.println("\u001B[44m" + "Connection lost with " + playerInitial + " has Died. Deleted from the game" + "\u001B[0m");
                 // If there are observers it means the game has started; otherwise just take away this user from the lobby
                 if (getObserversSize() != 0)
                     updateObservers(new AnswerKillPlayer(playerInitial));
@@ -99,10 +99,11 @@ public class ServerSocket extends Observable implements Runnable, Observer {
                 } catch (InterruptedException ignored) { }
 
             }
-            closeServerSocket();
-            System.out.println("ahah ping goes brrr");
-            updateObservers(new AnswerKillPlayer(playerInitial));
-
+            if (isActiveFlag) {
+                closeServerSocket();
+                System.out.println("ahah ping goes brrr");
+                updateObservers(new AnswerKillPlayer(playerInitial));
+            }
         }).start();
     }
 
@@ -123,8 +124,8 @@ public class ServerSocket extends Observable implements Runnable, Observer {
             }
             return (AnswerLobbyAndName) temp;
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
             closeServerSocket();
+            System.out.println("\u001B[44m" + "Client " + playerInitial + " has Died. Will delete it from the Game" + "\u001B[0m");
             updateObservers(new AnswerKillPlayer(playerInitial));
         }
         return null;

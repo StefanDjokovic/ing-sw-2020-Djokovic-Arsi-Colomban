@@ -75,7 +75,7 @@ public class Game extends Observable{
 
         if (optList == null)
             updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod()).getInitial(), nPlayers(), new ArrayList<>(opt.keySet())));
-        else
+        else if (players.size() > nPlayersWithGod() + 1)
             updateObservers(new RequestPlayerGod(players.get(nPlayersWithGod() + 1).getInitial(), 1, optList));
 
     }
@@ -152,9 +152,11 @@ public class Game extends Observable{
      */
     public int nPlayersWithGod() {
         int count = 0;
-        for (Player p: players) {
-            if (p.getGodLogic() != null)
-                count++;
+        if (players != null) {
+            for (Player p: players) {
+                if (p.getGodLogic() != null)
+                    count++;
+            }
         }
         return count;
     }
@@ -240,11 +242,7 @@ public class Game extends Observable{
         }
         else {
             if (players.size() == 1) {
-                if (!gameEndDeclared) {
-                    gameEndConditionOnOnePlayer();
-                    System.out.println("Won because just one player was left!");
-                    gameEndDeclared = true;
-                }
+                gameEndConditionOnOnePlayer();
             }
             else if (players.size() > 1){
                 if (!gameEndDeclared) {
@@ -272,9 +270,8 @@ public class Game extends Observable{
         if (players.size() == 1) {
             updateObservers(new RequestGameEnd(players.get(0).getInitial()));
             if (!gameEndDeclared) {
-                gameEndConditionOnOnePlayer();
-                System.out.println("Won because just one player was left!");
                 gameEndDeclared = true;
+                System.out.println("Won because just one player was left!");
             }
             return true;
         }
@@ -319,6 +316,16 @@ public class Game extends Observable{
                 return p;
         }
         return null;
+    }
+
+    public boolean isPlayerAlive(char initial) {
+        if (players != null) {
+            for (Player p: players) {
+                if (p.getInitial() == initial)
+                    return true;
+            }
+        }
+        return false;
     }
 
     /**
