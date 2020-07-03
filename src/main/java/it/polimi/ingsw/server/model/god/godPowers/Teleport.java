@@ -30,7 +30,7 @@ public class Teleport extends GodPower {
      * @param posYFrom y coordinate of the worker that is going to use the power
      * @param posXTo x coordinate of the tile targeted by the power
      * @param posYTo y coordinate of the tile targeted by the power
-     * @return 1 if the move succedes, -2 if something went wrong 
+     * @return 1 if the move succedes, -2 if something went wrong
      */
     @Override
     public int power(Board board, int posXFrom, int posYFrom, int posXTo, int posYTo) {
