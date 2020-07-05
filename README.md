@@ -3,7 +3,7 @@
 ## Gruppo AM04
 
 
-- ###   10570613    Pietro Arsi ([@Pit2752](https://github.com/Pit2752))<br>pietro.arsi@mail.polimi.it
+- ###   10570613    Pietro Arsi ([@PietroArsi](https://github.com/Pit2752))<br>pietro.arsi@mail.polimi.it
 - ###   10555274    Giorgio Colomban ([@Giocol](https://github.com/Giocol))<br>giorgio.colomban@mail.polimi.it
 - ###   10610473    Stefan Djokovic ([@StefanDjokovic](https://github.com/StefanDjokovic))<br>stefan.djokovic@mail.polimi.it
 
